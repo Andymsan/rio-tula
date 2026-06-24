@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Saneamiento y restauracion del rio Tula</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700&family=Noto+Sans+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+<div id="app">
+  <div id="app-header">
+    <div id="panel-title" onclick="UI.goHome()" style="cursor:pointer">Saneamiento y restauracion del rio Tula</div>
+    <div id="panel-sub">Plan 2024 - 2025</div>
+  </div>
+  <div id="app-body">
+    <aside id="panel">
+      <div id="eje-tabs">
+        <button class="etab" id="tab-agua"  onclick="UI.selEje('agua')">Calidad<br>del agua</button>
+        <button class="etab" id="tab-inund" onclick="UI.selEje('inund')">Prevención de<br>inundaciones</button>
+        <button class="etab" id="tab-eco"   onclick="UI.selEje('eco')">Restauración<br>ecológica</button>
+      </div>
+      <div id="full-line"></div>
+      <div id="plist"></div>
+    </aside>
+    <div id="map-wrap">
+      <div id="map"></div>
+      <div id="map-badge" class="hidden"><span id="map-badge-txt"></span></div>
+      <div id="dbo-legend" class="hidden">
+        <div class="dbo-title">Calidad del agua - DBO</div>
+        <div class="dbo-row"><span class="dbo-sq" style="background:#27ae60"></span>menor a 30 mg/L - Buena</div>
+        <div class="dbo-row"><span class="dbo-sq" style="background:#f1c40f"></span>30-100 - Moderada</div>
+        <div class="dbo-row"><span class="dbo-sq" style="background:#e67e22"></span>100-300 - Alta</div>
+        <div class="dbo-row"><span class="dbo-sq" style="background:#e74c3c"></span>mayor a 300 - Critica</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const LAYERS = {};
+const ESTCLS = {'En ejecucion':'b-ej','Por iniciar':'b-pi','Terminado':'b-te','Planeacion':'b-pi'};
+
+const CONFIG = {
+  agua:{
+    label:'Calidad del agua', tabClass:'ta', color:'#2f5d6d', accent:'#9b2247',
+    desc:'Acciones para tratar las aguas residuales, eliminar descargas industriales y monitorear permanentemente la calidad del agua en los 30 km del río Tula.',
+    metas:[
+      { meta:'Tratar mas del 95% del drenaje vertido al rio Tula', color:'#8dbccb',
+        desc:'Optimizacion de la PTAR Atotonilco y construccion de 38 km de colectores para captar 148 descargas y tratar el caudal doméstico vertido al rio.',
+        proyectos:[
+          { id:'p1', titulo:'Optimizacion PTAR Atotonilco', estatus:'En ejecucion', anio:'2025-2030',
+            desc:'Optimizacion de la Planta de Tratamiento de Aguas Residuales de Atotonilco para incrementar en 22% el caudal tratado y avanzar hacia el saneamiento de mas del 90% de las descargas domesticas del rio Tula.',
+            kv:[{l:'Caudal',v:'9',u:'m3/s'}],
+            layerDefs:[{key:'atotonilco',label:'PTAR Atotonilco',color:'#9b2247',sym:'dot'}], media:[] },
+          { id:'p2', titulo:'Colectores', estatus:'En ejecucion', anio:'2025-2026',
+            desc:'Construccion de 38 kilometros de colectores para captar 148 descargas de aguas residuales en los rios Tula y Salado y conducirlas a la PTAR de la CFE en Tula.',
+            kv:[],
+            layerDefs:[
+              {key:'colTula',  label:'Colectores rio Tula',  color:'#1a7a3f',sym:'line'},
+              {key:'colSalado',label:'Colectores rio Salado',color:'#c0392b',sym:'line'},
+              {key:'colCFE',   label:'Colector CFE',         color:'#285c4d',sym:'line'},
+              {key:'cfe',      label:'PTAR CFE Tula',        color:'#285c4d',sym:'dot'}
+            ], media:[] }
+        ]
+      },
+      { meta:'Eliminar las descargas industriales al rio Tula', color:'#6093a4',
+        desc:'Inspeccion, vigilancia y certificacion ambiental a mas de 50 industrias por año para eliminar descargas contaminantes directas al rio.',
+        proyectos:[
+          { id:'p3', titulo:'Inspeccion a industrias', estatus:'En ejecucion', anio:'2025-2030',
+            desc:'Inspeccion y vigilancia ambiental a mas de 50 industrias por anio para identificar y sancionar descargas contaminantes en la cuenca del rio Tula.',
+            kv:[{l:'Inspecciones',v:'130',u:'industrias'}],
+            layerDefs:[{key:'industrias',label:'Industrias (53)',color:'#9b2247',sym:'dia'}], media:[] },
+          { id:'p4', titulo:'Control de descargas a drenaje municipal', estatus:'En ejecucion', anio:'2025-2030',
+            desc:'Estrategia de control y monitoreo de descargas industriales hacia drenajes municipales en Tula, Tepeji, Cuautitlan Izcalli, Atitalaquia y Atotonilco.',
+            kv:[{l:'Municipios',v:'5'}],
+            layerDefs:[{key:'industrias',label:'Puntos de descarga industrial',color:'#9b2247',sym:'dia'}], media:[] },
+          { id:'p5', titulo:'Prevencion ambiental empresarial', estatus:'En ejecucion', anio:'2025-2030',
+            desc:'Programa de certificacion ambiental para mas de 30 empresas al anio orientado a prevenir riesgos de contaminacion industrial.',
+            kv:[{l:'Empresas',v:'70',u:'certificadas'}],
+            layerDefs:[{key:'industrias',label:'Industrias en programa',color:'#9b2247',sym:'dia'}], media:[] },
+          { id:'p6', titulo:'Pemex', estatus:'En ejecucion', anio:'2025-2030',
+            desc:'Monitoreo y control de la descarga de la refineria Miguel Hidalgo para reducir riesgos de contaminacion en el rio Tula.',
+            kv:[{l:'Estaciones',v:'5'}],
+            layerDefs:[{key:'pemex',label:'Refineria Miguel Hidalgo',color:'#7f3d1e',sym:'dot'}], media:[] }
+        ]
+      },
+      { meta:'Monitoreo de 30 km del rio Tula', color:'#2f5d6d',
+        desc:'Red de 97 sitios de muestreo, 5 estaciones automaticas y un centro digital de vigilancia para el monitoreo permanente de la calidad del agua.',
+        proyectos:[
+          { id:'p7', titulo:'Muestreo manual', estatus:'En ejecucion', anio:'2024-2030',
+            desc:'Monitoreo semestral de calidad del agua en mas de 90 sitios a lo largo de la cuenca del rio Tula.',
+            kv:[{l:'Sitios',v:'90',u:'sitios'}],
+            layerDefs:[{key:'monitoreo',label:'Sitios de monitoreo (97)',color:'#e67e22',sym:'sq'}],
+            hasMon:true, media:[] },
+          { id:'p8', titulo:'Estaciones automaticas de monitoreo', estatus:'En ejecucion', anio:'2025-2027',
+            desc:'Construccion de cinco estaciones automaticas para el monitoreo permanente de calidad y cantidad del agua en el rio Tula.',
+            kv:[{l:'Estaciones',v:'5'}],
+            layerDefs:[{key:'estaciones',label:'Estaciones automaticas (5)',color:'#2f5d6d',sym:'dot'}], media:[] },
+          { id:'p9', titulo:'Centro de vigilancia', estatus:'En ejecucion', anio:'2025',
+            desc:'Creacion de un centro de visualizacion y vigilancia para el monitoreo permanente de la calidad y cantidad del agua.',
+            kv:[{l:'Tipo',v:'Centro digital'}],
+            layerDefs:[
+              {key:'centro',    label:'Centro de vigilancia',  color:'#9b2247',sym:'star'},
+              {key:'estaciones',label:'Estaciones automaticas',color:'#2f5d6d',sym:'dot'},
+              {key:'monitoreo', label:'Red de monitoreo (97)', color:'#e67e22',sym:'sq'}
+            ], hasMon:true, media:[] }
+        ]
+      }
+    ]
+  },
+
+  inund:{
+    label:'Prevencion de inundaciones', tabClass:'ti', color:'#ed7d31', accent:'#c45e1a',
+    desc:'Obras e instrumentos para estabilizar taludes erosionados, mantener la capacidad hidráulica del río y recuperar las llanuras de inundación como zonas de amortiguamiento.',
+    metas:[
+      { meta:'Estabilizar 20 km de taludes criticamente erosionados', color:'#fcbd91',
+        desc:'Obras de estabilizacion, revegetacion y rehabilitacion de bordos en tramos criticos para reducir la erosion y el riesgo de derrumbes.',
+        proyectos:[
+          { id:'p10', titulo:'2.4 km de estabilizacion en San Lorenzo', estatus:'En ejecucion', anio:'2025-2026',
+            desc:'Obras de estabilizacion de taludes, revegetacion y rehabilitacion de bordos en tramos criticos del rio Tula para reducir riesgos de inundacion.',
+            kv:[{l:'Longitud',v:'1.2',u:'km'}],
+            layerDefs:[{key:'estabilizacion_de_taludes',label:'Estabilizacion de taludes',color:'#c45e1a',sym:'line'}], media:[] },
+          { id:'p10_1', titulo:'120 m de estabilizacion en San Marcos', estatus:'Por iniciar', anio:'2026',
+            desc:'Obras de estabilizacion de taludes en el tramo San Marcos del rio Tula.',
+            kv:[{l:'Longitud',v:'120',u:'m'}],
+            layerDefs:[{key:'estabilizacion_de_taludes',label:'Estabilizacion de taludes',color:'#c45e1a',sym:'line'}], media:[] },
+          { id:'p10_2', titulo:'460 m de estabilizacion en el Chamizal', estatus:'Por iniciar', anio:'2026',
+            desc:'Obras de estabilizacion de taludes en el tramo El Chamizal del rio Tula.',
+            kv:[{l:'Longitud',v:'460',u:'m'}],
+            layerDefs:[{key:'estabilizacion_de_taludes',label:'Estabilizacion de taludes',color:'#c45e1a',sym:'line'}], media:[] }
+        ]
+      },
+      { meta:'Mantener capacidad de carga de 500 m3/s en el rio Tula', color:'#ff9e5d',
+        desc:'Retiro de sedimentos en 3.9 km del tramo urbano y construccion de una trampa de azolve para mantener la capacidad hidraulica del rio.',
+        proyectos:[
+          { id:'p11', titulo:'Desazolve', estatus:'En ejecucion', anio:'2025',
+            desc:'Retiro de sedimentos acumulados en 3.9 km del tramo urbano del rio Tula para recuperar su capacidad hidraulica.',
+            kv:[{l:'Longitud',v:'3.9',u:'km'}],
+            layerDefs:[{key:'azolve',label:'Desazolve',color:'#c45e1a',sym:'line'}], media:[] },
+          { id:'p12', titulo:'Trampa de azolve', estatus:'Planeacion', anio:'2027-2028',
+            desc:'Construccion de infraestructura para la retencion y extraccion de sedimentos.',
+            kv:[{l:'Infraestructura',v:'1',u:'obra'}],
+            layerDefs:[{key:'azolve',label:'Trampa de azolve',color:'#c45e1a',sym:'dot'}], media:[] }
+        ]
+      },
+      { meta:'Recuperar las llanuras de inundacion', color:'#ff8f44',
+        desc:'Habilitacion de 30 ha de zona inundable en Tres Culturas como area de amortiguamiento natural para eventos de alta precipitacion.',
+        proyectos:[
+          { id:'p13', titulo:'Zona inundable Tres Culturas', estatus:'Por iniciar', anio:'2025-2027',
+            desc:'Recuperacion y habilitacion de la zona inundable de Tres Culturas como area de amortiguamiento hidraulico.',
+            kv:[{l:'Superficie',v:'30',u:'ha'}],
+            layerDefs:[{key:'zona_inundable',label:'Zona inundable Tres Culturas',color:'#ff8f44',sym:'dia'}], media:[] }
+        ]
+      },
+      { meta:'Mejorar la operacion del sistema de drenaje y presas', color:'#ed7d31',
+        desc:'Red de 21 estaciones automaticas para monitoreo en tiempo real de caudales y sistemas de alerta temprana ante inundaciones.',
+        proyectos:[
+          { id:'p14', titulo:'21 estaciones automaticas de caudales', estatus:'En ejecucion', anio:'2025-2026',
+            desc:'Instalacion de una red de 21 estaciones automaticas para el monitoreo en tiempo real de caudales y sistemas de alerta temprana.',
+            kv:[{l:'Estaciones',v:'21'}],
+            layerDefs:[
+              {key:'estaciones_hidrometricas_monitoreo',      label:'Estaciones hidrometricas',      color:'#c45e1a',sym:'dot'},
+              {key:'estaciones_hidroclimatologicas_monitoreo',label:'Estaciones hidroclimatologicas', color:'#c45e1a',sym:'dot'}
+            ], media:[] }
+        ]
+      }
+    ]
+  },
+
+  eco:{
+    label:'Restauracion ecologica', tabClass:'te', color:'#285c4d', accent:'#285c4d',
+    desc:'Revegetación de márgenes, conservación forestal y habilitación de espacios públicos para restaurar el ecosistema ribereño y ampliar la superficie natural protegida.',
+    metas:[
+      { meta:'Proteger, sanear o reforestar 20 km de las riberas del rio Tula', color:'#85b2a5',
+        desc:'Plantacion de 300 arboles, saneamiento de 1,600 ejemplares y recuperacion de zonas federales para restaurar las riberas del rio.',
+        proyectos:[
+          { id:'p15', titulo:'Revegetacion de margenes', estatus:'En ejecucion', anio:'2025-2026',
+            desc:'Plantacion de 300 arboles y 3,400 herbaceas en zonas urbanas a lo largo de las margenes del rio Tula.',
+            kv:[{l:'Arboles plantados',v:'300',u:'arboles'}],
+            layerDefs:[{key:'revegetacion_de_margenes',label:'Revegetacion de margenes',color:'#285c4d',sym:'dot'}], media:[] },
+          { id:'p16', titulo:'Saneamiento de arboles', estatus:'Terminado', anio:'2025',
+            desc:'Saneamiento fitosanitario de mas de 1,600 arboles riberenos afectados por plagas y deterioro ambiental.',
+            kv:[{l:'Arboles',v:'1600',u:'arboles'}],
+            layerDefs:[{key:'saneamiento_forestal',label:'Saneamiento de arboles',color:'#285c4d',sym:'dot'}], media:[] },
+          { id:'p17', titulo:'Liberacion de zona federal', estatus:'Por iniciar', anio:'2026',
+            desc:'Recuperacion y liberacion de zonas federales invadidas para restaurar la conectividad ecologica.',
+            kv:[{l:'Tipo',v:'Liberacion'}],
+            layerDefs:[{key:'zona_federal',label:'Liberacion zona federal',color:'#285c4d',sym:'line'}], media:[] }
+        ]
+      },
+      { meta:'Incrementar la superficie forestal conservada y restaurada 30x', color:'#619787',
+        desc:'Conservacion de mas de 1,700 ha, restauracion de 600 ha y creacion de una nueva ANP de 1,500 ha en la cuenca del rio Tula.',
+        proyectos:[
+          { id:'p18', titulo:'Conservacion forestal', estatus:'Terminado', anio:'2025',
+            desc:'Conservacion de mas de 1,700 hectareas mediante Areas Destinadas Voluntariamente a la Conservacion (ADVC) y acciones de proteccion forestal.',
+            kv:[{l:'Superficie',v:'1700',u:'ha'}],
+            layerDefs:[{key:'conservacion_forestal',label:'Conservacion forestal',color:'#619787',sym:'sq'}], media:[] },
+          { id:'p19', titulo:'Restauracion forestal', estatus:'Terminado', anio:'2025',
+            desc:'Restauracion ecologica de mas de 600 hectareas mediante proyectos de revegetacion en zonas prioritarias de la cuenca.',
+            kv:[{l:'Superficie restaurada',v:'600',u:'ha'}],
+            layerDefs:[{key:'restauracion_forestal',label:'Restauracion forestal',color:'#285c4d',sym:'sq'}], media:[] },
+          { id:'p20', titulo:'Nueva ANP en Tula', estatus:'Por iniciar', anio:'2026-2030',
+            desc:'Creacion de una nueva Area Natural Protegida de 100 hectareas para ampliar la superficie bajo conservacion ecologica.',
+            kv:[{l:'Superficie protegida',v:'1500',u:'ha'}],
+            layerDefs:[{key:'nueva_anp',label:'Nueva ANP en Tula',color:'#1a4d30',sym:'dia'}], media:[] }
+        ]
+      },
+      { meta:'Generar espacio publico con agua limpia', color:'#40826f',
+        desc:'Restauracion ecologica de 55 ha en Bojay y desarrollo de un parque ribereno con humedales, senderos y areas recreativas para la comunidad.',
+        proyectos:[
+          { id:'p21', titulo:'Restauracion cuerpo de agua en Bojay', estatus:'En ejecucion', anio:'2025',
+            desc:'Restauracion de 60 hectareas del cuerpo de agua y rehabilitacion ecologica de la zona riberena de Bojay.',
+            kv:[{l:'Superficie',v:'55',u:'ha'}],
+            layerDefs:[{key:'bojay',label:'Cuerpo de agua Bojay',color:'#285c4d',sym:'dot'}], media:[] },
+          { id:'p22', titulo:'Parque ribereno en Tula', estatus:'Por iniciar', anio:'2026',
+            desc:'Desarrollo de infraestructura verde y espacio publico en las margenes del rio Tula mediante humedales, senderos y areas recreativas.',
+            kv:[{l:'Tipo',v:'Parque'}],
+            layerDefs:[], media:[] }
+        ]
+      },
+      { meta:'Restaurar la presa Endho', color:'#285c4d',
+        desc:'Estrategia integral de saneamiento, rehabilitacion ecologica y recuperacion ambiental de la presa Endho y su zona de influencia.',
+        proyectos:[
+          { id:'p23', titulo:'Restaurar la presa Endho', estatus:'Por iniciar', anio:'2025-2030',
+            desc:'Estrategia integral de saneamiento, restauracion ecologica y recuperacion ambiental de la presa Endho y su zona de influencia.',
+            kv:[{l:'Cuerpo de agua restaurado',v:'1',u:'presa'}],
+            layerDefs:[{key:'endho',label:'Presa Endho',color:'#1a4d5c',sym:'dot'}], media:[] }
+        ]
+      }
+    ]
+  }
+};
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/map.js"></script>
+</body>
+</html>
