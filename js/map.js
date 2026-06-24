@@ -40,7 +40,7 @@ const MAP = (() => {
 
     for (const capa of capas) {
       try {
-        const r  = await fetch('mapabase/' + capa.f + '.geojson');
+        const r  = await fetch('data/mapa%20base/' + capa.f + '.geojson');
         if (!r.ok) { console.warn('No se cargo mapa base:', capa.f); continue; }
         const fc  = await r.json();
         const tipo = fc.features?.[0]?.geometry?.type || '';
