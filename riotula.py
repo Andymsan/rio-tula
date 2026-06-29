@@ -22,6 +22,14 @@ def js(filename):
 def data(filename):
     return send_from_directory(os.path.join(BASE, 'data'), filename)
 
+@app.route('/mapa.html')
+def mapa():
+    return send_from_directory(BASE, 'mapa.html')
+
+@app.route('/img/<path:filename>')
+def img(filename):
+    return send_from_directory(os.path.join(BASE, 'img'), filename)
+
 @app.route('/videos/<path:filename>')
 def videos(filename):
     return send_from_directory(os.path.join(BASE, 'videos'), filename)

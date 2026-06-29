@@ -3,239 +3,685 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Saneamiento y restauracion del rio Tula</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700&family=Noto+Sans+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css" />
-  <link rel="stylesheet" href="css/styles.css" />
+  <title>Río Tula — Plan de Saneamiento y Restauración 2024–2030</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Noto+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --vino:   #611232;
+      --teal:   #2f5d6d;
+      --green:  #285c4d;
+      --orange: #c45e1a;
+      --ink:    #1a1a1a;
+      --off:    #f5f3f0;
+      --mid:    #f0ede9;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Noto Sans', sans-serif;
+      color: var(--ink);
+      background: #0d0d0d;
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ──────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 32px;
+      transition: background .4s, padding .3s;
+    }
+    nav.scrolled {
+      background: rgba(10,10,10,.92);
+      backdrop-filter: blur(8px);
+      padding: 12px 32px;
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 17px; font-weight: 700;
+      color: #fff; letter-spacing: .01em;
+      text-decoration: none;
+    }
+    .nav-logo span { color: rgba(255,255,255,.45); font-weight: 300; }
+    .nav-cta {
+      background: var(--vino);
+      color: #fff; font-size: 13px; font-weight: 600;
+      border: none; border-radius: 24px;
+      padding: 10px 22px; cursor: pointer;
+      text-decoration: none;
+      transition: background .2s, transform .15s;
+    }
+    .nav-cta:hover { background: #7c172f; transform: translateY(-1px); }
+
+    /* ─── HERO ─────────────────────────────── */
+    .hero {
+      position: relative;
+      height: 100vh; min-height: 560px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: url('img/hero.jpg') center/cover no-repeat;
+      transform: scale(1.04);
+      animation: heroZoom 14s ease forwards;
+    }
+    @keyframes heroZoom {
+      from { transform: scale(1.04); }
+      to   { transform: scale(1.00); }
+    }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(0,0,0,.55) 0%,
+        rgba(10,20,30,.70) 55%,
+        rgba(0,0,0,.85) 100%
+      );
+    }
+    .hero-content {
+      position: relative; z-index: 2;
+      text-align: center; padding: 0 24px;
+      max-width: 860px;
+    }
+    .hero-eyebrow {
+      font-size: 12px; letter-spacing: .22em; text-transform: uppercase;
+      color: rgba(255,255,255,.6); font-weight: 500;
+      margin-bottom: 22px;
+      opacity: 0; animation: fadeUp .8s .3s forwards;
+    }
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(52px, 9vw, 110px);
+      font-weight: 900; line-height: 1;
+      color: #fff; letter-spacing: -.02em;
+      opacity: 0; animation: fadeUp .9s .55s forwards;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: rgba(255,255,255,.75);
+    }
+    .hero-sub {
+      margin-top: 28px;
+      font-size: clamp(15px, 2vw, 19px);
+      color: rgba(255,255,255,.72); font-weight: 300; line-height: 1.6;
+      max-width: 600px; margin-left: auto; margin-right: auto;
+      opacity: 0; animation: fadeUp .9s .8s forwards;
+    }
+    .hero-actions {
+      margin-top: 44px; display: flex; gap: 14px; justify-content: center;
+      opacity: 0; animation: fadeUp .8s 1.05s forwards;
+    }
+    .btn-primary {
+      background: var(--vino); color: #fff;
+      font-size: 15px; font-weight: 600;
+      border: none; border-radius: 32px;
+      padding: 14px 34px; cursor: pointer;
+      text-decoration: none;
+      transition: background .2s, transform .15s, box-shadow .2s;
+      box-shadow: 0 4px 20px rgba(97,18,50,.45);
+    }
+    .btn-primary:hover { background: #7c172f; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(97,18,50,.55); }
+    .btn-ghost {
+      background: transparent; color: rgba(255,255,255,.85);
+      font-size: 15px; font-weight: 400;
+      border: 1.5px solid rgba(255,255,255,.35); border-radius: 32px;
+      padding: 14px 30px; cursor: pointer;
+      text-decoration: none;
+      transition: border-color .2s, background .2s;
+    }
+    .btn-ghost:hover { border-color: rgba(255,255,255,.7); background: rgba(255,255,255,.08); }
+
+    .hero-scroll {
+      position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+      z-index: 2; display: flex; flex-direction: column; align-items: center;
+      gap: 8px; opacity: 0; animation: fadeUp .6s 1.4s forwards;
+    }
+    .hero-scroll span { font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.4); }
+    .scroll-arrow { width: 20px; height: 20px; border-right: 2px solid rgba(255,255,255,.3); border-bottom: 2px solid rgba(255,255,255,.3); transform: rotate(45deg); animation: bounce 1.5s infinite; }
+    @keyframes bounce { 0%,100% { transform:rotate(45deg) translateY(0); } 50% { transform:rotate(45deg) translateY(5px); } }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(22px); } to { opacity:1; transform:translateY(0); } }
+
+    /* ─── STATS STRIP ─────────────────────── */
+    .stats-strip {
+      background: var(--vino); color: #fff;
+      display: grid; grid-template-columns: repeat(4,1fr);
+      text-align: center;
+    }
+    .stat-cell {
+      padding: 32px 24px; border-right: 1px solid rgba(255,255,255,.12);
+      opacity: 0; transform: translateY(16px);
+      transition: opacity .6s, transform .6s;
+    }
+    .stat-cell.visible { opacity: 1; transform: translateY(0); }
+    .stat-cell:last-child { border-right: none; }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 42px; font-weight: 900; line-height: 1;
+      color: #fff;
+    }
+    .stat-num sup { font-size: 22px; }
+    .stat-label { margin-top: 6px; font-size: 13px; color: rgba(255,255,255,.65); font-weight: 300; }
+
+    /* ─── SECCIÓN GENÉRICA ─────────────────── */
+    section { position: relative; }
+
+    .section-inner {
+      max-width: 1200px; margin: 0 auto; padding: 0 32px;
+    }
+
+    /* ─── HISTORIA ─────────────────────────── */
+    .s-historia {
+      background: var(--off); padding: 100px 0 80px;
+    }
+    .historia-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+      align-items: center;
+    }
+    .historia-img {
+      border-radius: 8px; overflow: hidden;
+      box-shadow: 0 24px 64px rgba(0,0,0,.14);
+      opacity: 0; transform: translateX(-30px);
+      transition: opacity .8s, transform .8s;
+    }
+    .historia-img.visible { opacity: 1; transform: translateX(0); }
+    .historia-img img { width: 100%; height: 420px; object-fit: cover; display: block; }
+    .historia-text {
+      opacity: 0; transform: translateX(30px);
+      transition: opacity .8s .15s, transform .8s .15s;
+    }
+    .historia-text.visible { opacity: 1; transform: translateX(0); }
+    .s-tag {
+      display: inline-block; font-size: 11px; font-weight: 600;
+      letter-spacing: .18em; text-transform: uppercase;
+      color: var(--vino); margin-bottom: 18px;
+    }
+    .s-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 3.5vw, 42px); font-weight: 700; line-height: 1.18;
+      color: var(--ink); margin-bottom: 20px;
+    }
+    .s-body {
+      font-size: 16px; line-height: 1.75; color: #4a4a4a; font-weight: 300;
+    }
+    .s-body p + p { margin-top: 14px; }
+    .s-body strong { color: var(--ink); font-weight: 600; }
+
+    /* ─── CONTAMINACIÓN ────────────────────── */
+    .s-contaminacion {
+      padding: 0;
+      background: #0a0e12;
+    }
+    .contami-wrap {
+      display: grid; grid-template-columns: 1fr 1fr; min-height: 620px;
+    }
+    .contami-img {
+      position: relative; overflow: hidden;
+    }
+    .contami-img img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      filter: saturate(.9) brightness(.85);
+      transform: scale(1.03);
+      transition: transform 8s ease;
+    }
+    .contami-img:hover img { transform: scale(1); }
+    .contami-text {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 80px 64px;
+      background: linear-gradient(135deg, #0a0e12 0%, #0f1a24 100%);
+    }
+    .contami-text .s-tag { color: #e67e22; }
+    .contami-text .s-title { color: #fff; }
+    .contami-text .s-body { color: rgba(255,255,255,.62); }
+    .contami-text .s-body strong { color: #fff; }
+    .contami-badge-row {
+      display: flex; gap: 16px; margin-top: 32px; flex-wrap: wrap;
+    }
+    .contami-badge {
+      background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12);
+      border-radius: 8px; padding: 14px 20px; text-align: center; flex: 1; min-width: 110px;
+    }
+    .contami-badge-val {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px; font-weight: 700; color: #e67e22; line-height: 1;
+    }
+    .contami-badge-lbl { font-size: 11px; color: rgba(255,255,255,.45); margin-top: 4px; }
+    .contami-text, .contami-img {
+      opacity: 0; transition: opacity .9s, transform .9s;
+    }
+    .contami-text { transform: translateX(30px); }
+    .contami-img  { transform: translateX(-20px); }
+    .contami-text.visible, .contami-img.visible { opacity: 1; transform: none; }
+
+    /* ─── EJES ─────────────────────────────── */
+    .s-ejes {
+      background: var(--mid); padding: 100px 0;
+    }
+    .ejes-header {
+      text-align: center; margin-bottom: 64px;
+      opacity: 0; transition: opacity .7s, transform .7s; transform: translateY(20px);
+    }
+    .ejes-header.visible { opacity: 1; transform: none; }
+    .ejes-header .s-title { font-size: clamp(26px, 3vw, 36px); }
+    .ejes-grid {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 28px;
+    }
+    .eje-card {
+      background: #fff; border-radius: 12px; overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,.07);
+      display: flex; flex-direction: column;
+      opacity: 0; transform: translateY(24px);
+      transition: opacity .7s, transform .7s, box-shadow .2s;
+    }
+    .eje-card.visible { opacity: 1; transform: none; }
+    .eje-card:hover { box-shadow: 0 12px 36px rgba(0,0,0,.13); }
+    .eje-card-img { height: 200px; overflow: hidden; }
+    .eje-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
+    .eje-card:hover .eje-card-img img { transform: scale(1.04); }
+    .eje-card-body { padding: 28px 26px 32px; flex: 1; display: flex; flex-direction: column; }
+    .eje-card-num { font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; margin-bottom: 10px; }
+    .eje-card-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; line-height: 1.25; margin-bottom: 12px; }
+    .eje-card-desc { font-size: 14px; line-height: 1.65; color: #5a5a5a; flex: 1; }
+    .eje-card-stats {
+      display: flex; gap: 20px; margin-top: 20px;
+      padding-top: 18px; border-top: 1px solid #eee;
+    }
+    .eje-stat-v { font-size: 20px; font-weight: 700; line-height: 1; }
+    .eje-stat-l { font-size: 11px; color: #888; margin-top: 2px; }
+
+    .eje-agua  .eje-card-num { color: var(--teal); }
+    .eje-agua  .eje-card-title { color: var(--teal); }
+    .eje-agua  .eje-stat-v { color: var(--teal); }
+    .eje-inund .eje-card-num { color: var(--orange); }
+    .eje-inund .eje-card-title { color: var(--orange); }
+    .eje-inund .eje-stat-v { color: var(--orange); }
+    .eje-eco   .eje-card-num { color: var(--green); }
+    .eje-eco   .eje-card-title { color: var(--green); }
+    .eje-eco   .eje-stat-v { color: var(--green); }
+
+    /* ─── CUENCA ──────────────────────────── */
+    .s-cuenca {
+      position: relative; overflow: hidden;
+      min-height: 500px;
+    }
+    .cuenca-bg {
+      position: absolute; inset: 0;
+      background: url('img/cuenca.jpg') center/cover no-repeat;
+      filter: brightness(.38);
+    }
+    .cuenca-content {
+      position: relative; z-index: 2;
+      padding: 100px 32px;
+      max-width: 820px; margin: 0 auto; text-align: center;
+    }
+    .cuenca-content .s-tag { color: rgba(255,255,255,.55); }
+    .cuenca-content .s-title { color: #fff; font-size: clamp(28px, 4vw, 48px); margin-bottom: 24px; }
+    .cuenca-content .s-body { color: rgba(255,255,255,.65); font-size: 17px; margin-bottom: 40px; }
+    .cuenca-content, .cuenca-content * {
+      opacity: 0; transition: opacity .9s .1s, transform .9s .1s;
+      transform: translateY(20px);
+    }
+    .cuenca-content.visible, .cuenca-content.visible * { opacity: 1; transform: none; }
+
+    /* ─── PLAN 2030 ─────────────────────────── */
+    .s-plan {
+      background: var(--off); padding: 100px 0;
+    }
+    .plan-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center;
+    }
+    .plan-img {
+      border-radius: 8px; overflow: hidden;
+      box-shadow: 0 24px 64px rgba(0,0,0,.15);
+      opacity: 0; transform: translateX(-30px);
+      transition: opacity .8s, transform .8s;
+    }
+    .plan-img.visible { opacity: 1; transform: none; }
+    .plan-img img { width: 100%; display: block; }
+    .plan-text {
+      opacity: 0; transform: translateX(30px);
+      transition: opacity .8s .1s, transform .8s .1s;
+    }
+    .plan-text.visible { opacity: 1; transform: none; }
+    .plan-rows { margin-top: 32px; display: flex; flex-direction: column; gap: 14px; }
+    .plan-row {
+      display: flex; align-items: center; gap: 16px;
+      padding: 16px 20px;
+      background: #fff; border-radius: 10px;
+      border-left: 4px solid transparent;
+      box-shadow: 0 2px 12px rgba(0,0,0,.05);
+    }
+    .plan-row-n {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px; font-weight: 700; line-height: 1; min-width: 48px;
+    }
+    .plan-row-l { font-size: 14px; line-height: 1.4; color: #444; }
+    .plan-row.r-agua  { border-color: var(--teal);  } .plan-row.r-agua  .plan-row-n { color: var(--teal);  }
+    .plan-row.r-inund { border-color: var(--orange); } .plan-row.r-inund .plan-row-n { color: var(--orange); }
+    .plan-row.r-eco   { border-color: var(--green);  } .plan-row.r-eco   .plan-row-n { color: var(--green);  }
+
+    /* ─── CTA FINAL ──────────────────────── */
+    .s-cta {
+      padding: 120px 32px;
+      background: linear-gradient(145deg, var(--vino) 0%, #2f5d6d 100%);
+      text-align: center;
+    }
+    .s-cta .s-title { color: #fff; font-size: clamp(28px, 4vw, 50px); margin-bottom: 20px; }
+    .s-cta .s-body  { color: rgba(255,255,255,.65); font-size: 17px; max-width: 560px; margin: 0 auto 44px; }
+    .s-cta, .s-cta * {
+      opacity: 0; transform: translateY(20px);
+      transition: opacity .8s, transform .8s;
+    }
+    .s-cta.visible, .s-cta.visible * { opacity: 1; transform: none; }
+    .btn-big {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: #fff; color: var(--vino);
+      font-size: 16px; font-weight: 700;
+      border: none; border-radius: 36px;
+      padding: 18px 44px; cursor: pointer;
+      text-decoration: none;
+      transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 8px 32px rgba(0,0,0,.25);
+    }
+    .btn-big:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 14px 40px rgba(0,0,0,.35); }
+    .btn-big svg { flex-shrink: 0; }
+
+    /* ─── FOOTER ─────────────────────────── */
+    footer {
+      background: #0d0d0d; color: rgba(255,255,255,.35);
+      text-align: center; padding: 28px 24px;
+      font-size: 12px; letter-spacing: .04em;
+    }
+    footer a { color: rgba(255,255,255,.45); text-decoration: none; }
+    footer a:hover { color: rgba(255,255,255,.7); }
+
+    /* ─── MOBILE ─────────────────────────── */
+    @media (max-width: 768px) {
+      nav { padding: 14px 20px; }
+      .nav-logo { font-size: 14px; }
+      .stats-strip { grid-template-columns: repeat(2,1fr); }
+      .stat-cell { padding: 22px 16px; }
+      .stat-num  { font-size: 32px; }
+      .historia-grid, .contami-wrap, .plan-grid { grid-template-columns: 1fr; }
+      .contami-img { min-height: 300px; }
+      .contami-text { padding: 52px 28px; }
+      .s-historia, .s-ejes, .s-plan { padding: 72px 0; }
+      .section-inner { padding: 0 20px; }
+      .historia-img img { height: 280px; }
+      .ejes-grid { grid-template-columns: 1fr; }
+      .cuenca-content { padding: 72px 20px; }
+      .hero-actions { flex-direction: column; align-items: center; }
+      .btn-primary, .btn-ghost, .btn-big { width: 100%; max-width: 320px; text-align: center; justify-content: center; }
+    }
+
+    @media (max-width: 480px) {
+      .stat-cell { border-right: none; border-bottom: 1px solid rgba(255,255,255,.12); }
+    }
+  </style>
 </head>
 <body>
-<div id="app">
-  <div id="app-header">
-    <div id="panel-title" onclick="UI.goHome()" style="cursor:pointer">Saneamiento y restauracion del rio Tula</div>
-    <div id="panel-sub">Plan 2024 - 2025</div>
-  </div>
-  <div id="app-body">
-    <aside id="panel">
-      <div id="eje-tabs">
-        <button class="etab" id="tab-agua"  onclick="UI.selEje('agua')">Calidad<br>del agua</button>
-        <button class="etab" id="tab-inund" onclick="UI.selEje('inund')">Prevención de<br>inundaciones</button>
-        <button class="etab" id="tab-eco"   onclick="UI.selEje('eco')">Restauración<br>ecológica</button>
-      </div>
-      <div id="full-line"></div>
-      <div id="plist"></div>
-    </aside>
-    <div id="map-wrap">
-      <div id="map"></div>
-      <div id="map-badge" class="hidden"><span id="map-badge-txt"></span></div>
-      <div id="dbo-legend" class="hidden">
-        <div class="dbo-title">Calidad del agua - DBO</div>
-        <div class="dbo-row"><span class="dbo-sq" style="background:#27ae60"></span>menor a 30 mg/L - Buena</div>
-        <div class="dbo-row"><span class="dbo-sq" style="background:#f1c40f"></span>30-100 - Moderada</div>
-        <div class="dbo-row"><span class="dbo-sq" style="background:#e67e22"></span>100-300 - Alta</div>
-        <div class="dbo-row"><span class="dbo-sq" style="background:#e74c3c"></span>mayor a 300 - Critica</div>
-      </div>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <a href="index.html" class="nav-logo">Río Tula <span>/ Plan 2024–2030</span></a>
+  <a href="mapa.html" class="nav-cta">Ver mapa →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Saneamiento · Restauración · 2024–2030</p>
+    <h1 class="hero-title">Río <em>Tula</em></h1>
+    <p class="hero-sub">El camino de recuperación de uno de los ríos más contaminados de México: agua limpia, riberas restauradas y comunidades resilientes.</p>
+    <div class="hero-actions">
+      <a href="mapa.html" class="btn-primary">Explorar el mapa interactivo</a>
+      <a href="#historia" class="btn-ghost">Conocer la historia</a>
     </div>
+  </div>
+  <div class="hero-scroll">
+    <span>Desplázate</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-strip" id="stats">
+  <div class="stat-cell">
+    <div class="stat-num">23</div>
+    <div class="stat-label">proyectos en el plan 2024–2030</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-num">30<sup>km</sup></div>
+    <div class="stat-label">del río Tula intervenidos</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-num">2,300<sup>ha</sup></div>
+    <div class="stat-label">de cubierta forestal restaurada y conservada</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-num">3</div>
+    <div class="stat-label">ejes de acción simultáneos</div>
   </div>
 </div>
 
+<!-- HISTORIA -->
+<section class="s-historia" id="historia">
+  <div class="section-inner">
+    <div class="historia-grid">
+      <div class="historia-img reveal">
+        <img src="img/historia.jpg" alt="Vista aérea del Río Tula" />
+      </div>
+      <div class="historia-text reveal">
+        <span class="s-tag">El río y su historia</span>
+        <h2 class="s-title">Un río que carga el peso de millones</h2>
+        <div class="s-body">
+          <p>El río Tula forma parte de la cuenca del Valle de México, uno de los sistemas hidrológicos más alterados del mundo. Durante más de un siglo ha recibido las aguas residuales de la zona metropolitana de la Ciudad de México, transportando contaminantes domésticos e industriales a través de más de 600 km de cuenca.</p>
+          <p>Esta carga ha convertido al Tula en uno de los <strong>ríos con mayor concentración de contaminantes orgánicos e industriales en el país</strong>, afectando la salud de comunidades, la biodiversidad ribereña y la capacidad productiva de los suelos irrigados.</p>
+          <p>La recuperación del río es una deuda histórica con los municipios del Valle del Mezquital y con los ecosistemas que dependieron de él antes de su deterioro.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTAMINACIÓN -->
+<section class="s-contaminacion" id="problema">
+  <div class="contami-wrap">
+    <div class="contami-img reveal">
+      <img src="img/contaminacion.jpg" alt="Contaminación en el Río Tula" />
+    </div>
+    <div class="contami-text reveal">
+      <span class="s-tag">Diagnóstico</span>
+      <h2 class="s-title">Un sistema en crisis</h2>
+      <div class="s-body">
+        <p>Los indicadores de calidad del agua en el río Tula muestran concentraciones de <strong>DBO hasta 20 veces por encima</strong> de los límites permisibles en tramos críticos, con descargas industriales activas y una infraestructura de drenaje que no alcanza a captar la totalidad de los vertimientos.</p>
+        <p>La erosión de taludes, la pérdida de cobertura vegetal y la irregularidad en la operación de presas han <strong>incrementado el riesgo de inundaciones</strong> en la ciudad de Tula y municipios aledaños.</p>
+      </div>
+      <div class="contami-badge-row">
+        <div class="contami-badge">
+          <div class="contami-badge-val">97</div>
+          <div class="contami-badge-lbl">sitios de monitoreo</div>
+        </div>
+        <div class="contami-badge">
+          <div class="contami-badge-val">53</div>
+          <div class="contami-badge-lbl">industrias inspeccionadas</div>
+        </div>
+        <div class="contami-badge">
+          <div class="contami-badge-val">148</div>
+          <div class="contami-badge-lbl">descargas captadas</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRES EJES -->
+<section class="s-ejes" id="ejes">
+  <div class="section-inner">
+    <div class="ejes-header reveal">
+      <span class="s-tag">Estrategia de intervención</span>
+      <h2 class="s-title">Tres ejes de acción simultáneos</h2>
+    </div>
+    <div class="ejes-grid">
+
+      <div class="eje-card eje-agua reveal" style="transition-delay:.05s">
+        <div class="eje-card-img">
+          <img src="img/calidad.jpg" alt="Calidad del agua" />
+        </div>
+        <div class="eje-card-body">
+          <div class="eje-card-num">Eje 01</div>
+          <div class="eje-card-title">Calidad del agua</div>
+          <div class="eje-card-desc">Optimización de la PTAR Atotonilco, 38 km de colectores, inspección industrial y una red permanente de 97 puntos de monitoreo para garantizar que más del 95% del caudal sea tratado.</div>
+          <div class="eje-card-stats">
+            <div><div class="eje-stat-v">9 m³/s</div><div class="eje-stat-l">caudal tratado</div></div>
+            <div><div class="eje-stat-v">5</div><div class="eje-stat-l">estaciones automáticas</div></div>
+            <div><div class="eje-stat-v">3</div><div class="eje-stat-l">metas</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="eje-card eje-inund reveal" style="transition-delay:.15s">
+        <div class="eje-card-img">
+          <img src="img/inundaciones.jpg" alt="Prevención de inundaciones" />
+        </div>
+        <div class="eje-card-body">
+          <div class="eje-card-num">Eje 02</div>
+          <div class="eje-card-title">Prevención de inundaciones</div>
+          <div class="eje-card-desc">Estabilización de 20 km de taludes, desazolve en tramos críticos, recuperación de 30 ha de llanuras y una red de 21 estaciones hidrométricas e hidroclimatológicas.</div>
+          <div class="eje-card-stats">
+            <div><div class="eje-stat-v">20 km</div><div class="eje-stat-l">de taludes estabilizados</div></div>
+            <div><div class="eje-stat-v">21</div><div class="eje-stat-l">estaciones de caudal</div></div>
+            <div><div class="eje-stat-v">4</div><div class="eje-stat-l">metas</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="eje-card eje-eco reveal" style="transition-delay:.25s">
+        <div class="eje-card-img">
+          <img src="img/restauracion.jpg" alt="Restauración ecológica" />
+        </div>
+        <div class="eje-card-body">
+          <div class="eje-card-num">Eje 03</div>
+          <div class="eje-card-title">Restauración ecológica</div>
+          <div class="eje-card-desc">Revegetación de riberas, conservación de más de 1,700 ha, restauración de 600 ha, nueva ANP, rehabilitación de Bojay y saneamiento integral de la presa Endho.</div>
+          <div class="eje-card-stats">
+            <div><div class="eje-stat-v">2,300 ha</div><div class="eje-stat-l">conservadas / restauradas</div></div>
+            <div><div class="eje-stat-v">55 ha</div><div class="eje-stat-l">espacio público</div></div>
+            <div><div class="eje-stat-v">4</div><div class="eje-stat-l">metas</div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CUENCA CONTEXT -->
+<section class="s-cuenca" id="cuenca">
+  <div class="cuenca-bg"></div>
+  <div class="cuenca-content reveal">
+    <span class="s-tag">Alcance territorial</span>
+    <h2 class="s-title">Una cuenca compartida entre tres estados</h2>
+    <p class="s-body">El plan abarca el tramo del río Tula desde su cruce con la autopista Chamapa–Lechería hasta la presa Endho, integrando acciones coordinadas con los estados de Hidalgo, México y Ciudad de México, en beneficio de comunidades rurales y urbanas del Valle del Mezquital.</p>
+  </div>
+</section>
+
+<!-- PLAN 2030 -->
+<section class="s-plan" id="plan">
+  <div class="section-inner">
+    <div class="plan-grid">
+      <div class="plan-img reveal">
+        <img src="img/plan.jpg" alt="Plan de implementación 2030" />
+      </div>
+      <div class="plan-text reveal">
+        <span class="s-tag">Plan de acción</span>
+        <h2 class="s-title">23 proyectos hacia 2030</h2>
+        <div class="s-body">
+          <p>El plan articula acciones de infraestructura, conservación, monitoreo e inspección en una estrategia de largo plazo que integra a múltiples dependencias federales y gobiernos locales.</p>
+        </div>
+        <div class="plan-rows">
+          <div class="plan-row r-agua">
+            <div class="plan-row-n">9</div>
+            <div class="plan-row-l">Proyectos de <strong>calidad del agua</strong>: colectores, PTAR, monitoreo e inspección industrial</div>
+          </div>
+          <div class="plan-row r-inund">
+            <div class="plan-row-n">5</div>
+            <div class="plan-row-l">Proyectos de <strong>prevención de inundaciones</strong>: taludes, desazolve, llanuras y alerta temprana</div>
+          </div>
+          <div class="plan-row r-eco">
+            <div class="plan-row-n">9</div>
+            <div class="plan-row-l">Proyectos de <strong>restauración ecológica</strong>: forestación, ANP, Bojay y presa Endho</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="s-cta reveal" id="cta">
+  <h2 class="s-title">Explora cada proyecto en el mapa</h2>
+  <p class="s-body">Visualiza capas de información geográfica, consulta el estado de cada proyecto y filtra por eje temático en el visor interactivo.</p>
+  <a href="mapa.html" class="btn-big">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>
+    Abrir visor de mapa
+  </a>
+</section>
+
+<footer>
+  Secretaría de Medio Ambiente y Recursos Naturales · Plan de Saneamiento y Restauración del Río Tula 2024–2030
+  <br><a href="mapa.html">Ir al mapa interactivo</a>
+</footer>
+
 <script>
-const LAYERS = {};
-const ESTCLS = {'En ejecución':'b-ej','En ejecucion':'b-ej','Por iniciar':'b-pi','Terminado':'b-te','Planeación':'b-pl','Planeacion':'b-pl'};
+  /* Nav scroll */
+  const nav = document.getElementById('main-nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
 
-const CONFIG = {
-  agua:{
-    label:'Calidad del agua', tabClass:'ta', color:'#2f5d6d', accent:'#9b2247',
-    desc:'Acciones para tratar las aguas residuales, eliminar descargas industriales y monitorear permanentemente la calidad del agua en los 30 km del río Tula.',
-    metas:[
-      { meta:'Tratar más del 95% del drenaje vertido al río Tula', color:'#8dbccb',
-        desc:'Optimización de la PTAR Atotonilco y construcción de 38 km de colectores para captar 148 descargas y tratar el caudal doméstico vertido al río.',
-        proyectos:[
-          { id:'p1', titulo:'Optimización PTAR Atotonilco', estatus:'En ejecución', anio:'2025-2030',
-            desc:'Optimización de la Planta de Tratamiento de Aguas Residuales de Atotonilco para incrementar en 22% el caudal tratado y avanzar hacia el saneamiento de más del 90% de las descargas domésticas del río Tula.',
-            kv:[{l:'Caudal',v:'9',u:'m³/s'}],
-            layerDefs:[{key:'atotonilco',label:'PTAR Atotonilco',color:'#9b2247',sym:'dot'}], media:[] },
-          { id:'p2', titulo:'Colectores', estatus:'En ejecución', anio:'2025-2026',
-            desc:'Construcción de 38 kilómetros de colectores para captar 148 descargas de aguas residuales en los ríos Tula y Salado y conducirlas a la PTAR de la CFE en Tula.',
-            kv:[],
-            layerDefs:[
-              {key:'colTula',  label:'Colectores río Tula',  color:'#1a7a3f',sym:'line'},
-              {key:'colSalado',label:'Colectores río Salado',color:'#c0392b',sym:'line'},
-              {key:'colCFE',   label:'Colector CFE',         color:'#285c4d',sym:'line'},
-              {key:'cfe',      label:'PTAR CFE Tula',        color:'#285c4d',sym:'dot'}
-            ], media:[] }
-        ]
-      },
-      { meta:'Eliminar las descargas industriales al río Tula', color:'#6093a4',
-        desc:'Inspección, vigilancia y certificación ambiental a más de 50 industrias por año para eliminar descargas contaminantes directas al río.',
-        proyectos:[
-          { id:'p3', titulo:'Inspección a industrias', estatus:'En ejecución', anio:'2025-2030',
-            desc:'Inspección y vigilancia ambiental a más de 50 industrias por año para identificar y sancionar descargas contaminantes en la cuenca del río Tula.',
-            kv:[{l:'Inspecciones',v:'130',u:'industrias'}],
-            layerDefs:[{key:'industrias',label:'Industrias (53)',color:'#9b2247',sym:'dia'}], media:[] },
-          { id:'p4', titulo:'Control de descargas a drenaje municipal', estatus:'En ejecución', anio:'2025-2030',
-            desc:'Estrategia de control y monitoreo de descargas industriales hacia drenajes municipales en Tula, Tepeji, Cuautitlán Izcalli, Atitalaquia y Atotonilco.',
-            kv:[{l:'Municipios',v:'5'}],
-            layerDefs:[{key:'industrias',label:'Puntos de descarga industrial',color:'#9b2247',sym:'dia'}], media:[] },
-          { id:'p5', titulo:'Prevención ambiental empresarial', estatus:'En ejecución', anio:'2025-2030',
-            desc:'Programa de certificación ambiental para más de 30 empresas al año orientado a prevenir riesgos de contaminación industrial.',
-            kv:[{l:'Empresas',v:'70',u:'certificadas'}],
-            layerDefs:[{key:'industrias',label:'Industrias en programa',color:'#9b2247',sym:'dia'}], media:[] },
-          { id:'p6', titulo:'Pemex', estatus:'En ejecución', anio:'2025-2030',
-            desc:'Monitoreo y control de la descarga de la refinería Miguel Hidalgo para reducir riesgos de contaminación en el río Tula.',
-            kv:[{l:'Estaciones',v:'5'}],
-            layerDefs:[{key:'pemex',label:'Refinería Miguel Hidalgo',color:'#7f3d1e',sym:'dot'}], media:[] }
-        ]
-      },
-      { meta:'Monitoreo de 30 km del río Tula', color:'#2f5d6d',
-        desc:'Red de 97 sitios de muestreo, 5 estaciones automáticas y un centro digital de vigilancia para el monitoreo permanente de la calidad del agua.',
-        proyectos:[
-          { id:'p7', titulo:'Muestreo manual', estatus:'En ejecución', anio:'2024-2030',
-            desc:'Monitoreo semestral de calidad del agua en más de 90 sitios a lo largo de la cuenca del río Tula.',
-            kv:[{l:'Sitios',v:'90',u:'sitios'}],
-            layerDefs:[{key:'monitoreo',label:'Sitios de monitoreo (97)',color:'#e67e22',sym:'sq',autoOff:true}],
-            hasMon:true, media:[] },
-          { id:'p8', titulo:'Estaciones automáticas de monitoreo', estatus:'En ejecución', anio:'2025-2027',
-            desc:'Construcción de cinco estaciones automáticas para el monitoreo permanente de calidad y cantidad del agua en el río Tula.',
-            kv:[{l:'Estaciones',v:'5'}],
-            layerDefs:[{key:'estaciones',label:'Estaciones automáticas (5)',color:'#2f5d6d',sym:'dot'}], media:[] },
-          { id:'p9', titulo:'Centro de vigilancia', estatus:'En ejecución', anio:'2025',
-            desc:'Creación de un centro de visualización y vigilancia para el monitoreo permanente de la calidad y cantidad del agua.',
-            kv:[{l:'Tipo',v:'Centro digital'}],
-            layerDefs:[
-              {key:'centro',    label:'Centro de vigilancia',  color:'#9b2247',sym:'star'},
-              {key:'estaciones',label:'Estaciones automáticas',color:'#2f5d6d',sym:'dot'},
-              {key:'monitoreo', label:'Red de monitoreo (97)', color:'#e67e22',sym:'sq',autoOff:true}
-            ], hasMon:true, media:[] }
-        ]
-      }
-    ]
-  },
-
-  inund:{
-    label:'Prevención de inundaciones', tabClass:'ti', color:'#ed7d31', accent:'#c45e1a',
-    desc:'Obras e instrumentos para estabilizar taludes erosionados, mantener la capacidad hidráulica del río y recuperar las llanuras de inundación como zonas de amortiguamiento.',
-    metas:[
-      { meta:'Estabilizar 20 km de taludes críticamente erosionados', color:'#fcbd91',
-        desc:'Obras de estabilización, revegetación y rehabilitación de bordos en tramos críticos para reducir la erosión y el riesgo de derrumbes.',
-        proyectos:[
-          { id:'p10', titulo:'2.4 km de estabilización en San Lorenzo', estatus:'En ejecución', anio:'2025-2026',
-            desc:'Obras de estabilización de taludes, revegetación y rehabilitación de bordos en tramos críticos del río Tula para reducir riesgos de inundación.',
-            kv:[{l:'Longitud',v:'1.2',u:'km'}],
-            layerDefs:[{key:'estabilizacion_de_taludes',label:'Estabilización de taludes',color:'#c45e1a',sym:'line'}], media:[] },
-          { id:'p10_1', titulo:'120 m de estabilización en San Marcos', estatus:'Por iniciar', anio:'2026',
-            desc:'Obras de estabilización de taludes en el tramo San Marcos del río Tula.',
-            kv:[{l:'Longitud',v:'120',u:'m'}],
-            layerDefs:[{key:'estabilizacion_de_taludes',label:'Estabilización de taludes',color:'#c45e1a',sym:'line'}], media:[] },
-          { id:'p10_2', titulo:'460 m de estabilización en el Chamizal', estatus:'Por iniciar', anio:'2026',
-            desc:'Obras de estabilización de taludes en el tramo El Chamizal del río Tula.',
-            kv:[{l:'Longitud',v:'460',u:'m'}],
-            layerDefs:[{key:'estabilizacion_de_taludes',label:'Estabilización de taludes',color:'#c45e1a',sym:'line'}], media:[] }
-        ]
-      },
-      { meta:'Mantener capacidad de carga de 500 m³/s en el río Tula', color:'#ff9e5d',
-        desc:'Retiro de sedimentos en 3.9 km del tramo urbano y construcción de una trampa de azolve para mantener la capacidad hidráulica del río.',
-        proyectos:[
-          { id:'p11', titulo:'Desazolve', estatus:'En ejecución', anio:'2025',
-            desc:'Retiro de sedimentos acumulados en 3.9 km del tramo urbano del río Tula para recuperar su capacidad hidráulica.',
-            kv:[{l:'Longitud',v:'3.9',u:'km'}],
-            layerDefs:[{key:'azolve',label:'Desazolve',color:'#c45e1a',sym:'line'}], media:[] },
-          { id:'p12', titulo:'Trampa de azolve', estatus:'Planeación', anio:'2027-2028',
-            desc:'Construcción de infraestructura para la retención y extracción de sedimentos.',
-            kv:[{l:'Infraestructura',v:'1',u:'obra'}],
-            layerDefs:[{key:'azolve',label:'Trampa de azolve',color:'#c45e1a',sym:'dot'}], media:[] }
-        ]
-      },
-      { meta:'Recuperar las llanuras de inundación', color:'#ff8f44',
-        desc:'Habilitación de 30 ha de zona inundable en Tres Culturas como área de amortiguamiento natural para eventos de alta precipitación.',
-        proyectos:[
-          { id:'p13', titulo:'Zona inundable Tres Culturas', estatus:'Por iniciar', anio:'2025-2027',
-            desc:'Recuperación y habilitación de la zona inundable de Tres Culturas como área de amortiguamiento hidráulico.',
-            kv:[{l:'Superficie',v:'30',u:'ha'}],
-            layerDefs:[{key:'zona_inundable',label:'Zona inundable Tres Culturas',color:'#ff8f44',sym:'dia'}], media:[] }
-        ]
-      },
-      { meta:'Mejorar la operación del sistema de drenaje y presas', color:'#ed7d31',
-        desc:'Red de 21 estaciones automáticas para monitoreo en tiempo real de caudales y sistemas de alerta temprana ante inundaciones.',
-        proyectos:[
-          { id:'p14', titulo:'21 estaciones automáticas de caudales', estatus:'En ejecución', anio:'2025-2026',
-            desc:'Instalación de una red de 21 estaciones automáticas para el monitoreo en tiempo real de caudales y sistemas de alerta temprana.',
-            kv:[{l:'Estaciones',v:'21'}],
-            layerDefs:[
-              {key:'estaciones_hidrometricas_monitoreo',      label:'Estaciones hidrométricas',      color:'#c45e1a',sym:'dot'},
-              {key:'estaciones_hidroclimatologicas_monitoreo',label:'Estaciones hidroclimatológicas', color:'#4a6faf',sym:'sq'}
-            ], media:[] }
-        ]
-      }
-    ]
-  },
-
-  eco:{
-    label:'Restauración ecológica', tabClass:'te', color:'#285c4d', accent:'#285c4d',
-    desc:'Revegetación de márgenes, conservación forestal y habilitación de espacios públicos para restaurar el ecosistema ribereño y ampliar la superficie natural protegida.',
-    metas:[
-      { meta:'Proteger, sanear o reforestar 20 km de las riberas del río Tula', color:'#85b2a5',
-        desc:'Plantación de 300 árboles, saneamiento de 1,600 ejemplares y recuperación de zonas federales para restaurar las riberas del río.',
-        proyectos:[
-          { id:'p15', titulo:'Revegetación de márgenes', estatus:'En ejecución', anio:'2025-2026',
-            desc:'Plantación de 300 árboles y 3,400 herbáceas en zonas urbanas a lo largo de las márgenes del río Tula.',
-            kv:[{l:'Árboles plantados',v:'300',u:'árboles'}],
-            layerDefs:[{key:'revegetacion_de_margenes',label:'Revegetación de márgenes',color:'#285c4d',sym:'dot'}], media:[] },
-          { id:'p16', titulo:'Saneamiento de árboles', estatus:'Terminado', anio:'2025',
-            desc:'Saneamiento fitosanitario de más de 1,600 árboles ribereños afectados por plagas y deterioro ambiental.',
-            kv:[{l:'Árboles',v:'1600',u:'árboles'}],
-            layerDefs:[{key:'saneamiento_forestal',label:'Saneamiento de árboles',color:'#285c4d',sym:'dot'}], media:[] },
-          { id:'p17', titulo:'Liberación de zona federal', estatus:'Por iniciar', anio:'2026',
-            desc:'Recuperación y liberación de zonas federales invadidas para restaurar la conectividad ecológica.',
-            kv:[{l:'Tipo',v:'Liberación'}],
-            layerDefs:[{key:'zona_federal',label:'Liberación zona federal',color:'#285c4d',sym:'line'}], media:[] }
-        ]
-      },
-      { meta:'Incrementar la superficie forestal conservada y restaurada 30x', color:'#619787',
-        desc:'Conservación de más de 1,700 ha, restauración de 600 ha y creación de una nueva ANP de 1,500 ha en la cuenca del río Tula.',
-        proyectos:[
-          { id:'p18', titulo:'Conservación forestal', estatus:'Terminado', anio:'2025',
-            desc:'Conservación de más de 1,700 hectáreas mediante Áreas Destinadas Voluntariamente a la Conservación (ADVC) y acciones de protección forestal.',
-            kv:[{l:'Superficie',v:'1700',u:'ha'}],
-            layerDefs:[{key:'conservacion_forestal',label:'Conservación forestal',color:'#619787',sym:'sq'}], media:[] },
-          { id:'p19', titulo:'Restauración forestal', estatus:'Terminado', anio:'2025',
-            desc:'Restauración ecológica de más de 600 hectáreas mediante proyectos de revegetación en zonas prioritarias de la cuenca.',
-            kv:[{l:'Superficie restaurada',v:'600',u:'ha'}],
-            layerDefs:[{key:'restauracion_forestal',label:'Restauración forestal',color:'#285c4d',sym:'sq'}], media:[] },
-          { id:'p20', titulo:'Nueva ANP en Tula', estatus:'Por iniciar', anio:'2026-2030',
-            desc:'Creación de una nueva Área Natural Protegida de 100 hectáreas para ampliar la superficie bajo conservación ecológica.',
-            kv:[{l:'Superficie protegida',v:'1500',u:'ha'}],
-            layerDefs:[{key:'nueva_anp',label:'Nueva ANP en Tula',color:'#1a4d30',sym:'dia'}], media:[] }
-        ]
-      },
-      { meta:'Generar espacio público con agua limpia', color:'#40826f',
-        desc:'Restauración ecológica de 55 ha en Bojay y desarrollo de un parque ribereño con humedales, senderos y áreas recreativas para la comunidad.',
-        proyectos:[
-          { id:'p21', titulo:'Restauración cuerpo de agua en Bojay', estatus:'En ejecución', anio:'2025',
-            desc:'Restauración de 60 hectáreas del cuerpo de agua y rehabilitación ecológica de la zona ribereña de Bojay.',
-            kv:[{l:'Superficie',v:'55',u:'ha'}],
-            layerDefs:[{key:'bojay',label:'Cuerpo de agua Bojay',color:'#285c4d',sym:'dot'}], media:[] },
-          { id:'p22', titulo:'Parque ribereño en Tula', estatus:'Por iniciar', anio:'2026',
-            desc:'Desarrollo de infraestructura verde y espacio público en las márgenes del río Tula mediante humedales, senderos y áreas recreativas.',
-            kv:[{l:'Tipo',v:'Parque'}],
-            layerDefs:[], media:[] }
-        ]
-      },
-      { meta:'Restaurar la presa Endho', color:'#285c4d',
-        desc:'Estrategia integral de saneamiento, rehabilitación ecológica y recuperación ambiental de la presa Endho y su zona de influencia.',
-        proyectos:[
-          { id:'p23', titulo:'Restaurar la presa Endho', estatus:'Por iniciar', anio:'2025-2030',
-            desc:'Estrategia integral de saneamiento, restauración ecológica y recuperación ambiental de la presa Endho y su zona de influencia.',
-            kv:[{l:'Cuerpo de agua restaurado',v:'1',u:'presa'}],
-            layerDefs:[{key:'endho',label:'Presa Endho',color:'#1a4d5c',sym:'dot'}], media:[] }
-        ]
-      }
-    ]
+  /* Stats counter animation */
+  function animateNumber(el, end, suffix) {
+    let start = 0;
+    const dur = 1200;
+    const step = 16;
+    const inc = end / (dur / step);
+    const timer = setInterval(() => {
+      start += inc;
+      if (start >= end) { start = end; clearInterval(timer); }
+      el.textContent = Math.round(start).toLocaleString('es-MX') + (suffix || '');
+    }, step);
   }
-};
-</script>
 
-<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js"></script>
-<script src="js/sidebar.js"></script>
-<script src="js/map.js"></script>
+  /* Intersection Observer for reveals */
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        revealObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal, .stat-cell, .ejes-header').forEach(el => revealObs.observe(el));
+
+  /* Stats observer */
+  let statsAnimated = false;
+  const statsObs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting && !statsAnimated) {
+      statsAnimated = true;
+      document.querySelectorAll('.stat-cell').forEach(c => {
+        c.classList.add('visible');
+      });
+    }
+  }, { threshold: 0.3 });
+  statsObs.observe(document.getElementById('stats'));
+</script>
 </body>
 </html>
