@@ -305,27 +305,36 @@
 
     /* ─── CUENCA ──────────────────────────── */
     .s-cuenca {
-      position: relative; overflow: hidden;
-      min-height: 500px;
+      background: #f0ede9; padding: 100px 0;
     }
-    .cuenca-bg {
-      position: absolute; inset: 0;
-      background: url('img/cuenca.jpg') center/cover no-repeat;
-      filter: brightness(.38);
+    .cuenca-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 60px; align-items: center;
     }
-    .cuenca-content {
-      position: relative; z-index: 2;
-      padding: 100px 32px;
-      max-width: 820px; margin: 0 auto; text-align: center;
+    .cuenca-map {
+      border-radius: 10px; overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,.14);
+      opacity: 0; transform: translateX(-30px);
+      transition: opacity .9s, transform .9s;
     }
-    .cuenca-content .s-tag { color: rgba(255,255,255,.55); }
-    .cuenca-content .s-title { color: #fff; font-size: clamp(28px, 4vw, 48px); margin-bottom: 24px; }
-    .cuenca-content .s-body { color: rgba(255,255,255,.65); font-size: 17px; margin-bottom: 40px; }
-    .cuenca-content, .cuenca-content * {
-      opacity: 0; transition: opacity .9s .1s, transform .9s .1s;
-      transform: translateY(20px);
+    .cuenca-map.visible { opacity: 1; transform: none; }
+    .cuenca-map img { width: 100%; display: block; }
+    .cuenca-text {
+      opacity: 0; transform: translateX(30px);
+      transition: opacity .9s .1s, transform .9s .1s;
     }
-    .cuenca-content.visible, .cuenca-content.visible * { opacity: 1; transform: none; }
+    .cuenca-text.visible { opacity: 1; transform: none; }
+    .cuenca-tags {
+      display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px;
+    }
+    .cuenca-tag {
+      background: var(--teal); color: #fff;
+      font-size: 12px; font-weight: 600; letter-spacing: .1em;
+      text-transform: uppercase; border-radius: 20px;
+      padding: 7px 16px;
+    }
+    .cuenca-tag.ct-inund { background: var(--orange); }
+    .cuenca-tag.ct-eco   { background: var(--green); }
 
     /* ─── PLAN 2030 ─────────────────────────── */
     .s-plan {
@@ -413,7 +422,8 @@
       .section-inner { padding: 0 20px; }
       .historia-img img { height: 280px; }
       .ejes-grid { grid-template-columns: 1fr; }
-      .cuenca-content { padding: 72px 20px; }
+      .cuenca-grid { grid-template-columns: 1fr; }
+      .s-cuenca { padding: 72px 0; }
       .hero-actions { flex-direction: column; align-items: center; }
       .btn-primary, .btn-ghost, .btn-big { width: 100%; max-width: 320px; text-align: center; justify-content: center; }
     }
@@ -584,11 +594,27 @@
 
 <!-- CUENCA CONTEXT -->
 <section class="s-cuenca" id="cuenca">
-  <div class="cuenca-bg"></div>
-  <div class="cuenca-content reveal">
-    <span class="s-tag">Alcance territorial</span>
-    <h2 class="s-title">Una cuenca compartida entre tres estados</h2>
-    <p class="s-body">El plan abarca el tramo del río Tula desde su cruce con la autopista Chamapa–Lechería hasta la presa Endho, integrando acciones coordinadas con los estados de Hidalgo, México y Ciudad de México, en beneficio de comunidades rurales y urbanas del Valle del Mezquital.</p>
+  <div class="section-inner">
+    <div class="cuenca-grid">
+      <div class="cuenca-map reveal">
+        <img src="img/intro_pdf.jpg" alt="Mapa de la cuenca del Río Tula — conexión Ciudad de México, Hidalgo y Estado de México" />
+      </div>
+      <div class="cuenca-text reveal">
+        <span class="s-tag">Alcance territorial</span>
+        <h2 class="s-title">Una cuenca que conecta tres estados</h2>
+        <div class="s-body">
+          <p>El río Tula es el receptor final de las aguas residuales del Valle de México. Su cuenca abarca partes de Hidalgo, Estado de México y Ciudad de México, e incluye elementos clave como la Presa Endho, la PTAR Atotonilco — la más grande del mundo — y la descarga de CFE en Tula.</p>
+          <p>El plan de acción abarca el tramo de <strong>30 km del río Tula</strong> desde la autopista Chamapa–Lechería hasta la presa Endho, con acciones coordinadas entre múltiples dependencias federales y gobiernos locales.</p>
+        </div>
+        <div class="cuenca-tags">
+          <span class="cuenca-tag">Hidalgo</span>
+          <span class="cuenca-tag">Estado de México</span>
+          <span class="cuenca-tag">Ciudad de México</span>
+          <span class="cuenca-tag ct-inund">30 km de río</span>
+          <span class="cuenca-tag ct-eco">Cuenca del Valle de México</span>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
