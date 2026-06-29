@@ -119,9 +119,17 @@ const UI = (() => {
 
     if (typeof MAP !== 'undefined') {
       const keys = new Set();
-      m.proyectos.forEach(p => (p.layerDefs||[]).forEach(ld => keys.add(ld.key)));
-      keys.forEach(k => MAP.setLayer(k, isOn));
-      if (isOn && keys.size > 0) setTimeout(() => MAP.fitToLayers([...keys]), 150);
+      const autoOffKeys = new Set();
+      m.proyectos.forEach(p => (p.layerDefs||[]).forEach(ld => {
+        keys.add(ld.key);
+        if (ld.autoOff) autoOffKeys.add(ld.key);
+      }));
+      keys.forEach(k => {
+        if (isOn && autoOffKeys.has(k)) return;
+        MAP.setLayer(k, isOn);
+      });
+      const zoomKeys = [...keys].filter(k => !autoOffKeys.has(k));
+      if (isOn && zoomKeys.length > 0) setTimeout(() => MAP.fitToLayers(zoomKeys), 200);
     }
 
     if (isOn) {
@@ -202,11 +210,12 @@ const UI = (() => {
     const STATUS = {'En ejecución':'b-ej','En ejecucion':'b-ej','Por iniciar':'b-pi','Terminado':'b-te','Planeación':'b-pl','Planeacion':'b-pl'};
 
     const proyItems = m.proyectos.map(p => {
-      const pills = (p.layerDefs||[]).map(ld =>
-        '<button class="p-layer-pill" data-key="' + ld.key + '" data-on="true" onclick="UI.togglePill(this)">' +
+      const pills = (p.layerDefs||[]).map(ld => {
+        const on = !ld.autoOff;
+        return '<button class="p-layer-pill' + (on ? '' : ' p-pill-off') + '" data-key="' + ld.key + '" data-on="' + on + '" onclick="UI.togglePill(this)">' +
           symHTML(ld.sym, ld.color) + ' ' + ld.label +
-        '</button>'
-      ).join('');
+        '</button>';
+      }).join('');
       return '<li class="meta-proy-item">' +
         '<div class="meta-proy-top">' +
           '<span class="meta-proy-name">' + p.titulo + '</span>' +

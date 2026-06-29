@@ -508,6 +508,80 @@ html, body {
 }
 
 /* ═══════════════════════════════════════════
+   RESPONSIVO MÓVIL
+   ═══════════════════════════════════════════ */
+
+@media (max-width: 700px) {
+  :root { --panel-w: 100vw; }
+
+  /* Layout vertical */
+  #app-body { flex-direction: column; }
+
+  #panel {
+    width: 100%;
+    height: 48vh;
+    min-height: 200px;
+    box-shadow: 0 -3px 16px rgba(0,0,0,.08);
+    order: 2;
+  }
+
+  #map-wrap {
+    order: 1;
+    flex: none;
+    height: 52vh;
+    min-height: 220px;
+  }
+
+  /* Header */
+  #app-header { padding: 10px 16px 8px; }
+  #panel-title { font-size: 14px; }
+  #panel-sub   { font-size: 11px; margin-top: 2px; }
+  #full-line   { width: 100%; }
+
+  /* Tabs */
+  .etab { padding: 8px 4px; font-size: 10px; line-height: 1.25; }
+
+  /* Landing hero */
+  .home-hero { padding: 18px 16px 0; }
+  .home-hero-title { font-size: 16px; }
+  .home-hero-text  { font-size: 12px; margin-bottom: 16px; }
+  .home-hint       { padding: 10px 16px 2px; }
+
+  /* Cards */
+  .theme-card  { margin: 8px 12px; border-radius: 12px; }
+  .tc-header   { padding: 12px 14px 10px; }
+  .tc-icon     { width: 36px; height: 36px; border-radius: 10px; }
+  .tc-title    { font-size: 14px; }
+  .tc-desc     { font-size: 12px; padding: 2px 14px 10px; }
+  .tc-footer   { padding: 8px 14px 12px; gap: 12px; }
+  .tc-num      { font-size: 19px; }
+
+  /* Eje header */
+  .eje-header    { padding: 10px 14px 8px; }
+  .eje-desc-bar  { font-size: 12px; }
+  .back-btn      { font-size: 11px; margin-bottom: 6px; }
+
+  /* Meta rows */
+  .meta-row       { padding: 12px 14px 10px 16px; }
+  .meta-row-title { font-size: 13px; }
+  .meta-row-desc  { font-size: 11.5px; }
+
+  /* Proyectos */
+  .meta-proy-name { font-size: 12px; }
+  .pinline.open   { max-height: 1000px; }
+  .pinline-inner  { padding: 0 14px 14px 16px; }
+
+  /* Badge mapa */
+  #map-badge { max-width: 220px; font-size: 12px; padding: 7px 12px; }
+
+  /* Tooltip */
+  .rich-tooltip .tt-box { width: 220px; }
+  .leaflet-tooltip.rich-tooltip { max-width: 240px !important; }
+  .tt-h3 { font-size: 14px; }
+  .tt-p  { font-size: 12px; }
+}
+
+/* ═══════════════════════════════════════════
    LANDING / HOME
    ═══════════════════════════════════════════ */
 

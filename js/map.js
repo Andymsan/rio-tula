@@ -155,46 +155,21 @@ const MAP = (() => {
 
   /* ── ZOOM A CAPAS ────────────────────────── */
   function fitToLayers(keys) {
-    const lats = [], lngs = [];
-
+    const bounds = L.latLngBounds();
+    let added = 0;
     keys.forEach(k => {
-      // Usar coordenadas del cache GeoJSON directamente (mas confiable que getBounds)
-      const fc = _cache[k] || _cache[k.replace(/_/g, ' ')];
-      if (!fc || !fc.features) return;
-
-      fc.features.forEach(f => {
-        const g = f.geometry;
-        if (!g) return;
-        collectCoords(g.coordinates, g.type, lats, lngs);
-      });
+      const lyr = LAYERS[k];
+      if (!lyr) return;
+      try {
+        const b = lyr.getBounds ? lyr.getBounds() : null;
+        if (b && b.isValid()) { bounds.extend(b); added++; }
+      } catch(e) {}
     });
-
-    if (!lats.length) { console.warn('fitToLayers: sin coordenadas para', [...keys]); return; }
-
-    const minLat = Math.min(...lats), maxLat = Math.max(...lats);
-    const minLng = Math.min(...lngs), maxLng = Math.max(...lngs);
-
-    // Verificar que sean WGS84 valido (UTM tendria valores > 1000)
-    if (Math.abs(minLat) > 90 || Math.abs(maxLat) > 90 || Math.abs(minLng) > 180 || Math.abs(maxLng) > 180) {
-      console.warn('CRS incorrecto — exporta en 4326 desde QGIS:', [...keys]);
-      if (_initBounds) map.flyTo(_initBounds.getCenter(), 9, {duration:1});
+    if (!added || !bounds.isValid()) {
+      console.warn('fitToLayers: sin capas válidas para', keys);
       return;
     }
-
-    map.fitBounds([[minLat, minLng],[maxLat, maxLng]], {padding:[40,40], maxZoom:14});
-  }
-
-  function collectCoords(coords, type, lats, lngs) {
-    if (!coords) return;
-    if (type === 'Point') {
-      lngs.push(coords[0]); lats.push(coords[1]);
-    } else if (type === 'MultiPoint' || type === 'LineString') {
-      coords.forEach(c => { lngs.push(c[0]); lats.push(c[1]); });
-    } else if (type === 'MultiLineString' || type === 'Polygon') {
-      coords.forEach(ring => ring.forEach(c => { lngs.push(c[0]); lats.push(c[1]); }));
-    } else if (type === 'MultiPolygon') {
-      coords.forEach(poly => poly.forEach(ring => ring.forEach(c => { lngs.push(c[0]); lats.push(c[1]); })));
-    }
+    map.fitBounds(bounds, { padding: [40, 40], maxZoom: 14, animate: true });
   }
 
   /* ── ENCENDER / APAGAR CAPA ──────────────── */
