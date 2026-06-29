@@ -19,7 +19,8 @@ const MAP = (() => {
         '<div style="height:100%;display:flex;align-items:center;justify-content:center;color:#888;font-size:15px;padding:2rem;text-align:center">Corre con <b>python riotula.py</b> y abre http://localhost:5500</div>';
       return;
     }
-    map = L.map('map', { zoomControl: true }).setView(CENTER, ZOOM);
+    map = L.map('map', { zoomControl: false }).setView(CENTER, ZOOM);
+    L.control.zoom({ position: 'bottomright' }).addTo(map);
     setTimeout(() => map.invalidateSize(), 300);
     L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
       { attribution: '© ESRI', maxZoom: 16 }).addTo(map);
@@ -32,15 +33,15 @@ const MAP = (() => {
     const capas = [
       { f:'delimitacion2030',   e:{ color:'#7a1a2e', weight:1.5, opacity:.9,  fillOpacity:0 }},
       { f:'rio_tula',           e:{ color:'#1a4d5c', weight:1.5, opacity:.85, fillOpacity:0 }},
-      { f:'cuerpos_de_agua',    e: CUERPO },
+      { f:'cuerpos_de_agua',    file:'cuerpos%20de%20agua', e: CUERPO },
       { f:'humedales',          e:{ color:'#1a4d5c', weight:1,   opacity:.7,  fillColor:'#2a7080', fillOpacity:1 }},
-      { f:'tren_mx_qro',        e:{ color:'#888',    weight:1.5, opacity:.55, fillOpacity:0, dashArray:'6 4' }},
+      { f:'tren_mx_qro',        file:'tren%20mx%20qro',    e:{ color:'#888', weight:1.5, opacity:.55, fillOpacity:0, dashArray:'6 4' }},
       { f:'dn',                 e: CUERPO },
     ];
 
     for (const capa of capas) {
       try {
-        const r  = await fetch('data/mapa%20base/' + capa.f + '.geojson');
+        const r  = await fetch('data/mapa%20base/' + (capa.file || capa.f) + '.geojson');
         if (!r.ok) { console.warn('No se cargo mapa base:', capa.f); continue; }
         const fc  = await r.json();
         const tipo = fc.features?.[0]?.geometry?.type || '';
@@ -94,10 +95,10 @@ const MAP = (() => {
         {titulo:'Zona inundable Tres Culturas', desc:'Recuperacion y habilitacion de zona inundable como area de amortiguamiento hidraulico.'}),
       loadGeoLayer('estaciones_hidrometricas_monitoreo',
         {color:'#c45e1a', weight:2, fillColor:'#ed7d31', fillOpacity:.8},
-        {titulo:'Estacion hidrometrica', desc:'Estacion automatica para monitoreo en tiempo real de caudales y niveles.'}),
+        {titulo:'Estación hidrométrica', desc:'Estación automática para monitoreo en tiempo real de caudales y niveles.'}),
       loadGeoLayer('estaciones_hidroclimatologicas_monitoreo',
-        {color:'#c45e1a', weight:2, fillColor:'#ed7d31', fillOpacity:.8},
-        {titulo:'Estacion hidroclimatologica', desc:'Estacion automatica de monitoreo hidroclimatologico.'}),
+        {color:'#4a6faf', weight:2, fillColor:'#4a6faf', fillOpacity:.8},
+        {titulo:'Estación hidroclimatológica', desc:'Estación automática de monitoreo hidroclimatológico.'}),
 
       /* RESTAURACION ECOLOGICA */
       loadGeoLayer('revegetacion_de_margenes',
@@ -296,7 +297,8 @@ const MAP = (() => {
       sticky: true,
       opacity: 1,
       className: 'rich-tooltip',
-      direction: 'top'
+      direction: 'top',
+      offset: [0, -4]
     });
   }
 

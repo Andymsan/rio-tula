@@ -4,9 +4,9 @@ const UI = (() => {
   const switchOn = {};
 
   const ICONS = {
-    agua:  '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 2C7 9 4 13 4 17a8 8 0 0016 0c0-4-3-8-8-15z"/></svg>',
-    inund: '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M3 11c2-2 4-2 6 0s4 2 6 0 4-2 6 0v2c-2-2-4-2-6 0s-4 2-6 0-4-2-6 0zm0 5c2-2 4-2 6 0s4 2 6 0 4-2 6 0v2c-2-2-4-2-6 0s-4 2-6 0-4-2-6 0z"/></svg>',
-    eco:   '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M17 8C8 10 5 20 5 20c3-3 6-5 9-5-1 2-3 4-6 6 9-2 12-8 12-14-1 0-2 1-3 1z"/></svg>',
+    agua:  '<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 2C7 9 4 13 4 17a8 8 0 0016 0c0-4-3-8-8-15z"/></svg>',
+    inund: '<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M3 11c2-2 4-2 6 0s4 2 6 0 4-2 6 0v2c-2-2-4-2-6 0s-4 2-6 0-4-2-6 0zm0 5c2-2 4-2 6 0s4 2 6 0 4-2 6 0v2c-2-2-4-2-6 0s-4 2-6 0-4-2-6 0z"/></svg>',
+    eco:   '<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M17 8C8 10 5 20 5 20c3-3 6-5 9-5-1 2-3 4-6 6 9-2 12-8 12-14-1 0-2 1-3 1z"/></svg>',
   };
 
   function init() { renderHome(); }
@@ -22,26 +22,50 @@ const UI = (() => {
     const wrap = document.getElementById('plist');
     wrap.innerHTML = '';
 
-    const intro = document.createElement('div');
-    intro.className = 'home-intro';
-    intro.innerHTML =
-      '<p class="home-text">Plan de accion 2024–2030 para el saneamiento y la restauracion integral del rio Tula, uno de los rios mas contaminados de Mexico.</p>' +
-      '<p class="home-hint">Selecciona un eje para explorar las acciones en el mapa.</p>';
-    wrap.appendChild(intro);
+    const hero = document.createElement('div');
+    hero.className = 'home-hero';
+    hero.innerHTML =
+      '<div class="home-hero-wave-top"></div>' +
+      '<div class="home-hero-content">' +
+        '<div class="home-hero-river">' +
+          '<svg viewBox="0 0 80 28" width="72" height="28" fill="none">' +
+            '<path d="M0 18 Q20 4 40 18 Q60 32 80 18" stroke="rgba(255,255,255,.5)" stroke-width="2.5" fill="none" stroke-linecap="round"/>' +
+            '<path d="M0 24 Q20 10 40 24 Q60 38 80 24" stroke="rgba(255,255,255,.3)" stroke-width="1.5" fill="none" stroke-linecap="round"/>' +
+          '</svg>' +
+        '</div>' +
+        '<h2 class="home-hero-title">Saneamiento y restauración<br>del río Tula</h2>' +
+        '<p class="home-hero-plan">Plan de acción 2024–2030</p>' +
+        '<p class="home-hero-text">Conjunto de acciones para recuperar uno de los ríos más contaminados de México y restituir sus servicios ambientales.</p>' +
+      '</div>' +
+      '<div class="home-hero-wave-bot">' +
+        '<svg viewBox="0 0 640 32" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">' +
+          '<path d="M0 32 L0 14 Q160 0 320 14 Q480 28 640 14 L640 32 Z" fill="#f5f3f0"/>' +
+        '</svg>' +
+      '</div>';
+    wrap.appendChild(hero);
 
-    ['agua','inund','eco'].forEach(eje => {
+    const hint = document.createElement('p');
+    hint.className = 'home-hint';
+    hint.textContent = 'Selecciona un eje para explorar las acciones en el mapa.';
+    wrap.appendChild(hint);
+
+    ['agua','inund','eco'].forEach((eje, i) => {
       const cfg = CONFIG[eje];
       const projCount = cfg.metas.reduce((s, m) => s + m.proyectos.length, 0);
       const card = document.createElement('div');
       card.className = 'theme-card tc-' + cfg.tabClass;
+      card.style.animationDelay = (i * 80) + 'ms';
       card.innerHTML =
-        '<div class="tc-icon">' + ICONS[eje] + '</div>' +
-        '<div class="tc-body">' +
+        '<div class="tc-header">' +
+          '<div class="tc-icon">' + ICONS[eje] + '</div>' +
           '<div class="tc-title">' + cfg.label + '</div>' +
-          '<div class="tc-desc">' + cfg.desc + '</div>' +
-          '<div class="tc-counts">' + cfg.metas.length + ' metas &nbsp;&middot;&nbsp; ' + projCount + ' proyectos</div>' +
         '</div>' +
-        '<div class="tc-chevron">&#8250;</div>';
+        '<p class="tc-desc">' + cfg.desc + '</p>' +
+        '<div class="tc-footer">' +
+          '<div class="tc-stat"><span class="tc-num">' + cfg.metas.length + '</span><span class="tc-lbl">metas</span></div>' +
+          '<div class="tc-stat"><span class="tc-num">' + projCount + '</span><span class="tc-lbl">proyectos</span></div>' +
+          '<span class="tc-chevron">Explorar &#8250;</span>' +
+        '</div>';
       card.onclick = () => selEje(eje);
       wrap.appendChild(card);
     });
@@ -110,6 +134,16 @@ const UI = (() => {
     renderList();
   }
 
+  /* ── TOGGLE CAPA INDIVIDUAL (pill) ── */
+  function togglePill(btn) {
+    const key   = btn.dataset.key;
+    const isOn  = btn.dataset.on === 'true';
+    const newOn = !isOn;
+    btn.dataset.on = String(newOn);
+    btn.classList.toggle('p-pill-off', !newOn);
+    if (typeof MAP !== 'undefined') MAP.setLayer(key, newOn);
+  }
+
   /* ── FILTRO MONITOREO ── */
   function filterMon(btn) {
     document.querySelectorAll('.mpill').forEach(b => b.classList.remove('mact'));
@@ -165,11 +199,13 @@ const UI = (() => {
   /* ── DETALLE DE META ── */
   function buildMetaDetail(m, cfg) {
     const hasMon = m.proyectos.some(p => p.hasMon);
-    const STATUS = {'En ejecucion':'b-ej','Por iniciar':'b-pi','Terminado':'b-te','Planeacion':'b-pl'};
+    const STATUS = {'En ejecución':'b-ej','En ejecucion':'b-ej','Por iniciar':'b-pi','Terminado':'b-te','Planeación':'b-pl','Planeacion':'b-pl'};
 
     const proyItems = m.proyectos.map(p => {
       const pills = (p.layerDefs||[]).map(ld =>
-        '<span class="p-layer-pill">' + symHTML(ld.sym, ld.color) + ' ' + ld.label + '</span>'
+        '<button class="p-layer-pill" data-key="' + ld.key + '" data-on="true" onclick="UI.togglePill(this)">' +
+          symHTML(ld.sym, ld.color) + ' ' + ld.label +
+        '</button>'
       ).join('');
       return '<li class="meta-proy-item">' +
         '<div class="meta-proy-top">' +
@@ -192,7 +228,7 @@ const UI = (() => {
     return '<div class="pinline-inner"><ul class="meta-proy-list">' + proyItems + '</ul>' + monHTML + '</div>';
   }
 
-  /* ── SIMBOLO ── */
+  /* ── SÍMBOLO ── */
   function symHTML(sym, color) {
     const s = 'style="background:' + color + '"';
     if (sym === 'line') return '<span class="layer-sym-line" ' + s + '></span>';
@@ -214,7 +250,7 @@ const UI = (() => {
   function showDboLegend() { document.getElementById('dbo-legend').classList.remove('hidden'); }
   function hideDboLegend() { document.getElementById('dbo-legend').classList.add('hidden'); }
 
-  return { init, selEje, goHome, toggleMeta, filterMon };
+  return { init, selEje, goHome, toggleMeta, togglePill, filterMon };
 
 })();
 
