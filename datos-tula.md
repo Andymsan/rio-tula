@@ -15,9 +15,9 @@ Cruce del storyboard (`REDISENO-2027.md`) con el Excel
 
 | Dato | Valor | Fuente |
 |---|---|---|
-| Proyectos en el plan (Tula) | **38** | Hoja Tula, 38 filas de proyecto ✅ |
+| Proyectos en el plan (Tula) | **37** | 38 filas del Excel − *Chamizal Etapa 2* (se engloba en Chamizal) ✅ |
 | — eje Calidad | 15 | ✅ |
-| — eje Inundaciones | 7 | ✅ |
+| — eje Inundaciones | 6 | 7 filas − Chamizal Etapa 2 ✅ |
 | — eje Restauración y espacio público | 9 | ✅ |
 | — eje Otros / Gobernanza | 7 | ✅ |
 | Inversión documentada | **$1,478 MDP** ($1,477,938,598) | Resumen de inversión ✅ |
@@ -26,9 +26,10 @@ Cruce del storyboard (`REDISENO-2027.md`) con el Excel
 | Superficie restaurada / conservada | **2,415 ha** (663 forestal + 1,700 ADVC + 50 humedal + 2 bordo) | ✅ |
 | Riberas del río intervenidas | 10 km saneados + 3.5 km revegetados | ✅ |
 
-> Nota: en la versión anterior del sitio decía "36 proyectos". El Excel nuevo
-> trae **38** (se agregaron *Chamizal Etapa 2* y *Ahuehuetes Estabilización*,
-> ambos en planeación).
+> Decisión de Andrea (10-sep-2026): el Excel es la fuente correcta. Respecto de la
+> versión anterior del sitio (36 proyectos), sólo se **agrega "Ahuehuetes
+> Estabilización"**. **"Chamizal Etapa 2" se engloba dentro de Chamizal** (no
+> cuenta como proyecto aparte). Total: **37 proyectos**.
 
 ---
 
@@ -145,24 +146,36 @@ río Salado; 30 promotores ambientales; 1,132 participantes en jornadas de limpi
 
 ---
 
-## Resumen: lo que falta confirmar (🔎 / ⚠️)
+## Historia del río — RESUELTO
 
-1. Año del Tajo de Nochistongo (¿1607? ¿1789? el PDF dice 1636).
-2. 3er hito histórico del drenaje (¿Emisor Central 1975? ¿TEO 2019?).
-3. Textos de "Construcción de la PTAR Atotonilco", "Inundación en Tula",
+Andrea (10-sep-2026): *"confío más en lo que tú encuentres que en el documento"*.
+→ Se usa la versión verificada, **ignorando las fechas del PDF**:
+
+1. **1607** — Enrico Martínez inicia el **socavón de Nochistongo**, primer desagüe
+   artificial del valle; desvía el río Cuautitlán hacia el cauce del río Tula.
+   (El **tajo a cielo abierto** se concluye en **1789**.)
+2. **1900** — **Gran Canal del Desagüe** (Porfirio Díaz), 47.5 km, de San Lázaro
+   a Zumpango.
+3. **1975** — **Emisor Central / Drenaje Profundo** (Luis Echeverría), 50 km.
+4. **2019** — **Túnel Emisor Oriente (TEO)**, 62 km, descarga en la **PTAR
+   Atotonilco** (Atotonilco de Tula, Hidalgo).
+
+## Lo que falta confirmar — PENDIENTE (Andrea investiga)
+
+1. Textos de "Construcción de la PTAR Atotonilco", "Inundación en Tula",
    "Proyecto de restauración" (subsecciones de la Introducción).
-4. Caudal del río sin tratamiento antes de la optimización (m³/s).
-5. Nº de empresas/industrias que descargan al río (universo) y nº de industrias
+2. Caudal del río sin tratamiento antes de la optimización (m³/s).
+3. Nº de empresas/industrias que descargan al río (universo) y nº de industrias
    inspeccionadas (vs. 92 inspecciones).
-6. Longitud de río monitoreada (¿32 km?).
-7. ¿2 o 3 campañas de monitoreo manual al año?
-8. Árboles plantados en zona urbana: ¿300 (meta) o 212 (a la fecha)?
-9. Riberas a reforestar: ¿desde el nacimiento o desde Atotonilco? ¿32 km?
-10. Línea base de ANP (¿100 ha?).
-11. Bojay: ¿50 o 55 ha de cuerpo de agua limpia?
-12. ¿Río Rosas, Tres Culturas y Bojay son ya proyectos de espacio público?
-13. Toneladas de sedimento retiradas en el desazolve 2025.
-14. Capacidad de descarga objetivo del río (m³/s).
+4. Longitud de río monitoreada (¿32 km?).
+5. ¿2 o 3 campañas de monitoreo manual al año?
+6. Árboles plantados en zona urbana: ¿300 (meta) o 212 (a la fecha)?
+7. Riberas a reforestar: ¿desde el nacimiento o desde Atotonilco? ¿32 km?
+8. Línea base de ANP (¿100 ha?).
+9. Bojay: ¿50 o 55 ha de cuerpo de agua limpia?
+10. ¿Río Rosas, Tres Culturas y Bojay son ya proyectos de espacio público?
+11. Toneladas de sedimento retiradas en el desazolve 2025.
+12. Capacidad de descarga objetivo del río (m³/s).
 
 ---
 

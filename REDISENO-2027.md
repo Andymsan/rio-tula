@@ -69,6 +69,17 @@ capas SVG/DOM absolutas que se activan por paso de scroll** (mismo patrón que e
 scrollytelling actual, pero con el render Blender como base en vez del SVG
 esquemático).
 
+### Decisiones de Andrea (10-sep-2026)
+- **El río del render ya NO lleva glow** — va como línea fina y discreta.
+- El **glow/color de tema se aplica a las capas de intervención** (rutas, pines,
+  polígonos, isócronas), no al río. El **filtro CSS de recoloreo se activa a
+  medida que aparece cada proyecto** con el scroll.
+- Andrea diseña en **InDesign**, formato **1920×1080**.
+- Andrea pasa las **capas de intervención poco a poco** (una escena a la vez).
+- Video de referencia de la animación del mapa base:
+  `img/ref/animacion-referencia/animacion-mapa-base.mp4` (+ frames sueltos).
+  Fuente original: `E:\03_Trabajo\01_SEMARNAT\01_rio tula\2026\01_riotula\diseño\a.mp4`.
+
 ### Fotos de referencia (`img/ref/`)
 Parques inundables usados como inspiración / posible contenido de carrusel:
 - `buffalo-bayou-houston.jpg`, `buffalo-bayou-aerea.jpg`, `buffalo-bayou-plano.jpg`
@@ -213,18 +224,21 @@ Valores propuestos (ajustables por Andrea) en `css/temas.css`:
 - [x] Insumos almacenados: `img/hero/`, `img/ref/`, `datos-proyectos.xlsx`, este documento.
 - [x] `css/temas.css` con las 3 paletas + utilidades (`.tema-rosa/naranja/verde`,
       `<mark class="fluor">`, banner de sección, "textito", burbuja de carrusel).
-- [x] Cruce de datos del Excel con el storyboard → `datos-tula.md`
-      (14 datos por confirmar marcados 🔎 / ⚠️).
-- [ ] Reconfigurar `index.html`: reemplazar el SVG esquemático del scrollytelling
-      por el render Blender como base + capas por paso. **Espera el layout de Andrea.**
+- [x] Cruce de datos del Excel con el storyboard → `datos-tula.md`.
+- [x] Historia del río resuelta (versión verificada, se ignora el PDF).
+- [x] Flujo de trabajo definido → `FLUJO-DE-TRABAJO.md`.
+- [x] Video de referencia de la animación guardado.
+- [ ] **Fase 1 — esqueleto:** landing + índice + 1 escena de ejemplo.
+      **Espera de Andrea:** layout general (desktop + móvil) e índice.
+- [ ] **Fase 2 — escenas una por una** (Andrea entrega paquete por escena).
 - [ ] Componente de carrusel "burbuja".
-- [ ] Landing con índice (confirmado).
-- [ ] Cerrar los datos 🔎 / ⚠️ de `datos-tula.md` conforme Andrea los confirme.
+- [ ] Cerrar los 12 datos pendientes de `datos-tula.md` conforme Andrea confirme.
 - [ ] Revisar `mapa.html` (el mapa Leaflet detallado sigue como vista aparte).
 
 ## 6. Datos
 
 - **Fuente:** `datos-proyectos.xlsx` (hoja *Tula*).
 - **Cruce y pendientes:** `datos-tula.md`.
-- Cifras clave: 38 proyectos · $1,478 MDP · 2,415 ha · 4 ejes
-  (Calidad 15 · Inundaciones 7 · Restauración/espacio público 9 · Otros 7).
+- Cifras clave: **37 proyectos** · $1,478 MDP · 2,415 ha · 4 ejes
+  (Calidad 15 · Inundaciones 6 · Restauración/espacio público 9 · Otros 7).
+  (Chamizal Etapa 2 se engloba en Chamizal; se agrega Ahuehuetes.)
