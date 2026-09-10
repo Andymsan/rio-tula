@@ -27,7 +27,8 @@
     *Inundaciones* = naranja.
 - **Móvil:** debe funcionar bien; mapa arriba y carrusel abajo (o al revés),
   apilados.
-- **Opcional:** un landing antes del scroll con un índice para saltar a una sección.
+- **Landing con índice antes del scroll:** confirmado por Andrea. Portada con
+  índice para saltar a cada sección.
 - **Tarea explícita:** proponer layout para computadora y para celular
   (lo hace Andrea).
 
@@ -209,12 +210,21 @@ Valores propuestos (ajustables por Andrea) en `css/temas.css`:
 
 ## 5. Estado del código (se irá actualizando)
 
-- [x] Insumos almacenados: `img/hero/`, `img/ref/`, este documento.
+- [x] Insumos almacenados: `img/hero/`, `img/ref/`, `datos-proyectos.xlsx`, este documento.
 - [x] `css/temas.css` con las 3 paletas + utilidades (`.tema-rosa/naranja/verde`,
       `<mark class="fluor">`, banner de sección, "textito", burbuja de carrusel).
+- [x] Cruce de datos del Excel con el storyboard → `datos-tula.md`
+      (14 datos por confirmar marcados 🔎 / ⚠️).
 - [ ] Reconfigurar `index.html`: reemplazar el SVG esquemático del scrollytelling
       por el render Blender como base + capas por paso. **Espera el layout de Andrea.**
 - [ ] Componente de carrusel "burbuja".
-- [ ] Landing opcional con índice.
-- [ ] Rellenar datos "XX" desde el Excel.
+- [ ] Landing con índice (confirmado).
+- [ ] Cerrar los datos 🔎 / ⚠️ de `datos-tula.md` conforme Andrea los confirme.
 - [ ] Revisar `mapa.html` (el mapa Leaflet detallado sigue como vista aparte).
+
+## 6. Datos
+
+- **Fuente:** `datos-proyectos.xlsx` (hoja *Tula*).
+- **Cruce y pendientes:** `datos-tula.md`.
+- Cifras clave: 38 proyectos · $1,478 MDP · 2,415 ha · 4 ejes
+  (Calidad 15 · Inundaciones 7 · Restauración/espacio público 9 · Otros 7).
