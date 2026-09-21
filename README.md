@@ -1,4 +1,4 @@
-# Río Tula — sitio de scroll
+# Río Tula 
 
 Sitio del Plan de Saneamiento y Restauración del Río Tula (2024–2030).
 
