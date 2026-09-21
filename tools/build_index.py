@@ -182,7 +182,7 @@ calidad_steps = [
         kf=("15", "proyectos de calidad del agua"),
         facts=["1 · Atotonilco", "2 · Industria", "3 · Drenaje de Tula"]), pins=""),
     step(".615,.79,2.3", "col", card("1 · Atotonilco", "Tratar más agua en la planta de Atotonilco",
-        ["Históricamente la PTAR Atotonilco trataba <strong>31 m³/s</strong> en promedio. En 2026, incrementamos el caudal tratado a <strong>38 m³/s</strong> y, a partir de 2027, " + fl("la PTAR Atotonilco va a tratar todo el drenaje del río en estiaje") + ", es decir, en la temporada seca."],
+        ["Históricamente la PTAR Atotonilco trataba <strong>31 m³/s</strong> en promedio. En 2026, incrementamos el caudal tratado a <strong>38 m³/s</strong> y, a partir de 2027, " + fl("la PTAR Atotonilco va a tratar todo el drenaje del río en temporada de secas.")],
         kf=("+7 m³/s", "de agua residual tratada adicional"),
         facts=["PTAR: planta de tratamiento de aguas residuales", "Terminado en 2026", "Conagua · $112 MDP"]),
         carousel([slide("atotonilco-1", "PTAR Atotonilco"), slide("atotonilco-2", "Operación de la planta"), slide("atotonilco-3", "Caudal tratado")]),
