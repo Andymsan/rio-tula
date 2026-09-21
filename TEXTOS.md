@@ -217,7 +217,7 @@ chips: 1 · Atotonilco | 2 · Industria | 3 · Drenaje de Tula
 ## calidad-1  (Atotonilco)
 etiqueta: 1 · Atotonilco
 titulo: Tratar más agua en la planta de Atotonilco
-texto: Históricamente la PTAR Atotonilco trataba **31 m³/s** en promedio. En 2026, incrementamos el caudal tratado a **38 m³/s** y, a partir de 2027, ==la PTAR Atotonilco va a tratar todo el drenaje del río en estiaje==, es decir, en la temporada seca.
+texto: Históricamente la PTAR Atotonilco trataba **31 m³/s** en promedio. En 2026, incrementamos el caudal tratado a **38 m³/s** y, a partir de 2027, ==la PTAR Atotonilco va a tratar todo el drenaje del río en temporada de secas.==
 cifra: +7 m³/s | de agua residual tratada adicional
 chips: PTAR: planta de tratamiento de aguas residuales | Terminado en 2026 | Conagua · $112 MDP
 fotos: PTAR Atotonilco | Operación de la planta | Caudal tratado
