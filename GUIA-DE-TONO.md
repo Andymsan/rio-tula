@@ -35,7 +35,7 @@
 
 ## Cómo se aplicó
 
-- **Textos del borrador de Ariel** (storyboard): se respetan tal cual; solo se quitan las partes con
+- **Textos del borrador original** (storyboard): se respetan tal cual; solo se quitan las partes con
   "XX" o datos sin confirmar, y se explican los términos técnicos en etiquetas junto al texto.
   Detalle en `TEXTOS-AUDITORIA.md`.
 - **Textos nuevos** (historia, compromiso 92, "El proyecto", introducciones, títulos): escritos con

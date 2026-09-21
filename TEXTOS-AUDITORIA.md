@@ -1,4 +1,4 @@
-# Auditoría de textos — borrador de Ariel vs. sitio (21-sep-2026)
+# Auditoría de textos — borrador original vs. sitio (21-sep-2026)
 
 **Respuesta corta:** en la primera versión **no** los respeté todos: reescribí casi todos. En una
 ocasión cambié el sentido (*"se vierte"* → *"se vertía"*). Ya se corrigió.
