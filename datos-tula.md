@@ -190,20 +190,20 @@ Andrea (10-sep-2026): *"confío más en lo que tú encuentres que en el document
 
 ---
 
-## Borrador web (21-sep-2026): qué quedó marcado en amarillo
+## Borrador web (21-sep-2026): datos pendientes que YA NO se muestran
 
-Estos 7 datos aparecen resaltados en amarillo en `index.html` (función `pend()` de
-`tools/build_index.py`). Cuando se confirmen, se cambia el texto y se quita `pend()`.
+Andrea pidió que **nada incompleto salga en la página**. Se reescribieron los textos para no
+depender de estos datos; cuando se confirmen se pueden volver a agregar:
 
-| # | En la página | Dato pendiente | Dónde |
-|---|---|---|---|
-| 1 | Atotonilco | **XX m³/s** que pasaban sin tratamiento | Calidad · paso 1 |
-| 2 | Industria | **XX** empresas que descargan al río | Calidad · paso 2 |
-| 3 | Desazolve | **XX ton** de sedimento retirado | Inundaciones · paso 2 |
-| 4 | Desazolve | **XX m³/s** de capacidad de descarga | Inundaciones · paso 2 |
-| 5 | Riberas | **XX km** de riberas a restaurar hasta Endhó | Ecosistemas · paso 1 |
-| 6 | Bojay | **55 ha** de cuerpo de agua limpia (Excel dice 50 ha de humedal) | Ecosistemas · paso 2 |
-| 7 | Bosques | **100 ha** de ANP al inicio del sexenio | Ecosistemas · paso 3 |
+| # | Dato pendiente | Dónde iría |
+|---|---|---|
+| 1 | XX m³/s que pasaban sin tratamiento | Calidad · Atotonilco |
+| 2 | XX empresas que descargan al río | Calidad · Industria |
+| 3 | XX ton de sedimento retirado | Inundaciones · Desazolve |
+| 4 | XX m³/s de capacidad de descarga | Inundaciones · Desazolve |
+| 5 | XX km de riberas a restaurar hasta Endhó | Ecosistemas · Riberas |
+| 6 | 55 ha de cuerpo de agua limpia (Excel: 50 ha de humedal) | Ecosistemas · Bojay |
+| 7 | 100 ha de ANP al inicio del sexenio | Ecosistemas · Bosques |
 
 Datos que vienen **de la pptx de Andrea** (no del Excel) y se usan en el borrador:
 poblaciones de los 5 sitios (Chamizal 10 mil · San Lorenzo 20 mil · Río Rosas 24 mil ·

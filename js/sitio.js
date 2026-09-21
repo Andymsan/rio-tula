@@ -48,40 +48,13 @@
   }), { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
   $$('.reveal, .rv').forEach(el => rvObs.observe(el));
 
-  /* ── 3. Historia (scrollytelling oscuro) ──────────────────────────── */
-  (function historia() {
-    const steps = $$('.hs-step');
-    if (!steps.length) return;
-    const svgEls = $$('.hs-map [data-step]');
-    const dot = $('#hsDot'), fill = $('#hsFill'), here = $('#hsHere');
-    const STEP_POS   = [0, 14, 28, 42, 56, 68, 78, 88, 100];
-    const HERE_LABEL = ['700 mil a.C.', '1449', '1789', '1900', '1951', '1975–2019', '2018', '2021', '2024'];
-    function setActive(i) {
-      steps.forEach(s => s.classList.toggle('active', Number(s.dataset.step) === i));
-      const p = STEP_POS[i];
-      dot.style.left = p + '%'; fill.style.width = p + '%'; here.style.left = p + '%'; here.textContent = HERE_LABEL[i];
-      svgEls.forEach(el => {
-        const n = Number(el.dataset.step);
-        el.classList.toggle('on', n <= i);
-        el.classList.toggle('current', n === i);
-      });
-      const lake = $('.hs-lake');      if (lake) lake.classList.toggle('drained', i >= 3);
-      const rio  = $('.hs-riotula');   if (rio)  rio.classList.toggle('restored', i >= 8);
-      const city = $('.hs-tulacity');  if (city) { city.classList.toggle('flood', i === 7); city.classList.toggle('restored', i >= 8); }
-    }
-    const obs = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) setActive(Number(e.target.dataset.step)); }),
-      { threshold: 0, rootMargin: '-45% 0px -45% 0px' });
-    steps.forEach(s => obs.observe(s));
-    setActive(0);
-  })();
-
   /* ── 4. Escenarios (mapa fijo + cámara) ───────────────────────────── */
   const TEMAS = ['tema-rosa', 'tema-naranja', 'tema-verde'];
   const stages = new Map();          // cap -> estado
   const allSteps = [];
 
   $$('.cap').forEach(cap => {
-    const st = { cap, stage: $('.cap-stage', cap), canvas: $('.canvas', cap), steps: $$('.step', cap), cur: null };
+    const st = { cap, stage: $('.cap-stage', cap), canvas: $('.canvas', cap), steps: $$('.step', cap), cur: null, hist: cap.classList.contains('hist') };
     stages.set(cap, st);
     st.steps.forEach(s => allSteps.push(s));
   });
@@ -110,6 +83,7 @@
   function activate(st, step, init) {
     if (st.cur === step && !init) return;
     st.cur = step;
+    if (st.hist) return activateHist(st, step, init);
     const d = step.dataset;
     st.steps.forEach(s => s.classList.toggle('active', s === step));
     $$('.frame', st.canvas).forEach(f => f.classList.toggle('on', f.dataset.frame === d.frame));
@@ -118,8 +92,8 @@
     const lbls = list(d.labels); $$('.maplabel', st.canvas).forEach(p => p.classList.toggle('on', lbls.includes(p.dataset.id)));
     st.stage.classList.toggle('show-pop', d.pop === '1');
     st.stage.style.setProperty('--wash', d.wash || 0);
-    const v = $('.venn', st.stage);
-    if (v) { v.classList.toggle('on', !!d.venn); if (d.venn) v.dataset.focus = d.venn; }
+    const v = $('.hexes', st.stage);
+    if (v) { v.classList.toggle('on', !!d.hex); if (d.hex) v.dataset.focus = d.hex; }
     applyCam(st, step);
     const t = d.tema || st.cap.dataset.tema;
     if (t) {
@@ -143,9 +117,54 @@
     allSteps.forEach(s => stepObs.observe(s));
   }
 
+
+  /* ── Historia: mapa SVG que se acerca a cada época ─────────────────── */
+  const H_POS   = [0, 14, 28, 42, 56, 68, 78, 88, 100];
+  const H_HERE  = ['700 mil a.C.', '1449', '1789', '1900', '1951', '1975–2019', '2018', '2021', '2024'];
+  const H_BAN   = ['Hace ~700 mil años', '1449 · Texcoco', '1607–1789 · Nochistongo', '1900 · Gran Canal', '1951 · Presa Endhó', '1975 y 2019 · Túneles', '2018 · PTAR Atotonilco', '2021 · Inundación', '2024–2030 · Restauración'];
+  // cámara por época: [centro x, centro y, alto visible] en unidades del SVG (460×767)
+  const H_CAM   = [[230, 385, 860], [300, 590, 330], [218, 255, 270], [275, 400, 470], [135, 100, 250], [260, 340, 430], [172, 182, 190], [112, 118, 200], [140, 120, 290]];
+  let hView = null, hRaf = 0;
+
+  function hDraw(st, v) {
+    const svg = $('#hmap'), W = st.stage.clientWidth, H = st.stage.clientHeight;
+    const scale = mobile.matches ? 1.1 : 1;
+    const h = v.h * scale, w = h * (W / H), ax = mobile.matches ? 0.5 : 0.6;
+    svg.setAttribute('viewBox', (v.cx - w * ax).toFixed(2) + ' ' + (v.cy - h / 2).toFixed(2) + ' ' + w.toFixed(2) + ' ' + h.toFixed(2));
+    svg.style.setProperty('--fs', (12 * h / H).toFixed(3));
+  }
+  function hGo(st, to, instant) {
+    cancelAnimationFrame(hRaf);
+    if (instant || !hView) { hView = { cx: to[0], cy: to[1], h: to[2] }; hDraw(st, hView); return; }
+    const from = Object.assign({}, hView), t0 = performance.now(), dur = 1400;
+    const ease = t => (t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+    const tick = now => {
+      const t = Math.min(1, (now - t0) / dur), e = ease(t);
+      hView = { cx: from.cx + (to[0] - from.cx) * e, cy: from.cy + (to[1] - from.cy) * e, h: from.h + (to[2] - from.h) * e };
+      hDraw(st, hView);
+      if (t < 1) hRaf = requestAnimationFrame(tick);
+    };
+    hRaf = requestAnimationFrame(tick);
+  }
+  function activateHist(st, step, init) {
+    const i = Number(step.dataset.step), svg = $('#hmap');
+    st.steps.forEach(s => s.classList.toggle('active', s === step));
+    $$('[data-step]', svg).forEach(el => el.classList.toggle('on', Number(el.dataset.step) <= i));
+    $$('.lbl', svg).forEach(el => el.classList.toggle('on', (el.dataset.show || '').split(' ').includes(String(i))));
+    const q = sel => $(sel, svg);
+    q('.lake').classList.toggle('drained', i >= 3);
+    q('.riotula').classList.toggle('restored', i >= 8);
+    const city = q('.tulacity'); city.classList.toggle('flood', i === 7); city.classList.toggle('restored', i >= 8);
+    $('#hsDot').style.left = H_POS[i] + '%'; $('#hsFill').style.width = H_POS[i] + '%';
+    const here = $('#hsHere'); here.style.left = H_POS[i] + '%'; here.textContent = H_HERE[i];
+    $('#hsBanner').textContent = H_BAN[i];
+    hGo(st, H_CAM[i], init);
+    if (!init) html.dataset.tema = 'azul';
+  }
+
   /* ── 5. Carruseles ────────────────────────────────────────────────── */
   const CAM_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>';
-  const EXTS = ['jpg', 'png', 'webp', 'jpeg'];
+  const EXTS = ['jpg', 'png'];
 
   function loadSlide(fig) {
     const name = fig.dataset.foto, src = fig.dataset.src, cap = fig.dataset.cap || '';
@@ -203,7 +222,21 @@
   let rz;
   addEventListener('resize', () => {
     clearTimeout(rz);
-    rz = setTimeout(() => { buildNavObs(); buildStepObs(); stages.forEach(st => st.cur && applyCam(st, st.cur)); }, 160);
+    rz = setTimeout(() => { buildNavObs(); buildStepObs(); stages.forEach(st => { if (!st.cur) return; if (st.hist) { if (hView) hDraw(st, hView); } else applyCam(st, st.cur); }); }, 160);
   });
   boot();
+
+  /* Ayuda para pruebas: ?goto=calidad:2  (paso 2 del capítulo)  ó  ?goto=#promesa&off=900 */
+  (function () {
+    const q = new URLSearchParams(location.search), g = q.get('goto');
+    if (!g) return;
+    html.style.scrollBehavior = 'auto';
+    setTimeout(() => {
+      if (g[0] === '#') { const e = $(g); if (e) scrollTo(0, e.getBoundingClientRect().top + scrollY + Number(q.get('off') || 0)); return; }
+      const [id, i] = g.split(':'), st = $$('#' + id + ' .step')[Number(i) || 0];
+      if (!st) return;
+      const r = st.getBoundingClientRect();
+      scrollTo(0, mobile.matches ? scrollY + r.top - innerHeight * 0.44 - 20 : scrollY + r.top + r.height / 2 - innerHeight / 2 + 2);
+    }, 400);
+  })();
 })();

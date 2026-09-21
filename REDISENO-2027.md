@@ -228,13 +228,17 @@ Valores propuestos (ajustables por Andrea) en `css/temas.css`:
 - [x] Historia del río resuelta (versión verificada, se ignora el PDF).
 - [x] Flujo de trabajo definido → `FLUJO-DE-TRABAJO.md`.
 - [x] Video de referencia de la animación guardado.
-- [x] **Borrador v2027 armado por Claude (21-sep-2026)** por falta de tiempo para el layout:
-      portada con índice → historia → **compromiso 92** → el proyecto (3 círculos) →
-      calidad del agua → inundaciones → ecosistemas y espacio público → cierre.
-      Usa las capas de `diseño/espacio publico/` (marcos, capas y burbujas → `img/mapa/`).
-- [x] Carrusel de fotos con marcadores (se sustituyen por nombre de archivo, ver `img/fotos/LEEME.md`).
-- [x] Cámara con zoom por paso, pines con líder punteado, tema de color por capítulo.
-- [ ] **Andrea revisa el borrador** (textos, orden, qué falta).
+- [x] **Borrador v2027 armado por Claude (21-sep-2026)** por falta de tiempo para el layout.
+- [x] **Ronda 2 de comentarios (21-sep-2026)** — aplicado:
+      · todo el inicio (portada, historia, compromiso 92) pasó a **fondo claro**;
+      · **historia**: mapa más grande, fondo claro, colores vivos, **nombres de municipios/estados**
+        y zoom por época (se conserva el mapa propio, no el de Blender);
+      · compromiso 92: **sólo el Tula** (se quitó "tres cuencas") + inversión;
+      · los tres frentes ahora son **hexágonos que se tocan en una esquina** (el río) en vez del Venn;
+      · se quitó "Un río, tres frentes, 37 proyectos", el **mapa interactivo** (nav, portada, cierre,
+        pie) y **todo dato incompleto/amarillo** de la página.
+- [ ] **Andrea pasa una imagen nueva y más insumos** (dice que mi versión de los renders es previa).
+- [ ] **Andrea revisa la ronda 2** (textos, orden, qué falta).
 - [ ] Sustituir marcadores por fotos reales y por las capas finales de Andrea.
 - [ ] Animaciones "tipo pptx" por escena (rutas que se dibujan, isócronas) cuando lleguen las capas.
 - [ ] Cerrar los datos amarillos (ver `datos-tula.md`).

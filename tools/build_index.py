@@ -78,10 +78,8 @@ def step(cam, frame_, card_html, bub="", **kw):
         at += ' data-%s="%s"' % (k, v)
     return '<article class="step"%s>%s%s</article>' % (at, card_html, bub)
 
-def cap(id_, tema, banner, canvas_inner, steps, extra_stage="", lead=False):
+def cap(id_, tema, banner, canvas_inner, steps, extra_stage=""):
     h = ""
-    if lead:
-        h += '<div class="cap-lead" data-nav="dark"></div>'
     h += ('<section class="cap tema-%s" id="%s" data-tema="%s" data-nav="light">'
           '<div class="cap-stage"><div class="canvas">%s</div>%s<div class="banner">%s</div></div>'
           '<div class="cap-steps">%s</div></section>' % (tema, id_, tema, canvas_inner, extra_stage, banner, "".join(steps)))
@@ -105,15 +103,48 @@ def sitio_pins(pop=False):
 # ═══════════════════════════════════════════════════════════════════════════
 #  EL PROYECTO (los tres círculos)
 # ═══════════════════════════════════════════════════════════════════════════
-VENN = '''<div class="venn" data-focus="all"><svg viewBox="0 0 400 400" role="img" aria-label="Calidad del agua, inundaciones y ecosistemas se cruzan en el río Tula">
-<g class="c c-rosa"><a href="#calidad"><circle cx="150" cy="150" r="120" fill="#f0938c" fill-opacity=".66"/></a>
-<text class="num" x="92" y="124">15</text><text class="lab" x="92" y="148">Calidad</text><text class="lab" x="92" y="165">del agua</text></g>
-<g class="c c-naranja"><a href="#inundaciones"><circle cx="250" cy="150" r="120" fill="#f78b62" fill-opacity=".66"/></a>
-<text class="num" x="308" y="124">6</text><text class="lab" x="308" y="148">Inundaciones</text></g>
-<g class="c c-verde"><a href="#ecosistemas"><circle cx="200" cy="236" r="120" fill="#a6a12a" fill-opacity=".66"/></a>
-<text class="num" x="200" y="306">9</text><text class="lab" x="200" y="326">Ecosistemas y</text><text class="lab" x="200" y="343">espacio público</text></g>
-<g class="centro"><rect x="152" y="160" width="96" height="36" rx="18" fill="#fff"/><text x="200" y="184" style="font-size:15px">Río Tula</text></g>
-</svg></div>'''
+def hexes_svg():
+    """Tres hexágonos que se tocan en una esquina (el río) + uno de apoyo."""
+    R = 112.0
+    W = R * 0.8660254
+    V = (260.0, 250.0)                       # esquina compartida = el río
+    d = R * 1.7320508                                   # distancia entre centros vecinos
+    cen = dict(rosa=(V[0], V[1] - R),                   # arriba
+               naranja=(V[0] + W, V[1] + R / 2),        # abajo-derecha
+               verde=(V[0] - W, V[1] + R / 2))          # abajo-izquierda
+    cen["gob"] = (cen["verde"][0] + d * 0.5, cen["verde"][1] + d * 0.8660254)   # abajo, entre los dos
+
+    def poly(c):
+        x, y = c
+        pts = [(x, y - R), (x + W, y - R / 2), (x + W, y + R / 2), (x, y + R), (x - W, y + R / 2), (x - W, y - R / 2)]
+        return " ".join("%.1f,%.1f" % p for p in pts)
+
+    ico = dict(
+        rosa='<path class="ico" d="M0 -30 C10 -15 16 -8 16 0 A16 16 0 0 1 -16 0 C-16 -8 -10 -15 0 -30 Z"/>',                       # gota
+        naranja='<path class="ico" d="M-20 -6 q5 -7 10 0 t10 0 t10 0 t10 0 M-20 6 q5 -7 10 0 t10 0 t10 0 t10 0"/>',                # olas
+        verde='<path class="ico" d="M-16 12 C-18 -12 2 -26 18 -22 C22 -4 10 14 -16 12 Z M-16 12 L4 -8"/>',                         # hoja
+    )
+    def tile(k, num, l1, l2=""):
+        x, y = cen[k]
+        t = '<g class="h h-%s"><polygon points="%s"/>' % (k, poly(cen[k]))
+        if k in ico:
+            t += '<g transform="translate(%.1f,%.1f)">%s</g>' % (x, y - 44, ico[k])
+        t += '<text class="num" x="%.1f" y="%.1f">%s</text>' % (x, y + 14, num)
+        t += '<text class="lab" x="%.1f" y="%.1f">%s</text>' % (x, y + 38, l1)
+        if l2:
+            t += '<text class="lab" x="%.1f" y="%.1f">%s</text>' % (x, y + 55, l2)
+        return t + "</g>"
+
+    svg = '<svg viewBox="0 0 520 610" role="img" aria-label="Calidad del agua, inundaciones y ecosistemas se tocan en un mismo punto: el río Tula">'
+    svg += tile("gob", "7", "Gobernanza,", "estudios y participación")
+    svg += tile("rosa", "15", "Calidad del agua")
+    svg += tile("naranja", "6", "Inundaciones")
+    svg += tile("verde", "9", "Ecosistemas y", "espacio público")
+    svg += ('<g class="nodo"><circle class="anillo" cx="%.1f" cy="%.1f" r="34"/><circle class="disco" cx="%.1f" cy="%.1f" r="34"/>'
+            '<text x="%.1f" y="%.1f">Río</text><text x="%.1f" y="%.1f">Tula</text></g>' % (V[0], V[1], V[0], V[1], V[0], V[1] - 2, V[0], V[1] + 15))
+    return svg + "</svg>"
+
+VENN = '<div class="hexes" data-focus="all">%s</div>' % hexes_svg()
 
 hub_steps = [
     step(".5,.5,1", "int", card("El proyecto", "Un río, tres frentes",
@@ -123,21 +154,21 @@ hub_steps = [
         wash="0", tema="rosa"),
     step(".5,.5,1", "int", card("Frente 1 · 15 proyectos", "Calidad del agua",
         ["Plantas de tratamiento, colectores, control de la industria y monitoreo: " + fl("que el agua que llega al río sea cada vez más limpia") + "."]),
-        wash=".8", venn="rosa", tema="rosa"),
+        wash=".93", hex="rosa", tema="rosa"),
     step(".5,.5,1", "int", card("Frente 2 · 6 proyectos", "Inundaciones",
         ["Taludes firmes, cauce desazolvado, estaciones que miden el río cada 5 minutos y más espacio para que el agua se extienda: " + fl("reducir el riesgo para Tula") + "."]),
-        wash=".8", venn="naranja", tema="naranja"),
+        wash=".93", hex="naranja", tema="naranja"),
     step(".5,.5,1", "int", card("Frente 3 · 9 proyectos", "Ecosistemas y espacio público",
         ["Riberas, humedales, bosques y cinco espacios públicos ribereños: " + fl("devolverle el río a la gente") + " y la vida al río."]),
-        wash=".8", venn="verde", tema="verde"),
+        wash=".93", hex="verde", tema="verde"),
     step(".5,.5,1", "int", card("Donde se cruzan", "En el centro está el río",
         ["Cada frente sostiene a los otros: un río más limpio se puede recorrer, un cauce ordenado se puede restaurar y un río con vida vuelve a ser de la gente.",
          "Además, " + fl("7 proyectos de gobernanza, estudios y participación") + " los articulan."],
         kf=("Baja", "y empecemos por la calidad del agua ↓")),
-        wash=".8", venn="all", tema="rosa"),
+        wash=".93", hex="all", tema="rosa"),
 ]
 hub = cap("proyecto", "rosa", "El proyecto",
-          frame("int"), hub_steps, extra_stage='<div class="wash"></div>' + VENN, lead=True)
+          frame("int"), hub_steps, extra_stage='<div class="wash"></div>' + VENN)
 
 # ═══════════════════════════════════════════════════════════════════════════
 #  CALIDAD DEL AGUA  (rosa)  — marco "col"
@@ -153,13 +184,13 @@ calidad_steps = [
         ["Tres fuentes principales contaminan hoy el río Tula, y el proyecto atiende las tres: " + fl("el agua residual del Valle de México que no alcanza a tratarse") + ", las descargas industriales y el drenaje de la ciudad de Tula."],
         kf=("15", "proyectos de calidad del agua")), pins=""),
     step(".615,.79,2.3", "col", card("1 · Atotonilco", "Tratar más agua en Atotonilco",
-        ["Históricamente la PTAR Atotonilco trataba <strong>31 m³/s</strong> en promedio y dejaba pasar al río " + pend("XX m³/s") + " sin tratamiento. En 2026 el caudal tratado subió a <strong>38 m³/s</strong>, y " + fl("a partir de 2027 tratará todo el drenaje del río en estiaje") + "."],
+        ["Históricamente la PTAR Atotonilco trataba <strong>31 m³/s</strong> en promedio. En 2026 el caudal tratado subió a <strong>38 m³/s</strong>, y " + fl("a partir de 2027 tratará todo el drenaje del río en estiaje") + "."],
         kf=("+7 m³/s", "de caudal tratado adicional"),
         facts=["Terminado en 2026", "Conagua · $112 MDP"]),
         carousel([slide("atotonilco-1", "PTAR Atotonilco"), slide("atotonilco-2", "Operación de la planta"), slide("atotonilco-3", "Caudal tratado")]),
         pins="atot"),
     step(".55,.47,1.25", "col", card("2 · Industria", "Vigilar lo que se descarga",
-        ["Durante este sexenio Conagua y Profepa inspeccionarán al menos dos veces a las " + pend("XX") + " empresas que descargan al río o a sus afluentes. Hasta hoy suman <strong>92 inspecciones</strong>, y " + fl("29 industrias") + " están en capacitación y certificación en el Centro Regional de Prevención Ambiental, en la UTTT."],
+        ["Durante este sexenio Conagua y Profepa inspeccionan al menos dos veces a las empresas que descargan al río o a sus afluentes. Hasta hoy suman <strong>92 inspecciones</strong>, y " + fl("29 industrias") + " están en capacitación y certificación en el Centro Regional de Prevención Ambiental, en la UTTT."],
         kf=("92", "inspecciones · 29 industrias en certificación"),
         facts=["Profepa", "Conagua", "UTTT"]),
         carousel([slide("industria-1", "Inspección a una industria"), slide("industria-2", "Centro Regional de Prevención Ambiental")]),
@@ -202,7 +233,7 @@ inund_steps = [
         carousel([slide("taludes-1", "San Lorenzo · antes"), slide("taludes-2", "San Lorenzo · después"), slide("taludes-3", "El Chamizal · obra en proceso")]),
         ov="sanlorenzo chamizal", pins="sanlorenzo chamizal"),
     step(".5,.44,1.6", "int", card("2 · Desazolve", "Más espacio para el agua",
-        ["Cuando el cauce está azolvado, el agua tiene menos por dónde correr. En 2025 " + fl("desazolvamos 3.9 km") + " del río en la zona urbana de Tula, retirando " + pend("XX ton") + " de sedimento, basura y escombro, para que pueda conducir " + pend("XX m³/s") + " sin riesgo."],
+        ["Cuando el cauce está azolvado, el agua tiene menos por dónde correr. En 2025 " + fl("desazolvamos 3.9 km") + " del río en la zona urbana de Tula, retirando sedimento, basura y escombro para que el agua fluya sin obstáculos."],
         kf=("3.9 km", "de río desazolvado · terminado en 2025"),
         facts=["Conagua · $31 MDP"]),
         carousel([slide("desazolve-1", "Desazolve del cauce"), slide("desazolve-2", "Antes y después")]),
@@ -239,20 +270,20 @@ eco_steps = [
         ["Para que un río vuelva a estar vivo hay que recuperar sus ecosistemas —cuerpos de agua, humedales, riberas y bosques de la cuenca alta— y " + fl("abrir el río a la gente") + "."],
         kf=("9", "proyectos de restauración y espacio público")), labels="endho parque"),
     step(".5,.5,1.7", "int", card("1 · Riberas", "Árboles sanos en las orillas",
-        ["Saneamos <strong>1,600 árboles</strong> en <strong>10 km</strong> de riberas —les quitamos heno motita y ramas muertas— y " + fl("plantamos 300 árboles") + " en 3.5 km de la zona urbana de Tula. Con Conafor trabajamos para limpiar, sanear o reforestar " + pend("XX km") + " de riberas hasta la presa Endhó."],
+        ["Saneamos <strong>1,600 árboles</strong> en <strong>10 km</strong> de riberas —les quitamos heno motita y ramas muertas— y " + fl("plantamos 300 árboles") + " en 3.5 km de la zona urbana de Tula. Con Conafor trabajamos para limpiar, sanear o reforestar las riberas hasta la presa Endhó."],
         kf=("1,600", "árboles ribereños saneados"),
         facts=["Conagua · Semarnat", "Terminado en 2025"]),
         carousel([slide("riberas-1", "Saneamiento forestal de riberas"), slide("riberas-2", "Revegetación de riberas")])),
     step(".585,.17,2.3", "int", card("2 · Humedales y Endhó", "Agua limpia a 2 km de Tula",
-        ["En las Ciénegas de Endhó (Bojay) recuperamos <strong>50 ha de humedal</strong>, y se rehabilita el bordo de la laguna para separarla del río Tula: " + fl("un cuerpo de agua limpia") + " de " + pend("55 ha") + " a 2 km de la ciudad. En la presa Endhó se extraen <strong>110 mil m³</strong> de lirio."],
+        ["En las Ciénegas de Endhó (Bojay) recuperamos <strong>50 ha de humedal</strong>, y se rehabilita el bordo de la laguna para separarla del río Tula: " + fl("un cuerpo de agua limpia") + " a 2 km de la ciudad. En la presa Endhó se extraen <strong>110 mil m³</strong> de lirio."],
         kf=("50 ha", "de humedal recuperado en Bojay"),
         facts=["Conagua · Semarnat", "Bordo y vertedor · en licitación"]),
         carousel([slide(src="img/mapa/z-bojay-zoom.webp", cap="Propuesta · humedal y sendero de Bojay", contain=True),
                   slide(src="img/mapa/z-bojay-verde.webp", cap="Propuesta · Bojay en planta", contain=True),
                   slide("bojay-1", "Ciénegas de Endhó (Bojay)")]),
         ov="bojay", pins="bojay", labels="endho"),
-    step(".36,.24,1.6", "base", card("3 · Bosques", "De 100 a 1,700 hectáreas protegidas",
-        ["Al inicio del sexenio existían solo " + pend("100 ha") + " de Áreas Naturales Protegidas en la cuenca. Hoy la Conanp certificó " + fl("1,700 ha") + " como Áreas Destinadas Voluntariamente a la Conservación (9 áreas) y Conafor restauró <strong>663 ha</strong> de suelo forestal en 17 proyectos."],
+    step(".36,.24,1.6", "base", card("3 · Bosques", "Bosques protegidos y restaurados",
+        ["La Conanp certificó " + fl("1,700 ha") + " como Áreas Destinadas Voluntariamente a la Conservación (9 áreas) y Conafor restauró <strong>663 ha</strong> de suelo forestal en 17 proyectos, con 15 ejidos de la cuenca."],
         kf=("1,700 ha", "certificadas como ADVC · 9 áreas"),
         facts=["Conanp", "Conafor · 15 ejidos", "Terminado en 2025"]),
         carousel([slide("bosques-1", "Área Destinada Voluntariamente a la Conservación"), slide("bosques-2", "Restauración forestal con ejidos")]),
@@ -282,13 +313,12 @@ eco = cap("ecosistemas", "verde", "Ecosistemas y espacio público", eco_canvas, 
 #  PÁGINA
 # ═══════════════════════════════════════════════════════════════════════════
 INDICE = [
-    ("01", "Historia", "Cómo llegó el río a esta condición", "#historia", "#f2c14e"),
+    ("01", "Historia", "Cómo llegó el río a esta condición", "#historia", "#1f6fd6"),
     ("02", "Compromiso 92", "La promesa de limpiar los tres ríos más contaminados", "#promesa", "#f0938c"),
-    ("03", "El proyecto", "Tres frentes, un mismo río", "#proyecto", "#f2c14e"),
+    ("03", "El proyecto", "Tres frentes, un mismo río", "#proyecto", "#1f6fd6"),
     ("04", "Calidad del agua", "Atotonilco, industria, colectores y monitoreo", "#calidad", "#f0938c"),
     ("05", "Inundaciones", "Taludes, desazolve y más espacio para el agua", "#inundaciones", "#f78b62"),
-    ("06", "Ecosistemas y espacio público", "Riberas, humedales, bosques y cinco sitios", "#ecosistemas", "#b3ae35"),
-    ("07", "Cierre y mapa", "Los números y el visor interactivo", "#cierre", "#65748b"),
+    ("06", "Ecosistemas y espacio público", "Riberas, humedales, bosques y cinco sitios", "#ecosistemas", "#8c871d"),
 ]
 idx_items = "".join('<a class="idx-item" href="%s" style="--c:%s"><b>%s</b><span>%s</span></a>' % (h, c, n, t) for n, t, d, h, c in INDICE)
 idx_list  = "".join('<li><a href="%s" style="--c:%s"><b>%s</b><span>%s<small>%s</small></span></a></li>' % (h, c, n, t, d) for n, t, d, h, c in INDICE)
@@ -301,73 +331,46 @@ FILTROS = '''<svg width="0" height="0" style="position:absolute" aria-hidden="tr
 <filter id="f-slate"   color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.396  0 0 0 0 0.455  0 0 0 0 0.545  0 0 0 1 0"/></filter>
 </defs></svg>'''
 
-HERO = '''<header class="hero" id="top" data-nav="dark">
+HERO = '''<header class="hero" id="top" data-nav="light">
   <div class="hero-bg"></div><div class="hero-glow"></div>
   <p class="hs-eyebrow">Saneamiento · Restauración · 2024–2030</p>
   <h1 class="hs-main-title">Río <em>Tula</em></h1>
   <p class="hs-subtitle">Cómo llegó a estar así y cómo lo estamos recuperando: agua limpia, un cauce seguro y un río abierto a su gente.</p>
-  <div class="hero-cta"><a class="btn btn-light" href="#historia">Comenzar el recorrido ↓</a><a class="btn btn-ghost" href="mapa.html">Ver mapa</a></div>
+  <div class="hero-cta"><a class="btn btn-dark" href="#historia">Comenzar el recorrido ↓</a></div>
   <div class="idx-grid" aria-label="Índice">%s</div>
 </header>''' % idx_items
 
-PROMESA = '''<section class="s-promesa" id="promesa" data-nav="dark">
+PROMESA = '''<section class="s-promesa" id="promesa" data-nav="light">
   <div class="pm-beat"><div class="pm-wrap pm-1">
     <div class="pm-92 rv">92</div>
     <div class="rv">
       <p class="pm-kicker">Compromiso presidencial</p>
-      <h2 class="pm-h">Limpiar y sanear <em>los tres ríos más contaminados</em> del país</h2>
-      <p class="pm-sub">Es el compromiso 92 de la Presidenta Claudia Sheinbaum Pardo: recuperar el Lerma-Santiago, el Tula y el Atoyac, tres ríos que atraviesan cuencas con millones de habitantes y cientos de industrias.</p>
+      <h2 class="pm-h">Limpiar y sanear <em>los tres ríos más contaminados</em> del país<span>Uno de ellos es el río Tula.</span></h2>
+      <p class="pm-sub">Es el compromiso 92 de la Presidenta Claudia Sheinbaum Pardo. Así se ve el reto en el Tula:</p>
+      <div class="tula-facts">
+        <div><b>191 km</b><span>de río</span></div>
+        <div><b>800 mil</b><span>personas beneficiadas</span></div>
+        <div><b>2 estados</b><span>Estado de México e Hidalgo</span></div>
+      </div>
     </div>
   </div></div>
 
   <div class="pm-beat"><div class="pm-wrap pm-2">
-    <p class="pm-kicker rv">Los tres ríos</p>
-    <h2 class="rv">Tres cuencas, una misma tarea</h2>
-    <div class="rios rv">
-      <article class="rio-card"><h3>Lerma-Santiago</h3><p class="edos">México, Querétaro, Guanajuato, Michoacán, Jalisco y Nayarit</p>
-        <div class="m"><b>1,360</b><span>km de río</span><div class="bar"><i style="--w:100%"></i></div></div>
-        <div class="m"><b>21.4</b><span>millones de habitantes</span><div class="bar"><i style="--w:100%"></i></div></div></article>
-      <article class="rio-card hl"><h3>Tula</h3><p class="edos">Estado de México e Hidalgo</p>
-        <div class="m"><b>191</b><span>km de río</span><div class="bar"><i style="--w:14%"></i></div></div>
-        <div class="m"><b>0.8</b><span>millones de habitantes</span><div class="bar"><i style="--w:3.7%"></i></div></div></article>
-      <article class="rio-card"><h3>Atoyac</h3><p class="edos">Tlaxcala y Puebla</p>
-        <div class="m"><b>162</b><span>km de río</span><div class="bar"><i style="--w:11.9%"></i></div></div>
-        <div class="m"><b>3.7</b><span>millones de habitantes</span><div class="bar"><i style="--w:17.3%"></i></div></div></article>
-    </div>
-    <p class="rio-nota rv">El Tula es el más corto de los tres, pero además recibe el drenaje del Valle de México.</p>
-  </div></div>
-
-  <div class="pm-beat"><div class="pm-wrap pm-3">
-    <p class="pm-kicker rv">La escala del reto</p>
-    <h2 class="rv">Una inversión histórica para tres ríos</h2>
+    <p class="pm-kicker rv">La inversión</p>
+    <h2 class="rv">Una inversión histórica para recuperar el Tula</h2>
     <div class="nums rv">
-      <div class="n big"><b>+20 mil</b><span>millones de pesos de inversión durante el sexenio para los tres ríos</span></div>
-      <div class="n"><b>3,202</b><span>puntos de descarga identificados en las tres cuencas</span></div>
-      <div class="n"><b>479</b><span>tiraderos clandestinos</span></div>
-      <div class="n"><b>460</b><span>industrias potencialmente contaminantes</span></div>
-      <div class="n"><b>23</b><span>plantas de tratamiento construidas o rehabilitadas, con 282 km de colectores (sept. de 2026)</span></div>
+      <div class="n" style="--nc:#1f6fd6"><b>$1,478 MDP</b><span>de inversión documentada en el río Tula en 2025 y 2026, entre Conagua, Semarnat, Conafor, Conanp y el Gobierno de Hidalgo.</span></div>
+      <div class="n" style="--nc:#ec6f66"><b>+20 mil millones</b><span>de pesos durante el sexenio para el saneamiento de los tres ríos prioritarios: Lerma-Santiago, Tula y Atoyac.</span></div>
     </div>
     <p class="pm-puente rv">Y en el Tula, el plan tiene nombre y ubicación.<span>↓</span></p>
     <p class="pm-fuentes rv">Fuentes: <a href="https://contralinea.com.mx/interno/semana/gobierno-invertira-mas-de-20-mil-mdp-para-sanear-los-rios-lerma-santiago-tula-y-atoyac/" target="_blank" rel="noopener">Contralínea (16 jul 2026)</a> ·
-      <a href="https://www.gob.mx/profepa/prensa/avanza-saneamiento-y-recuperacion-de-los-rios-atoyac-lerma-santiago-y-tula-434666" target="_blank" rel="noopener">Profepa, gob.mx (1 sep 2026)</a> ·
-      <a href="https://www.ambito.com/mexico/informacion-general/claudia-sheinbaum-ordena-limpiar-los-tres-rios-mas-contaminados-mexico-cuales-son-y-como-se-hara-este-historico-saneamiento-n6300195" target="_blank" rel="noopener">Ámbito</a>.</p>
+      <a href="https://www.ambito.com/mexico/informacion-general/claudia-sheinbaum-ordena-limpiar-los-tres-rios-mas-contaminados-mexico-cuales-son-y-como-se-hara-este-historico-saneamiento-n6300195" target="_blank" rel="noopener">Ámbito</a> · base de proyectos 2025–2026.</p>
   </div></div>
 </section>'''
 
-CIERRE = '''<section class="s-cierre" id="cierre" data-nav="dark">
-  <h2 class="rv">Un río, tres frentes, 37 proyectos</h2>
-  <p class="rv">Agua más limpia, un cauce más seguro y un río abierto a su gente. Explora cada intervención sobre el mapa: capas, avance y ubicación de todos los proyectos.</p>
-  <div class="stats rv">
-    <div><b>37</b><span>proyectos en el plan</span></div>
-    <div><b>$1,478<sup>MDP</sup></b><span>de inversión documentada</span></div>
-    <div><b>2,415<sup>ha</sup></b><span>restauradas y conservadas</span></div>
-    <div><b>35.8<sup>km</sup></b><span>de colectores</span></div>
-  </div>
-  <a class="btn btn-light" href="mapa.html">Abrir el mapa interactivo →</a>
-</section>
-<footer>
+CIERRE = '''<footer>
   Secretaría de Medio Ambiente y Recursos Naturales · Plan de Saneamiento y Restauración del Río Tula 2024–2030<br>
-  Datos: base de proyectos 2025–2026 (Conagua, Semarnat, Conafor, Conanp, Profepa y Gobierno de Hidalgo) · <a href="mapa.html">Ir al mapa interactivo</a>
+  Datos: base de proyectos 2025–2026 (Conagua, Semarnat, Conafor, Conanp, Profepa y Gobierno de Hidalgo)
 </footer>'''
 
 page = '''<!DOCTYPE html>
@@ -391,7 +394,6 @@ page = '''<!DOCTYPE html>
   <a class="nav-logo" href="#top">Río Tula <span>/ Plan 2024–2030</span></a>
   <div class="nav-right">
     <button class="nav-btn" id="idxBtn" type="button">☰ Índice</button>
-    <a class="nav-cta" href="mapa.html">Ver mapa →</a>
   </div>
 </nav>
 
@@ -400,8 +402,7 @@ page = '''<!DOCTYPE html>
   <div class="idx-box"><h2>Índice</h2><ul class="idx-list">%(idx_list)s</ul></div>
 </div>
 
-<div class="borrador">Borrador · <span class="pend" style="cursor:default">amarillo</span> = dato por confirmar · las fotos son marcadores
-  <button id="borradorClose" type="button" aria-label="Cerrar aviso">×</button></div>
+<div class="borrador">Borrador · las fotos son marcadores <button id="borradorClose" type="button" aria-label="Cerrar aviso">×</button></div>
 
 %(hero)s
 

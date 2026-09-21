@@ -1,148 +1,106 @@
-/* historia.css — scrollytelling oscuro de la historia del río (mapa esquemático real).
-   Extraído sin cambios de index-v1.html; solo se agregó la parte móvil al final. */
-/* ─── HISTORIA: SCROLLYTELLING ─────────── */
-.s-historia { background: #0a0e12; padding: 100px 0 60px; }
-.hs-intro { max-width: 640px; margin: 0 auto 56px; padding: 0 32px; text-align: center; }
-.hs-eyebrow {
-  font-size: 12px; letter-spacing: .22em; text-transform: uppercase;
-  color: rgba(255,255,255,.55); font-weight: 500; margin-bottom: 18px;
+/* ============================================================================
+   historia.css — Historia del río (mapa CLARO con nombres de municipios)
+   El mapa es un SVG (viewBox 460×767) que se acerca a cada época con JS
+   (sitio.js → historia()).  --fs = tamaño "de pantalla" en unidades SVG:
+   los textos y trazos no cambian de tamaño al hacer zoom.
+   ============================================================================ */
+
+.s-historia { background: #f6f4ef; padding: 40px 0 0; }
+.hs-intro-plain { max-width: 680px; margin: 0 auto; padding: 60px 32px 56px; text-align: center; }
+.hs-intro-plain .s-tag { color: var(--azul-fill); }
+.hs-intro-plain .s-title { color: var(--ink); }
+.hs-intro-plain .s-body { color: #555; margin-top: 16px; }
+
+.hist .cap-stage { background: #f4f7fa; }
+
+.hmap { position: absolute; inset: 0; width: 100%; height: 100%; display: block; --fs: 10; }
+
+/* ─ Municipios: color por estado, con borde blanco ─ */
+.hmap .mun { stroke: #fff; stroke-width: calc(var(--fs) * .16px); stroke-linejoin: round; transition: fill .8s; }
+.hmap .mun.e13 { fill: #ffe3a3; }   /* Hidalgo */
+.hmap .mun.e15 { fill: #c6e8d6; }   /* Estado de México */
+.hmap .mun.e09 { fill: #ffc9d8; }   /* Ciudad de México */
+.hmap .estados { fill: none; stroke: #5b6b7f; stroke-width: calc(var(--fs) * .16px); stroke-dasharray: 4 3; opacity: .8; }
+.hmap .cuenca  { fill: none; stroke: #d6249f; stroke-width: calc(var(--fs) * .2px); stroke-dasharray: 3 3; opacity: 0; transition: opacity 1s; }
+.hmap .cuenca.on { opacity: .9; }
+
+/* ─ Agua ─ */
+.hmap .rivers { fill: none; stroke: #6cc0ff; stroke-width: calc(var(--fs) * .12px); }
+.hmap .waterbody, .hmap .lake { fill: #38a8ff; stroke: #0b74c9; stroke-width: calc(var(--fs) * .12px); opacity: 0; transition: opacity 1s, fill 1.2s; }
+.hmap .waterbody.on, .hmap .lake.on { opacity: .95; }
+.hmap .lake.drained { fill: #b9dcf7; opacity: .55; }
+.hmap .endho { fill: #38a8ff; stroke: #ff8a00; stroke-width: calc(var(--fs) * .3px); opacity: 0; transition: opacity 1s; }
+.hmap .endho.on { opacity: 1; }
+
+/* ─ Obras (se dibujan al llegar su época) ─ */
+.hmap .line, .hmap .dique {
+  fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-width: calc(var(--fs) * .36px);
+  stroke-dasharray: 1; stroke-dashoffset: 1; opacity: 0; transition: stroke-dashoffset 1.8s ease, opacity .4s;
 }
-.hs-main-title {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(40px, 7vw, 76px); font-weight: 900; line-height: 1;
-  color: #fff; letter-spacing: -.02em;
+.hmap .line.on, .hmap .dique.on { opacity: 1; stroke-dashoffset: 0; }
+.hmap .dique  { stroke: #f59e0b; }
+.hmap .noch   { stroke: #e11d48; }
+.hmap .canal  { stroke: #ff6a00; }
+.hmap .emisor { stroke: #7c3aed; }
+.hmap .teo    { stroke: #c026d3; }
+
+/* ─ Río Tula y la ciudad ─ */
+.hmap .riotula { fill: none; stroke: #1467d6; stroke-width: calc(var(--fs) * .4px); stroke-linecap: round; stroke-linejoin: round; transition: stroke 1s; }
+.hmap .riotula.restored { stroke: #10b981; }
+.hmap .tulacity { fill: rgba(225, 29, 72, 0); stroke: #e11d48; stroke-width: calc(var(--fs) * .28px); stroke-dasharray: 5 3; opacity: 0; transition: opacity .8s, fill .8s, stroke .8s; }
+.hmap .tulacity.on { opacity: 1; }
+.hmap .tulacity.flood { fill: rgba(225, 29, 72, .32); }
+.hmap .tulacity.restored { fill: rgba(16, 185, 129, .3); stroke: #10b981; }
+
+/* ─ Marcadores ─ */
+.hmap .marker { opacity: 0; transition: opacity .6s; transform-box: fill-box; transform-origin: center; }
+.hmap .marker.on { opacity: 1; }
+.hmap .marker circle { transform-box: fill-box; transform-origin: center; }
+.hmap .marker .dot { stroke-width: 1.6; }
+.hmap .marker.zump .dot { fill: #38a8ff; stroke: #fff; }
+.hmap .marker.ptar .dot { fill: #0d9488; stroke: #fff; }
+.hmap .marker.zoc  .dot { fill: #f59e0b; stroke: #fff; }
+.hmap .marker .ping { fill: none; stroke-width: 1.4; animation: hsPing 2s ease-out infinite; }
+.hmap .marker.zump .ping { stroke: #38a8ff; } .hmap .marker.ptar .ping { stroke: #0d9488; } .hmap .marker.zoc .ping { stroke: #f59e0b; }
+@keyframes hsPing { 0% { transform: scale(1); opacity: .9; } 100% { transform: scale(3.6); opacity: 0; } }
+
+/* ─ Etiquetas ─ */
+.hmap .lbl {
+  font-family: 'Noto Sans', sans-serif; font-weight: 600; fill: #1f2937; text-anchor: middle;
+  paint-order: stroke; stroke: #fff; stroke-width: calc(var(--fs) * .32px); stroke-linejoin: round;
+  opacity: 0; transition: opacity .6s; pointer-events: none;
 }
-.hs-main-title em { font-style: italic; color: rgba(255,255,255,.75); }
-.hs-subtitle {
-  margin: 22px 0 0; font-size: clamp(14px, 1.6vw, 17px);
-  color: rgba(255,255,255,.65); font-weight: 300; line-height: 1.6;
-}
-.hs-intro-divider { width: 40px; height: 1px; background: rgba(255,255,255,.2); margin: 36px auto; }
-.hs-intro .s-tag { color: #e67e22; }
-.hs-intro .s-title { color: #fff; }
-.hs-intro .s-body { color: rgba(255,255,255,.6); margin-top: 16px; }
+.hmap .lbl.on { opacity: 1; }
+.hmap .lbl.s  { font-size: calc(var(--fs) * .95px); }
+.hmap .lbl.m  { font-size: calc(var(--fs) * 1.15px); }
+.hmap .lbl.l  { font-size: calc(var(--fs) * 1.55px); font-weight: 800; }
+.hmap .lbl.st { font-size: calc(var(--fs) * 1.5px); letter-spacing: calc(var(--fs) * .3px); fill: #8494a8; font-weight: 700; stroke: none; }
+.hmap .lbl.st.on { opacity: .7; }
+.hmap .lbl.cuenca { fill: #c01d8c; font-style: italic; }
+.hmap .lbl.agua   { fill: #0b64b0; font-style: italic; }
+.hmap .lbl.hist   { fill: #b45309; }
+.hmap .lbl.ciudad { fill: #be123c; font-weight: 800; }
+.hmap .lbl.canal  { fill: #ea580c; }
+.hmap .lbl.tajo   { fill: #e11d48; }
+.hmap .lbl.emisor { fill: #6d28d9; }
+.hmap .lbl.teo    { fill: #a21caf; }
+.hmap .lbl.ptar   { fill: #0f766e; font-weight: 800; }
+.hmap .lbl.rio    { fill: #1d4ed8; font-style: italic; }
+.hmap .lbl.lm     { fill: #334155; }
+.hmap .lbl.key    { fill: #111827; font-weight: 800; }
 
-.hs-scrolly {
-  display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr);
-  gap: 40px; max-width: 1180px; margin: 0 auto; padding: 0 32px;
-}
+/* ─ Línea del tiempo ─ */
+.hs-timeline { position: absolute; z-index: 4; left: 62%; bottom: 20px; transform: translateX(-50%); width: min(470px, 44vw); padding: 12px 22px 24px; background: rgba(255,255,255,.88); border-radius: 16px; box-shadow: 0 10px 30px -14px rgba(0,0,0,.35); }
+.hs-timeline-here { position: relative; left: 0; transform: translateX(-50%); white-space: nowrap; font: 700 11px 'Noto Sans', sans-serif; letter-spacing: .12em; text-transform: uppercase; color: var(--azul-dark); margin-bottom: 10px; transition: left .5s ease; }
+.hs-timeline-track { position: relative; height: 3px; background: rgba(20, 60, 120, .18); border-radius: 2px; }
+.hs-timeline-fill { position: absolute; left: 0; top: 0; height: 100%; width: 0; background: linear-gradient(90deg, #38a8ff, #ff6a00); border-radius: 2px; transition: width .5s ease; }
+.hs-timeline-dot { position: absolute; top: 50%; left: 0; width: 13px; height: 13px; border-radius: 50%; background: #fff; border: 3px solid var(--azul-fill); transform: translate(-50%, -50%); transition: left .5s ease; box-shadow: 0 2px 8px rgba(0,0,0,.25); }
+.hs-tick { position: absolute; top: 12px; transform: translateX(-50%); font-size: 9.5px; color: #6b7a8c; white-space: nowrap; }
 
-.hs-visual {
-  position: sticky; top: 8vh; height: 82vh;
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px;
-}
-.hs-map-frame {
-  position: relative; width: 100%; max-width: 320px; aspect-ratio: 460 / 767;
-  border-radius: 18px; overflow: hidden;
-  background: radial-gradient(ellipse at 50% 28%, #16273a 0%, #0a0e12 72%);
-  box-shadow: 0 30px 80px rgba(0,0,0,.5), inset 0 0 0 1px rgba(255,255,255,.07);
-}
-.hs-map { width: 100%; height: 100%; display: block; }
-
-.hs-lake { fill: rgba(94,168,207,.34); stroke: rgba(160,210,235,.5); stroke-width: 1.4; opacity: 0; transition: opacity 1s, fill 1.2s, stroke 1.2s; }
-.hs-lake.on { opacity: 1; }
-.hs-lake.drained { fill: rgba(94,168,207,.07); stroke: rgba(160,210,235,.16); }
-
-.hs-dique { fill: none; stroke: #f2c14e; stroke-width: 2.4; stroke-linecap: round; stroke-dasharray: 5 5; opacity: 0; transition: opacity .8s; }
-.hs-dique.on { opacity: 1; }
-
-.hs-line { fill: none; stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round; opacity: 0; }
-.hs-nochistongo { stroke: #c45e1a; stroke-dasharray: 950; stroke-dashoffset: 950; transition: opacity .5s, stroke-dashoffset 1.8s ease; }
-.hs-nochistongo.on { opacity: 1; stroke-dashoffset: 0; }
-.hs-teo { stroke: #3d93a6; stroke-dasharray: 420; stroke-dashoffset: 420; transition: opacity .5s, stroke-dashoffset 1.5s ease; }
-.hs-teo.on { opacity: 1; stroke-dashoffset: 0; }
-
-.hs-riotula { fill: none; stroke: rgba(255,255,255,.28); stroke-width: 2.6; stroke-linecap: round; opacity: .5; transition: stroke 1s, opacity 1s, stroke-width 1s, filter 1s; }
-.hs-riotula.restored { stroke: #3fae7a; opacity: 1; stroke-width: 3.4; filter: drop-shadow(0 0 5px rgba(63,174,122,.75)); }
-
-.hs-tulacity { fill: rgba(255,255,255,.04); stroke: rgba(255,255,255,.22); stroke-width: 1.1; opacity: 0; transition: opacity .8s, fill .8s, stroke .8s; }
-.hs-tulacity.on { opacity: 1; }
-.hs-tulacity.flood { fill: rgba(196,94,26,.28); stroke: #c45e1a; }
-.hs-tulacity.restored { fill: rgba(63,174,122,.2); stroke: #3fae7a; }
-
-.hs-endho-shape { fill: rgba(242,193,78,.3); stroke: rgba(242,193,78,.6); stroke-width: .8; opacity: 0; transition: opacity 1s; }
-.hs-endho-shape.on { opacity: 1; }
-
-.hs-marker { opacity: 0; transition: opacity .6s; }
-.hs-marker.on { opacity: 1; }
-.hs-marker circle { fill: #f2c14e; }
-.hs-marker.current circle.ping { animation: hsPing 1.8s ease-out infinite; }
-@keyframes hsPing { 0% { r:3; stroke-opacity:.6; } 100% { r:13; stroke-opacity:0; } }
-
-.hs-label { fill: rgba(255,255,255,.6); font-size: 9.5px; font-family: 'Noto Sans', sans-serif; opacity: 0; transition: opacity .6s; }
-.hs-label.on { opacity: 1; }
-.hs-cuenca-lbl { fill: rgba(255,255,255,.32); font-style: italic; font-size: 8.5px; }
-
-.hs-cuenca { fill: none; stroke: rgba(255,255,255,.3); stroke-width: 1; stroke-dasharray: 3 3; opacity: 0; transition: opacity 1.2s; }
-.hs-cuenca.on { opacity: 1; }
-
-.hs-waterbody { fill: rgba(94,168,207,.28); stroke: rgba(160,210,235,.4); stroke-width: .8; opacity: 0; transition: opacity 1s; }
-.hs-waterbody.on { opacity: 1; }
-
-.hs-basemap { opacity: 0; transition: opacity 1.4s; }
-.hs-basemap.on { opacity: 1; }
-.hs-estados { fill: none; stroke: rgba(255,255,255,.22); stroke-width: .8; stroke-dasharray: 1.5 2.5; }
-.hs-municipios { fill: none; stroke: rgba(255,255,255,.09); stroke-width: .5; }
-.hs-humedales { fill: none; stroke: rgba(130,190,150,.35); stroke-width: .5; }
-.hs-cuerpos { fill: none; stroke: rgba(160,210,235,.3); stroke-width: .5; }
-.hs-tulanet { fill: none; stroke: rgba(150,185,205,.22); stroke-width: .6; }
-
-.hs-timeline { width: 100%; max-width: 320px; padding: 0 6px; }
-.hs-timeline-here {
-  font-size: 10px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600;
-  color: #fff; margin-bottom: 10px; transform: translateX(-50%); position: relative; left: 0%;
-  transition: left .5s ease; white-space: nowrap;
-}
-.hs-timeline-track { position: relative; height: 2px; background: rgba(255,255,255,.15); }
-.hs-timeline-fill { position: absolute; left: 0; top: 0; height: 100%; background: linear-gradient(90deg,#611232,#c45e1a); width: 0%; transition: width .5s ease; }
-.hs-timeline-dot {
-  position: absolute; top: 50%; left: 0%; width: 10px; height: 10px; border-radius: 50%;
-  background: #fff; box-shadow: 0 0 0 4px rgba(255,255,255,.15);
-  transform: translate(-50%,-50%); transition: left .5s ease;
-}
-.hs-tick {
-  position: absolute; top: 12px; transform: translateX(-50%);
-  font-size: 9px; letter-spacing: .04em; color: rgba(255,255,255,.4); white-space: nowrap;
-}
-
-.hs-steps { display: flex; flex-direction: column; }
-.hs-step { min-height: 76vh; display: flex; flex-direction: column; justify-content: center; padding: 30px 0; }
-.hs-step:first-child { min-height: 56vh; }
-.hs-step:last-child { min-height: 60vh; }
-.hs-step-era {
-  font-family: 'Playfair Display', serif; font-style: italic; font-size: 14px;
-  color: #e67e22; opacity: .5; margin-bottom: 10px; transition: opacity .5s;
-}
-.hs-step .s-title { color: rgba(255,255,255,.32); font-size: clamp(22px, 2.6vw, 30px); transition: color .5s; }
-.hs-step .s-body { color: rgba(255,255,255,.22); transition: color .5s; }
-.hs-step.active .hs-step-era { opacity: 1; }
-.hs-step.active .s-title { color: #fff; }
-.hs-step.active .s-body { color: rgba(255,255,255,.68); }
-.s-tag {
-  display: inline-block; font-size: 11px; font-weight: 600;
-  letter-spacing: .18em; text-transform: uppercase;
-  color: var(--vino); margin-bottom: 18px;
-}
-.s-title {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(28px, 3.5vw, 42px); font-weight: 700; line-height: 1.18;
-  color: var(--ink); margin-bottom: 20px;
-}
-.s-body {
-  font-size: 16px; line-height: 1.75; color: #4a4a4a; font-weight: 300;
-}
-.s-body p + p { margin-top: 14px; }
-.s-body strong { color: var(--ink); font-weight: 600; }
-
-/* ─── Historia: móvil ─── */
-@media (max-width: 768px) {
-  .s-historia { padding: 56px 0; }
-  .hs-scrolly { display: block; padding: 0 20px; }
-  .hs-intro { padding: 0 20px; margin-bottom: 36px; }
-  .hs-visual { position: sticky; top: 0; height: auto; padding-top: 58px; padding-bottom: 14px; background: #0a0e12; justify-content: flex-start; gap: 10px; z-index: 2; margin-bottom: 12px; }
-  .hs-map-frame { max-width: 140px; }
-  .hs-timeline-here { font-size: 9px; margin-bottom: 6px; }
+@media (max-width: 900px) {
+  .s-historia { padding-top: 24px; }
+  .hs-intro-plain { padding: 40px 22px 34px; }
+  .hs-timeline { left: 50%; width: 84%; bottom: 8px; padding: 8px 14px 10px; }
   .hs-tick { display: none; }
-  .hs-step { min-height: 58vh; }
-  .hs-step:first-child, .hs-step:last-child { min-height: 50vh; }
+  .hs-timeline-here { font-size: 10px; margin-bottom: 7px; }
 }

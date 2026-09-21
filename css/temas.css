@@ -31,6 +31,12 @@
   /* Interconexión (acento extra del video) */
   --slate:        #65748b;
 
+  /* Historia (agua / drenaje) */
+  --azul:        #2a7de1;
+  --azul-fill:   #1f6fd6;
+  --azul-dark:   #134a96;
+  --azul-tint:   rgba(42, 125, 225, .16);
+
   /* Tema activo por defecto */
   --tema:        var(--rosa);
   --tema-fill:   var(--rosa-fill);
@@ -47,11 +53,13 @@
 .tema-rosa    { --tema: var(--rosa);    --tema-fill: var(--rosa-fill);    --tema-dark: var(--rosa-dark);    --tema-tint: var(--rosa-tint); }
 .tema-naranja { --tema: var(--naranja); --tema-fill: var(--naranja-fill); --tema-dark: var(--naranja-dark); --tema-tint: var(--naranja-tint); }
 .tema-verde   { --tema: var(--verde);   --tema-fill: var(--verde-fill);   --tema-dark: var(--verde-dark);   --tema-tint: var(--verde-tint); }
+.tema-azul    { --tema: var(--azul);    --tema-fill: var(--azul-fill);    --tema-dark: var(--azul-dark);    --tema-tint: var(--azul-tint); }
 
 /* mismo cambio por atributo en <html> (lo usa el scroll para el botón "Ver mapa") */
 [data-tema="rosa"]    { --tema: var(--rosa);    --tema-fill: var(--rosa-fill);    --tema-dark: var(--rosa-dark);    --tema-tint: var(--rosa-tint); }
 [data-tema="naranja"] { --tema: var(--naranja); --tema-fill: var(--naranja-fill); --tema-dark: var(--naranja-dark); --tema-tint: var(--naranja-tint); }
 [data-tema="verde"]   { --tema: var(--verde);   --tema-fill: var(--verde-fill);   --tema-dark: var(--verde-dark);   --tema-tint: var(--verde-tint); }
+[data-tema="azul"]    { --tema: var(--azul);    --tema-fill: var(--azul-fill);    --tema-dark: var(--azul-dark);    --tema-tint: var(--azul-tint); }
 
 /* ---- Resaltado tipo flúor -------------------------------------------------- */
 mark.fluor {

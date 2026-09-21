@@ -115,11 +115,10 @@ de empezar, porque es el molde de todo lo demás.
 
 ---
 
-## 6. Estado vivo (21-sep-2026)
+## 6. Estado vivo (21-sep-2026, ronda 2)
 
-- **Borrador v2027 listo** (`index.html`): Andrea no tuvo tiempo de diseñar el layout, así que
-  Claude armó uno con los insumos que ya existían (renders de Blender, storyboard, Excel).
-- **Andrea ahora:** revisar el borrador (textos, orden, qué falta) y mandar **fotos**.
-- **Claude ya tiene:** capas de `diseño/espacio publico/` convertidas a `img/mapa/`.
-- **Pendiente de datos:** 7 datos en amarillo en la página (ver `datos-tula.md`).
-- **Cómo se edita:** textos/datos en `tools/build_index.py`; fotos por nombre en `img/fotos/`.
+- **Borrador v2027, ronda 2 lista** (`index.html`): inicio en claro, historia con mapa de municipios,
+  compromiso 92 sólo del Tula, hexágonos, sin cierre ni mapa interactivo, sin datos amarillos.
+- **Andrea ahora:** mandar la **imagen nueva** y "más cosas" (los renders que uso son previos) + fotos.
+- **Pendiente de datos:** 7 datos que ya no se muestran (ver `datos-tula.md`).
+- **Cómo se edita:** textos/datos en `tools/build_index.py` y `tools/build_historia_map.py`; fotos por nombre en `img/fotos/`.
