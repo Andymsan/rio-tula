@@ -31,11 +31,11 @@
   /* Interconexión (acento extra del video) */
   --slate:        #65748b;
 
-  /* Historia (paleta del mapa: #F5F5F5 · #C3DDDA · #E97630 · #F0A742 · #BE5E3A · #603B30) */
-  --azul:        #e97630;
-  --azul-fill:   #be5e3a;
-  --azul-dark:   #603b30;
-  --azul-tint:   rgba(190, 94, 58, .16);
+  /* Historia: naranja y vino del mapa original */
+  --azul:        #e67e22;
+  --azul-fill:   #c45e1a;
+  --azul-dark:   #611232;
+  --azul-tint:   rgba(196, 94, 26, .16);
 
   /* Tema activo por defecto */
   --tema:        var(--rosa);

@@ -378,9 +378,9 @@ page = '''<!DOCTYPE html>
   <title>Río Tula — Plan de Saneamiento y Restauración 2024–2030</title>
   <meta name="description" content="La historia del río Tula y el plan para sanearlo y restaurarlo: calidad del agua, inundaciones, ecosistemas y espacio público." />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Noto+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/temas.css" />
-  <link rel="stylesheet" href="css/historia.css" />
-  <link rel="stylesheet" href="css/capitulos.css" />
+  <link rel="stylesheet" href="css/temas.css?v=4" />
+  <link rel="stylesheet" href="css/historia.css?v=4" />
+  <link rel="stylesheet" href="css/capitulos.css?v=4" />
   <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
@@ -417,7 +417,7 @@ page = '''<!DOCTYPE html>
 
 %(cierre)s
 
-<script src="js/sitio.js"></script>
+<script src="js/sitio.js?v=4"></script>
 </body>
 </html>
 ''' % dict(filtros=FILTROS, idx_list=idx_list, hero=HERO, historia=rd("tools/fragmentos/historia.html"),

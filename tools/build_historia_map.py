@@ -119,6 +119,9 @@ def capa(cls, step, d, extra=""):
 L_ = CAPAS
 svg = ['<svg class="hmap" id="hmap" viewBox="0 0 460 767" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Mapa del Valle de México y el río Tula">']
 svg.append('<g class="muns">' + "".join(muni_paths) + "</g>")
+svg.append(capa("humedales", 0, L_["humedales"]))
+svg.append(capa("cuerpos", 0, L_["cuerpos"]))
+svg.append(capa("tulanet", 0, L_["tulanet"]))
 svg.append(capa("estados", 0, L_["estados"]))
 svg.append(capa("cuenca", 0, L_["cuenca"]))
 svg.append(capa("rivers", 0, L_["rivers"]))
