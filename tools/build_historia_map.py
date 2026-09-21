@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-Genera tools/fragmentos/historia.html (sección "Historia": mapa claro con nombres de
-municipios + textos por época).
+Genera tools/fragmentos/historia_mapa.html: el MAPA SVG de la Historia (municipios con nombres,
+obras, etiquetas). Los TEXTOS de cada época ya no están aquí: viven en TEXTOS.md.
+Este script sólo se corre en la computadora de Andrea (usa los datos de la carpeta de diseño);
+el resultado (historia_mapa.html) se sube al repositorio.
 
     python tools/build_historia_map.py
 
@@ -90,29 +92,6 @@ L("Túnel Emisor Oriente", (325, 500), [5], "m", "teo")
 L("río Tula", (188, 132), [4, 7, 8], "s", "rio")
 L("Tula de Allende", (120, 118), [7], "l", "lm key")
 
-# ─── textos de cada época (pasos) ─────────────────────────────────────────
-PASOS = [
-    ("~700,000 años atrás", "Una cuenca sin salida",
-     "Los volcanes del sur cerraron el Valle de México. La lluvia no tenía por dónde salir y formó grandes lagos. Como esa agua no corría hacia el mar, los lagos se volvieron salados."),
-    ("1449", "El dique de Nezahualcóyotl",
-     "Una inundación dejó a Tenochtitlan —hoy la <strong>Ciudad de México</strong>— bajo el agua. El tlatoani <strong>Nezahualcóyotl</strong> construyó un dique de más de 12 km. Separaba el agua salada del lago de Texcoco del agua dulce donde vivía la ciudad."),
-    ("1607–1789", "El Tajo de Nochistongo",
-     "Para proteger a la ciudad de las inundaciones, Enrico Martínez abrió en <strong>Huehuetoca</strong>, Estado de México, el primer desagüe artificial: un túnel que llevaba el agua desde la zona de <strong>Zumpango</strong> hacia el río Tula. Los derrumbes obligaron a rehacerlo como un corte abierto, que se terminó en <strong>1789</strong>, 182 años después. Desde entonces lleva agua de lluvia y aguas residuales hacia el Tula."),
-    ("1900", "El Gran Canal del Desagüe",
-     "El 17 de marzo de 1900 se inauguró el Gran Canal del Desagüe. Sale de la <strong>Ciudad de México</strong> y pasa por <strong>Ecatepec, Zumpango y Tequixquiac</strong>. Desde entonces, las aguas residuales de la ciudad salen del valle y llegan a la cuenca del Tula."),
-    ("1951", "La presa Endhó",
-     "Entre <strong>Tepetitlán y Tula de Allende</strong>, en Hidalgo, se construyó la presa Endhó para guardar agua de riego. Un valle seco se volvió zona de cultivo: el <strong>Valle del Mezquital</strong>. Con los años, la presa recibió cada vez más aguas residuales de la Ciudad de México."),
-    ("1975 y 2019", "Los grandes túneles de drenaje",
-     "En 1975 se inauguró el Emisor Central, y en 2019 el <strong>Túnel Emisor Oriente</strong>, de 62 km. Llevan el agua de la Ciudad de México hacia <strong>Atotonilco de Tula</strong>, en Hidalgo. Con ellos llegó más agua residual y de lluvia a la cuenca del Tula."),
-    ("2018", "La planta de Atotonilco",
-     "En <strong>Atotonilco de Tula</strong>, Hidalgo, empezó a funcionar la planta de tratamiento de aguas residuales (PTAR) de Atotonilco: la más grande del mundo construida en una sola etapa. Se hizo para reducir los riesgos para la salud de regar con agua sin tratar."),
-    ("Septiembre de 2021", "La inundación de Tula",
-     "En septiembre de 2021 se desbordaron los ríos Tula y Rosas, y el agua entró a la ciudad de <strong>Tula de Allende</strong>, Hidalgo. Más de 70 mil personas perdieron sus pertenencias. Fallecieron 17 personas, 14 de ellas en el hospital del IMSS, donde falló la energía eléctrica. Ninguna obra devuelve lo que se perdió. Por eso el plan busca reducir el riesgo para las familias de Tula."),
-    ("2024–2030", "Comienza la restauración",
-     "Recuperar el río Tula es hoy una prioridad nacional. Arranca el <strong>Plan de Saneamiento y Restauración del Río Tula 2024–2030</strong>, con 37 proyectos para mejorar la calidad del agua, reducir el riesgo de inundaciones y recuperar el río y sus orillas para quienes viven junto a él."),
-]
-ERA_BANNER = ["Hace ~700 mil años", "1449", "1607–1789", "1900", "1951", "1975 y 2019", "2018", "2021", "2024–2030"]
-
 def capa(cls, step, d, extra=""):
     return '<path class="%s" data-step="%s"%s d="%s"/>' % (cls, step, extra, d)
 
@@ -142,35 +121,8 @@ svg.append('<g class="marker zoc" data-step="1"><circle class="ping" cx="%.1f" c
 svg.append('<g class="labels">' + "".join(lab) + "</g>")
 svg.append("</svg>")
 
-ticks = [("0", "700 mil a.C."), ("14", "1449"), ("28", "1789"), ("42", "1900"), ("56", "1950"), ("75", "2000"), ("100", "hoy")]
-ticks_html = "".join('<span class="hs-tick" style="left:%s%%">%s</span>' % t for t in ticks)
-
-steps_html = ""
-for i, (era, title, body) in enumerate(PASOS):
-    steps_html += ('<article class="step hs-step" data-step="%d"><div class="card"><div class="tag">%s</div><h3>%s</h3><p>%s</p></div></article>'
-                   % (i, era, title, body))
-
-frag = '''<section class="s-historia" id="historia" data-nav="light">
-  <div class="hs-intro-plain reveal">
-    <span class="s-tag">01 · El río y su historia</span>
-    <h2 class="s-title">700 mil años de una cuenca en transformación</h2>
-    <p class="s-body">Durante siglos, el río Tula recibió el agua que el Valle de México necesitaba sacar. Este recorrido cuenta cómo pasó y qué estamos haciendo hoy para cuidarlo.</p>
-  </div>
-  <div class="cap hist tema-azul" data-nav="light">
-    <div class="cap-stage">
-      %s
-      <div class="banner" id="hsBanner">%s</div>
-      <div class="hs-timeline">
-        <div class="hs-timeline-here" id="hsHere">700 mil a.C.</div>
-        <div class="hs-timeline-track"><div class="hs-timeline-fill" id="hsFill"></div><div class="hs-timeline-dot" id="hsDot"></div>%s</div>
-      </div>
-    </div>
-    <div class="cap-steps" id="hsSteps">%s</div>
-  </div>
-</section>''' % ("".join(svg), ERA_BANNER[0], ticks_html, steps_html)
-
-open(os.path.join(ROOT, "tools", "fragmentos", "historia.html"), "w", encoding="utf-8").write(frag)
-print("historia.html:", len(frag) // 1024, "KB;", len(muni_paths), "municipios;", len(lab), "etiquetas")
+open(os.path.join(ROOT, "tools", "fragmentos", "historia_mapa.html"), "w", encoding="utf-8").write("".join(svg))
+print("historia_mapa.html:", sum(len(x) for x in svg) // 1024, "KB;", len(muni_paths), "municipios;", len(lab), "etiquetas")
 for n in ("Tula de Allende", "Huehuetoca", "Zumpango", "Atotonilco de Tula"):
     print("  centro", n, "%.0f,%.0f" % centros[n])
 print("  zocalo %.0f,%.0f" % zoc)

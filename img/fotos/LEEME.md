@@ -1,7 +1,7 @@
 # Fotos del sitio
 
 Para sustituir un marcador por una foto: **guarda la imagen aquí con el nombre exacto de la
-tabla** (JPG, PNG o WebP; horizontal, ~1600 px de ancho). No hay que tocar código.
+tabla** (JPG o PNG; horizontal, ~1600 px de ancho). No hay que tocar código.
 
 | Archivo | Pie de foto / qué va |
 |---|---|
@@ -29,5 +29,6 @@ tabla** (JPG, PNG o WebP; horizontal, ~1600 px de ancho). No hay que tocar códi
 | `espacio-publico-1.jpg` | Espacio público ribereño |
 
 - Si el archivo no existe, el sitio muestra un marcador con rayas y el nombre del archivo.
-- Para agregar más fotos a un carrusel, pídeselo a Claude (hay que sumar una entrada).
+- Los pies de foto se cambian en `TEXTOS.md` (campo `fotos:`).
+- Para agregar más fotos a un carrusel, pídeselo a Andrea (hay que sumar una entrada).
 - Archivo generado por `tools/build_index.py`.

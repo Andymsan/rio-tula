@@ -16,7 +16,9 @@ Sitio del Plan de Saneamiento y Restauración del Río Tula (2024–2030).
 ## Estructura
 
 ```
-index.html            ← GENERADO por tools/build_index.py (no editar a mano)
+index.html            ← GENERADO (no editar a mano): TEXTOS.md + tools/build_index.py
+TEXTOS.md             ← TODOS LOS TEXTOS de la página (se editan aquí, en GitHub)
+.github/workflows/    ← reconstruye index.html solo cuando cambia TEXTOS.md
 css/   temas.css      ← colores por tema (rosa / naranja / verde) + flúor + "dato por confirmar"
        historia.css   ← mapa claro de la historia (municipios, obras, etiquetas, línea del tiempo)
        capitulos.css  ← nav, portada, compromiso 92, mapa-escenario, tarjetas, carrusel, hexágonos, pie
@@ -25,9 +27,10 @@ img/mapa/             ← renders de Blender ya convertidos a WebP (marcos, capa
 img/fotos/            ← fotos de los proyectos (ver LEEME.md: se sustituyen por nombre de archivo)
 img/ref/              ← fotos de referencia (parques inundables) y video de la animación
 tools/ build_assets.py       ← renders de la carpeta de diseño → img/mapa/*.webp
-       build_historia_map.py ← mapa de la historia (municipios + capas + textos por época)
+       build_historia_map.py ← el MAPA de la historia (municipios + capas); solo en la compu de Andrea
+       textos.py             ← lee TEXTOS.md y convierte las marcas (**negrita**, ==resaltado==)
        build_index.py        ← textos, datos, cámaras y pines → index.html
-       fragmentos/           ← historia generada + capas históricas ya proyectadas
+       fragmentos/           ← historia_mapa.html (mapa generado) + capas históricas ya proyectadas
 data/                 ← GeoJSON del visor (mapa.html)
 ```
 
@@ -35,7 +38,9 @@ data/                 ← GeoJSON del visor (mapa.html)
 
 | Quiero… | Hago… |
 |---|---|
-| **Cambiar un texto o dato** | editar `tools/build_index.py` → `python tools/build_index.py` (la Historia: `tools/build_historia_map.py` y luego `build_index.py`) |
+| **Cambiar un texto** | editar `TEXTOS.md` en GitHub (guía: `COMO-EDITAR-LOS-TEXTOS.md`). La página se reconstruye sola. |
+| **Cambiar qué imagen/zoom/pines lleva un paso** | editar `tools/build_index.py` y correr `python tools/build_index.py` |
+| **Cambiar el mapa de la historia** | `python tools/build_historia_map.py` (necesita la carpeta de diseño) y subir `historia_mapa.html` |
 | **Poner una foto** | guardarla en `img/fotos/` con el nombre de `img/fotos/LEEME.md` (no hay que tocar código) |
 | **Cambiar un render/capa** | reemplazar el PNG en la carpeta de diseño → `python tools/build_assets.py` |
 | **Cambiar un color de tema** | `css/temas.css` (+ el filtro SVG de la capa en `tools/build_index.py`, variable `FILTROS`) |
@@ -48,4 +53,6 @@ data/                 ← GeoJSON del visor (mapa.html)
 | `REDISENO-2027.md` | Decisiones, storyboard y estado del rediseño |
 | `FLUJO-DE-TRABAJO.md` | Fases, checklist por escena y formatos de archivo |
 | `datos-tula.md` | Cruce del Excel con el storyboard + **datos pendientes** |
+| `COMO-EDITAR-LOS-TEXTOS.md` | Guía para editar `TEXTOS.md` sin programar |
+| `GUIA-DE-TONO.md` · `TEXTOS-AUDITORIA.md` | Cómo escribir los textos (tema sensible) y qué respeta el borrador original |
 | `datos-proyectos.xlsx` | Fuente de datos de proyectos 2025–2026 |

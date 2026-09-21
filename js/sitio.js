@@ -120,8 +120,6 @@
 
   /* ── Historia: mapa SVG que se acerca a cada época ─────────────────── */
   const H_POS   = [0, 14, 28, 42, 56, 68, 78, 88, 100];
-  const H_HERE  = ['700 mil a.C.', '1449', '1789', '1900', '1951', '1975–2019', '2018', '2021', '2024'];
-  const H_BAN   = ['Hace ~700 mil años', '1449 · Texcoco', '1607–1789 · Nochistongo', '1900 · Gran Canal', '1951 · Presa Endhó', '1975 y 2019 · Túneles', '2018 · PTAR Atotonilco', '2021 · Inundación', '2024–2030 · Restauración'];
   // cámara por época: [centro x, centro y, alto visible] en unidades del SVG (460×767)
   const H_CAM   = [[230, 385, 860], [300, 590, 330], [218, 255, 270], [275, 400, 470], [135, 100, 250], [260, 340, 430], [172, 182, 190], [112, 118, 200], [140, 120, 290]];
   let hView = null, hRaf = 0;
@@ -156,8 +154,8 @@
     q('.riotula').classList.toggle('restored', i >= 8);
     const city = q('.tulacity'); city.classList.toggle('flood', i === 7); city.classList.toggle('restored', i >= 8);
     $('#hsDot').style.left = H_POS[i] + '%'; $('#hsFill').style.width = H_POS[i] + '%';
-    const here = $('#hsHere'); here.style.left = H_POS[i] + '%'; here.textContent = H_HERE[i];
-    $('#hsBanner').textContent = H_BAN[i];
+    const here = $('#hsHere'); here.style.left = H_POS[i] + '%'; here.textContent = step.dataset.here || '';
+    $('#hsBanner').textContent = step.dataset.banner || '';
     hGo(st, H_CAM[i], init);
     if (!init) html.dataset.tema = 'azul';
   }
