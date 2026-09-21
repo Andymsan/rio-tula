@@ -40,7 +40,7 @@ logo: Río Tula
 logo_sub: / Plan 2024–2030
 boton_indice: ☰ Índice
 titulo_indice: Índice
-aviso: Borrador · las fotos son marcadores (prueba automática)
+aviso: Borrador · las fotos son marcadores
 pie1: Secretaría de Medio Ambiente y Recursos Naturales · Plan de Saneamiento y Restauración del Río Tula 2024–2030
 pie2: Datos: base de proyectos 2025–2026 (Conagua, Semarnat, Conafor, Conanp, Profepa y Gobierno de Hidalgo)
 
