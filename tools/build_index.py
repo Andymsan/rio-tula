@@ -104,7 +104,7 @@ def sitio_pins(pop=False):
 #  EL PROYECTO (los tres círculos)
 # ═══════════════════════════════════════════════════════════════════════════
 def hexes_svg():
-    """Tres hexágonos que se tocan en una esquina (el río) + uno de apoyo."""
+    """Tres hexágonos que se tocan en una esquina (el río)."""
     R = 112.0
     W = R * 0.8660254
     V = (260.0, 250.0)                       # esquina compartida = el río
@@ -112,7 +112,6 @@ def hexes_svg():
     cen = dict(rosa=(V[0], V[1] - R),                   # arriba
                naranja=(V[0] + W, V[1] + R / 2),        # abajo-derecha
                verde=(V[0] - W, V[1] + R / 2))          # abajo-izquierda
-    cen["gob"] = (cen["verde"][0] + d * 0.5, cen["verde"][1] + d * 0.8660254)   # abajo, entre los dos
 
     def poly(c):
         x, y = c
@@ -135,8 +134,7 @@ def hexes_svg():
             t += '<text class="lab" x="%.1f" y="%.1f">%s</text>' % (x, y + 55, l2)
         return t + "</g>"
 
-    svg = '<svg viewBox="0 0 520 610" role="img" aria-label="Calidad del agua, inundaciones y ecosistemas se tocan en un mismo punto: el río Tula">'
-    svg += tile("gob", "7", "Gobernanza,", "estudios y participación")
+    svg = '<svg viewBox="0 12 520 428" role="img" aria-label="Calidad del agua, inundaciones y ecosistemas se tocan en un mismo punto: el río Tula">'
     svg += tile("rosa", "15", "Calidad del agua")
     svg += tile("naranja", "6", "Inundaciones")
     svg += tile("verde", "9", "Ecosistemas y", "espacio público")
@@ -162,8 +160,7 @@ hub_steps = [
         ["Riberas, humedales, bosques y cinco espacios públicos ribereños: " + fl("devolverle el río a la gente") + " y la vida al río."]),
         wash=".93", hex="verde", tema="verde"),
     step(".5,.5,1", "int", card("Donde se cruzan", "En el centro está el río",
-        ["Cada frente sostiene a los otros: un río más limpio se puede recorrer, un cauce ordenado se puede restaurar y un río con vida vuelve a ser de la gente.",
-         "Además, " + fl("7 proyectos de gobernanza, estudios y participación") + " los articulan."],
+        ["Cada frente sostiene a los otros: un río más limpio se puede recorrer, un cauce ordenado se puede restaurar y un río con vida vuelve a ser de la gente."],
         kf=("Baja", "y empecemos por la calidad del agua ↓")),
         wash=".93", hex="all", tema="rosa"),
 ]

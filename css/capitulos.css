@@ -229,7 +229,7 @@ a { color: inherit; }
 .bu-hint { position: absolute; left: 12px; top: 8px; z-index: 3; font: 600 10.5px 'Noto Sans', sans-serif; color: #fff; background: rgba(0,0,0,.45); padding: 3px 8px; border-radius: 10px; letter-spacing: .04em; }
 
 /* ─── Los tres frentes (hexágonos que se tocan en una esquina) ─── */
-.hexes { position: absolute; left: 61%; top: 53%; height: min(80cqh, 108cqw); aspect-ratio: 520 / 610; transform: translate(-50%, -50%); z-index: 3; opacity: 0; transition: opacity .8s; pointer-events: none; }
+.hexes { position: absolute; left: 61%; top: 53%; height: min(70cqh, 82cqw); aspect-ratio: 520 / 428; transform: translate(-50%, -50%); z-index: 3; opacity: 0; transition: opacity .8s; pointer-events: none; }
 .hexes.on { opacity: 1; }
 .hexes svg { width: 100%; height: 100%; overflow: visible; }
 .hexes .h { transition: opacity .7s, transform .7s; transform-box: fill-box; transform-origin: center; }
@@ -237,9 +237,7 @@ a { color: inherit; }
 .hexes .h-rosa polygon    { fill: var(--rosa-fill); }
 .hexes .h-naranja polygon { fill: var(--naranja-fill); }
 .hexes .h-verde polygon   { fill: var(--verde-fill); }
-.hexes .h-gob polygon     { fill: #eef0f3; }
 .hexes text { font-family: 'Noto Sans', sans-serif; font-weight: 700; fill: #fff; text-anchor: middle; }
-.hexes .h-gob text { fill: #5b6b7f; }
 .hexes .num { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 54px; }
 .hexes .lab { font-size: 14.5px; }
 .hexes .ico { fill: none; stroke: #fff; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
@@ -247,9 +245,9 @@ a { color: inherit; }
 .hexes[data-focus="rosa"] .h-rosa, .hexes[data-focus="naranja"] .h-naranja, .hexes[data-focus="verde"] .h-verde { transform: scale(1.06); }
 .hexes .nodo { opacity: 0; transition: opacity .8s; }
 .hexes[data-focus="all"] .nodo { opacity: 1; }
-.hexes .nodo .anillo { fill: none; stroke: #1f6fd6; stroke-width: 3; transform-box: fill-box; transform-origin: center; animation: latido 2.2s ease-out infinite; }
-.hexes .nodo .disco { fill: #fff; stroke: #1f6fd6; stroke-width: 4; }
-.hexes .nodo text { fill: #134a96; font-size: 15px; }
+.hexes .nodo .anillo { fill: none; stroke: #603b30; stroke-width: 3; transform-box: fill-box; transform-origin: center; animation: latido 2.2s ease-out infinite; }
+.hexes .nodo .disco { fill: #fff; stroke: #603b30; stroke-width: 4; }
+.hexes .nodo text { fill: #603b30; font-size: 15px; }
 @keyframes latido { 0% { transform: scale(1); opacity: .9; } 100% { transform: scale(2.1); opacity: 0; } }
 
 /* ─── Pie ─── */
@@ -265,7 +263,7 @@ footer { background: #eceae5; color: #6b6b6b; text-align: center; padding: 34px 
   .cap-steps { padding-top: 44svh; }
   .banner { top: 58px; font-size: 12.5px; padding: 6px 14px; }
   .pin .lbl { font-size: 11.5px; padding: 4px 8px; white-space: normal; width: max-content; max-width: 116px; text-align: center; }
-  .hexes { height: min(86cqh, 110cqw); left: 50%; top: 53%; }
+  .hexes { height: min(76cqh, 80cqw); left: 50%; top: 54%; }
   .step { display: block; min-height: 0; padding: 26px 16px 34px; }
   .step:first-child { padding-top: 34px; }
   .js .card, .js .burbuja { opacity: 1; transform: none; }

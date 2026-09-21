@@ -109,7 +109,7 @@ PASOS = [
     ("Septiembre de 2021", "Las inundaciones de Tula",
      "El desbordamiento de los ríos Tula y Rosas inunda la ciudad de <strong>Tula de Allende</strong>, Hidalgo. <strong>Más de 70,000 personas pierden su patrimonio y 17 mueren</strong> —14 de ellas en el Hospital del IMSS, cuando la energía eléctrica falló durante la emergencia."),
     ("2024–2030", "Comienza la restauración",
-     "Recuperar el río Tula se vuelve prioridad nacional. Arranca el <strong>Plan de Saneamiento y Restauración del Río Tula 2024–2030</strong>: 37 proyectos para sanear el agua, prevenir inundaciones, restaurar el ecosistema y fortalecer la gobernanza de un río que durante siglos absorbió el peso de una megaciudad."),
+     "Recuperar el río Tula se vuelve prioridad nacional. Arranca el <strong>Plan de Saneamiento y Restauración del Río Tula 2024–2030</strong>: 37 proyectos para sanear el agua, prevenir inundaciones y restaurar los ecosistemas y el espacio público de un río que durante siglos absorbió el peso de una megaciudad."),
 ]
 ERA_BANNER = ["Hace ~700 mil años", "1449", "1607–1789", "1900", "1951", "1975 y 2019", "2018", "2021", "2024–2030"]
 

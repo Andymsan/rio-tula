@@ -7,29 +7,29 @@
 
 .s-historia { background: #f6f4ef; padding: 40px 0 0; }
 .hs-intro-plain { max-width: 680px; margin: 0 auto; padding: 60px 32px 56px; text-align: center; }
-.hs-intro-plain .s-tag { color: var(--azul-fill); }
+.hs-intro-plain .s-tag { color: #be5e3a; }
 .hs-intro-plain .s-title { color: var(--ink); }
 .hs-intro-plain .s-body { color: #555; margin-top: 16px; }
 
-.hist .cap-stage { background: #f4f7fa; }
+.hist .cap-stage { background: #f5f5f5; }
 
 .hmap { position: absolute; inset: 0; width: 100%; height: 100%; display: block; --fs: 10; }
 
 /* ─ Municipios: color por estado, con borde blanco ─ */
 .hmap .mun { stroke: #fff; stroke-width: calc(var(--fs) * .16px); stroke-linejoin: round; transition: fill .8s; }
-.hmap .mun.e13 { fill: #ffe3a3; }   /* Hidalgo */
-.hmap .mun.e15 { fill: #c6e8d6; }   /* Estado de México */
-.hmap .mun.e09 { fill: #ffc9d8; }   /* Ciudad de México */
-.hmap .estados { fill: none; stroke: #5b6b7f; stroke-width: calc(var(--fs) * .16px); stroke-dasharray: 4 3; opacity: .8; }
-.hmap .cuenca  { fill: none; stroke: #d6249f; stroke-width: calc(var(--fs) * .2px); stroke-dasharray: 3 3; opacity: 0; transition: opacity 1s; }
+.hmap .mun.e13 { fill: #f9e6c8; }   /* Hidalgo */
+.hmap .mun.e15 { fill: #eeece7; }   /* Estado de México */
+.hmap .mun.e09 { fill: #f0d5c9; }   /* Ciudad de México */
+.hmap .estados { fill: none; stroke: #603b30; stroke-width: calc(var(--fs) * .16px); stroke-dasharray: 4 3; opacity: .55; }
+.hmap .cuenca  { fill: none; stroke: #be5e3a; stroke-width: calc(var(--fs) * .2px); stroke-dasharray: 3 3; opacity: 0; transition: opacity 1s; }
 .hmap .cuenca.on { opacity: .9; }
 
 /* ─ Agua ─ */
-.hmap .rivers { fill: none; stroke: #6cc0ff; stroke-width: calc(var(--fs) * .12px); }
-.hmap .waterbody, .hmap .lake { fill: #38a8ff; stroke: #0b74c9; stroke-width: calc(var(--fs) * .12px); opacity: 0; transition: opacity 1s, fill 1.2s; }
+.hmap .rivers { fill: none; stroke: #a5cdc9; stroke-width: calc(var(--fs) * .12px); }
+.hmap .waterbody, .hmap .lake { fill: #c3ddda; stroke: #6faaa5; stroke-width: calc(var(--fs) * .12px); opacity: 0; transition: opacity 1s, fill 1.2s; }
 .hmap .waterbody.on, .hmap .lake.on { opacity: .95; }
-.hmap .lake.drained { fill: #b9dcf7; opacity: .55; }
-.hmap .endho { fill: #38a8ff; stroke: #ff8a00; stroke-width: calc(var(--fs) * .3px); opacity: 0; transition: opacity 1s; }
+.hmap .lake.drained { fill: #e4efee; opacity: .8; }
+.hmap .endho { fill: #c3ddda; stroke: #e97630; stroke-width: calc(var(--fs) * .3px); opacity: 0; transition: opacity 1s; }
 .hmap .endho.on { opacity: 1; }
 
 /* ─ Obras (se dibujan al llegar su época) ─ */
@@ -38,35 +38,35 @@
   stroke-dasharray: 1; stroke-dashoffset: 1; opacity: 0; transition: stroke-dashoffset 1.8s ease, opacity .4s;
 }
 .hmap .line.on, .hmap .dique.on { opacity: 1; stroke-dashoffset: 0; }
-.hmap .dique  { stroke: #f59e0b; }
-.hmap .noch   { stroke: #e11d48; }
-.hmap .canal  { stroke: #ff6a00; }
-.hmap .emisor { stroke: #7c3aed; }
-.hmap .teo    { stroke: #c026d3; }
+.hmap .dique  { stroke: #e97630; }
+.hmap .noch   { stroke: #be5e3a; }
+.hmap .canal  { stroke: #f0a742; }
+.hmap .emisor { stroke: #603b30; }
+.hmap .teo    { stroke: #e97630; }
 
 /* ─ Río Tula y la ciudad ─ */
-.hmap .riotula { fill: none; stroke: #1467d6; stroke-width: calc(var(--fs) * .4px); stroke-linecap: round; stroke-linejoin: round; transition: stroke 1s; }
-.hmap .riotula.restored { stroke: #10b981; }
-.hmap .tulacity { fill: rgba(225, 29, 72, 0); stroke: #e11d48; stroke-width: calc(var(--fs) * .28px); stroke-dasharray: 5 3; opacity: 0; transition: opacity .8s, fill .8s, stroke .8s; }
+.hmap .riotula { fill: none; stroke: #3e8e89; stroke-width: calc(var(--fs) * .4px); stroke-linecap: round; stroke-linejoin: round; transition: stroke 1s; }
+.hmap .riotula.restored { stroke: #2e9c8a; }
+.hmap .tulacity { fill: rgba(233, 118, 48, 0); stroke: #be5e3a; stroke-width: calc(var(--fs) * .28px); stroke-dasharray: 5 3; opacity: 0; transition: opacity .8s, fill .8s, stroke .8s; }
 .hmap .tulacity.on { opacity: 1; }
-.hmap .tulacity.flood { fill: rgba(225, 29, 72, .32); }
-.hmap .tulacity.restored { fill: rgba(16, 185, 129, .3); stroke: #10b981; }
+.hmap .tulacity.flood { fill: rgba(233, 118, 48, .38); }
+.hmap .tulacity.restored { fill: rgba(195, 221, 218, .8); stroke: #2e9c8a; }
 
 /* ─ Marcadores ─ */
 .hmap .marker { opacity: 0; transition: opacity .6s; transform-box: fill-box; transform-origin: center; }
 .hmap .marker.on { opacity: 1; }
 .hmap .marker circle { transform-box: fill-box; transform-origin: center; }
 .hmap .marker .dot { stroke-width: 1.6; }
-.hmap .marker.zump .dot { fill: #38a8ff; stroke: #fff; }
-.hmap .marker.ptar .dot { fill: #0d9488; stroke: #fff; }
-.hmap .marker.zoc  .dot { fill: #f59e0b; stroke: #fff; }
+.hmap .marker.zump .dot { fill: #6faaa5; stroke: #fff; }
+.hmap .marker.ptar .dot { fill: #e97630; stroke: #fff; }
+.hmap .marker.zoc  .dot { fill: #be5e3a; stroke: #fff; }
 .hmap .marker .ping { fill: none; stroke-width: 1.4; animation: hsPing 2s ease-out infinite; }
-.hmap .marker.zump .ping { stroke: #38a8ff; } .hmap .marker.ptar .ping { stroke: #0d9488; } .hmap .marker.zoc .ping { stroke: #f59e0b; }
+.hmap .marker.zump .ping { stroke: #6faaa5; } .hmap .marker.ptar .ping { stroke: #e97630; } .hmap .marker.zoc .ping { stroke: #be5e3a; }
 @keyframes hsPing { 0% { transform: scale(1); opacity: .9; } 100% { transform: scale(3.6); opacity: 0; } }
 
 /* ─ Etiquetas ─ */
 .hmap .lbl {
-  font-family: 'Noto Sans', sans-serif; font-weight: 600; fill: #1f2937; text-anchor: middle;
+  font-family: 'Noto Sans', sans-serif; font-weight: 600; fill: #603b30; text-anchor: middle;
   paint-order: stroke; stroke: #fff; stroke-width: calc(var(--fs) * .32px); stroke-linejoin: round;
   opacity: 0; transition: opacity .6s; pointer-events: none;
 }
@@ -74,28 +74,28 @@
 .hmap .lbl.s  { font-size: calc(var(--fs) * .95px); }
 .hmap .lbl.m  { font-size: calc(var(--fs) * 1.15px); }
 .hmap .lbl.l  { font-size: calc(var(--fs) * 1.55px); font-weight: 800; }
-.hmap .lbl.st { font-size: calc(var(--fs) * 1.5px); letter-spacing: calc(var(--fs) * .3px); fill: #8494a8; font-weight: 700; stroke: none; }
-.hmap .lbl.st.on { opacity: .7; }
-.hmap .lbl.cuenca { fill: #c01d8c; font-style: italic; }
-.hmap .lbl.agua   { fill: #0b64b0; font-style: italic; }
-.hmap .lbl.hist   { fill: #b45309; }
-.hmap .lbl.ciudad { fill: #be123c; font-weight: 800; }
-.hmap .lbl.canal  { fill: #ea580c; }
-.hmap .lbl.tajo   { fill: #e11d48; }
-.hmap .lbl.emisor { fill: #6d28d9; }
-.hmap .lbl.teo    { fill: #a21caf; }
-.hmap .lbl.ptar   { fill: #0f766e; font-weight: 800; }
-.hmap .lbl.rio    { fill: #1d4ed8; font-style: italic; }
-.hmap .lbl.lm     { fill: #334155; }
-.hmap .lbl.key    { fill: #111827; font-weight: 800; }
+.hmap .lbl.st { font-size: calc(var(--fs) * 1.5px); letter-spacing: calc(var(--fs) * .3px); fill: #603b30; font-weight: 700; stroke: none; }
+.hmap .lbl.st.on { opacity: .32; }
+.hmap .lbl.cuenca { fill: #be5e3a; font-style: italic; }
+.hmap .lbl.agua   { fill: #3e7f7a; font-style: italic; }
+.hmap .lbl.hist   { fill: #be5e3a; }
+.hmap .lbl.ciudad { fill: #be5e3a; font-weight: 800; }
+.hmap .lbl.canal  { fill: #b8741a; }
+.hmap .lbl.tajo   { fill: #be5e3a; }
+.hmap .lbl.emisor { fill: #603b30; }
+.hmap .lbl.teo    { fill: #d1611f; }
+.hmap .lbl.ptar   { fill: #be5e3a; font-weight: 800; }
+.hmap .lbl.rio    { fill: #2f7a75; font-style: italic; }
+.hmap .lbl.lm     { fill: #603b30; }
+.hmap .lbl.key    { fill: #3a2119; font-weight: 800; }
 
 /* ─ Línea del tiempo ─ */
 .hs-timeline { position: absolute; z-index: 4; left: 62%; bottom: 20px; transform: translateX(-50%); width: min(470px, 44vw); padding: 12px 22px 24px; background: rgba(255,255,255,.88); border-radius: 16px; box-shadow: 0 10px 30px -14px rgba(0,0,0,.35); }
-.hs-timeline-here { position: relative; left: 0; transform: translateX(-50%); white-space: nowrap; font: 700 11px 'Noto Sans', sans-serif; letter-spacing: .12em; text-transform: uppercase; color: var(--azul-dark); margin-bottom: 10px; transition: left .5s ease; }
-.hs-timeline-track { position: relative; height: 3px; background: rgba(20, 60, 120, .18); border-radius: 2px; }
-.hs-timeline-fill { position: absolute; left: 0; top: 0; height: 100%; width: 0; background: linear-gradient(90deg, #38a8ff, #ff6a00); border-radius: 2px; transition: width .5s ease; }
-.hs-timeline-dot { position: absolute; top: 50%; left: 0; width: 13px; height: 13px; border-radius: 50%; background: #fff; border: 3px solid var(--azul-fill); transform: translate(-50%, -50%); transition: left .5s ease; box-shadow: 0 2px 8px rgba(0,0,0,.25); }
-.hs-tick { position: absolute; top: 12px; transform: translateX(-50%); font-size: 9.5px; color: #6b7a8c; white-space: nowrap; }
+.hs-timeline-here { position: relative; left: 0; transform: translateX(-50%); white-space: nowrap; font: 700 11px 'Noto Sans', sans-serif; letter-spacing: .12em; text-transform: uppercase; color: #603b30; margin-bottom: 10px; transition: left .5s ease; }
+.hs-timeline-track { position: relative; height: 3px; background: rgba(96, 59, 48, .16); border-radius: 2px; }
+.hs-timeline-fill { position: absolute; left: 0; top: 0; height: 100%; width: 0; background: linear-gradient(90deg, #c3ddda, #e97630); border-radius: 2px; transition: width .5s ease; }
+.hs-timeline-dot { position: absolute; top: 50%; left: 0; width: 13px; height: 13px; border-radius: 50%; background: #fff; border: 3px solid #e97630; transform: translate(-50%, -50%); transition: left .5s ease; box-shadow: 0 2px 8px rgba(0,0,0,.25); }
+.hs-tick { position: absolute; top: 12px; transform: translateX(-50%); font-size: 9.5px; color: #8a6a5e; white-space: nowrap; }
 
 @media (max-width: 900px) {
   .s-historia { padding-top: 24px; }
