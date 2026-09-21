@@ -1,14 +1,5 @@
-# Auditoría de textos — borrador original vs. sitio (21-sep-2026)
+# Textos
 
-**Respuesta corta:** en la primera versión **no** los respeté todos: reescribí casi todos. En una
-ocasión cambié el sentido (*"se vierte"* → *"se vertía"*). Ya se corrigió.
-
-**Regla ahora:** los textos del borrador se usan **tal cual**. Solo se quita lo que está en "XX" o lo
-que no está confirmado. Los textos que escribí yo siguen la `GUIA-DE-TONO.md`.
-
-## Textos del borrador (PDF y pptx) — estado en el sitio
-
-| Sección | Cómo aparece ahora | Qué se quitó / cambió |
 |---|---|---|
 | Calidad · intro | Verbatim: "Existen tres fuentes principales de contaminación del río Tula que estamos atendiendo en este proyecto." | Nada |
 | Atotonilco | Verbatim (31 → 38 m³/s; 2027 en estiaje) | Se quitó "dejando fluir por el río **XX** m³/s sin tratamiento". Se explica "estiaje" y "PTAR". |
@@ -25,15 +16,12 @@ que no está confirmado. Los textos que escribí yo siguen la `GUIA-DE-TONO.md`.
 | Desazolve | Verbatim con 3.9 km | Se quitaron "**XX** ton" y "**XX** m³/s" |
 | Monitoreo de caudal | Verbatim con 21 estaciones | Se corrigió "eficiente segura" → "eficiente y segura" |
 
-## Textos que escribí yo (reescritos con la guía de tono)
 
 Portada · Historia (9 épocas) · Compromiso 92 · "El proyecto" (hexágonos) · introducción de
 Inundaciones · Tres Culturas · títulos de tarjetas · etiquetas de apoyo.
 
-**Los más delicados:** *La inundación de Tula* (2021) y la introducción de *Inundaciones*.
+ *La inundación de Tula* (2021) y la introducción de *Inundaciones*.
 Recomendado: que las revise una persona con formación psicosocial o de comunicación de riesgos.
-
-## Pendiente que decide Andrea
 
 - Datos que se quitaron y podrían volver cuando se confirmen: ver `datos-tula.md`.
 - "37 proyectos" vs. los 30 de los tres frentes (15 + 6 + 9).
