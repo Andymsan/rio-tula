@@ -71,7 +71,7 @@ L("Albarradón de Nezahualcóyotl", (zoc[0] + 22, zoc[1] + 66), [1], "s", "hist"
 L("Huehuetoca", C("Huehuetoca", -6, 12), [2, 5], "m", "lm")
 L("Zumpango", C("Zumpango", 10, 8), [2, 3], "m", "lm")
 L("Tequixquiac", C("Tequixquiac", -22, 4), [2, 3], "s", "lm")
-L("Tula de Allende", C("Tula de Allende", -8, -14), [4, 6, 7, 8], "l", "lm key")
+L("Tula de Allende", C("Tula de Allende", -8, -14), [4, 6, 8], "l", "lm key")
 L("Atotonilco de Tula", C("Atotonilco de Tula", 14, 0), [5, 6, 8], "m", "lm key")
 L("Tepeji del Río", C("Tepeji del Río de Ocampo", 0, 6), [5, 6], "s", "lm")
 L("Tezontepec de Aldama", C("Tezontepec de Aldama", 14, -2), [4, 8], "s", "lm")
@@ -92,24 +92,24 @@ L("Tula de Allende", (120, 118), [7], "l", "lm key")
 
 # ─── textos de cada época (pasos) ─────────────────────────────────────────
 PASOS = [
-    ("~700,000 años atrás", "Una cuenca cerrada, lagos de sal",
-     "La actividad volcánica de la Sierra de Chichinautzin cerró por el sur la cuenca de México y la convirtió en un sistema endorreico, sin salida al mar. Toda el agua de lluvia empezó a escurrir hacia el centro del valle, donde formó los grandes lagos que, al no tener drenaje natural, se volvieron salados por evaporación."),
+    ("~700,000 años atrás", "Una cuenca sin salida",
+     "Los volcanes del sur cerraron el Valle de México. La lluvia no tenía por dónde salir y formó grandes lagos. Como esa agua no corría hacia el mar, los lagos se volvieron salados."),
     ("1449", "El dique de Nezahualcóyotl",
-     "Tras una inundación que devastó Tenochtitlan —hoy la <strong>Ciudad de México</strong>—, el tlatoani de Texcoco, <strong>Nezahualcóyotl</strong>, construyó un albarradón de más de 12 km de piedra, madera y tierra para separar las aguas saladas del lago de Texcoco de las aguas dulces donde se asentaba la ciudad."),
+     "Una inundación dejó a Tenochtitlan —hoy la <strong>Ciudad de México</strong>— bajo el agua. El tlatoani <strong>Nezahualcóyotl</strong> construyó un dique de más de 12 km. Separaba el agua salada del lago de Texcoco del agua dulce donde vivía la ciudad."),
     ("1607–1789", "El Tajo de Nochistongo",
-     "Enrico Martínez abrió el primer desagüe artificial de la cuenca: un túnel en <strong>Huehuetoca</strong>, Estado de México, para desviar el agua desde <strong>Zumpango</strong> hacia el río Tula. Los colapsos sucesivos obligaron a rehacerlo como un corte abierto, terminado hasta <strong>1789 —182 años después de iniciado—</strong>, y que desde entonces conduce agua de lluvia y aguas negras hacia el Tula."),
+     "Para proteger a la ciudad de las inundaciones, Enrico Martínez abrió en <strong>Huehuetoca</strong>, Estado de México, el primer desagüe artificial: un túnel que llevaba el agua desde la zona de <strong>Zumpango</strong> hacia el río Tula. Los derrumbes obligaron a rehacerlo como un corte abierto, que se terminó en <strong>1789</strong>, 182 años después. Desde entonces lleva agua de lluvia y aguas residuales hacia el Tula."),
     ("1900", "El Gran Canal del Desagüe",
-     "El 17 de marzo de 1900, Porfirio Díaz inauguró el Gran Canal del Desagüe, que sale de la <strong>Ciudad de México</strong> y cruza <strong>Ecatepec, Zumpango y Tequixquiac</strong>. Con él se terminó de drenar lo que quedaba de los antiguos lagos, y toda el agua residual de la ciudad quedó encauzada, de forma permanente, hacia la cuenca del Tula."),
+     "El 17 de marzo de 1900 se inauguró el Gran Canal del Desagüe. Sale de la <strong>Ciudad de México</strong> y pasa por <strong>Ecatepec, Zumpango y Tequixquiac</strong>. Desde entonces, las aguas residuales de la ciudad salen del valle y llegan a la cuenca del Tula."),
     ("1951", "La presa Endhó",
-     "Entre <strong>Tepetitlán y Tula de Allende</strong>, en Hidalgo, se construyó la presa Endhó para almacenar agua de riego y convertir un valle semidesértico en zona agrícola: el <strong>Valle del Mezquital</strong>. Con los años empezaría a recibir, cada vez en mayor volumen, las aguas negras de la Ciudad de México."),
+     "Entre <strong>Tepetitlán y Tula de Allende</strong>, en Hidalgo, se construyó la presa Endhó para guardar agua de riego. Un valle seco se volvió zona de cultivo: el <strong>Valle del Mezquital</strong>. Con los años, la presa recibió cada vez más aguas residuales de la Ciudad de México."),
     ("1975 y 2019", "Los grandes túneles de drenaje",
-     "El Emisor Central (1975) y, después, el <strong>Túnel Emisor Oriente</strong> —62 km de longitud y hasta 150 m³/s de capacidad, inaugurado en 2019— llevan el agua de la Ciudad de México hasta <strong>Atotonilco de Tula</strong> y multiplicaron el volumen de aguas negras y pluviales que se descarga hacia la cuenca del Tula."),
+     "En 1975 se inauguró el Emisor Central, y en 2019 el <strong>Túnel Emisor Oriente</strong>, de 62 km. Llevan el agua de la Ciudad de México hacia <strong>Atotonilco de Tula</strong>, en Hidalgo. Con ellos llegó más agua residual y de lluvia a la cuenca del Tula."),
     ("2018", "La planta de Atotonilco",
-     "En <strong>Atotonilco de Tula</strong>, Hidalgo, entra en operación la <strong>PTAR Atotonilco</strong>: la planta de tratamiento de aguas residuales más grande del mundo construida en una sola etapa, y la tercera con mayor capacidad de tratamiento a nivel mundial, pensada para reducir los riesgos sanitarios del riego con aguas sin tratar."),
-    ("Septiembre de 2021", "Las inundaciones de Tula",
-     "El desbordamiento de los ríos Tula y Rosas inunda la ciudad de <strong>Tula de Allende</strong>, Hidalgo. <strong>Más de 70,000 personas pierden su patrimonio y 17 mueren</strong> —14 de ellas en el Hospital del IMSS, cuando la energía eléctrica falló durante la emergencia."),
+     "En <strong>Atotonilco de Tula</strong>, Hidalgo, empezó a funcionar la planta de tratamiento de aguas residuales (PTAR) de Atotonilco: la más grande del mundo construida en una sola etapa. Se hizo para reducir los riesgos para la salud de regar con agua sin tratar."),
+    ("Septiembre de 2021", "La inundación de Tula",
+     "En septiembre de 2021 se desbordaron los ríos Tula y Rosas, y el agua entró a la ciudad de <strong>Tula de Allende</strong>, Hidalgo. Más de 70 mil personas perdieron sus pertenencias. Fallecieron 17 personas, 14 de ellas en el hospital del IMSS, donde falló la energía eléctrica. Ninguna obra devuelve lo que se perdió. Por eso el plan busca reducir el riesgo para las familias de Tula."),
     ("2024–2030", "Comienza la restauración",
-     "Recuperar el río Tula se vuelve prioridad nacional. Arranca el <strong>Plan de Saneamiento y Restauración del Río Tula 2024–2030</strong>: 37 proyectos para sanear el agua, prevenir inundaciones y restaurar los ecosistemas y el espacio público de un río que durante siglos absorbió el peso de una megaciudad."),
+     "Recuperar el río Tula es hoy una prioridad nacional. Arranca el <strong>Plan de Saneamiento y Restauración del Río Tula 2024–2030</strong>, con 37 proyectos para mejorar la calidad del agua, reducir el riesgo de inundaciones y recuperar el río y sus orillas para quienes viven junto a él."),
 ]
 ERA_BANNER = ["Hace ~700 mil años", "1449", "1607–1789", "1900", "1951", "1975 y 2019", "2018", "2021", "2024–2030"]
 
@@ -154,7 +154,7 @@ frag = '''<section class="s-historia" id="historia" data-nav="light">
   <div class="hs-intro-plain reveal">
     <span class="s-tag">01 · El río y su historia</span>
     <h2 class="s-title">700 mil años de una cuenca en transformación</h2>
-    <p class="s-body">Antes de ser un colector de aguas negras, el Tula fue el desfogue de una de las cuencas más alteradas del planeta. Esta es la ruta —de los lagos prehispánicos a la restauración de hoy— que explica por qué.</p>
+    <p class="s-body">Durante siglos, el río Tula recibió el agua que el Valle de México necesitaba sacar. Este recorrido cuenta cómo pasó y qué estamos haciendo hoy para cuidarlo.</p>
   </div>
   <div class="cap hist tema-azul" data-nav="light">
     <div class="cap-stage">

@@ -11,7 +11,7 @@ tabla** (JPG, PNG o WebP; horizontal, ~1600 px de ancho). No hay que tocar códi
 | `industria-1.jpg` | Inspección a una industria |
 | `industria-2.jpg` | Centro Regional de Prevención Ambiental |
 | `colectores-1.jpg` | Colector del río Tula · etapa 1 |
-| `colectores-2.jpg` | Línea de conducción a la PTAR de la CFE |
+| `colectores-2.jpg` | Línea de conducción a la planta de la CFE |
 | `colectores-3.jpg` | Cárcamo de bombeo |
 | `monitoreo-1.jpg` | Estación automática de calidad |
 | `monitoreo-2.jpg` | Muestreo manual |
