@@ -91,7 +91,7 @@ inaugurado en la UTTT (Universidad Tecnológica de Tula-Tepeji), terminado.
 | "conocer la calidad de **XX km de río**" | **Falta.** El tramo Atotonilco–presa Endhó ≈ **32 km** (cifra de la pptx). | 🔎 confirmar |
 | "**3 campañas** de monitoreo manual por año" | ⚠️ El Excel describe **2 campañas** (secas y lluvias) por año. | ⚠️ Andrea confirma si son 2 o 3 |
 | "en más de **95 sitios**" | 2025: 92 sitios · 2026: 92 en secas / **100 en lluvias**. Se puede decir "hasta 100 sitios". | ✅ |
-| "**5 estaciones** de monitoreo automático" | **5 estaciones** (3 en 2025: CFE, Pemex, Atotonilco + 2 en 2026) **+ 2 boyas** (presas Endhó y Requena). | ✅ |
+| "**5 estaciones** de monitoreo automático" | **5 estaciones = 3 en tierra** (caseta y equipo en CFE, Pemex y Atotonilco) **+ 2 boyas** (presas Endhó y Requena). *(Corregido 21-sep: antes decía "5 + 2 boyas".)* | ✅ |
 
 ---
 
@@ -186,3 +186,46 @@ Andrea (10-sep-2026): *"confío más en lo que tú encuentres que en el document
 - [Vicisitudes de Enrico Martínez en el desagüe del valle de México (UNAM, PDF)](https://historicas.unam.mx/publicaciones/publicadigital/libros/047/047_04_06_vicisitudes.pdf)
 - [Túnel Emisor Oriente — Wikipedia](https://es.wikipedia.org/wiki/T%C3%BAnel_Emisor_Oriente)
 - [El Túnel Emisor Oriente duplicará la capacidad del drenaje — Conagua (PDF)](https://www.conagua.gob.mx/CONAGUA07/Publicaciones/Folleter%C3%ADa/TunelEmisorOriente.pdf)
+
+
+---
+
+## Borrador web (21-sep-2026): qué quedó marcado en amarillo
+
+Estos 7 datos aparecen resaltados en amarillo en `index.html` (función `pend()` de
+`tools/build_index.py`). Cuando se confirmen, se cambia el texto y se quita `pend()`.
+
+| # | En la página | Dato pendiente | Dónde |
+|---|---|---|---|
+| 1 | Atotonilco | **XX m³/s** que pasaban sin tratamiento | Calidad · paso 1 |
+| 2 | Industria | **XX** empresas que descargan al río | Calidad · paso 2 |
+| 3 | Desazolve | **XX ton** de sedimento retirado | Inundaciones · paso 2 |
+| 4 | Desazolve | **XX m³/s** de capacidad de descarga | Inundaciones · paso 2 |
+| 5 | Riberas | **XX km** de riberas a restaurar hasta Endhó | Ecosistemas · paso 1 |
+| 6 | Bojay | **55 ha** de cuerpo de agua limpia (Excel dice 50 ha de humedal) | Ecosistemas · paso 2 |
+| 7 | Bosques | **100 ha** de ANP al inicio del sexenio | Ecosistemas · paso 3 |
+
+Datos que vienen **de la pptx de Andrea** (no del Excel) y se usan en el borrador:
+poblaciones de los 5 sitios (Chamizal 10 mil · San Lorenzo 20 mil · Río Rosas 24 mil ·
+Tres Culturas 4 mil · Bojay 3 mil), **52 %** a 15 min a pie, vía ciclable de **12 km**
+(4 + 6 + 2), y que "Nueva ANP" es el polígono grande del render.
+
+## Compromiso 92 — datos y fuentes (sección "Compromiso 92" del sitio)
+
+| Dato | Valor | Fuente |
+|---|---|---|
+| Compromiso presidencial 92 | limpiar y sanear los tres ríos más contaminados del país (Lerma-Santiago, Tula, Atoyac) | Ámbito; Contralínea |
+| Inversión | más de **20 mil millones de pesos** durante el sexenio | Contralínea (16-jul-2026) |
+| Lerma-Santiago | 1,360 km · 21.4 millones de habitantes · 6 estados | Contralínea |
+| **Tula** | **191 km · 800 mil personas** · Estado de México e Hidalgo | Contralínea |
+| Atoyac | 162 km · 3.7 millones · Tlaxcala y Puebla | Contralínea |
+| Diagnóstico (3 cuencas) | 3,202 puntos de descarga · 479 tiraderos clandestinos · 460 industrias potencialmente contaminantes | Contralínea / Ámbito |
+| Avance (sept-2026) | 23 PTAR construidas o rehabilitadas · 282 km de colectores | Profepa, gob.mx (1-sep-2026) |
+
+⚠️ **Por revisar:** Ámbito describe los 3,202 como "puntos de descarga domésticos e
+industriales" y Contralínea como "descargas industriales". En el sitio se dice
+"puntos de descarga identificados" (neutral).
+⚠️ El texto "el Tula recibe el drenaje del Valle de México" viene de la sección Historia.
+- [Contralínea](https://contralinea.com.mx/interno/semana/gobierno-invertira-mas-de-20-mil-mdp-para-sanear-los-rios-lerma-santiago-tula-y-atoyac/)
+- [Profepa · gob.mx](https://www.gob.mx/profepa/prensa/avanza-saneamiento-y-recuperacion-de-los-rios-atoyac-lerma-santiago-y-tula-434666)
+- [Ámbito](https://www.ambito.com/mexico/informacion-general/claudia-sheinbaum-ordena-limpiar-los-tres-rios-mas-contaminados-mexico-cuales-son-y-como-se-hara-este-historico-saneamiento-n6300195)

@@ -228,11 +228,16 @@ Valores propuestos (ajustables por Andrea) en `css/temas.css`:
 - [x] Historia del río resuelta (versión verificada, se ignora el PDF).
 - [x] Flujo de trabajo definido → `FLUJO-DE-TRABAJO.md`.
 - [x] Video de referencia de la animación guardado.
-- [ ] **Fase 1 — esqueleto:** landing + índice + 1 escena de ejemplo.
-      **Espera de Andrea:** layout general (desktop + móvil) e índice.
-- [ ] **Fase 2 — escenas una por una** (Andrea entrega paquete por escena).
-- [ ] Componente de carrusel "burbuja".
-- [ ] Cerrar los 12 datos pendientes de `datos-tula.md` conforme Andrea confirme.
+- [x] **Borrador v2027 armado por Claude (21-sep-2026)** por falta de tiempo para el layout:
+      portada con índice → historia → **compromiso 92** → el proyecto (3 círculos) →
+      calidad del agua → inundaciones → ecosistemas y espacio público → cierre.
+      Usa las capas de `diseño/espacio publico/` (marcos, capas y burbujas → `img/mapa/`).
+- [x] Carrusel de fotos con marcadores (se sustituyen por nombre de archivo, ver `img/fotos/LEEME.md`).
+- [x] Cámara con zoom por paso, pines con líder punteado, tema de color por capítulo.
+- [ ] **Andrea revisa el borrador** (textos, orden, qué falta).
+- [ ] Sustituir marcadores por fotos reales y por las capas finales de Andrea.
+- [ ] Animaciones "tipo pptx" por escena (rutas que se dibujan, isócronas) cuando lleguen las capas.
+- [ ] Cerrar los datos amarillos (ver `datos-tula.md`).
 - [ ] Revisar `mapa.html` (el mapa Leaflet detallado sigue como vista aparte).
 
 ## 6. Datos

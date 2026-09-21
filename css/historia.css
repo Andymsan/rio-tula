@@ -1,0 +1,148 @@
+/* historia.css — scrollytelling oscuro de la historia del río (mapa esquemático real).
+   Extraído sin cambios de index-v1.html; solo se agregó la parte móvil al final. */
+/* ─── HISTORIA: SCROLLYTELLING ─────────── */
+.s-historia { background: #0a0e12; padding: 100px 0 60px; }
+.hs-intro { max-width: 640px; margin: 0 auto 56px; padding: 0 32px; text-align: center; }
+.hs-eyebrow {
+  font-size: 12px; letter-spacing: .22em; text-transform: uppercase;
+  color: rgba(255,255,255,.55); font-weight: 500; margin-bottom: 18px;
+}
+.hs-main-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(40px, 7vw, 76px); font-weight: 900; line-height: 1;
+  color: #fff; letter-spacing: -.02em;
+}
+.hs-main-title em { font-style: italic; color: rgba(255,255,255,.75); }
+.hs-subtitle {
+  margin: 22px 0 0; font-size: clamp(14px, 1.6vw, 17px);
+  color: rgba(255,255,255,.65); font-weight: 300; line-height: 1.6;
+}
+.hs-intro-divider { width: 40px; height: 1px; background: rgba(255,255,255,.2); margin: 36px auto; }
+.hs-intro .s-tag { color: #e67e22; }
+.hs-intro .s-title { color: #fff; }
+.hs-intro .s-body { color: rgba(255,255,255,.6); margin-top: 16px; }
+
+.hs-scrolly {
+  display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+  gap: 40px; max-width: 1180px; margin: 0 auto; padding: 0 32px;
+}
+
+.hs-visual {
+  position: sticky; top: 8vh; height: 82vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px;
+}
+.hs-map-frame {
+  position: relative; width: 100%; max-width: 320px; aspect-ratio: 460 / 767;
+  border-radius: 18px; overflow: hidden;
+  background: radial-gradient(ellipse at 50% 28%, #16273a 0%, #0a0e12 72%);
+  box-shadow: 0 30px 80px rgba(0,0,0,.5), inset 0 0 0 1px rgba(255,255,255,.07);
+}
+.hs-map { width: 100%; height: 100%; display: block; }
+
+.hs-lake { fill: rgba(94,168,207,.34); stroke: rgba(160,210,235,.5); stroke-width: 1.4; opacity: 0; transition: opacity 1s, fill 1.2s, stroke 1.2s; }
+.hs-lake.on { opacity: 1; }
+.hs-lake.drained { fill: rgba(94,168,207,.07); stroke: rgba(160,210,235,.16); }
+
+.hs-dique { fill: none; stroke: #f2c14e; stroke-width: 2.4; stroke-linecap: round; stroke-dasharray: 5 5; opacity: 0; transition: opacity .8s; }
+.hs-dique.on { opacity: 1; }
+
+.hs-line { fill: none; stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round; opacity: 0; }
+.hs-nochistongo { stroke: #c45e1a; stroke-dasharray: 950; stroke-dashoffset: 950; transition: opacity .5s, stroke-dashoffset 1.8s ease; }
+.hs-nochistongo.on { opacity: 1; stroke-dashoffset: 0; }
+.hs-teo { stroke: #3d93a6; stroke-dasharray: 420; stroke-dashoffset: 420; transition: opacity .5s, stroke-dashoffset 1.5s ease; }
+.hs-teo.on { opacity: 1; stroke-dashoffset: 0; }
+
+.hs-riotula { fill: none; stroke: rgba(255,255,255,.28); stroke-width: 2.6; stroke-linecap: round; opacity: .5; transition: stroke 1s, opacity 1s, stroke-width 1s, filter 1s; }
+.hs-riotula.restored { stroke: #3fae7a; opacity: 1; stroke-width: 3.4; filter: drop-shadow(0 0 5px rgba(63,174,122,.75)); }
+
+.hs-tulacity { fill: rgba(255,255,255,.04); stroke: rgba(255,255,255,.22); stroke-width: 1.1; opacity: 0; transition: opacity .8s, fill .8s, stroke .8s; }
+.hs-tulacity.on { opacity: 1; }
+.hs-tulacity.flood { fill: rgba(196,94,26,.28); stroke: #c45e1a; }
+.hs-tulacity.restored { fill: rgba(63,174,122,.2); stroke: #3fae7a; }
+
+.hs-endho-shape { fill: rgba(242,193,78,.3); stroke: rgba(242,193,78,.6); stroke-width: .8; opacity: 0; transition: opacity 1s; }
+.hs-endho-shape.on { opacity: 1; }
+
+.hs-marker { opacity: 0; transition: opacity .6s; }
+.hs-marker.on { opacity: 1; }
+.hs-marker circle { fill: #f2c14e; }
+.hs-marker.current circle.ping { animation: hsPing 1.8s ease-out infinite; }
+@keyframes hsPing { 0% { r:3; stroke-opacity:.6; } 100% { r:13; stroke-opacity:0; } }
+
+.hs-label { fill: rgba(255,255,255,.6); font-size: 9.5px; font-family: 'Noto Sans', sans-serif; opacity: 0; transition: opacity .6s; }
+.hs-label.on { opacity: 1; }
+.hs-cuenca-lbl { fill: rgba(255,255,255,.32); font-style: italic; font-size: 8.5px; }
+
+.hs-cuenca { fill: none; stroke: rgba(255,255,255,.3); stroke-width: 1; stroke-dasharray: 3 3; opacity: 0; transition: opacity 1.2s; }
+.hs-cuenca.on { opacity: 1; }
+
+.hs-waterbody { fill: rgba(94,168,207,.28); stroke: rgba(160,210,235,.4); stroke-width: .8; opacity: 0; transition: opacity 1s; }
+.hs-waterbody.on { opacity: 1; }
+
+.hs-basemap { opacity: 0; transition: opacity 1.4s; }
+.hs-basemap.on { opacity: 1; }
+.hs-estados { fill: none; stroke: rgba(255,255,255,.22); stroke-width: .8; stroke-dasharray: 1.5 2.5; }
+.hs-municipios { fill: none; stroke: rgba(255,255,255,.09); stroke-width: .5; }
+.hs-humedales { fill: none; stroke: rgba(130,190,150,.35); stroke-width: .5; }
+.hs-cuerpos { fill: none; stroke: rgba(160,210,235,.3); stroke-width: .5; }
+.hs-tulanet { fill: none; stroke: rgba(150,185,205,.22); stroke-width: .6; }
+
+.hs-timeline { width: 100%; max-width: 320px; padding: 0 6px; }
+.hs-timeline-here {
+  font-size: 10px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600;
+  color: #fff; margin-bottom: 10px; transform: translateX(-50%); position: relative; left: 0%;
+  transition: left .5s ease; white-space: nowrap;
+}
+.hs-timeline-track { position: relative; height: 2px; background: rgba(255,255,255,.15); }
+.hs-timeline-fill { position: absolute; left: 0; top: 0; height: 100%; background: linear-gradient(90deg,#611232,#c45e1a); width: 0%; transition: width .5s ease; }
+.hs-timeline-dot {
+  position: absolute; top: 50%; left: 0%; width: 10px; height: 10px; border-radius: 50%;
+  background: #fff; box-shadow: 0 0 0 4px rgba(255,255,255,.15);
+  transform: translate(-50%,-50%); transition: left .5s ease;
+}
+.hs-tick {
+  position: absolute; top: 12px; transform: translateX(-50%);
+  font-size: 9px; letter-spacing: .04em; color: rgba(255,255,255,.4); white-space: nowrap;
+}
+
+.hs-steps { display: flex; flex-direction: column; }
+.hs-step { min-height: 76vh; display: flex; flex-direction: column; justify-content: center; padding: 30px 0; }
+.hs-step:first-child { min-height: 56vh; }
+.hs-step:last-child { min-height: 60vh; }
+.hs-step-era {
+  font-family: 'Playfair Display', serif; font-style: italic; font-size: 14px;
+  color: #e67e22; opacity: .5; margin-bottom: 10px; transition: opacity .5s;
+}
+.hs-step .s-title { color: rgba(255,255,255,.32); font-size: clamp(22px, 2.6vw, 30px); transition: color .5s; }
+.hs-step .s-body { color: rgba(255,255,255,.22); transition: color .5s; }
+.hs-step.active .hs-step-era { opacity: 1; }
+.hs-step.active .s-title { color: #fff; }
+.hs-step.active .s-body { color: rgba(255,255,255,.68); }
+.s-tag {
+  display: inline-block; font-size: 11px; font-weight: 600;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--vino); margin-bottom: 18px;
+}
+.s-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 3.5vw, 42px); font-weight: 700; line-height: 1.18;
+  color: var(--ink); margin-bottom: 20px;
+}
+.s-body {
+  font-size: 16px; line-height: 1.75; color: #4a4a4a; font-weight: 300;
+}
+.s-body p + p { margin-top: 14px; }
+.s-body strong { color: var(--ink); font-weight: 600; }
+
+/* ─── Historia: móvil ─── */
+@media (max-width: 768px) {
+  .s-historia { padding: 56px 0; }
+  .hs-scrolly { display: block; padding: 0 20px; }
+  .hs-intro { padding: 0 20px; margin-bottom: 36px; }
+  .hs-visual { position: sticky; top: 0; height: auto; padding-top: 58px; padding-bottom: 14px; background: #0a0e12; justify-content: flex-start; gap: 10px; z-index: 2; margin-bottom: 12px; }
+  .hs-map-frame { max-width: 140px; }
+  .hs-timeline-here { font-size: 9px; margin-bottom: 6px; }
+  .hs-tick { display: none; }
+  .hs-step { min-height: 58vh; }
+  .hs-step:first-child, .hs-step:last-child { min-height: 50vh; }
+}

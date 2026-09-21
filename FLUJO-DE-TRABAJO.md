@@ -115,9 +115,11 @@ de empezar, porque es el molde de todo lo demás.
 
 ---
 
-## 6. Estado vivo
+## 6. Estado vivo (21-sep-2026)
 
-- **Ahora esperando:** layout general + índice del landing (Fase 1)
-- **Claude ya tiene:** identidad gráfica, storyboard, datos, temas, referencia de animación
-- **Pendiente de datos:** 14 puntos en `datos-tula.md` (Andrea investiga)
-- **Capas de intervención:** Andrea las pasa poco a poco
+- **Borrador v2027 listo** (`index.html`): Andrea no tuvo tiempo de diseñar el layout, así que
+  Claude armó uno con los insumos que ya existían (renders de Blender, storyboard, Excel).
+- **Andrea ahora:** revisar el borrador (textos, orden, qué falta) y mandar **fotos**.
+- **Claude ya tiene:** capas de `diseño/espacio publico/` convertidas a `img/mapa/`.
+- **Pendiente de datos:** 7 datos en amarillo en la página (ver `datos-tula.md`).
+- **Cómo se edita:** textos/datos en `tools/build_index.py`; fotos por nombre en `img/fotos/`.

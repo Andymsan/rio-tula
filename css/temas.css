@@ -1,252 +1,82 @@
 /* ============================================================================
-   temas.css — Sistema de temas de color para el sitio Río Tula (v2027)
+   temas.css — Paleta por tema (rosa / naranja / verde) — Río Tula v2027
    ----------------------------------------------------------------------------
-   La paleta cambia por sección: rosa (calidad/saneamiento), naranja
-   (inundaciones), verde (restauración / espacio público).
+   Los colores salen de los renders de Andrea (rutas y banners del video).
+   Para cambiar un color: editar SOLO este archivo (y el filtro SVG de
+   index.html si es una capa recoloreada: #f-rosa, #f-naranja, #f-verde).
 
-   Uso:
-     <section class="escena tema-rosa"> ... </section>
-   o bien cambiando el atributo en runtime desde el scrollytelling:
-     document.documentElement.dataset.tema = "naranja";
-
-   Todo lo temático se resuelve con la variable --tema-* ; los componentes
-   (banner, textito, flúor, burbuja de carrusel) sólo leen esas variables.
+   Uso:  <section class="cap tema-rosa"> ... </section>
+   Todo lo temático lee --tema, --tema-dark, --tema-fill y --tema-tint.
    ============================================================================ */
 
 :root {
-  /* ---- valores base de cada tema (ajustables) ---- */
-  --rosa:        #e8637a;
-  --rosa-dark:   #b23350;
-  --rosa-tint:   rgba(232, 99, 122, .14);
+  /* Calidad del agua / saneamiento */
+  --rosa:        #f0938c;   /* color de mapa (ruta de colectores)          */
+  --rosa-fill:   #e97b73;   /* rellenos con texto blanco (banner, tarjeta) */
+  --rosa-dark:   #b9463f;   /* texto/títulos sobre fondo claro             */
+  --rosa-tint:   rgba(240, 147, 140, .22);
 
-  --naranja:      #e8791f;
-  --naranja-dark: #b4530c;
-  --naranja-tint: rgba(232, 121, 31, .14);
+  /* Gestión de inundaciones */
+  --naranja:      #f78b62;
+  --naranja-fill: #ef7443;
+  --naranja-dark: #bf4a1c;
+  --naranja-tint: rgba(247, 139, 98, .22);
 
-  --verde:       #3f8f5f;
-  --verde-dark:  #256b41;
-  --verde-tint:  rgba(63, 143, 95, .14);
+  /* Ecosistemas y espacio público (verde oliva del render) */
+  --verde:        #8c871d;
+  --verde-fill:   #7b7716;
+  --verde-dark:   #55520d;
+  --verde-tint:   rgba(140, 135, 29, .20);
 
-  /* ---- tema activo por defecto: rosa ---- */
+  /* Interconexión (acento extra del video) */
+  --slate:        #65748b;
+
+  /* Tema activo por defecto */
   --tema:        var(--rosa);
+  --tema-fill:   var(--rosa-fill);
   --tema-dark:   var(--rosa-dark);
   --tema-tint:   var(--rosa-tint);
 
-  /* neutros compartidos con el resto del sitio */
-  --ink:   #1a1a1a;
-  --paper: #f5f3f0;
+  /* Neutros */
+  --ink:   #1c1c1c;
+  --paper: #f4f2ee;
   --night: #0a0e12;
+  --vino:  #611232;
 }
 
-/* ---- selección de tema por clase (en el contenedor de la escena) ---- */
-.tema-rosa    { --tema: var(--rosa);    --tema-dark: var(--rosa-dark);    --tema-tint: var(--rosa-tint); }
-.tema-naranja { --tema: var(--naranja); --tema-dark: var(--naranja-dark); --tema-tint: var(--naranja-tint); }
-.tema-verde   { --tema: var(--verde);   --tema-dark: var(--verde-dark);   --tema-tint: var(--verde-tint); }
+.tema-rosa    { --tema: var(--rosa);    --tema-fill: var(--rosa-fill);    --tema-dark: var(--rosa-dark);    --tema-tint: var(--rosa-tint); }
+.tema-naranja { --tema: var(--naranja); --tema-fill: var(--naranja-fill); --tema-dark: var(--naranja-dark); --tema-tint: var(--naranja-tint); }
+.tema-verde   { --tema: var(--verde);   --tema-fill: var(--verde-fill);   --tema-dark: var(--verde-dark);   --tema-tint: var(--verde-tint); }
 
-/* ---- o por atributo en <html> / <body> (para transición global suave) ---- */
-[data-tema="rosa"]    { --tema: var(--rosa);    --tema-dark: var(--rosa-dark);    --tema-tint: var(--rosa-tint); }
-[data-tema="naranja"] { --tema: var(--naranja); --tema-dark: var(--naranja-dark); --tema-tint: var(--naranja-tint); }
-[data-tema="verde"]   { --tema: var(--verde);   --tema-dark: var(--verde-dark);   --tema-tint: var(--verde-tint); }
+/* mismo cambio por atributo en <html> (lo usa el scroll para el botón "Ver mapa") */
+[data-tema="rosa"]    { --tema: var(--rosa);    --tema-fill: var(--rosa-fill);    --tema-dark: var(--rosa-dark);    --tema-tint: var(--rosa-tint); }
+[data-tema="naranja"] { --tema: var(--naranja); --tema-fill: var(--naranja-fill); --tema-dark: var(--naranja-dark); --tema-tint: var(--naranja-tint); }
+[data-tema="verde"]   { --tema: var(--verde);   --tema-fill: var(--verde-fill);   --tema-dark: var(--verde-dark);   --tema-tint: var(--verde-tint); }
 
-/* transición de color al cambiar de tema con el scroll */
-[data-tema] { transition: color .6s ease, background-color .6s ease; }
-
-/* ============================================================================
-   COMPONENTES
-   ============================================================================ */
-
-/* ---- Banner de sección / mensaje clave (ancho completo) ------------------- */
-.banner-seccion {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 14px 28px;
-  background: var(--tema);
+/* ---- Resaltado tipo flúor -------------------------------------------------- */
+mark.fluor {
+  background: var(--tema-fill);
   color: #fff;
-  font-family: 'Playfair Display', Georgia, serif;
-  font-weight: 700;
-  font-size: clamp(1.1rem, 2.4vw, 1.9rem);
-  letter-spacing: .01em;
-}
-.banner-seccion .num {
-  font-size: .7em;
-  opacity: .7;
-  font-variant-numeric: tabular-nums;
-}
-
-/* ---- "Textito": título + micro-texto con resaltado flúor ---------------- */
-.textito {
-  max-width: 34ch;
-  color: var(--ink);
-}
-.textito h3 {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-weight: 700;
-  font-size: clamp(1.3rem, 3vw, 2.2rem);
-  line-height: 1.15;
-  color: var(--tema-dark);
-  margin-bottom: .5em;
-}
-.textito p {
-  font-size: clamp(1rem, 1.5vw, 1.15rem);
-  line-height: 1.55;
-}
-
-/* resaltado tipo marcador flúor */
-mark.fluor,
-.fluor {
-  background: var(--tema);
-  color: #fff;
-  padding: .05em .28em;
-  border-radius: .12em;
+  padding: .04em .3em;
+  border-radius: .16em;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
 }
-/* variante suave (sólo fondo tenue, texto en color del tema) */
-.fluor-suave {
-  background: var(--tema-tint);
-  color: var(--tema-dark);
-  padding: .05em .28em;
-  border-radius: .12em;
-  font-weight: 600;
+
+/* ---- Dato por confirmar (Andrea lo está investigando) ---------------------- */
+.pend {
+  background: #ffe45c;
+  color: #4a3b00;
+  font-weight: 700;
+  padding: 0 .3em;
+  border-radius: .2em;
+  border-bottom: 2px dashed #b38f00;
+  cursor: help;
 }
 
-/* ---- Burbuja de carrusel ------------------------------------------------- */
-.burbuja {
-  position: relative;
-  border-radius: 22px;
-  overflow: hidden;
-  background: #fff;
-  box-shadow: 0 18px 50px -12px rgba(0, 0, 0, .45);
-  border: 3px solid var(--tema);
-}
-.burbuja img,
-.burbuja video {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.burbuja .pie {
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  padding: 14px 16px;
-  font-size: .82rem;
-  color: #fff;
-  background: linear-gradient(to top, rgba(0, 0, 0, .72), transparent);
-}
-.burbuja-nav {
-  position: absolute;
-  bottom: 12px; right: 12px;
-  display: flex;
-  gap: 6px;
-}
-.burbuja-nav button {
-  width: 30px; height: 30px;
-  border: none; border-radius: 50%;
-  background: rgba(255, 255, 255, .85);
-  color: var(--tema-dark);
-  font-size: 15px; line-height: 1;
-  cursor: pointer;
-}
-.burbuja-dots {
-  position: absolute;
-  bottom: 16px; left: 16px;
-  display: flex; gap: 6px;
-}
-.burbuja-dots i {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, .5);
-}
-.burbuja-dots i.on { background: #fff; }
-
-/* ---- Mapa-escena: render Blender + capas recoloreables ------------------ */
-.mapa-escena {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background: #eceae5;
-}
-.mapa-escena .capa-base,
-.mapa-escena .capa-glow,
-.mapa-escena .capa-rio {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-/* el glow turquesa del render se recolorea al tema con blend + tinte */
-.mapa-escena .capa-glow {
-  mix-blend-mode: multiply;      /* sobre el base claro */
-  opacity: 0;
-  transition: opacity 1s ease;
-}
-.mapa-escena.rio-on .capa-glow { opacity: 1; }
-.mapa-escena .tinte-tema {
-  position: absolute;
-  inset: 0;
-  background: var(--tema);
-  mix-blend-mode: color;
-  opacity: 0;
-  transition: opacity 1s ease;
-  pointer-events: none;
-}
-.mapa-escena.rio-on .tinte-tema { opacity: .55; }
-
-/* pines sobre el mapa (foto circular + etiqueta) */
-.pin {
-  position: absolute;
-  transform: translate(-50%, -100%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  opacity: 0;
-  transition: opacity .5s ease, transform .5s ease;
-}
-.pin.on { opacity: 1; }
-.pin .foto {
-  width: 52px; height: 52px;
-  border-radius: 50%;
-  border: 3px solid var(--tema);
-  object-fit: cover;
-  background: #fff;
-}
-.pin .etq {
-  background: #fff;
-  color: var(--ink);
-  font-size: .72rem;
-  font-weight: 600;
-  padding: 3px 8px;
-  border-radius: 10px;
-  white-space: nowrap;
-  box-shadow: 0 4px 14px -4px rgba(0, 0, 0, .4);
-}
-.pin .etq b { color: var(--tema-dark); }
-
-/* botón "Ver mapa" permanente arriba-derecha */
-.ver-mapa-btn {
-  position: fixed;
-  top: 16px; right: 16px;
-  z-index: 90;
-  background: var(--tema);
-  color: #fff;
-  font-size: 13px; font-weight: 600;
-  border: none; border-radius: 22px;
-  padding: 10px 20px;
-  text-decoration: none;
-  box-shadow: 0 6px 20px -6px rgba(0, 0, 0, .5);
-  transition: background .3s, transform .15s;
-}
-.ver-mapa-btn:hover { transform: translateY(-1px); }
-
-/* ---- Móvil: mapa arriba, texto/carrusel abajo -------------------------- */
-@media (max-width: 760px) {
-  .escena { display: block; }
-  .mapa-escena { height: 46vh; }
-  .textito { max-width: none; padding: 18px 20px; }
-  .banner-seccion { font-size: 1.15rem; padding: 12px 18px; }
-}
+/* ---- Recoloreo de capas PNG por tema (filtros SVG definidos en index.html) - */
+.tint-rosa    { filter: url(#f-rosa); }
+.tint-naranja { filter: url(#f-naranja); }
+.tint-naranja-x2 { filter: url(#f-naranja-x2); }
+.tint-verde   { filter: url(#f-verde); }
+.tint-slate   { filter: url(#f-slate); }

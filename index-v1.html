@@ -4,51 +4,357 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Río Tula — Plan de Saneamiento y Restauración 2024–2030</title>
-  <meta name="description" content="La historia del río Tula y el plan para sanearlo y restaurarlo: calidad del agua, inundaciones, ecosistemas y espacio público." />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Noto+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/temas.css" />
-  <link rel="stylesheet" href="css/historia.css" />
-  <link rel="stylesheet" href="css/capitulos.css" />
-  <script>document.documentElement.classList.add('js')</script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Noto+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --vino:   #611232;
+      --teal:   #2f5d6d;
+      --green:  #285c4d;
+      --orange: #c45e1a;
+      --ink:    #1a1a1a;
+      --off:    #f5f3f0;
+      --mid:    #f0ede9;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Noto Sans', sans-serif;
+      color: var(--ink);
+      background: #0d0d0d;
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ──────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 32px;
+      transition: background .4s, padding .3s;
+    }
+    nav.scrolled {
+      background: rgba(10,10,10,.92);
+      backdrop-filter: blur(8px);
+      padding: 12px 32px;
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 17px; font-weight: 700;
+      color: #fff; letter-spacing: .01em;
+      text-decoration: none;
+    }
+    .nav-logo span { color: rgba(255,255,255,.45); font-weight: 300; }
+    .nav-cta {
+      background: var(--vino);
+      color: #fff; font-size: 13px; font-weight: 600;
+      border: none; border-radius: 24px;
+      padding: 10px 22px; cursor: pointer;
+      text-decoration: none;
+      transition: background .2s, transform .15s;
+    }
+    .nav-cta:hover { background: #7c172f; transform: translateY(-1px); }
+
+    @keyframes fadeUp { from { opacity:0; transform:translateY(22px); } to { opacity:1; transform:translateY(0); } }
+
+    /* ─── STATS STRIP ─────────────────────── */
+    .stats-strip {
+      background: var(--vino); color: #fff;
+      display: grid; grid-template-columns: repeat(4,1fr);
+      text-align: center;
+    }
+    .stat-cell {
+      padding: 32px 24px; border-right: 1px solid rgba(255,255,255,.12);
+      opacity: 0; transform: translateY(16px);
+      transition: opacity .6s, transform .6s;
+    }
+    .stat-cell.visible { opacity: 1; transform: translateY(0); }
+    .stat-cell:last-child { border-right: none; }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 42px; font-weight: 900; line-height: 1;
+      color: #fff;
+    }
+    .stat-num sup { font-size: 22px; }
+    .stat-label { margin-top: 6px; font-size: 13px; color: rgba(255,255,255,.65); font-weight: 300; }
+
+    /* ─── SECCIÓN GENÉRICA ─────────────────── */
+    section { position: relative; }
+
+    .section-inner {
+      max-width: 1200px; margin: 0 auto; padding: 0 32px;
+    }
+
+    /* ─── HISTORIA: SCROLLYTELLING ─────────── */
+    .s-historia { background: #0a0e12; padding: 100px 0 60px; }
+    .hs-intro { max-width: 640px; margin: 0 auto 56px; padding: 0 32px; text-align: center; }
+    .hs-eyebrow {
+      font-size: 12px; letter-spacing: .22em; text-transform: uppercase;
+      color: rgba(255,255,255,.55); font-weight: 500; margin-bottom: 18px;
+    }
+    .hs-main-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(40px, 7vw, 76px); font-weight: 900; line-height: 1;
+      color: #fff; letter-spacing: -.02em;
+    }
+    .hs-main-title em { font-style: italic; color: rgba(255,255,255,.75); }
+    .hs-subtitle {
+      margin: 22px 0 0; font-size: clamp(14px, 1.6vw, 17px);
+      color: rgba(255,255,255,.65); font-weight: 300; line-height: 1.6;
+    }
+    .hs-intro-divider { width: 40px; height: 1px; background: rgba(255,255,255,.2); margin: 36px auto; }
+    .hs-intro .s-tag { color: #e67e22; }
+    .hs-intro .s-title { color: #fff; }
+    .hs-intro .s-body { color: rgba(255,255,255,.6); margin-top: 16px; }
+
+    .hs-scrolly {
+      display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+      gap: 40px; max-width: 1180px; margin: 0 auto; padding: 0 32px;
+    }
+
+    .hs-visual {
+      position: sticky; top: 8vh; height: 82vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px;
+    }
+    .hs-map-frame {
+      position: relative; width: 100%; max-width: 320px; aspect-ratio: 460 / 767;
+      border-radius: 18px; overflow: hidden;
+      background: radial-gradient(ellipse at 50% 28%, #16273a 0%, #0a0e12 72%);
+      box-shadow: 0 30px 80px rgba(0,0,0,.5), inset 0 0 0 1px rgba(255,255,255,.07);
+    }
+    .hs-map { width: 100%; height: 100%; display: block; }
+
+    .hs-lake { fill: rgba(94,168,207,.34); stroke: rgba(160,210,235,.5); stroke-width: 1.4; opacity: 0; transition: opacity 1s, fill 1.2s, stroke 1.2s; }
+    .hs-lake.on { opacity: 1; }
+    .hs-lake.drained { fill: rgba(94,168,207,.07); stroke: rgba(160,210,235,.16); }
+
+    .hs-dique { fill: none; stroke: #f2c14e; stroke-width: 2.4; stroke-linecap: round; stroke-dasharray: 5 5; opacity: 0; transition: opacity .8s; }
+    .hs-dique.on { opacity: 1; }
+
+    .hs-line { fill: none; stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round; opacity: 0; }
+    .hs-nochistongo { stroke: #c45e1a; stroke-dasharray: 950; stroke-dashoffset: 950; transition: opacity .5s, stroke-dashoffset 1.8s ease; }
+    .hs-nochistongo.on { opacity: 1; stroke-dashoffset: 0; }
+    .hs-teo { stroke: #3d93a6; stroke-dasharray: 420; stroke-dashoffset: 420; transition: opacity .5s, stroke-dashoffset 1.5s ease; }
+    .hs-teo.on { opacity: 1; stroke-dashoffset: 0; }
+
+    .hs-riotula { fill: none; stroke: rgba(255,255,255,.28); stroke-width: 2.6; stroke-linecap: round; opacity: .5; transition: stroke 1s, opacity 1s, stroke-width 1s, filter 1s; }
+    .hs-riotula.restored { stroke: #3fae7a; opacity: 1; stroke-width: 3.4; filter: drop-shadow(0 0 5px rgba(63,174,122,.75)); }
+
+    .hs-tulacity { fill: rgba(255,255,255,.04); stroke: rgba(255,255,255,.22); stroke-width: 1.1; opacity: 0; transition: opacity .8s, fill .8s, stroke .8s; }
+    .hs-tulacity.on { opacity: 1; }
+    .hs-tulacity.flood { fill: rgba(196,94,26,.28); stroke: #c45e1a; }
+    .hs-tulacity.restored { fill: rgba(63,174,122,.2); stroke: #3fae7a; }
+
+    .hs-endho-shape { fill: rgba(242,193,78,.3); stroke: rgba(242,193,78,.6); stroke-width: .8; opacity: 0; transition: opacity 1s; }
+    .hs-endho-shape.on { opacity: 1; }
+
+    .hs-marker { opacity: 0; transition: opacity .6s; }
+    .hs-marker.on { opacity: 1; }
+    .hs-marker circle { fill: #f2c14e; }
+    .hs-marker.current circle.ping { animation: hsPing 1.8s ease-out infinite; }
+    @keyframes hsPing { 0% { r:3; stroke-opacity:.6; } 100% { r:13; stroke-opacity:0; } }
+
+    .hs-label { fill: rgba(255,255,255,.6); font-size: 9.5px; font-family: 'Noto Sans', sans-serif; opacity: 0; transition: opacity .6s; }
+    .hs-label.on { opacity: 1; }
+    .hs-cuenca-lbl { fill: rgba(255,255,255,.32); font-style: italic; font-size: 8.5px; }
+
+    .hs-cuenca { fill: none; stroke: rgba(255,255,255,.3); stroke-width: 1; stroke-dasharray: 3 3; opacity: 0; transition: opacity 1.2s; }
+    .hs-cuenca.on { opacity: 1; }
+
+    .hs-waterbody { fill: rgba(94,168,207,.28); stroke: rgba(160,210,235,.4); stroke-width: .8; opacity: 0; transition: opacity 1s; }
+    .hs-waterbody.on { opacity: 1; }
+
+    .hs-basemap { opacity: 0; transition: opacity 1.4s; }
+    .hs-basemap.on { opacity: 1; }
+    .hs-estados { fill: none; stroke: rgba(255,255,255,.22); stroke-width: .8; stroke-dasharray: 1.5 2.5; }
+    .hs-municipios { fill: none; stroke: rgba(255,255,255,.09); stroke-width: .5; }
+    .hs-humedales { fill: none; stroke: rgba(130,190,150,.35); stroke-width: .5; }
+    .hs-cuerpos { fill: none; stroke: rgba(160,210,235,.3); stroke-width: .5; }
+    .hs-tulanet { fill: none; stroke: rgba(150,185,205,.22); stroke-width: .6; }
+
+    .hs-timeline { width: 100%; max-width: 320px; padding: 0 6px; }
+    .hs-timeline-here {
+      font-size: 10px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600;
+      color: #fff; margin-bottom: 10px; transform: translateX(-50%); position: relative; left: 0%;
+      transition: left .5s ease; white-space: nowrap;
+    }
+    .hs-timeline-track { position: relative; height: 2px; background: rgba(255,255,255,.15); }
+    .hs-timeline-fill { position: absolute; left: 0; top: 0; height: 100%; background: linear-gradient(90deg,#611232,#c45e1a); width: 0%; transition: width .5s ease; }
+    .hs-timeline-dot {
+      position: absolute; top: 50%; left: 0%; width: 10px; height: 10px; border-radius: 50%;
+      background: #fff; box-shadow: 0 0 0 4px rgba(255,255,255,.15);
+      transform: translate(-50%,-50%); transition: left .5s ease;
+    }
+    .hs-tick {
+      position: absolute; top: 12px; transform: translateX(-50%);
+      font-size: 9px; letter-spacing: .04em; color: rgba(255,255,255,.4); white-space: nowrap;
+    }
+
+    .hs-steps { display: flex; flex-direction: column; }
+    .hs-step { min-height: 76vh; display: flex; flex-direction: column; justify-content: center; padding: 30px 0; }
+    .hs-step:first-child { min-height: 56vh; }
+    .hs-step:last-child { min-height: 60vh; }
+    .hs-step-era {
+      font-family: 'Playfair Display', serif; font-style: italic; font-size: 14px;
+      color: #e67e22; opacity: .5; margin-bottom: 10px; transition: opacity .5s;
+    }
+    .hs-step .s-title { color: rgba(255,255,255,.32); font-size: clamp(22px, 2.6vw, 30px); transition: color .5s; }
+    .hs-step .s-body { color: rgba(255,255,255,.22); transition: color .5s; }
+    .hs-step.active .hs-step-era { opacity: 1; }
+    .hs-step.active .s-title { color: #fff; }
+    .hs-step.active .s-body { color: rgba(255,255,255,.68); }
+    .s-tag {
+      display: inline-block; font-size: 11px; font-weight: 600;
+      letter-spacing: .18em; text-transform: uppercase;
+      color: var(--vino); margin-bottom: 18px;
+    }
+    .s-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 3.5vw, 42px); font-weight: 700; line-height: 1.18;
+      color: var(--ink); margin-bottom: 20px;
+    }
+    .s-body {
+      font-size: 16px; line-height: 1.75; color: #4a4a4a; font-weight: 300;
+    }
+    .s-body p + p { margin-top: 14px; }
+    .s-body strong { color: var(--ink); font-weight: 600; }
+
+    /* ─── EJES ─────────────────────────────── */
+    .s-ejes {
+      background: var(--mid); padding: 96px 0;
+    }
+    .ejes-header {
+      text-align: center; margin-bottom: 52px;
+      opacity: 0; transition: opacity .7s, transform .7s; transform: translateY(16px);
+    }
+    .ejes-header.visible { opacity: 1; transform: none; }
+    .ejes-header .s-title { font-size: clamp(26px, 3vw, 36px); }
+    .ejes-header .s-body { max-width: 560px; margin: 14px auto 0; color: #666; }
+
+    .ejes-grid {
+      display: grid; grid-template-columns: repeat(4,1fr); gap: 18px;
+    }
+    .eje-card {
+      background: #fff; border-radius: 14px; padding: 24px 20px;
+      border-top: 4px solid transparent;
+      box-shadow: 0 4px 20px rgba(0,0,0,.06);
+      opacity: 0; transform: translateY(20px);
+      transition: opacity .6s, transform .6s, box-shadow .2s;
+    }
+    .eje-card.visible { opacity: 1; transform: none; }
+    .eje-card:hover { box-shadow: 0 12px 32px rgba(0,0,0,.12); }
+    .eje-card-lead { margin-bottom: 16px; }
+    .eje-card-icon {
+      width: 40px; height: 40px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 12px;
+    }
+    .eje-card-icon svg { width: 20px; height: 20px; }
+    .eje-card-count {
+      font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 900; line-height: 1;
+    }
+    .eje-card-count span { display: block; font-family: 'Noto Sans', sans-serif; font-size: 11px; font-weight: 500; color: #888; margin-top: 3px; }
+    .eje-card-body { min-width: 0; }
+    .eje-card-title { font-family: 'Playfair Display', serif; font-size: 19px; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
+    .eje-card-desc { font-size: 13.5px; line-height: 1.6; color: #666; }
+    .eje-card-stats {
+      display: flex; gap: 24px; margin-top: 16px; padding-top: 14px;
+      border-top: 1px solid #eee;
+    }
+    .eje-stat-v { font-size: 18px; font-weight: 700; line-height: 1; display: block; }
+    .eje-stat-l { font-size: 10.5px; color: #888; margin-top: 3px; display: block; }
+
+    .eje-agua  { border-left-color: var(--teal); }
+    .eje-agua  .eje-card-icon { background: rgba(47,93,109,.1); color: var(--teal); }
+    .eje-agua  .eje-card-count, .eje-agua .eje-stat-v { color: var(--teal); }
+    .eje-inund { border-left-color: var(--orange); }
+    .eje-inund .eje-card-icon { background: rgba(196,94,26,.1); color: var(--orange); }
+    .eje-inund .eje-card-count, .eje-inund .eje-stat-v { color: var(--orange); }
+    .eje-eco   { border-left-color: var(--green); }
+    .eje-eco   .eje-card-icon { background: rgba(40,92,77,.1); color: var(--green); }
+    .eje-eco   .eje-card-count, .eje-eco .eje-stat-v { color: var(--green); }
+    .eje-gob   { border-left-color: var(--vino); }
+    .eje-gob   .eje-card-icon { background: rgba(97,18,50,.08); color: var(--vino); }
+    .eje-gob   .eje-card-count, .eje-gob .eje-stat-v { color: var(--vino); }
+
+    /* ─── CTA FINAL ──────────────────────── */
+    .s-cta {
+      padding: 120px 32px;
+      background: linear-gradient(145deg, var(--vino) 0%, #2f5d6d 100%);
+      text-align: center;
+    }
+    .s-cta .s-title { color: #fff; font-size: clamp(28px, 4vw, 50px); margin-bottom: 20px; }
+    .s-cta .s-body  { color: rgba(255,255,255,.65); font-size: 17px; max-width: 560px; margin: 0 auto 44px; }
+    .s-cta, .s-cta * {
+      opacity: 0; transform: translateY(20px);
+      transition: opacity .8s, transform .8s;
+    }
+    .s-cta.visible, .s-cta.visible * { opacity: 1; transform: none; }
+    .btn-big {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: #fff; color: var(--vino);
+      font-size: 16px; font-weight: 700;
+      border: none; border-radius: 36px;
+      padding: 18px 44px; cursor: pointer;
+      text-decoration: none;
+      transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 8px 32px rgba(0,0,0,.25);
+    }
+    .btn-big:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 14px 40px rgba(0,0,0,.35); }
+    .btn-big svg { flex-shrink: 0; }
+
+    /* ─── FOOTER ─────────────────────────── */
+    footer {
+      background: #0d0d0d; color: rgba(255,255,255,.35);
+      text-align: center; padding: 28px 24px;
+      font-size: 12px; letter-spacing: .04em;
+    }
+    footer a { color: rgba(255,255,255,.45); text-decoration: none; }
+    footer a:hover { color: rgba(255,255,255,.7); }
+
+    /* ─── MOBILE ─────────────────────────── */
+    @media (max-width: 768px) {
+      nav { padding: 14px 20px; }
+      .nav-logo { font-size: 14px; }
+      .stats-strip { grid-template-columns: repeat(2,1fr); }
+      .stat-cell { padding: 22px 16px; }
+      .stat-num  { font-size: 32px; }
+      .s-historia, .s-ejes { padding: 56px 0; }
+      .section-inner { padding: 0 20px; }
+      .ejes-grid { grid-template-columns: 1fr; }
+      .hs-scrolly { display: block; padding: 0 20px; }
+      .hs-intro { padding: 0 20px; margin-bottom: 36px; }
+      .hs-visual { position: sticky; top: 0; height: auto; padding-top: 58px; padding-bottom: 14px; background: #0a0e12; justify-content: flex-start; gap: 10px; z-index: 2; margin-bottom: 12px; }
+      .hs-map-frame { max-width: 140px; }
+      .hs-timeline-here { font-size: 9px; margin-bottom: 6px; }
+      .hs-tick { display: none; }
+      .hs-step { min-height: 58vh; }
+      .hs-step:first-child, .hs-step:last-child { min-height: 50vh; }
+      .btn-big { width: 100%; max-width: 320px; text-align: center; justify-content: center; }
+    }
+
+    @media (max-width: 480px) {
+      .stat-cell { border-right: none; border-bottom: 1px solid rgba(255,255,255,.12); }
+    }
+  </style>
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
-<filter id="f-rosa"    color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.941  0 0 0 0 0.576  0 0 0 0 0.549  0 0 0 1 0"/></filter>
-<filter id="f-naranja" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.969  0 0 0 0 0.545  0 0 0 0 0.384  0 0 0 1 0"/></filter>
-<filter id="f-naranja-x2" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.969  0 0 0 0 0.545  0 0 0 0 0.384  0 0 0 2.6 0"/></filter>
-<filter id="f-verde"   color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.549  0 0 0 0 0.529  0 0 0 0 0.114  0 0 0 1 0"/></filter>
-<filter id="f-slate"   color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.396  0 0 0 0 0.455  0 0 0 0 0.545  0 0 0 1 0"/></filter>
-</defs></svg>
-<div id="progress"></div>
 
+<!-- NAV -->
 <nav id="main-nav">
-  <a class="nav-logo" href="#top">Río Tula <span>/ Plan 2024–2030</span></a>
-  <div class="nav-right">
-    <button class="nav-btn" id="idxBtn" type="button">☰ Índice</button>
-    <a class="nav-cta" href="mapa.html">Ver mapa →</a>
-  </div>
+  <a href="index.html" class="nav-logo">Río Tula <span>/ Plan 2024–2030</span></a>
+  <a href="mapa.html" class="nav-cta">Ver mapa →</a>
 </nav>
 
-<div class="idx-panel" id="idxPanel" role="dialog" aria-label="Índice">
-  <button class="idx-close" id="idxClose" type="button" aria-label="Cerrar">×</button>
-  <div class="idx-box"><h2>Índice</h2><ul class="idx-list"><li><a href="#historia" style="--c:#f2c14e"><b>01</b><span>Historia<small>Cómo llegó el río a esta condición</small></span></a></li><li><a href="#promesa" style="--c:#f0938c"><b>02</b><span>Compromiso 92<small>La promesa de limpiar los tres ríos más contaminados</small></span></a></li><li><a href="#proyecto" style="--c:#f2c14e"><b>03</b><span>El proyecto<small>Tres frentes, un mismo río</small></span></a></li><li><a href="#calidad" style="--c:#f0938c"><b>04</b><span>Calidad del agua<small>Atotonilco, industria, colectores y monitoreo</small></span></a></li><li><a href="#inundaciones" style="--c:#f78b62"><b>05</b><span>Inundaciones<small>Taludes, desazolve y más espacio para el agua</small></span></a></li><li><a href="#ecosistemas" style="--c:#b3ae35"><b>06</b><span>Ecosistemas y espacio público<small>Riberas, humedales, bosques y cinco sitios</small></span></a></li><li><a href="#cierre" style="--c:#65748b"><b>07</b><span>Cierre y mapa<small>Los números y el visor interactivo</small></span></a></li></ul></div>
-</div>
-
-<div class="borrador">Borrador · <span class="pend" style="cursor:default">amarillo</span> = dato por confirmar · las fotos son marcadores
-  <button id="borradorClose" type="button" aria-label="Cerrar aviso">×</button></div>
-
-<header class="hero" id="top" data-nav="dark">
-  <div class="hero-bg"></div><div class="hero-glow"></div>
-  <p class="hs-eyebrow">Saneamiento · Restauración · 2024–2030</p>
-  <h1 class="hs-main-title">Río <em>Tula</em></h1>
-  <p class="hs-subtitle">Cómo llegó a estar así y cómo lo estamos recuperando: agua limpia, un cauce seguro y un río abierto a su gente.</p>
-  <div class="hero-cta"><a class="btn btn-light" href="#historia">Comenzar el recorrido ↓</a><a class="btn btn-ghost" href="mapa.html">Ver mapa</a></div>
-  <div class="idx-grid" aria-label="Índice"><a class="idx-item" href="#historia" style="--c:#f2c14e"><b>01</b><span>Historia</span></a><a class="idx-item" href="#promesa" style="--c:#f0938c"><b>02</b><span>Compromiso 92</span></a><a class="idx-item" href="#proyecto" style="--c:#f2c14e"><b>03</b><span>El proyecto</span></a><a class="idx-item" href="#calidad" style="--c:#f0938c"><b>04</b><span>Calidad del agua</span></a><a class="idx-item" href="#inundaciones" style="--c:#f78b62"><b>05</b><span>Inundaciones</span></a><a class="idx-item" href="#ecosistemas" style="--c:#b3ae35"><b>06</b><span>Ecosistemas y espacio público</span></a><a class="idx-item" href="#cierre" style="--c:#65748b"><b>07</b><span>Cierre y mapa</span></a></div>
-</header>
-
-<section class="s-historia" id="historia" data-nav="dark">
-  <div class="hs-intro-plain reveal">
-    <span class="s-tag">01 · El río y su historia</span>
+<!-- HISTORIA: SCROLLYTELLING -->
+<section class="s-historia" id="historia">
+  <div class="hs-intro reveal">
+    <p class="hs-eyebrow">Saneamiento · Restauración · 2024–2030</p>
+    <h1 class="hs-main-title">Río <em>Tula</em></h1>
+    <p class="hs-subtitle">El camino de recuperación de uno de los ríos más contaminados de México: agua limpia, riberas restauradas y comunidades resilientes.</p>
+    <div class="hs-intro-divider"></div>
+    <span class="s-tag">El río y su historia</span>
     <h2 class="s-title">700 mil años de una cuenca en transformación</h2>
     <p class="s-body">Antes de ser un colector de aguas negras, el Tula fue el desfogue de una de las cuencas más alteradas del planeta. Esta es la ruta —de los lagos prehispánicos a la restauración de hoy— que explica por qué.</p>
   </div>
@@ -163,88 +469,215 @@
       <div class="hs-step" data-step="8">
         <div class="hs-step-era">2024–2030</div>
         <h3 class="s-title">Comienza la restauración</h3>
-        <div class="s-body"><p>Recuperar el río Tula se vuelve prioridad nacional. Arranca el <strong>Plan de Saneamiento y Restauración del Río Tula 2024–2030</strong>: 37 proyectos para sanear el agua, prevenir inundaciones, restaurar el ecosistema y fortalecer la gobernanza de un río que durante siglos absorbió el peso de una megaciudad.</p></div>
+        <div class="s-body"><p>Recuperar el río Tula se vuelve prioridad nacional. Arranca el <strong>Plan de Saneamiento y Restauración del Río Tula 2024–2030</strong>: 36 proyectos para sanear el agua, prevenir inundaciones, restaurar el ecosistema y fortalecer la gobernanza de un río que durante siglos absorbió el peso de una megaciudad.</p></div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="s-promesa" id="promesa" data-nav="dark">
-  <div class="pm-beat"><div class="pm-wrap pm-1">
-    <div class="pm-92 rv">92</div>
-    <div class="rv">
-      <p class="pm-kicker">Compromiso presidencial</p>
-      <h2 class="pm-h">Limpiar y sanear <em>los tres ríos más contaminados</em> del país</h2>
-      <p class="pm-sub">Es el compromiso 92 de la Presidenta Claudia Sheinbaum Pardo: recuperar el Lerma-Santiago, el Tula y el Atoyac, tres ríos que atraviesan cuencas con millones de habitantes y cientos de industrias.</p>
-    </div>
-  </div></div>
-
-  <div class="pm-beat"><div class="pm-wrap pm-2">
-    <p class="pm-kicker rv">Los tres ríos</p>
-    <h2 class="rv">Tres cuencas, una misma tarea</h2>
-    <div class="rios rv">
-      <article class="rio-card"><h3>Lerma-Santiago</h3><p class="edos">México, Querétaro, Guanajuato, Michoacán, Jalisco y Nayarit</p>
-        <div class="m"><b>1,360</b><span>km de río</span><div class="bar"><i style="--w:100%"></i></div></div>
-        <div class="m"><b>21.4</b><span>millones de habitantes</span><div class="bar"><i style="--w:100%"></i></div></div></article>
-      <article class="rio-card hl"><h3>Tula</h3><p class="edos">Estado de México e Hidalgo</p>
-        <div class="m"><b>191</b><span>km de río</span><div class="bar"><i style="--w:14%"></i></div></div>
-        <div class="m"><b>0.8</b><span>millones de habitantes</span><div class="bar"><i style="--w:3.7%"></i></div></div></article>
-      <article class="rio-card"><h3>Atoyac</h3><p class="edos">Tlaxcala y Puebla</p>
-        <div class="m"><b>162</b><span>km de río</span><div class="bar"><i style="--w:11.9%"></i></div></div>
-        <div class="m"><b>3.7</b><span>millones de habitantes</span><div class="bar"><i style="--w:17.3%"></i></div></div></article>
-    </div>
-    <p class="rio-nota rv">El Tula es el más corto de los tres, pero además recibe el drenaje del Valle de México.</p>
-  </div></div>
-
-  <div class="pm-beat"><div class="pm-wrap pm-3">
-    <p class="pm-kicker rv">La escala del reto</p>
-    <h2 class="rv">Una inversión histórica para tres ríos</h2>
-    <div class="nums rv">
-      <div class="n big"><b>+20 mil</b><span>millones de pesos de inversión durante el sexenio para los tres ríos</span></div>
-      <div class="n"><b>3,202</b><span>puntos de descarga identificados en las tres cuencas</span></div>
-      <div class="n"><b>479</b><span>tiraderos clandestinos</span></div>
-      <div class="n"><b>460</b><span>industrias potencialmente contaminantes</span></div>
-      <div class="n"><b>23</b><span>plantas de tratamiento construidas o rehabilitadas, con 282 km de colectores (sept. de 2026)</span></div>
-    </div>
-    <p class="pm-puente rv">Y en el Tula, el plan tiene nombre y ubicación.<span>↓</span></p>
-    <p class="pm-fuentes rv">Fuentes: <a href="https://contralinea.com.mx/interno/semana/gobierno-invertira-mas-de-20-mil-mdp-para-sanear-los-rios-lerma-santiago-tula-y-atoyac/" target="_blank" rel="noopener">Contralínea (16 jul 2026)</a> ·
-      <a href="https://www.gob.mx/profepa/prensa/avanza-saneamiento-y-recuperacion-de-los-rios-atoyac-lerma-santiago-y-tula-434666" target="_blank" rel="noopener">Profepa, gob.mx (1 sep 2026)</a> ·
-      <a href="https://www.ambito.com/mexico/informacion-general/claudia-sheinbaum-ordena-limpiar-los-tres-rios-mas-contaminados-mexico-cuales-son-y-como-se-hara-este-historico-saneamiento-n6300195" target="_blank" rel="noopener">Ámbito</a>.</p>
-  </div></div>
-</section>
-
-<div class="cap-lead" data-nav="dark"></div><section class="cap tema-rosa" id="proyecto" data-tema="rosa" data-nav="light"><div class="cap-stage"><div class="canvas"><img class="frame" data-frame="int" src="img/mapa/int.webp" alt="" loading="lazy" decoding="async"></div><div class="wash"></div><div class="venn" data-focus="all"><svg viewBox="0 0 400 400" role="img" aria-label="Calidad del agua, inundaciones y ecosistemas se cruzan en el río Tula">
-<g class="c c-rosa"><a href="#calidad"><circle cx="150" cy="150" r="120" fill="#f0938c" fill-opacity=".66"/></a>
-<text class="num" x="92" y="124">15</text><text class="lab" x="92" y="148">Calidad</text><text class="lab" x="92" y="165">del agua</text></g>
-<g class="c c-naranja"><a href="#inundaciones"><circle cx="250" cy="150" r="120" fill="#f78b62" fill-opacity=".66"/></a>
-<text class="num" x="308" y="124">6</text><text class="lab" x="308" y="148">Inundaciones</text></g>
-<g class="c c-verde"><a href="#ecosistemas"><circle cx="200" cy="236" r="120" fill="#a6a12a" fill-opacity=".66"/></a>
-<text class="num" x="200" y="306">9</text><text class="lab" x="200" y="326">Ecosistemas y</text><text class="lab" x="200" y="343">espacio público</text></g>
-<g class="centro"><rect x="152" y="160" width="96" height="36" rx="18" fill="#fff"/><text x="200" y="184" style="font-size:15px">Río Tula</text></g>
-</svg></div><div class="banner">El proyecto</div></div><div class="cap-steps"><article class="step" data-frame="int" data-cam=".5,.5,1" data-wash="0" data-tema="rosa"><div class="card"><div class="tag">El proyecto</div><h3>Un río, tres frentes</h3><p>El Plan de Saneamiento y Restauración del Río Tula actúa a la vez sobre el agua, el cauce y el territorio. Esto es lo que está pasando, todo junto: <mark class="fluor">37 proyectos</mark> sobre un mismo río.</p><div class="kf"><b>$1,478 MDP</b><span>de inversión documentada en 2025 y 2026</span></div><ul class="facts"><li>Conagua</li><li>Semarnat</li><li>Conafor</li><li>Conanp</li><li>Profepa</li><li>Gobierno de Hidalgo</li></ul></div></article><article class="step" data-frame="int" data-cam=".5,.5,1" data-wash=".8" data-venn="rosa" data-tema="rosa"><div class="card"><div class="tag">Frente 1 · 15 proyectos</div><h3>Calidad del agua</h3><p>Plantas de tratamiento, colectores, control de la industria y monitoreo: <mark class="fluor">que el agua que llega al río sea cada vez más limpia</mark>.</p></div></article><article class="step" data-frame="int" data-cam=".5,.5,1" data-wash=".8" data-venn="naranja" data-tema="naranja"><div class="card"><div class="tag">Frente 2 · 6 proyectos</div><h3>Inundaciones</h3><p>Taludes firmes, cauce desazolvado, estaciones que miden el río cada 5 minutos y más espacio para que el agua se extienda: <mark class="fluor">reducir el riesgo para Tula</mark>.</p></div></article><article class="step" data-frame="int" data-cam=".5,.5,1" data-wash=".8" data-venn="verde" data-tema="verde"><div class="card"><div class="tag">Frente 3 · 9 proyectos</div><h3>Ecosistemas y espacio público</h3><p>Riberas, humedales, bosques y cinco espacios públicos ribereños: <mark class="fluor">devolverle el río a la gente</mark> y la vida al río.</p></div></article><article class="step" data-frame="int" data-cam=".5,.5,1" data-wash=".8" data-venn="all" data-tema="rosa"><div class="card"><div class="tag">Donde se cruzan</div><h3>En el centro está el río</h3><p>Cada frente sostiene a los otros: un río más limpio se puede recorrer, un cauce ordenado se puede restaurar y un río con vida vuelve a ser de la gente.</p><p>Además, <mark class="fluor">7 proyectos de gobernanza, estudios y participación</mark> los articulan.</p><div class="kf"><b>Baja</b><span>y empecemos por la calidad del agua ↓</span></div></div></article></div></section>
-
-<section class="cap tema-rosa" id="calidad" data-tema="rosa" data-nav="light"><div class="cap-stage"><div class="canvas"><img class="frame" data-frame="col" src="img/mapa/col.webp" alt="" loading="lazy" decoding="async"><div class="pin " data-id="atot" style="--px:0.615;--py:0.815"><i></i><span class="lbl">PTAR Atotonilco<small></small></span></div><div class="pin l" data-id="colec" style="--px:0.53;--py:0.52"><i></i><span class="lbl">Colectores del río Tula<small></small></span></div><div class="pin l" data-id="cfe" style="--px:0.881;--py:0.455"><i></i><span class="lbl">PTAR de la CFE<small></small></span></div><div class="pin " data-id="boya" style="--px:0.55;--py:0.12"><i></i><span class="lbl">Boya · presa Endhó<small></small></span></div></div><div class="banner">Calidad del agua</div></div><div class="cap-steps"><article class="step" data-frame="col" data-cam=".55,.5,1.05" data-pins=""><div class="card"><div class="tag">Frente 1 · Calidad del agua</div><h3>Tres fuentes de contaminación, tres respuestas</h3><p>Tres fuentes principales contaminan hoy el río Tula, y el proyecto atiende las tres: <mark class="fluor">el agua residual del Valle de México que no alcanza a tratarse</mark>, las descargas industriales y el drenaje de la ciudad de Tula.</p><div class="kf"><b>15</b><span>proyectos de calidad del agua</span></div></div></article><article class="step" data-frame="col" data-cam=".615,.79,2.3" data-pins="atot"><div class="card"><div class="tag">1 · Atotonilco</div><h3>Tratar más agua en Atotonilco</h3><p>Históricamente la PTAR Atotonilco trataba <strong>31 m³/s</strong> en promedio y dejaba pasar al río <span class="pend" title="Dato por confirmar">XX m³/s</span> sin tratamiento. En 2026 el caudal tratado subió a <strong>38 m³/s</strong>, y <mark class="fluor">a partir de 2027 tratará todo el drenaje del río en estiaje</mark>.</p><div class="kf"><b>+7 m³/s</b><span>de caudal tratado adicional</span></div><ul class="facts"><li>Terminado en 2026</li><li>Conagua · $112 MDP</li></ul></div><div class="burbuja" data-carousel aria-label="Fotos del proyecto"><span class="bu-hint">Desliza →</span><div class="bu-track"><figure class="bu-slide" data-foto="atotonilco-1" data-cap="PTAR Atotonilco"></figure><figure class="bu-slide" data-foto="atotonilco-2" data-cap="Operación de la planta"></figure><figure class="bu-slide" data-foto="atotonilco-3" data-cap="Caudal tratado"></figure></div><div class="bu-dots"></div><button class="bu-btn bu-prev" type="button" aria-label="Anterior">‹</button><button class="bu-btn bu-next" type="button" aria-label="Siguiente">›</button></div></article><article class="step" data-frame="col" data-cam=".55,.47,1.25" data-pins=""><div class="card"><div class="tag">2 · Industria</div><h3>Vigilar lo que se descarga</h3><p>Durante este sexenio Conagua y Profepa inspeccionarán al menos dos veces a las <span class="pend" title="Dato por confirmar">XX</span> empresas que descargan al río o a sus afluentes. Hasta hoy suman <strong>92 inspecciones</strong>, y <mark class="fluor">29 industrias</mark> están en capacitación y certificación en el Centro Regional de Prevención Ambiental, en la UTTT.</p><div class="kf"><b>92</b><span>inspecciones · 29 industrias en certificación</span></div><ul class="facts"><li>Profepa</li><li>Conagua</li><li>UTTT</li></ul></div><div class="burbuja" data-carousel aria-label="Fotos del proyecto"><span class="bu-hint">Desliza →</span><div class="bu-track"><figure class="bu-slide" data-foto="industria-1" data-cap="Inspección a una industria"></figure><figure class="bu-slide" data-foto="industria-2" data-cap="Centro Regional de Prevención Ambiental"></figure></div><div class="bu-dots"></div><button class="bu-btn bu-prev" type="button" aria-label="Anterior">‹</button><button class="bu-btn bu-next" type="button" aria-label="Siguiente">›</button></div></article><article class="step" data-frame="col" data-cam=".64,.47,1.35" data-pins="colec cfe"><div class="card"><div class="tag">3 · Drenaje de Tula</div><h3>Que el drenaje de la ciudad deje de caer al río</h3><p>Todo el drenaje de la zona metropolitana de Tula se vertía al río sin tratamiento. El Gobierno de Hidalgo construye <strong>35.8 km de colectores</strong> para captar <strong>72 descargas</strong> y <mark class="fluor">llevarlas a tratar a la planta de la CFE</mark>, que se está rehabilitando (600 l/s).</p><div class="kf"><b>35.8 km</b><span>de colectores · etapa 1 con 89 % de avance</span></div><ul class="facts"><li>Gobierno de Hidalgo · $570 MDP</li><li>PTAR CFE en rehabilitación</li><li>PTAR Pemex en planeación</li></ul></div><div class="burbuja" data-carousel aria-label="Fotos del proyecto"><span class="bu-hint">Desliza →</span><div class="bu-track"><figure class="bu-slide" data-foto="colectores-1" data-cap="Colector del río Tula · etapa 1"></figure><figure class="bu-slide" data-foto="colectores-2" data-cap="Línea de conducción a la PTAR de la CFE"></figure><figure class="bu-slide" data-foto="colectores-3" data-cap="Cárcamo de bombeo"></figure></div><div class="bu-dots"></div><button class="bu-btn bu-prev" type="button" aria-label="Anterior">‹</button><button class="bu-btn bu-next" type="button" aria-label="Siguiente">›</button></div></article><article class="step" data-frame="col" data-cam=".55,.46,1.05" data-pins="boya atot"><div class="card"><div class="tag">4 · Monitoreo</div><h3>Medir para saber si funciona</h3><p><strong>5 estaciones automáticas</strong> vigilan la calidad del agua en tiempo real: tres en tierra (CFE, Pemex y Atotonilco) y dos boyas en las presas Endhó y Requena. Además se muestrea a mano en <mark class="fluor">hasta 100 sitios</mark>, en secas y en lluvias.</p><p>Todo llega al Centro de Vigilancia y Cultura del Agua, en la PTAR Atotonilco (en construcción).</p><div class="kf"><b>5</b><span>estaciones automáticas de calidad</span></div><ul class="facts"><li>Conagua · GCA</li><li>Muestreo manual: 92–100 sitios</li></ul></div><div class="burbuja" data-carousel aria-label="Fotos del proyecto"><span class="bu-hint">Desliza →</span><div class="bu-track"><figure class="bu-slide" data-foto="monitoreo-1" data-cap="Estación automática de calidad"></figure><figure class="bu-slide" data-foto="monitoreo-2" data-cap="Muestreo manual"></figure></div><div class="bu-dots"></div><button class="bu-btn bu-prev" type="button" aria-label="Anterior">‹</button><button class="bu-btn bu-next" type="button" aria-label="Siguiente">›</button></div></article></div></section>
-
-<section class="cap tema-naranja" id="inundaciones" data-tema="naranja" data-nav="light"><div class="cap-stage"><div class="canvas"><img class="frame" data-frame="int" src="img/mapa/int.webp" alt="" loading="lazy" decoding="async"><img class="frame" data-frame="col" src="img/mapa/col.webp" alt="" loading="lazy" decoding="async"><img class="ov tint-naranja" data-ov="sanlorenzo" src="img/mapa/ov-sanlorenzo.webp" alt="" loading="lazy" decoding="async"><img class="ov tint-naranja" data-ov="chamizal" src="img/mapa/ov-chamizal.webp" alt="" loading="lazy" decoding="async"><img class="ov tint-naranja" data-ov="trescult" src="img/mapa/ov-trescult.webp" alt="" loading="lazy" decoding="async"><img class="ov tint-naranja" data-ov="rosas" src="img/mapa/ov-rosas.webp" alt="" loading="lazy" decoding="async"><img class="ov tint-naranja-x2" data-ov="tramo" src="img/mapa/ov-rio.webp" alt="" loading="lazy" decoding="async" style="clip-path: inset(30% 30% 24% 40%)"><div class="pin r" data-id="sanlorenzo" style="--px:0.537;--py:0.693"><i></i><span class="lbl">San Lorenzo<small></small></span></div><div class="pin r" data-id="chamizal" style="--px:0.391;--py:0.934"><i></i><span class="lbl">El Chamizal<small></small></span></div><div class="pin r" data-id="trescult" style="--px:0.575;--py:0.352"><i></i><span class="lbl">Tres Culturas<small></small></span></div><div class="pin l" data-id="rosas" style="--px:0.455;--py:0.527"><i></i><span class="lbl">Río Rosas<small></small></span></div></div><div class="banner">Gestión de inundaciones</div></div><div class="cap-steps"><article class="step" data-frame="int" data-cam=".5,.55,1.05"><div class="card"><div class="tag">Frente 2 · Inundaciones</div><h3>Un río que sabe desbordarse</h3><p>En septiembre de 2021 el desbordamiento de los ríos Tula y Rosas inundó la ciudad. Hoy el plan actúa sobre <mark class="fluor">el cauce, los taludes y la información</mark> para reducir el riesgo.</p><div class="kf"><b>6</b><span>proyectos de gestión de inundaciones</span></div></div></article><article class="step" data-frame="int" data-cam=".46,.81,1.9" data-ov="sanlorenzo chamizal" data-pins="sanlorenzo chamizal"><div class="card"><div class="tag">1 · Taludes</div><h3>Taludes firmes en la ciudad</h3><p>Las zonas erosionadas del río son un riesgo para quienes viven cerca. Estabilizamos <strong>4.47 km</strong> de taludes con tapete articulado, gaviones y revegetación nativa en <mark class="fluor">San Lorenzo, El Chamizal, San Marcos y Ahuehuetes</mark>, y seguiremos hasta cubrir todos los taludes críticos de las zonas urbanas.</p><div class="kf"><b>4.47 km</b><span>1 km terminado · 1.67 km en obra · 1.8 km en planeación</span></div><ul class="facts"><li>Conagua · Hidroagrícola</li><li>San Lorenzo 2025 · terminado</li></ul></div><div class="burbuja" data-carousel aria-label="Fotos del proyecto"><span class="bu-hint">Desliza →</span><div class="bu-track"><figure class="bu-slide" data-foto="taludes-1" data-cap="San Lorenzo · antes"></figure><figure class="bu-slide" data-foto="taludes-2" data-cap="San Lorenzo · después"></figure><figure class="bu-slide" data-foto="taludes-3" data-cap="El Chamizal · obra en proceso"></figure></div><div class="bu-dots"></div><button class="bu-btn bu-prev" type="button" aria-label="Anterior">‹</button><button class="bu-btn bu-next" type="button" aria-label="Siguiente">›</button></div></article><article class="step" data-frame="int" data-cam=".5,.44,1.6" data-ov="tramo" data-pins="trescult rosas"><div class="card"><div class="tag">2 · Desazolve</div><h3>Más espacio para el agua</h3><p>Cuando el cauce está azolvado, el agua tiene menos por dónde correr. En 2025 <mark class="fluor">desazolvamos 3.9 km</mark> del río en la zona urbana de Tula, retirando <span class="pend" title="Dato por confirmar">XX ton</span> de sedimento, basura y escombro, para que pueda conducir <span class="pend" title="Dato por confirmar">XX m³/s</span> sin riesgo.</p><div class="kf"><b>3.9 km</b><span>de río desazolvado · terminado en 2025</span></div><ul class="facts"><li>Conagua · $31 MDP</li></ul></div><div class="burbuja" data-carousel aria-label="Fotos del proyecto"><span class="bu-hint">Desliza →</span><div class="bu-track"><figure class="bu-slide" data-foto="desazolve-1" data-cap="Desazolve del cauce"></figure><figure class="bu-slide" data-foto="desazolve-2" data-cap="Antes y después"></figure></div><div class="bu-dots"></div><button class="bu-btn bu-prev" type="button" aria-label="Anterior">‹</button><button class="bu-btn bu-next" type="button" aria-label="Siguiente">›</button></div></article><article class="step" data-frame="col" data-cam=".55,.5,1.0"><div class="card"><div class="tag">3 · Monitoreo de caudal</div><h3>Ver el río cada 5 minutos</h3><p>Instalamos <mark class="fluor">21 estaciones</mark> que miden cuánta agua fluye en cada tramo del río <strong>cada 5 minutos</strong>. Esa información permite operar el sistema de drenaje y las presas de forma más eficiente y segura.</p><div class="kf"><b>21</b><span>estaciones automáticas de caudal</span></div><ul class="facts"><li>Conagua · GASIR</li><li>Terminado en 2025</li></ul></div><div class="burbuja" data-carousel aria-label="Fotos del proyecto"><span class="bu-hint">Desliza →</span><div class="bu-track"><figure class="bu-slide" data-foto="caudal-1" data-cap="Estación de monitoreo de caudal"></figure></div><div class="bu-dots"></div><button class="bu-btn bu-prev" type="button" aria-label="Anterior">‹</button><button class="bu-btn bu-next" type="button" aria-label="Siguiente">›</button></div></article><article class="step" data-frame="int" data-cam=".575,.35,2.2" data-ov="trescult" data-pins="trescult"><div class="card"><div class="tag">4 · Tres Culturas</div><h3>Devolverle espacio al río</h3><p>Estudiamos <mark class="fluor">restaurar la llanura de inundación de Tres Culturas</mark>: un parque que se puede inundar de forma segura. El BID modeló cómo cambia el riesgo en Tula y se contratará un panel de cinco asesores holandeses con experiencia en soluciones basadas en la naturaleza.</p><div class="kf"><b>BID + 5</b><span>modelo hidráulico y asesores holandeses</span></div><ul class="facts"><li>Referencias de parques inundables →</li></ul></div><div class="burbuja" data-carousel aria-label="Referencias"><span class="bu-hint">Desliza →</span><div class="bu-track"><figure class="bu-slide" data-src="img/ref/buffalo-bayou-houston.jpg" data-cap="Referencia · Buffalo Bayou, Houston (65 ha, 2015)"></figure><figure class="bu-slide" data-src="img/ref/rodney-cook-park-atlanta-1.jpg" data-cap="Referencia · Rodney Cook Sr. Park, Atlanta (6.5 ha, 2021)"></figure><figure class="bu-slide" data-src="img/ref/parque-inundable-georgia.jpg" data-cap="Referencia · parque inundable, Georgia"></figure></div><div class="bu-dots"></div><button class="bu-btn bu-prev" type="button" aria-label="Anterior">‹</button><button class="bu-btn bu-next" type="button" aria-label="Siguiente">›</button></div></article></div></section>
-
-<section class="cap tema-verde" id="ecosistemas" data-tema="verde" data-nav="light"><div class="cap-stage"><div class="canvas"><img class="frame" data-frame="int" src="img/mapa/int.webp" alt="" loading="lazy" decoding="async"><img class="frame" data-frame="base" src="img/mapa/base.webp" alt="" loading="lazy" decoding="async"><img class="frame" data-frame="acc" src="img/mapa/acc.webp" alt="" loading="lazy" decoding="async"><img class="ov " data-ov="rio" src="img/mapa/ov-rio.webp" alt="" loading="lazy" decoding="async"><img class="ov tint-verde" data-ov="bojay" src="img/mapa/ov-bojay.webp" alt="" loading="lazy" decoding="async"><img class="ov tint-verde" data-ov="trescult" src="img/mapa/ov-trescult.webp" alt="" loading="lazy" decoding="async"><img class="ov tint-verde" data-ov="rosas" src="img/mapa/ov-rosas.webp" alt="" loading="lazy" decoding="async"><img class="ov tint-verde" data-ov="sanlorenzo" src="img/mapa/ov-sanlorenzo.webp" alt="" loading="lazy" decoding="async"><img class="ov tint-verde" data-ov="chamizal" src="img/mapa/ov-chamizal.webp" alt="" loading="lazy" decoding="async"><img class="ov tint-slate" data-ov="conect" src="img/mapa/ov-conect.webp" alt="" loading="lazy" decoding="async"><div class="pin l" data-id="bojay" style="--px:0.585;--py:0.165"><i></i><span class="lbl">Bojay<small>3 mil hab.</small></span></div><div class="pin r" data-id="trescult" style="--px:0.575;--py:0.352"><i></i><span class="lbl">Tres Culturas<small>4 mil hab.</small></span></div><div class="pin l" data-id="rosas" style="--px:0.455;--py:0.527"><i></i><span class="lbl">Río Rosas<small>24 mil hab.</small></span></div><div class="pin r" data-id="sanlorenzo" style="--px:0.537;--py:0.693"><i></i><span class="lbl">San Lorenzo<small>20 mil hab.</small></span></div><div class="pin r" data-id="chamizal" style="--px:0.391;--py:0.934"><i></i><span class="lbl">Chamizal<small>10 mil hab.</small></span></div><div class="maplabel" data-id="endho" style="--px:0.63;--py:0.115"><span>Presa Endhó</span></div><div class="maplabel" data-id="anp" style="--px:0.34;--py:0.22"><span>Nueva Área Natural<br>Protegida</span></div><div class="maplabel" data-id="parque" style="--px:0.62;--py:0.465"><span>Parque Nacional y<br>Atlantes de Tula</span></div></div><div class="banner">Ecosistemas y espacio público</div></div><div class="cap-steps"><article class="step" data-frame="int" data-cam=".5,.55,1.05" data-labels="endho parque"><div class="card"><div class="tag">Frente 3 · Ecosistemas y espacio público</div><h3>Regresarle la vida al río</h3><p>Para que un río vuelva a estar vivo hay que recuperar sus ecosistemas —cuerpos de agua, humedales, riberas y bosques de la cuenca alta— y <mark class="fluor">abrir el río a la gente</mark>.</p><div class="kf"><b>9</b><span>proyectos de restauración y espacio público</span></div></div></article><article class="step" data-frame="int" data-cam=".5,.5,1.7"><div class="card"><div class="tag">1 · Riberas</div><h3>Árboles sanos en las orillas</h3><p>Saneamos <strong>1,600 árboles</strong> en <strong>10 km</strong> de riberas —les quitamos heno motita y ramas muertas— y <mark class="fluor">plantamos 300 árboles</mark> en 3.5 km de la zona urbana de Tula. Con Conafor trabajamos para limpiar, sanear o reforestar <span class="pend" title="Dato por confirmar">XX km</span> de riberas hasta la presa Endhó.</p><div class="kf"><b>1,600</b><span>árboles ribereños saneados</span></div><ul class="facts"><li>Conagua · Semarnat</li><li>Terminado en 2025</li></ul></div><div class="burbuja" data-carousel aria-label="Fotos del proyecto"><span class="bu-hint">Desliza →</span><div class="bu-track"><figure class="bu-slide" data-foto="riberas-1" data-cap="Saneamiento forestal de riberas"></figure><figure class="bu-slide" data-foto="riberas-2" data-cap="Revegetación de riberas"></figure></div><div class="bu-dots"></div><button class="bu-btn bu-prev" type="button" aria-label="Anterior">‹</button><button class="bu-btn bu-next" type="button" aria-label="Siguiente">›</button></div></article><article class="step" data-frame="int" data-cam=".585,.17,2.3" data-ov="bojay" data-pins="bojay" data-labels="endho"><div class="card"><div class="tag">2 · Humedales y Endhó</div><h3>Agua limpia a 2 km de Tula</h3><p>En las Ciénegas de Endhó (Bojay) recuperamos <strong>50 ha de humedal</strong>, y se rehabilita el bordo de la laguna para separarla del río Tula: <mark class="fluor">un cuerpo de agua limpia</mark> de <span class="pend" title="Dato por confirmar">55 ha</span> a 2 km de la ciudad. En la presa Endhó se extraen <strong>110 mil m³</strong> de lirio.</p><div class="kf"><b>50 ha</b><span>de humedal recuperado en Bojay</span></div><ul class="facts"><li>Conagua · Semarnat</li><li>Bordo y vertedor · en licitación</li></ul></div><div class="burbuja" data-carousel aria-label="Fotos del proyecto"><span class="bu-hint">Desliza →</span><div class="bu-track"><figure class="bu-slide" data-src="img/mapa/z-bojay-zoom.webp" data-contain data-cap="Propuesta · humedal y sendero de Bojay"></figure><figure class="bu-slide" data-src="img/mapa/z-bojay-verde.webp" data-contain data-cap="Propuesta · Bojay en planta"></figure><figure class="bu-slide" data-foto="bojay-1" data-cap="Ciénegas de Endhó (Bojay)"></figure></div><div class="bu-dots"></div><button class="bu-btn bu-prev" type="button" aria-label="Anterior">‹</button><button class="bu-btn bu-next" type="button" aria-label="Siguiente">›</button></div></article><article class="step" data-frame="base" data-cam=".36,.24,1.6" data-ov="rio" data-labels="anp parque"><div class="card"><div class="tag">3 · Bosques</div><h3>De 100 a 1,700 hectáreas protegidas</h3><p>Al inicio del sexenio existían solo <span class="pend" title="Dato por confirmar">100 ha</span> de Áreas Naturales Protegidas en la cuenca. Hoy la Conanp certificó <mark class="fluor">1,700 ha</mark> como Áreas Destinadas Voluntariamente a la Conservación (9 áreas) y Conafor restauró <strong>663 ha</strong> de suelo forestal en 17 proyectos.</p><div class="kf"><b>1,700 ha</b><span>certificadas como ADVC · 9 áreas</span></div><ul class="facts"><li>Conanp</li><li>Conafor · 15 ejidos</li><li>Terminado en 2025</li></ul></div><div class="burbuja" data-carousel aria-label="Fotos del proyecto"><span class="bu-hint">Desliza →</span><div class="bu-track"><figure class="bu-slide" data-foto="bosques-1" data-cap="Área Destinada Voluntariamente a la Conservación"></figure><figure class="bu-slide" data-foto="bosques-2" data-cap="Restauración forestal con ejidos"></figure></div><div class="bu-dots"></div><button class="bu-btn bu-prev" type="button" aria-label="Anterior">‹</button><button class="bu-btn bu-next" type="button" aria-label="Siguiente">›</button></div></article><article class="step" data-frame="int" data-cam=".5,.55,1.05" data-ov="bojay trescult rosas sanlorenzo chamizal" data-pins="bojay trescult rosas sanlorenzo chamizal"><div class="card"><div class="tag">4 · Espacio público</div><h3>Cinco lugares para volver al río</h3><p>En la ciudad de Tula construimos <mark class="fluor">5 espacios públicos ribereños</mark> aprovechando las obras de estabilización de taludes y restauración ecológica: <strong>Chamizal, San Lorenzo, Río Rosas, Tres Culturas y Bojay</strong>.</p><p>En cada uno se hace, al mismo tiempo, saneamiento, revegetación con plantas nativas, prevención de inundaciones y equipamiento.</p><div class="kf"><b>5</b><span>sitios de espacio público ribereño</span></div></div><div class="burbuja" data-carousel aria-label="Fotos del proyecto"><span class="bu-hint">Desliza →</span><div class="bu-track"><figure class="bu-slide" data-src="img/mapa/z-rosas.webp" data-contain data-cap="Propuesta · Río Rosas"></figure><figure class="bu-slide" data-src="img/mapa/z-sanlorenzo.webp" data-contain data-cap="Propuesta · San Lorenzo"></figure><figure class="bu-slide" data-src="img/mapa/z-bojay-zoom.webp" data-contain data-cap="Propuesta · Bojay"></figure><figure class="bu-slide" data-foto="espacio-publico-1" data-cap="Espacio público ribereño"></figure></div><div class="bu-dots"></div><button class="bu-btn bu-prev" type="button" aria-label="Anterior">‹</button><button class="bu-btn bu-next" type="button" aria-label="Siguiente">›</button></div></article><article class="step" data-frame="acc" data-cam=".5,.55,1.05" data-pins="bojay trescult rosas sanlorenzo chamizal" data-pop="1"><div class="card"><div class="tag">5 · Alcance</div><h3>Un río al alcance de la gente</h3><p><mark class="fluor">52 % de la población del municipio</mark> vive a menos de 15 minutos a pie de alguna de las intervenciones.</p><div class="kf"><b>52 %</b><span>de la población a 15 min a pie</span></div><div class="fuente">Isócronas de accesibilidad: OpenRouteService.</div></div></article><article class="step" data-frame="int" data-cam=".5,.55,1.05" data-ov="conect" data-labels="parque"><div class="card"><div class="tag">6 · Conexión</div><h3>Todo conectado por una vía ciclable de 12 km</h3><p>Sobre las antiguas vías del tren, los bordos rehabilitados y los caminos rurales, <mark class="fluor">una vía ciclable de 12 km</mark> conecta todas las intervenciones: <strong>4 km</strong> de antiguas vías, <strong>6 km</strong> de bordos y <strong>2 km</strong> de caminos rurales.</p><div class="kf"><b>12 km</b><span>de vía ciclable</span></div></div></article></div></section>
-
-<section class="s-cierre" id="cierre" data-nav="dark">
-  <h2 class="rv">Un río, tres frentes, 37 proyectos</h2>
-  <p class="rv">Agua más limpia, un cauce más seguro y un río abierto a su gente. Explora cada intervención sobre el mapa: capas, avance y ubicación de todos los proyectos.</p>
-  <div class="stats rv">
-    <div><b>37</b><span>proyectos en el plan</span></div>
-    <div><b>$1,478<sup>MDP</sup></b><span>de inversión documentada</span></div>
-    <div><b>2,415<sup>ha</sup></b><span>restauradas y conservadas</span></div>
-    <div><b>35.8<sup>km</sup></b><span>de colectores</span></div>
+<!-- STATS -->
+<div class="stats-strip" id="stats">
+  <div class="stat-cell">
+    <div class="stat-num">36</div>
+    <div class="stat-label">proyectos en el plan 2024–2030</div>
   </div>
-  <a class="btn btn-light" href="mapa.html">Abrir el mapa interactivo →</a>
+  <div class="stat-cell">
+    <div class="stat-num">$1,478<sup>MDP</sup></div>
+    <div class="stat-label">de inversión documentada</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-num">2,415<sup>ha</sup></div>
+    <div class="stat-label">de cubierta forestal restaurada y conservada</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-num">4</div>
+    <div class="stat-label">ejes de acción simultáneos</div>
+  </div>
+</div>
+
+<!-- CUATRO EJES -->
+<section class="s-ejes" id="ejes">
+  <div class="section-inner">
+    <div class="ejes-header reveal">
+      <span class="s-tag">Estrategia de intervención</span>
+      <h2 class="s-title">36 proyectos, cuatro ejes de acción</h2>
+      <p class="s-body">Infraestructura, conservación, monitoreo, inspección y gobernanza articulados en una estrategia de largo plazo entre dependencias federales y gobiernos locales.</p>
+    </div>
+    <div class="ejes-grid">
+
+      <div class="eje-card eje-agua reveal" style="transition-delay:.05s">
+        <div class="eje-card-lead">
+          <div class="eje-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2s7 8.5 7 13a7 7 0 0 1-14 0c0-4.5 7-13 7-13z"/></svg></div>
+          <div class="eje-card-count">15<span>proyectos</span></div>
+        </div>
+        <div class="eje-card-body">
+          <h3 class="eje-card-title">Calidad del agua</h3>
+          <p class="eje-card-desc">Rehabilitación de las PTAR de CFE y Pemex, optimización de Atotonilco, 35.8 km de colectores nuevos, inspección a 29 industrias y una red de 8 estaciones automáticas más 192 sitios de monitoreo manual.</p>
+          <div class="eje-card-stats">
+            <div><span class="eje-stat-v">7,900 l/s</span><span class="eje-stat-l">de caudal atendido</span></div>
+            <div><span class="eje-stat-v">130</span><span class="eje-stat-l">inspecciones industriales</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="eje-card eje-inund reveal" style="transition-delay:.15s">
+        <div class="eje-card-lead">
+          <div class="eje-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12c1.5 1.5 3 1.5 4.5 0s3-1.5 4.5 0 3 1.5 4.5 0 3-1.5 4.5 0"/><path d="M2 18c1.5 1.5 3 1.5 4.5 0s3-1.5 4.5 0 3 1.5 4.5 0 3-1.5 4.5 0"/><path d="M12 3v9"/><path d="m8.5 8.5 3.5 3.5 3.5-3.5"/></svg></div>
+          <div class="eje-card-count">5<span>proyectos</span></div>
+        </div>
+        <div class="eje-card-body">
+          <h3 class="eje-card-title">Prevención de inundaciones</h3>
+          <p class="eje-card-desc">Estabilización de taludes en San Lorenzo, San Marcos y El Chamizal, desazolve en la zona urbana de Tula y una red de estaciones automáticas de monitoreo de caudal.</p>
+          <div class="eje-card-stats">
+            <div><span class="eje-stat-v">6.6 km</span><span class="eje-stat-l">de taludes y desazolve</span></div>
+            <div><span class="eje-stat-v">21</span><span class="eje-stat-l">estaciones de caudal</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="eje-card eje-eco reveal" style="transition-delay:.25s">
+        <div class="eje-card-lead">
+          <div class="eje-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 4 13c0-4 3-8 10-9 1 6-1 9-3 11"/><path d="M4 13c4 0 7 3 7 7"/></svg></div>
+          <div class="eje-card-count">9<span>proyectos</span></div>
+        </div>
+        <div class="eje-card-body">
+          <h3 class="eje-card-title">Restauración y espacio público</h3>
+          <p class="eje-card-desc">Revegetación de riberas, restauración de los humedales de Bojay, conservación de 1,700 ha de ADVC, reforestación, extracción de lirio de la presa Endhó y eliminación de tiraderos clandestinos.</p>
+          <div class="eje-card-stats">
+            <div><span class="eje-stat-v">2,415 ha</span><span class="eje-stat-l">conservadas / restauradas</span></div>
+            <div><span class="eje-stat-v">1,600</span><span class="eje-stat-l">árboles reforestados</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="eje-card eje-gob reveal" style="transition-delay:.35s">
+        <div class="eje-card-lead">
+          <div class="eje-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3"/><path d="M5 21c0-3.9 3.1-7 7-7s7 3.1 7 7"/></svg></div>
+          <div class="eje-card-count">7<span>proyectos</span></div>
+        </div>
+        <div class="eje-card-body">
+          <h3 class="eje-card-title">Gobernanza y participación</h3>
+          <p class="eje-card-desc">Centro de vigilancia del agua, delimitación de la zona federal del río Salado, estudios técnicos —incluido un panel de asesores de Holanda— y jornadas comunitarias de limpieza.</p>
+          <div class="eje-card-stats">
+            <div><span class="eje-stat-v">1,132</span><span class="eje-stat-l">participantes en jornadas</span></div>
+            <div><span class="eje-stat-v">52 km</span><span class="eje-stat-l">de zona federal delimitada</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </section>
+
+<!-- CTA FINAL -->
+<section class="s-cta reveal" id="cta">
+  <h2 class="s-title">Explora cada proyecto en el mapa</h2>
+  <p class="s-body">Visualiza capas de información geográfica, consulta el estado de cada proyecto y filtra por eje temático en el visor interactivo.</p>
+  <a href="mapa.html" class="btn-big">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>
+    Abrir visor de mapa
+  </a>
+</section>
+
 <footer>
-  Secretaría de Medio Ambiente y Recursos Naturales · Plan de Saneamiento y Restauración del Río Tula 2024–2030<br>
-  Datos: base de proyectos 2025–2026 (Conagua, Semarnat, Conafor, Conanp, Profepa y Gobierno de Hidalgo) · <a href="mapa.html">Ir al mapa interactivo</a>
+  Secretaría de Medio Ambiente y Recursos Naturales · Plan de Saneamiento y Restauración del Río Tula 2024–2030
+  <br><a href="mapa.html">Ir al mapa interactivo</a>
 </footer>
 
-<script src="js/sitio.js"></script>
+<script>
+  /* Nav scroll */
+  const nav = document.getElementById('main-nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  /* Stats counter animation */
+  function animateNumber(el, end, suffix) {
+    let start = 0;
+    const dur = 1200;
+    const step = 16;
+    const inc = end / (dur / step);
+    const timer = setInterval(() => {
+      start += inc;
+      if (start >= end) { start = end; clearInterval(timer); }
+      el.textContent = Math.round(start).toLocaleString('es-MX') + (suffix || '');
+    }, step);
+  }
+
+  /* Intersection Observer for reveals */
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        revealObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal, .stat-cell, .ejes-header').forEach(el => revealObs.observe(el));
+
+  /* Stats observer */
+  let statsAnimated = false;
+  const statsObs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting && !statsAnimated) {
+      statsAnimated = true;
+      document.querySelectorAll('.stat-cell').forEach(c => {
+        c.classList.add('visible');
+      });
+    }
+  }, { threshold: 0.3 });
+  statsObs.observe(document.getElementById('stats'));
+
+  /* ── Historia: scrollytelling ── */
+  (function () {
+    const steps = Array.from(document.querySelectorAll('.hs-step'));
+    if (!steps.length) return;
+
+    const svgEls = Array.from(document.querySelectorAll('.hs-map [data-step]'));
+    const dot = document.getElementById('hsDot');
+    const fill = document.getElementById('hsFill');
+    const here = document.getElementById('hsHere');
+
+    const STEP_POS = [0, 14, 28, 42, 56, 68, 78, 88, 100];
+    const HERE_LABEL = ['700 mil a.C.', '1449', '1789', '1900', '1951', '1975–2019', '2018', '2021', '2024'];
+
+    function setActive(idx) {
+      steps.forEach(s => s.classList.toggle('active', Number(s.dataset.step) === idx));
+
+      const pct = STEP_POS[idx];
+      dot.style.left = pct + '%';
+      fill.style.width = pct + '%';
+      here.style.left = pct + '%';
+      here.textContent = HERE_LABEL[idx];
+
+      svgEls.forEach(el => {
+        const elStep = Number(el.dataset.step);
+        el.classList.toggle('on', elStep <= idx);
+        el.classList.toggle('current', elStep === idx);
+      });
+
+      const lake = document.querySelector('.hs-lake');
+      if (lake) lake.classList.toggle('drained', idx >= 3);
+
+      const riotula = document.querySelector('.hs-riotula');
+      if (riotula) riotula.classList.toggle('restored', idx >= 8);
+
+      const tulacity = document.querySelector('.hs-tulacity');
+      if (tulacity) {
+        tulacity.classList.toggle('flood', idx === 7);
+        tulacity.classList.toggle('restored', idx >= 8);
+      }
+    }
+
+    const stepObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) setActive(Number(e.target.dataset.step));
+      });
+    }, { threshold: 0, rootMargin: '-45% 0px -45% 0px' });
+
+    steps.forEach(s => stepObs.observe(s));
+    setActive(0);
+  })();
+</script>
 </body>
 </html>
