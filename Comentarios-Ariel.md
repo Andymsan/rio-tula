@@ -50,3 +50,39 @@ Invertir el orden. QUe vaya primero Drenaje de Tula y luego industrias.
 ## calidad-3  (Drenaje de Tula / colectores)
 * Revisar dato de distancia de colectores
 
+
+---
+
+## Respuestas de Claude (24-sep-2026)
+
+Aplicado todo lo que se pudo con los datos disponibles. Lo marcado 🔎 queda aproximado
+porque no tengo la capa/dato exacto — avísenme si quieren que lo ajuste con algo más preciso.
+
+- **Portada**: título en Noto Sans Bold, color azul del río del mapa de historia (#1467d6);
+  números del índice sin cero (1, 2, 3…); Calidad/Inundaciones/Ecosistemas ahora son
+  subíndices "3.1 / 3.2 / 3.3" de "3 El proyecto" (en la portada y en el panel de índice).
+- **Mapa de la historia**: se quitaron las divisiones municipales y las capas modernas
+  (humedales/cuerpos/red actuales). Ya no hay zoom por época: siempre se ve la cuenca
+  completa del Valle de México + la del Tula hasta la confluencia. Se agregó el Lago de
+  Xochimilco (nombre correcto) y se suavizó el polígono del lago (Chaikin, 2 pasadas).
+  🔎 No agregué más ríos tipo PELT: no tengo esa capa. Si me pasan el geojson de los
+  escurrimientos que usó el PELT, los agrego.
+- **Historia 1449**: fuente agregada (Revista de Arqueología Histórica Argentina y
+  Latinoamericana). Se marcaron Iztapalapa y Azcapotzalco. 🔎 Son puntos aproximados
+  (centro de cada alcaldía); no tengo la traza exacta del dique.
+- **Historia 1962/1975/2019**: agregado el Túnel Emisor Poniente en el mapa, conectado
+  hacia Cuautitlán. 🔎 Es una ruta aproximada (Vaso del Cristo → Barrientos → Cuautitlán,
+  según fuentes públicas); no tengo el trazo oficial. También corregí un texto: decía
+  "Túnel Emisor Poniente (2018)" dos veces — el segundo es el **Emisor Oriente (2019)**.
+- **Historia 2021**: el círculo que pulsa ahora se mueve a Tula de Allende en esta época
+  (antes se quedaba en Atotonilco). Se marcaron "río Tula" y "río Rosas".
+- **Compromiso 92**: se quitó el "92" grande (ya está en la etiqueta). Agregué un
+  recuadro para la foto de la presidenta (con marcador hasta que la tengamos). Municipios
+  directamente beneficiados: propongo **13** (los que aparecen en la base de proyectos del
+  Tula), en vez de 12 — corregido también el error de dedo "municipipos".
+- **El proyecto**: unifiqué en 2 pasos (antes 5) y quité los números de los hexágonos.
+- **Calidad del agua**: invertido el orden (ahora Drenaje de Tula va antes que Industria).
+  Revisé el dato de colectores: son **35.8 km en total** — 10.8 km ya en obra (89 % de
+  avance, capta 72 descargas) + 25 km más en planeación. Lo dejé explícito en el texto.
+
+Todo esto ya está en la página: https://andymsan.github.io/rio-tula/
