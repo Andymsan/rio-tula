@@ -251,3 +251,30 @@ Valores propuestos (ajustables por Andrea) en `css/temas.css`:
 - Cifras clave: **37 proyectos** · $1,478 MDP · 2,415 ha · 4 ejes
   (Calidad 15 · Inundaciones 6 · Restauración/espacio público 9 · Otros 7).
   (Chamizal Etapa 2 se engloba en Chamizal; se agrega Ahuehuetes.)
+
+
+## 24-sep-2026 — ronda 6: comentarios de Ariel (revisión de contenido)
+
+Ariel (director) empezó a revisar la página sección por sección en `Comentarios-Ariel.md`
+y a editar `TEXTOS.md` directamente en GitHub. Aplicado por Claude:
+
+- Portada: tipografía Noto Sans Bold azul (#1467d6, el azul del río en el mapa de historia),
+  índice sin ceros, Calidad/Inundaciones/Ecosistemas como subíndices "3.1/3.2/3.3" de "El proyecto".
+- Historia: se quitaron divisiones municipales y capas modernas; sin zoom por época (cuenca
+  completa siempre visible); Lago de Xochimilco agregado; lago suavizado (Chaikin); fuente
+  agregada en 1449; puntos Iztapalapa/Azcapotzalco; Túnel Emisor Poniente conectado a
+  Cuautitlán; el círculo de énfasis ahora se mueve (Zócalo → PTAR Atotonilco → Tula de
+  Allende) en vez de tener 3 marcadores fijos.
+- Compromiso 92: sin el "92" gigante; recuadro para foto de la presidenta; propuesta de
+  13 municipios directamente beneficiados (fuente: base de proyectos).
+- El proyecto: 2 pasos en vez de 5; hexágonos sin número de proyectos.
+- Calidad del agua: Drenaje de Tula antes que Industria; texto de colectores más preciso
+  (10.8 km en obra + 25 km en planeación = 35.8 km).
+
+Pendiente / aproximado (falta capa o dato exacto de Andrea/Ariel):
+- Red de ríos tipo PELT (más escurrimientos hacia los lagos) — no se agregó, falta el geojson.
+- Ruta exacta del dique de Nezahualcóyotl y del Túnel Emisor Poniente — se usaron
+  aproximaciones con coordenadas públicas.
+- Sigue sin resolver "37 proyectos" (total Excel) vs. 30 de los tres hexágonos (15+6+9).
+
+Ver respuesta completa en `Comentarios-Ariel.md` (sección "Respuestas de Claude").

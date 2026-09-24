@@ -91,7 +91,8 @@ linea: 700 mil a.C.
 ## historia-1  (época 2)
 epoca: 1449
 titulo: El dique de Nezahualcóyotl
-texto: El tlatoani **Nezahualcóyotl** construyó un dique de 17 km para separar el agua salada del lago de Texcoco del agua dulce donde vivía la población de Tenochtitlán. Esta es la primera obra hidráulica que empezó a transformar la cuenca.
+texto: El tlatoani **Nezahualcóyotl** construyó un dique de 17 km, entre Iztapalapa y Azcapotzalco, para separar el agua salada del lago de Texcoco del agua dulce donde vivía la población de Tenochtitlán. Esta es la primera obra hidráulica que empezó a transformar la cuenca.
+fuente: Fuente: [Revista de Arqueología Histórica Argentina y Latinoamericana](https://rdahayl.org/index.php/rdahayl/article/view/157/399)
 banner: 1449 · Texcoco
 linea: 1449
 
@@ -119,7 +120,7 @@ linea: 1951
 ## historia-5  (época 6)
 epoca: 1962, 1975 y 2019
 titulo: Los grandes túneles de drenaje
-texto: Tres grandes obras de drenaje se construyeron para mandar la mayor parte de las aguas residuales y de lluvia de la ciudad hacia el río Tula: El Tunel Emisor Poniente (1962), el Tunel Emisor Central (1975) y el Tunel Emisor Poniente (2018). Estas obras completaron la infraestructura que interconecta las dos cuencas.
+texto: Tres grandes obras de drenaje se construyeron para mandar la mayor parte de las aguas residuales y de lluvia de la ciudad hacia el río Tula: El Túnel Emisor Poniente (1962), el Túnel Emisor Central (1975) y el Túnel Emisor Oriente (2019). Estas obras completaron la infraestructura que interconecta las dos cuencas.
 banner: 1975 y 2019 · Túneles
 linea: 1975–2019
 
@@ -153,7 +154,8 @@ titulo2: El río Tula, Atoyac y Lerma Santiago.
 texto: Inicia uno de los proyectos ambientales más ambiciosos del país.
 cifra1: 191 km | de río Tula
 cifra2: 2 estados | Estado de México e Hidalgo
-cifra3: 12 municipipos | Directamente beneficiados
+cifra3: 13 municipios | directamente beneficiados según la base de proyectos
+fotos: Presidenta Claudia Sheinbaum Pardo en la toma de protesta (1 de octubre de 2024)
 
 ## promesa-2  (Compromiso 92, la inversión)
 etiqueta: La inversión
@@ -168,10 +170,10 @@ fuentes: Fuentes: [Contralínea (16 jul 2026)](https://contralinea.com.mx/intern
 ## proyecto  (El proyecto: los tres hexágonos)
 banner: El proyecto
 
-## hexagonos  (número | texto de cada hexágono)
-rosa: 15 | Calidad del agua
-naranja: 6 | Inundaciones
-verde: 9 | Ecosistemas y | espacio público
+## hexagonos  (texto de cada hexágono, sin número — Ariel pidió quitarlo)
+rosa: Calidad del agua
+naranja: Inundaciones
+verde: Ecosistemas y | espacio público
 centro: Río | Tula
 
 ## proyecto-0  (paso 1)
@@ -180,21 +182,6 @@ titulo: Un río, tres objetivos, 37 proyectos
 texto: El proyecto conempla 3 objetivos principales: 1. Mejorar la calidad del agua, 2. Prevenir inundaciones, 3. Restauración y espacio público. Actualmente contamos con ==37 proyectos==: unos terminados, otros en obra y otros en planeación para el 2027. 
 cifra: $1,478 MDP | de inversión documentada en 2025 y 2026
 chips: Conagua | Semarnat | Conafor | Conanp | Profepa | Gobierno de Hidalgo
-
-## proyecto-1  (paso 2: se enciende el hexágono de calidad del agua)
-etiqueta: Frente 1 · 15 proyectos
-titulo: Calidad del agua
-texto: Plantas de tratamiento, drenaje, revisión de industrias y monitoreo, para que ==el agua que llega al río sea cada vez más limpia==.
-
-## proyecto-2  (paso 3: inundaciones)
-etiqueta: Frente 2 · 6 proyectos
-titulo: Inundaciones
-texto: Taludes más firmes, un cauce limpio y más información sobre el río, para que ==Tula esté más protegida cuando el río crece==.
-
-## proyecto-3  (paso 4: ecosistemas)
-etiqueta: Frente 3 · 9 proyectos
-titulo: Ecosistemas y espacio público
-texto: Riberas, humedales, bosques y cinco espacios públicos, para que ==el río vuelva a estar vivo y la gente pueda volver a él==.
 
 ## proyecto-4  (paso 5: donde se cruzan)
 etiqueta: Donde se cruzan
@@ -212,7 +199,7 @@ etiqueta: Frente 1 · Calidad del agua
 titulo: Cuidar el agua que llega al río
 texto: Existen ==tres fuentes principales de contaminación== del río Tula que estamos atendiendo en este proyecto: el drenaje sin tratamiento del Valle de México, el drenaje de la zona metropolitana de Tula y las descargas contaminantes industriales.
 cifra: 15 | proyectos de calidad del agua
-chips: 1 · Atotonilco | 2 · Industria | 3 · Drenaje de Tula
+chips: 1 · Atotonilco | 2 · Drenaje de Tula | 3 · Industria
 
 ## calidad-1  (Atotonilco)
 etiqueta: 1 · Atotonilco
@@ -222,20 +209,20 @@ cifra: +7 m³/s | de agua residual tratada adicional
 chips: PTAR: planta de tratamiento de aguas residuales | Terminado en 2026 | Conagua · $112 MDP
 fotos: PTAR Atotonilco | Operación de la planta | Caudal tratado
 
-## calidad-2  (Industria)
-etiqueta: 2 · Industria
+## calidad-2  (Industria — ahora el punto 3: Ariel pidió invertir el orden con Drenaje de Tula)
+etiqueta: 3 · Industria
 titulo: Controlar la contaminación industrial
 texto: Durante este sexenio, la Conagua y Profepa van a inspeccionar al menos dos veces a las empresas que descargan al río Tula o sus tributarios —los ríos que llegan a él— para asegurar su cumplimiento. A la fecha, hemos hecho **92 inspecciones** y estamos ==capacitando y certificando a 29 industrias==.
 cifra: 92 | inspecciones · 29 industrias en certificación
 chips: Profepa | Conagua | Centro Regional de Prevención Ambiental (UTTT)
 fotos: Inspección a una industria | Centro Regional de Prevención Ambiental
 
-## calidad-3  (Drenaje de Tula / colectores)
-etiqueta: 3 · Drenaje de Tula
+## calidad-3  (Drenaje de Tula / colectores — ahora el punto 2: Ariel pidió invertir el orden con Industria)
+etiqueta: 2 · Drenaje de Tula
 titulo: Que el drenaje de Tula deje de llegar al río
-texto: Todo el drenaje de la zona metropolitana de Tula se vierte al río sin tratamiento. El gobierno del estado de Hidalgo está construyendo **35.8 km de colectores** —tuberías que juntan el drenaje— para captar **72 descargas** y ==tratarlas en la planta de tratamiento de la central termoeléctrica de CFE==.
-cifra: 35.8 km | de colectores · la etapa 1 lleva 89 % de avance
-chips: Gobierno de Hidalgo · $570 MDP | Planta de la CFE en rehabilitación
+texto: Todo el drenaje de la zona metropolitana de Tula se vierte al río sin tratamiento. El gobierno del estado de Hidalgo construye colectores —tuberías que juntan el drenaje— para tratarlo en la planta de la CFE: la **Etapa 1**, de **10.8 km**, ya capta **72 descargas** y lleva 89 % de avance; la **Etapa 2**, de **25 km**, está en planeación y sumará más descargas del río Tula, Rosas y Salado. ==En total, 35.8 km de colectores.==
+cifra: 35.8 km | de colectores en total (10.8 km en obra + 25 km en planeación)
+chips: Gobierno de Hidalgo · $570 MDP | Etapa 1 en ejecución (89 %) | Etapa 2 en planeación | Planta de la CFE en rehabilitación
 fotos: Colector del río Tula · etapa 1 | Línea de conducción a la planta de la CFE | Cárcamo de bombeo
 
 ## calidad-4  (Monitoreo)

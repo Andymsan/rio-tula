@@ -229,3 +229,26 @@ industriales" y Contralínea como "descargas industriales". En el sitio se dice
 - [Contralínea](https://contralinea.com.mx/interno/semana/gobierno-invertira-mas-de-20-mil-mdp-para-sanear-los-rios-lerma-santiago-tula-y-atoyac/)
 - [Profepa · gob.mx](https://www.gob.mx/profepa/prensa/avanza-saneamiento-y-recuperacion-de-los-rios-atoyac-lerma-santiago-y-tula-434666)
 - [Ámbito](https://www.ambito.com/mexico/informacion-general/claudia-sheinbaum-ordena-limpiar-los-tres-rios-mas-contaminados-mexico-cuales-son-y-como-se-hara-este-historico-saneamiento-n6300195)
+
+
+## 24-sep-2026 — municipios directamente beneficiados (compromiso 92)
+
+Ariel puso "12" sin estar seguro y pidió una propuesta. Conteo de municipios únicos que
+aparecen en la hoja "Tula" del Excel (columna Municipios), 13 en total:
+
+Atitalaquia · Atotonilco de Tula · Coyotepec · Cuautitlán Izcalli · Ecatepec de Morelos ·
+Jilotepec · Tepeji del Río de Ocampo · Tepetitlán · Tezontepec de Aldama · Tlahuelilpan ·
+Tlaxcoapan · Tula de Allende · Villa del Carbón
+
+⚠️ Ojo: algunos (Ecatepec, Jilotepec, Villa del Carbón, Coyotepec) aparecen porque ahí hay
+una estación de monitoreo de la red, no porque el municipio esté en la cuenca del Tula.
+Si "directamente beneficiados" debe ser más estricto (solo cuenca del Tula), el número
+sería menor — Ariel/Andrea deciden el criterio final.
+
+## 24-sep-2026 — colectores: dato corregido
+
+El texto original mezclaba el total de las 2 etapas (35.8 km) con el número de descargas de
+solo la etapa 1 (72). Se corrigió para separar: Etapa 1 = 10.8 km / 72 descargas / 89% avance
+(en ejecución); Etapa 2 = 25 km, en planeación (mismo texto del Excel repite "72 descargas"
+en la etapa 2, probablemente copiado de la etapa 1 por error de la fuente — no se usó ese
+número para no sobre-contar).

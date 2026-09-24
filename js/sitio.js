@@ -118,10 +118,14 @@
   }
 
 
-  /* ── Historia: mapa SVG que se acerca a cada época ─────────────────── */
+  /* ── Historia: mapa SVG (sin zoom por época — Ariel pidió que se vea siempre
+     la cuenca completa) ────────────────────────────────────────────────── */
   const H_POS   = [0, 14, 28, 42, 56, 68, 78, 88, 100];
-  // cámara por época: [centro x, centro y, alto visible] en unidades del SVG (460×767)
-  const H_CAM   = [[230, 385, 860], [300, 590, 330], [218, 255, 270], [275, 400, 470], [135, 100, 250], [260, 340, 430], [172, 182, 190], [112, 118, 200], [140, 120, 290]];
+  // una sola cámara fija para las 9 épocas: [centro x, centro y, alto visible] en unidades del SVG (460×767)
+  const H_FULL  = [225, 400, 800];
+  const H_CAM   = [H_FULL, H_FULL, H_FULL, H_FULL, H_FULL, H_FULL, H_FULL, H_FULL, H_FULL];
+  // marcador de énfasis (círculo que pulsa): a dónde se mueve en cada época; sin entrada = oculto
+  const H_ENF   = { 1: [281, 565], 6: [170.5, 182.3], 7: [117, 116], 8: [117, 116] };
   let hView = null, hRaf = 0;
 
   function hDraw(st, v) {
@@ -153,6 +157,9 @@
     q('.lake').classList.toggle('drained', i >= 3);
     q('.riotula').classList.toggle('restored', i >= 8);
     const city = q('.tulacity'); city.classList.toggle('flood', i === 7); city.classList.toggle('restored', i >= 8);
+    const enf = q('#hsEnfasis'), pos = H_ENF[i];
+    enf.classList.toggle('on', !!pos);
+    if (pos) $$('circle', enf).forEach(c => { c.setAttribute('cx', pos[0]); c.setAttribute('cy', pos[1]); });
     $('#hsDot').style.left = H_POS[i] + '%'; $('#hsFill').style.width = H_POS[i] + '%';
     const here = $('#hsHere'); here.style.left = H_POS[i] + '%'; here.textContent = step.dataset.here || '';
     $('#hsBanner').textContent = step.dataset.banner || '';
@@ -216,6 +223,8 @@
   function boot() {
     buildNavObs(); buildStepObs();
     stages.forEach(st => { if (st.steps[0]) activate(st, st.steps[0], true); });
+    // carruseles fuera del scroll por pasos (p. ej. el de "Compromiso 92")
+    $$('[data-carousel]').forEach(initCarousel);
   }
   let rz;
   addEventListener('resize', () => {

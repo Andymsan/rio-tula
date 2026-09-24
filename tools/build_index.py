@@ -146,13 +146,12 @@ def hexes_svg():
         verde='<path class="ico" d="M-16 12 C-18 -12 2 -26 18 -22 C22 -4 10 14 -16 12 Z M-16 12 L4 -8"/>',         # hoja
     )
     def tile(k):
-        partes = T.lista("hexagonos", k)          # número | línea 1 | (línea 2)
+        partes = T.lista("hexagonos", k)          # línea 1 | (línea 2) — sin número de proyectos (pidió Ariel)
         x, y = cen[k]
         t = '<g class="h h-%s"><polygon points="%s"/>' % (k, poly(cen[k]))
         t += '<g transform="translate(%.1f,%.1f)">%s</g>' % (x, y - 44, ico[k])
-        t += '<text class="num" x="%.1f" y="%.1f">%s</text>' % (x, y + 14, fmt(partes[0]))
-        for j, linea in enumerate(partes[1:3]):
-            t += '<text class="lab" x="%.1f" y="%.1f">%s</text>' % (x, y + 38 + 17 * j, fmt(linea))
+        for j, linea in enumerate(partes[:2]):
+            t += '<text class="lab" x="%.1f" y="%.1f">%s</text>' % (x, y + 14 + 17 * j, fmt(linea))
         return t + "</g>"
 
     centro = T.lista("hexagonos", "centro", esperado=2)
@@ -165,11 +164,10 @@ def hexes_svg():
 
 HEXES = '<div class="hexes" data-focus="all">%s</div>' % hexes_svg()
 
+# Simplificado a pedido de Ariel: una sola figura (sin resaltar cada hexágono por
+# separado ni mostrar el número de proyectos en ellos) con 2 pasos de texto.
 hub_steps = [
-    step(".5,.5,1", "int", card("proyecto-0"), wash="0", tema="rosa"),
-    step(".5,.5,1", "int", card("proyecto-1"), wash=".93", hex="rosa", tema="rosa"),
-    step(".5,.5,1", "int", card("proyecto-2"), wash=".93", hex="naranja", tema="naranja"),
-    step(".5,.5,1", "int", card("proyecto-3"), wash=".93", hex="verde", tema="verde"),
+    step(".5,.5,1", "int", card("proyecto-0"), wash=".93", hex="all", tema="rosa"),
     step(".5,.5,1", "int", card("proyecto-4"), wash=".93", hex="all", tema="rosa"),
 ]
 hub = cap("proyecto", "rosa", T.t("proyecto", "banner"), frame("int"), hub_steps, extra_stage='<div class="wash"></div>' + HEXES)
@@ -187,10 +185,11 @@ calidad_steps = [
     step(".55,.5,1.05", "col", card("calidad-0"), pins=""),
     step(".615,.79,2.3", "col", card("calidad-1"),
          carousel("calidad-1", [("atotonilco-1",), ("atotonilco-2",), ("atotonilco-3",)]), pins="atot"),
-    step(".55,.47,1.25", "col", card("calidad-2"),
-         carousel("calidad-2", [("industria-1",), ("industria-2",)]), pins=""),
+    # Orden invertido a pedido de Ariel: primero Drenaje de Tula, luego Industria.
     step(".64,.47,1.35", "col", card("calidad-3"),
          carousel("calidad-3", [("colectores-1",), ("colectores-2",), ("colectores-3",)]), pins="colec cfe"),
+    step(".55,.47,1.25", "col", card("calidad-2"),
+         carousel("calidad-2", [("industria-1",), ("industria-2",)]), pins=""),
     step(".55,.46,1.05", "col", card("calidad-4"),
          carousel("calidad-4", [("monitoreo-1",), ("monitoreo-2",)]), pins="boya atot"),
 ]
@@ -265,9 +264,11 @@ def historia_section():
     steps = ""
     for i in range(9):
         k = "historia-%d" % i
+        fuente = T.t(k, "fuente", requerido=False)
+        fuente_html = ('<div class="fuente">%s</div>' % fuente) if fuente else ""
         steps += ('<article class="step hs-step" data-step="%d" data-banner="%s" data-here="%s"><div class="card">'
-                  '<div class="tag">%s</div><h3>%s</h3><p>%s</p></div></article>'
-                  % (i, attr(T.raw(k, "banner")), attr(T.raw(k, "linea")), T.t(k, "epoca"), T.t(k, "titulo"), T.t(k, "texto")))
+                  '<div class="tag">%s</div><h3>%s</h3><p>%s</p>%s</div></article>'
+                  % (i, attr(T.raw(k, "banner")), attr(T.raw(k, "linea")), T.t(k, "epoca"), T.t(k, "titulo"), T.t(k, "texto"), fuente_html))
     return ('<section class="s-historia" id="historia" data-nav="light">'
             '<div class="hs-intro-plain reveal"><span class="s-tag">%s</span><h2 class="s-title">%s</h2><p class="s-body">%s</p></div>'
             '<div class="cap hist tema-azul" data-nav="light"><div class="cap-stage">%s'
@@ -281,16 +282,19 @@ def historia_section():
 # ═══════════════════════════════════════════════════════════════════════════
 #  PÁGINA
 # ═══════════════════════════════════════════════════════════════════════════
-INDICE = [   # (número en TEXTOS.md, ancla, color)
+INDICE = [   # (número en TEXTOS.md, ancla, color) — 4/5/6 son subíndices de "3 El proyecto"
     ("1", "#historia", "#1f6fd6"), ("2", "#promesa", "#f0938c"), ("3", "#proyecto", "#1f6fd6"),
     ("4", "#calidad", "#f0938c"), ("5", "#inundaciones", "#f78b62"), ("6", "#ecosistemas", "#8c871d"),
 ]
 idx_items = idx_list = ""
 for i, (n, h, c) in enumerate(INDICE, 1):
     k = "indice-" + n
-    num = "%02d" % i
-    idx_items += '<a class="idx-item" href="%s" style="--c:%s"><b>%s</b><span>%s</span></a>' % (h, c, num, T.t(k, "titulo"))
-    idx_list += '<li><a href="%s" style="--c:%s"><b>%s</b><span>%s<small>%s</small></span></a></li>' % (h, c, num, T.t(k, "titulo"), T.t(k, "descripcion"))
+    if i <= 3:
+        num, sub = str(i), ""
+    else:
+        num, sub = "3.%d" % (i - 3), " idx-sub"
+    idx_items += '<a class="idx-item%s" href="%s" style="--c:%s"><b>%s</b><span>%s</span></a>' % (sub, h, c, num, T.t(k, "titulo"))
+    idx_list += '<li class="%s"><a href="%s" style="--c:%s"><b>%s</b><span>%s<small>%s</small></span></a></li>' % (sub.strip(), h, c, num, T.t(k, "titulo"), T.t(k, "descripcion"))
 
 FILTROS = '''<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
 <filter id="f-rosa"    color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.941  0 0 0 0 0.576  0 0 0 0 0.549  0 0 0 1 0"/></filter>
@@ -317,17 +321,18 @@ def kfpair(id_, campo):
 def promesa():
     a, b, c = (kfpair("promesa-1", "cifra%d" % i) for i in (1, 2, 3))
     t1, t2 = kfpair("promesa-2", "tarjeta1"), kfpair("promesa-2", "tarjeta2")
+    foto = carousel("promesa-1", [("presidenta-toma-protesta",)], "Foto")
     return ('<section class="s-promesa" id="promesa" data-nav="light">'
-            '<div class="pm-beat"><div class="pm-wrap pm-1"><div class="pm-92 rv">92</div><div class="rv">'
+            '<div class="pm-beat"><div class="pm-wrap pm-1"><div class="rv">'
             '<p class="pm-kicker">%s</p><h2 class="pm-h">%s<span>%s</span></h2><p class="pm-sub">%s</p>'
             '<div class="tula-facts"><div><b>%s</b><span>%s</span></div><div><b>%s</b><span>%s</span></div><div><b>%s</b><span>%s</span></div></div>'
-            '</div></div></div>'
+            '</div>%s</div></div>'
             '<div class="pm-beat"><div class="pm-wrap pm-2"><p class="pm-kicker rv">%s</p><h2 class="rv">%s</h2>'
             '<div class="nums rv"><div class="n" style="--nc:#1f6fd6"><b>%s</b><span>%s</span></div>'
             '<div class="n" style="--nc:#ec6f66"><b>%s</b><span>%s</span></div></div>'
             '<p class="pm-puente rv">%s<span>↓</span></p><p class="pm-fuentes rv">%s</p></div></div></section>'
             % (T.t("promesa-1", "etiqueta"), T.t("promesa-1", "titulo"), T.t("promesa-1", "titulo2"), T.t("promesa-1", "texto"),
-               a[0], a[1], b[0], b[1], c[0], c[1],
+               a[0], a[1], b[0], b[1], c[0], c[1], foto,
                T.t("promesa-2", "etiqueta"), T.t("promesa-2", "titulo"),
                t1[0], t1[1], t2[0], t2[1], T.t("promesa-2", "puente"), T.t("promesa-2", "fuentes")))
 

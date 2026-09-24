@@ -18,15 +18,11 @@
 
 .hmap { position: absolute; inset: 0; width: 100%; height: 100%; display: block; --fs: 10; }
 
-/* ─ Base: sólo líneas finas (como el original) ─ */
-.hmap .mun { fill: none; stroke: rgba(60, 75, 90, .2); stroke-width: calc(var(--fs) * .13px); stroke-linejoin: round; }
+/* ─ Base: sólo líneas finas (como el original); sin divisiones municipales ─ */
 .hmap .estados { fill: none; stroke: rgba(60, 75, 90, .55); stroke-width: calc(var(--fs) * .14px); stroke-dasharray: 3 3; }
-.hmap .humedales { fill: none; stroke: rgba(63, 174, 122, .55); stroke-width: calc(var(--fs) * .1px); }
-.hmap .cuerpos { fill: none; stroke: rgba(94, 168, 207, .7); stroke-width: calc(var(--fs) * .1px); }
-.hmap .tulanet { fill: none; stroke: rgba(80, 130, 165, .45); stroke-width: calc(var(--fs) * .1px); }
 .hmap .cuenca { fill: none; stroke: rgba(60, 75, 90, .6); stroke-width: calc(var(--fs) * .17px); stroke-dasharray: 3 3; opacity: 0; transition: opacity 1.2s; }
 .hmap .cuenca.on { opacity: 1; }
-.hmap .rivers { fill: none; stroke: rgba(94, 168, 207, .7); stroke-width: calc(var(--fs) * .11px); }
+.hmap .rivers { fill: none; stroke: rgba(94, 168, 207, .85); stroke-width: calc(var(--fs) * .16px); }
 
 /* ─ Agua ─ */
 .hmap .waterbody, .hmap .lake { fill: rgba(94, 168, 207, .38); stroke: rgba(50, 140, 195, .75); stroke-width: calc(var(--fs) * .12px); opacity: 0; transition: opacity 1s, fill 1.2s, stroke 1.2s; }
@@ -44,8 +40,13 @@
 .hmap .dique  { stroke: #e0a520; }
 .hmap .noch   { stroke: #c45e1a; }
 .hmap .canal  { stroke: #d9962a; }
+.hmap .tep    { stroke: #6a5acd; }
 .hmap .emisor { stroke: #3d93a6; }
 .hmap .teo    { stroke: #3d93a6; }
+
+/* ─ Puntos históricos (extremos del dique, etc.) ─ */
+.hmap .hito { fill: #a8541a; stroke: #fbfbfa; stroke-width: calc(var(--fs) * .12px); opacity: 0; transition: opacity .8s; }
+.hmap .hito.on { opacity: 1; }
 
 /* ─ Río Tula y la ciudad ─ */
 .hmap .riotula { fill: none; stroke: rgba(50, 65, 80, .5); stroke-width: calc(var(--fs) * .3px); stroke-linecap: round; stroke-linejoin: round; transition: stroke .9s, stroke-width .9s, filter .9s; }
@@ -61,10 +62,9 @@
 .hmap .marker circle { transform-box: fill-box; transform-origin: center; }
 .hmap .marker .dot { stroke-width: 1.6; stroke: #fff; }
 .hmap .marker.zump .dot { fill: #5ea8cf; }
-.hmap .marker.ptar .dot { fill: #3d93a6; }
-.hmap .marker.zoc  .dot { fill: #e0a520; }
+.hmap .marker.enfasis .dot { fill: #e0a520; }
 .hmap .marker .ping { fill: none; stroke-width: 1.4; animation: hsPing 2s ease-out infinite; }
-.hmap .marker.zump .ping { stroke: #5ea8cf; } .hmap .marker.ptar .ping { stroke: #3d93a6; } .hmap .marker.zoc .ping { stroke: #e0a520; }
+.hmap .marker.zump .ping { stroke: #5ea8cf; } .hmap .marker.enfasis .ping { stroke: #e0a520; }
 @keyframes hsPing { 0% { transform: scale(1); opacity: .9; } 100% { transform: scale(3.6); opacity: 0; } }
 
 /* ─ Etiquetas ─ */

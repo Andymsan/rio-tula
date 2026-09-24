@@ -8,11 +8,11 @@ tabla** (JPG o PNG; horizontal, ~1600 px de ancho). No hay que tocar código.
 | `atotonilco-1.jpg` | PTAR Atotonilco |
 | `atotonilco-2.jpg` | Operación de la planta |
 | `atotonilco-3.jpg` | Caudal tratado |
-| `industria-1.jpg` | Inspección a una industria |
-| `industria-2.jpg` | Centro Regional de Prevención Ambiental |
 | `colectores-1.jpg` | Colector del río Tula · etapa 1 |
 | `colectores-2.jpg` | Línea de conducción a la planta de la CFE |
 | `colectores-3.jpg` | Cárcamo de bombeo |
+| `industria-1.jpg` | Inspección a una industria |
+| `industria-2.jpg` | Centro Regional de Prevención Ambiental |
 | `monitoreo-1.jpg` | Estación automática de calidad |
 | `monitoreo-2.jpg` | Muestreo manual |
 | `taludes-1.jpg` | San Lorenzo · antes |
@@ -27,6 +27,7 @@ tabla** (JPG o PNG; horizontal, ~1600 px de ancho). No hay que tocar código.
 | `bosques-1.jpg` | Área Destinada Voluntariamente a la Conservación |
 | `bosques-2.jpg` | Restauración forestal con ejidos |
 | `espacio-publico-1.jpg` | Espacio público ribereño |
+| `presidenta-toma-protesta.jpg` | Presidenta Claudia Sheinbaum Pardo en la toma de protesta (1 de octubre de 2024) |
 
 - Si el archivo no existe, el sitio muestra un marcador con rayas y el nombre del archivo.
 - Los pies de foto se cambian en `TEXTOS.md` (campo `fotos:`).

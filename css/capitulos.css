@@ -82,8 +82,8 @@ a { color: inherit; }
 .hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(ellipse at 50% 46%, rgba(246,244,239,.92), rgba(246,244,239,.62) 55%, rgba(246,244,239,.25) 100%), linear-gradient(to bottom, transparent 70%, #f6f4ef); }
 @keyframes heroZoom { from { transform: scale(1); } to { transform: scale(1.07) translate(-1%, -1%); } }
 .hs-eyebrow { font-size: 12px; letter-spacing: .22em; text-transform: uppercase; color: #5b6b7f; font-weight: 600; margin-bottom: 20px; }
-.hs-main-title { font-family: 'Playfair Display', serif; font-size: clamp(48px, 8vw, 92px); font-weight: 900; line-height: 1; color: var(--ink); letter-spacing: -.02em; }
-.hs-main-title em { font-style: italic; color: #1f6fd6; }
+.hs-main-title { font-family: 'Noto Sans', sans-serif; font-size: clamp(48px, 8vw, 92px); font-weight: 700; line-height: 1; color: #1467d6; letter-spacing: -.02em; }
+.hs-main-title em { font-style: italic; }
 .hs-subtitle { margin: 22px auto 0; max-width: 46ch; font-size: clamp(15px, 1.7vw, 19px); color: #444; font-weight: 400; line-height: 1.6; }
 .hero-cta { display: flex; gap: 12px; justify-content: center; margin-top: 28px; flex-wrap: wrap; }
 .btn { display: inline-flex; align-items: center; gap: 8px; font: 700 14px 'Noto Sans', sans-serif; padding: 14px 30px; border-radius: 30px; text-decoration: none; transition: transform .2s, box-shadow .2s; }
@@ -99,16 +99,24 @@ a { color: inherit; }
 .idx-item b { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--c, #1f6fd6); }
 .idx-item span { font-size: 14px; font-weight: 600; line-height: 1.25; }
 
+/* subíndices: Calidad/Inundaciones/Ecosistemas cuelgan de "3 El proyecto" */
+.idx-item.idx-sub { padding: 10px 15px 10px 26px; background: rgba(255,255,255,.55); }
+.idx-item.idx-sub b { font-size: 15px; }
+li.idx-sub { margin-left: 22px; }
+li.idx-sub a { padding: 10px 14px; background: rgba(0,0,0,.015); }
+li.idx-sub b { font-size: 16px; }
+
 /* ─── Compromiso 92 (claro) ─── */
 .s-promesa { background: #f6f4ef; color: var(--ink); }
 .pm-beat { min-height: 90svh; display: flex; align-items: center; justify-content: center; padding: 96px 28px; position: relative; }
 .pm-beat + .pm-beat { background: #fff; }
 .pm-wrap { width: min(1060px, 100%); }
-.pm-1 { display: grid; grid-template-columns: auto 1fr; gap: clamp(24px, 5vw, 72px); align-items: center; }
-.pm-92 {
-  font-family: 'Playfair Display', serif; font-weight: 900; font-size: clamp(150px, 26vw, 330px); line-height: .9; padding-bottom: .06em;
-  background: linear-gradient(160deg, #ec6f66 0%, #f78b62 50%, #a6a12a 100%); -webkit-background-clip: text; background-clip: text; color: transparent; letter-spacing: -.04em;
-}
+.pm-1 { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 28px; }
+.pm-1 .pm-sub { max-width: 60ch; }
+.pm-1 .tula-facts { justify-content: center; }
+/* la burbuja de foto aquí vive fuera del scroll por pasos, así que no depende
+   de ".step.active" para mostrarse (si no, quedaba invisible para siempre) */
+.pm-1 .burbuja { grid-column: auto; justify-self: center; align-self: auto; width: min(100%, 380px); aspect-ratio: 4/3; margin: 0; opacity: 1 !important; transform: none !important; }
 .pm-kicker { font-size: 12px; letter-spacing: .22em; text-transform: uppercase; color: #6b6b6b; font-weight: 700; margin-bottom: 16px; }
 .pm-h { font-family: 'Playfair Display', serif; font-weight: 700; font-size: clamp(28px, 4vw, 50px); line-height: 1.12; }
 .pm-h em { font-style: italic; color: #d9534a; }
@@ -258,7 +266,7 @@ footer { background: #eceae5; color: #6b6b6b; text-align: center; padding: 34px 
   #main-nav { padding: 12px 16px; }
   .nav-logo { font-size: 15px; } .nav-logo span { display: none; }
   .nav-btn { padding: 8px 14px; }
-  .pm-1 { grid-template-columns: 1fr; text-align: center; } .pm-1 .pm-sub { margin-left: auto; margin-right: auto; } .tula-facts { justify-content: center; }
+  .pm-1 .pm-sub { margin-left: auto; margin-right: auto; }
   .cap-stage { height: 44svh; box-shadow: 0 10px 30px -12px rgba(0,0,0,.4); z-index: 4; }
   .cap-steps { padding-top: 44svh; }
   .banner { top: 58px; font-size: 12.5px; padding: 6px 14px; }
