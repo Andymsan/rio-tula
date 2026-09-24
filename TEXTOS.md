@@ -45,9 +45,9 @@ pie1: Secretaría de Medio Ambiente y Recursos Naturales · Plan de Saneamiento 
 pie2: Datos: base de proyectos 2025–2026 (Conagua, Semarnat, Conafor, Conanp, Profepa y Gobierno de Hidalgo)
 
 ## portada  (primera pantalla)
-eyebrow: Saneamiento · Restauración · 2024–2030
-titulo: Río *Tula*
-subtitulo: La historia de un río que ha acompañado a muchas comunidades, y el trabajo para cuidarlo y recuperarlo: agua más limpia, un cauce más seguro y un río al que la gente pueda volver.
+eyebrow: Proyecto de saneamiento y restauración · 2024–2030
+titulo: Río Tula
+subtitulo: Descubre la historia de uno de los ríos más contaminados del país y el proyecto para transformarlo.
 boton: Comenzar el recorrido ↓
 
 ## indice-1  (recuadro 1 del índice: lleva a la Historia)
@@ -55,7 +55,7 @@ titulo: Historia
 descripcion: Cómo llegó el río a esta condición
 
 ## indice-2  (lleva al Compromiso 92)
-titulo: Compromiso 92
+titulo: Compromiso presidencial
 descripcion: La promesa de limpiar los tres ríos más contaminados
 
 ## indice-3  (lleva a El proyecto)
@@ -77,90 +77,90 @@ descripcion: Riberas, humedales, bosques y cinco sitios
 ---
 
 ## historia-intro  (texto antes del mapa de la historia)
-etiqueta: 01 · El río y su historia
-titulo: 700 mil años de una cuenca en transformación
-texto: Durante siglos, el río Tula recibió el agua que el Valle de México necesitaba sacar. Este recorrido cuenta cómo pasó y qué estamos haciendo hoy para cuidarlo.
+etiqueta: 1 · El río y su historia
+titulo: Dos cuencas entrelazadas
+texto: Desliza hacia abajo para conocer la historia del río Tula.
 
 ## historia-0  (época 1)
 epoca: ~700,000 años atrás
 titulo: Una cuenca sin salida
-texto: Los volcanes del sur cerraron el Valle de México. La lluvia no tenía por dónde salir y formó grandes lagos. Como esa agua no corría hacia el mar, los lagos se volvieron salados.
+texto: Los volcanes del sur cerraron la cuenca del Valle de México. A partir de este momento, la lluvia dejó de fluir hacia el mar y formó tres grandes lagos en la parte más baja de la cuenca que poco a poco los lagos se volvieron salados.
 banner: Hace ~700 mil años
 linea: 700 mil a.C.
 
 ## historia-1  (época 2)
 epoca: 1449
 titulo: El dique de Nezahualcóyotl
-texto: Una inundación dejó a Tenochtitlan —hoy la **Ciudad de México**— bajo el agua. El tlatoani **Nezahualcóyotl** construyó un dique de más de 12 km. Separaba el agua salada del lago de Texcoco del agua dulce donde vivía la ciudad.
+texto: El tlatoani **Nezahualcóyotl** construyó un dique de 17 km para separar el agua salada del lago de Texcoco del agua dulce donde vivía la población de Tenochtitlán. Esta es la primera obra hidráulica que empezó a transformar la cuenca.
 banner: 1449 · Texcoco
 linea: 1449
 
 ## historia-2  (época 3)
 epoca: 1607–1789
 titulo: El Tajo de Nochistongo
-texto: Para proteger a la ciudad de las inundaciones, Enrico Martínez abrió en **Huehuetoca**, Estado de México, el primer desagüe artificial: un túnel que llevaba el agua desde la zona de **Zumpango** hacia el río Tula. Los derrumbes obligaron a rehacerlo como un corte abierto, que se terminó en **1789**, 182 años después. Desde entonces lleva agua de lluvia y aguas residuales hacia el Tula.
+texto: Por órdenes de un Virrey, empezó la construcción a mano de un canal para abrir la cuenca y permitir que el agua del lago de Zumpango fluya hacia el río Tula reduciendo riesgos de inundación. A partir de su finalización en **1789**, 182 años después, las dos cuencas se interconectaron, permitiendo que una parte del agua de lluvia y drenaje del Valle de México fluyera hacia el río Tula. 
 banner: 1607–1789 · Nochistongo
 linea: 1789
 
 ## historia-3  (época 4)
 epoca: 1900
 titulo: El Gran Canal del Desagüe
-texto: El 17 de marzo de 1900 se inauguró el Gran Canal del Desagüe. Sale de la **Ciudad de México** y pasa por **Ecatepec, Zumpango y Tequixquiac**. Desde entonces, las aguas residuales de la ciudad salen del valle y llegan a la cuenca del Tula.
+texto: En 1900, Porfirio Díaz inauguró el Gran Canal del Desagüe para vaciar el lago de Texcoco y permitir que más drenaje de la ciudad fluya hacia el río Tula.
 banner: 1900 · Gran Canal
 linea: 1900
 
 ## historia-4  (época 5)
 epoca: 1951
 titulo: La presa Endhó
-texto: Entre **Tepetitlán y Tula de Allende**, en Hidalgo, se construyó la presa Endhó para guardar agua de riego. Un valle seco se volvió zona de cultivo: el **Valle del Mezquital**. Con los años, la presa recibió cada vez más aguas residuales de la Ciudad de México.
+texto: Se construyó la presa Endhó para almacenar agua del río Tula y usarla para riego. Un valle seco se volvió zona de cultivo conocida como el **Valle del Mezquital** que hoy alimenta una gran parte de la ciudad. La presa inundó poblados y separó comunidades, pero inicialmente contenía agua limpia con vida acuática. Con los años, la presa recibió cada vez más aguas residuales de la Ciudad de México almacenando contaminantes.
 banner: 1951 · Presa Endhó
 linea: 1951
 
 ## historia-5  (época 6)
-epoca: 1975 y 2019
+epoca: 1962, 1975 y 2019
 titulo: Los grandes túneles de drenaje
-texto: En 1975 se inauguró el Emisor Central, y en 2019 el **Túnel Emisor Oriente**, de 62 km. Llevan el agua de la Ciudad de México hacia **Atotonilco de Tula**, en Hidalgo. Con ellos llegó más agua residual y de lluvia a la cuenca del Tula.
+texto: Tres grandes obras de drenaje se construyeron para mandar la mayor parte de las aguas residuales y de lluvia de la ciudad hacia el río Tula: El Tunel Emisor Poniente (1962), el Tunel Emisor Central (1975) y el Tunel Emisor Poniente (2018). Estas obras completaron la infraestructura que interconecta las dos cuencas.
 banner: 1975 y 2019 · Túneles
 linea: 1975–2019
 
 ## historia-6  (época 7)
 epoca: 2018
 titulo: La planta de Atotonilco
-texto: En **Atotonilco de Tula**, Hidalgo, empezó a funcionar la planta de tratamiento de aguas residuales (PTAR) de Atotonilco: la más grande del mundo construida en una sola etapa. Se hizo para reducir los riesgos para la salud de regar con agua sin tratar.
+texto: Hasta este momento, todas las aguas residuales del río Tula, usadas en su mayoría para riego, no recibian ningún tratamiento. La Planta de tratamiento de Atotonilco, la tercera más grande del mundo, se contruyó para reducir los riesgos para la salud asociados al riego con agua sin tratar y para mejorar la calidad del río Tula.
 banner: 2018 · PTAR Atotonilco
 linea: 2018
 
 ## historia-7  (época 8 — la más delicada, revisar con cuidado)
 epoca: Septiembre de 2021
 titulo: La inundación de Tula
-texto: En septiembre de 2021 se desbordaron los ríos Tula y Rosas, y el agua entró a la ciudad de **Tula de Allende**, Hidalgo. Más de 70 mil personas perdieron sus pertenencias. Fallecieron 17 personas, 14 de ellas en el hospital del IMSS, donde falló la energía eléctrica. Ninguna obra devuelve lo que se perdió. Por eso el plan busca reducir el riesgo para las familias de Tula.
+texto: En septiembre de 2021 se desbordaron los ríos Tula y Rosas, inundando la ciudad de **Tula de Allende**, Hidalgo. Más de 70 mil personas fueron afectadas. Fallecieron 17 personas, 14 de ellas en el hospital del IMSS, donde falló la energía eléctrica. Esta catástrofe se conoce como una de las más importantes de la historia reciente del centro del país.
 banner: 2021 · Inundación
 linea: 2021
 
 ## historia-8  (época 9)
 epoca: 2024–2030
 titulo: Comienza la restauración
-texto: Recuperar el río Tula es hoy una prioridad nacional. Arranca el **Plan de Saneamiento y Restauración del Río Tula 2024–2030**, con 37 proyectos para mejorar la calidad del agua, reducir el riesgo de inundaciones y recuperar el río y sus orillas para quienes viven junto a él.
+texto: La presidenta Claudia Sheinbaum anuncia que limpiar el río Tula, así como el Atoyac y el Lerma Santiago es uno de sus 100 compromisos. La restauración del río Tula se vuelve una prioridad nacional dando inicio a una transformación histórica del río.
 banner: 2024–2030 · Restauración
 linea: 2024
 
 ---
 
 ## promesa-1  (Compromiso 92, primera pantalla)
-etiqueta: Compromiso presidencial
+etiqueta: Compromiso presidencial 92
 titulo: Limpiar y sanear *los tres ríos más contaminados* del país
-titulo2: Uno de ellos es el río Tula.
-texto: Es el compromiso 92 de la Presidenta Claudia Sheinbaum Pardo. Para las personas que viven junto al Tula, esto significa:
-cifra1: 191 km | de río
-cifra2: 800 mil | personas beneficiadas
-cifra3: 2 estados | Estado de México e Hidalgo
+titulo2: El río Tula, Atoyac y Lerma Santiago.
+texto: Inicia uno de los proyectos ambientales más ambiciosos del país.
+cifra1: 191 km | de río Tula
+cifra2: 2 estados | Estado de México e Hidalgo
+cifra3: 12 municipipos | Directamente beneficiados
 
 ## promesa-2  (Compromiso 92, la inversión)
 etiqueta: La inversión
-titulo: Recursos para cuidar el río Tula
+titulo: Recursos para el proyecto del río Tula
 tarjeta1: $1,478 MDP | de inversión documentada en el río Tula en 2025 y 2026, entre Conagua, Semarnat, Conafor, Conanp y el Gobierno de Hidalgo.
-tarjeta2: +20 mil millones | de pesos durante el sexenio para el saneamiento de los tres ríos prioritarios: Lerma-Santiago, Tula y Atoyac.
-puente: Veamos qué se está haciendo, y dónde.
+tarjeta2: +20 mil millones | de pesos destinados durante el sexenio para el saneamiento de los tres ríos prioritarios: Lerma-Santiago, Tula y Atoyac.
+puente: Descubre qué se está haciendo, y dónde.
 fuentes: Fuentes: [Contralínea (16 jul 2026)](https://contralinea.com.mx/interno/semana/gobierno-invertira-mas-de-20-mil-mdp-para-sanear-los-rios-lerma-santiago-tula-y-atoyac/) · [Ámbito](https://www.ambito.com/mexico/informacion-general/claudia-sheinbaum-ordena-limpiar-los-tres-rios-mas-contaminados-mexico-cuales-son-y-como-se-hara-este-historico-saneamiento-n6300195) · base de proyectos 2025–2026.
 
 ---
@@ -176,8 +176,8 @@ centro: Río | Tula
 
 ## proyecto-0  (paso 1)
 etiqueta: El proyecto
-titulo: Un río, tres frentes
-texto: El plan cuida el río Tula desde tres frentes al mismo tiempo: el agua, las inundaciones y los ecosistemas. Estos son sus ==37 proyectos==: unos terminados, otros en obra y otros en planeación.
+titulo: Un río, tres objetivos, 37 proyectos
+texto: El proyecto conempla 3 objetivos principales: 1. Mejorar la calidad del agua, 2. Prevenir inundaciones, 3. Restauración y espacio público. Actualmente contamos con ==37 proyectos==: unos terminados, otros en obra y otros en planeación para el 2027. 
 cifra: $1,478 MDP | de inversión documentada en 2025 y 2026
 chips: Conagua | Semarnat | Conafor | Conanp | Profepa | Gobierno de Hidalgo
 
@@ -210,7 +210,7 @@ banner: Calidad del agua
 ## calidad-0  (introducción)
 etiqueta: Frente 1 · Calidad del agua
 titulo: Cuidar el agua que llega al río
-texto: Existen ==tres fuentes principales de contaminación== del río Tula que estamos atendiendo en este proyecto.
+texto: Existen ==tres fuentes principales de contaminación== del río Tula que estamos atendiendo en este proyecto: el drenaje sin tratamiento del Valle de México, el drenaje de la zona metropolitana de Tula y las descargas contaminantes industriales.
 cifra: 15 | proyectos de calidad del agua
 chips: 1 · Atotonilco | 2 · Industria | 3 · Drenaje de Tula
 
@@ -224,7 +224,7 @@ fotos: PTAR Atotonilco | Operación de la planta | Caudal tratado
 
 ## calidad-2  (Industria)
 etiqueta: 2 · Industria
-titulo: Revisar lo que las industrias descargan
+titulo: Controlar la contaminación industrial
 texto: Durante este sexenio, la Conagua y Profepa van a inspeccionar al menos dos veces a las empresas que descargan al río Tula o sus tributarios —los ríos que llegan a él— para asegurar su cumplimiento. A la fecha, hemos hecho **92 inspecciones** y estamos ==capacitando y certificando a 29 industrias==.
 cifra: 92 | inspecciones · 29 industrias en certificación
 chips: Profepa | Conagua | Centro Regional de Prevención Ambiental (UTTT)
@@ -235,7 +235,7 @@ etiqueta: 3 · Drenaje de Tula
 titulo: Que el drenaje de Tula deje de llegar al río
 texto: Todo el drenaje de la zona metropolitana de Tula se vierte al río sin tratamiento. El gobierno del estado de Hidalgo está construyendo **35.8 km de colectores** —tuberías que juntan el drenaje— para captar **72 descargas** y ==tratarlas en la planta de tratamiento de la central termoeléctrica de CFE==.
 cifra: 35.8 km | de colectores · la etapa 1 lleva 89 % de avance
-chips: Gobierno de Hidalgo · $570 MDP | Planta de la CFE en rehabilitación | Planta de Pemex en planeación
+chips: Gobierno de Hidalgo · $570 MDP | Planta de la CFE en rehabilitación
 fotos: Colector del río Tula · etapa 1 | Línea de conducción a la planta de la CFE | Cárcamo de bombeo
 
 ## calidad-4  (Monitoreo)
