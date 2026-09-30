@@ -23,13 +23,17 @@
 
 - `cifra:` = `número grande | explicación` (separadas por **|**)
 - `chips:` = etiquetas pequeñas separadas por **|**
-- `fotos:` = un pie de foto por cada foto, separados por **|**, **en el mismo orden y cantidad** que ya están
+
+## Fotos
+
+Las fotos **no se ponen aquí**: van en `img/fotos/<id-de-sección>/`, una carpeta por
+sección (el id es el que aparece en el título de cada `##`, por ejemplo `inundaciones-1`).
+El nombre del archivo es el pie de foto: `1_Obra terminada en 2026.jpg`. Ver
+`img/fotos/LEEME.md` para la lista completa de carpetas.
 
 ## Lo que NO se cambia aquí
 
-Los nombres de lugares en los mapas, los colores, el orden de las secciones y las fotos
-(las fotos se cambian en la carpeta `img/fotos/`, ver `img/fotos/LEEME.md`).
-Para eso, escríbele a Andrea.
+Los nombres de lugares en los mapas, los colores y el orden de las secciones.
 
 ---
 
@@ -54,25 +58,29 @@ boton: Comenzar el recorrido ↓
 titulo: Historia
 descripcion: Cómo llegó el río a esta condición
 
-## indice-2  (lleva al Compromiso 92)
-titulo: Compromiso presidencial
-descripcion: La promesa de limpiar los tres ríos más contaminados
-
-## indice-3  (lleva a El proyecto)
+## indice-2  (lleva a El proyecto)
 titulo: El proyecto
 descripcion: Tres frentes, un mismo río
 
-## indice-4  (lleva a Calidad del agua)
+## indice-2.1  (subíndice: Calidad del agua)
 titulo: Calidad del agua
 descripcion: Atotonilco, industria, colectores y monitoreo
 
-## indice-5  (lleva a Inundaciones)
+## indice-2.2  (subíndice: Inundaciones)
 titulo: Inundaciones
 descripcion: Taludes, desazolve y más espacio para el agua
 
-## indice-6  (lleva a Ecosistemas y espacio público)
+## indice-2.3  (subíndice: Ecosistemas y espacio público)
 titulo: Ecosistemas y espacio público
 descripcion: Riberas, humedales, bosques y cinco sitios
+
+## indice-2.4  (subíndice: Resumen)
+titulo: Resumen
+descripcion: El mapa completo y las cinco metas del proyecto
+
+## indice-3  (lleva a Participa)
+titulo: Participa
+descripcion: Cómo sumarte al proyecto
 
 ---
 
@@ -184,12 +192,6 @@ texto: El proyecto conempla 3 objetivos principales:
 Actualmente contamos con ==37 proyectos==: unos terminados, otros en obra y otros en planeación para el 2027. 
 cifra: $1,478 MDP | de inversión documentada en 2025 y 2026
 chips: Conagua | Semarnat | Conafor | Conanp | Profepa | Gobierno de Hidalgo
-
-## proyecto-4  (paso 5: donde se cruzan)
-etiqueta: Donde se cruzan
-titulo: En el centro está el río
-texto: Cada frente ayuda a los otros. Un río más limpio se puede recorrer. Un cauce cuidado protege a las familias. Un río vivo vuelve a ser de la gente.
-cifra: Baja | y empecemos por el agua ↓
 
 ---
 
@@ -324,15 +326,15 @@ cifra: 52 % | de la población de Tula a 15 min a pie de algún proyecto
 fuente: Isócronas de accesibilidad: OpenRouteService.
 fotos: Propuesta · Río Rosas | Propuesta · San Lorenzo | Propuesta · Bojay | Espacio público ribereño
 
-## ecosistemas-5  (Alcance)
-etiqueta: 5 · Alcance
-titulo: Un río al alcance de la gente
-texto: El ==52% de la población del municipio== está a 15 minutos a pie o menos de alguno de los proyectos de espacio público junto al río.
-cifra: 52 % | de la población a 15 min a pie
-fuente: Isócronas de accesibilidad: OpenRouteService.
+---
 
-## ecosistemas-6  (Conexión)
-etiqueta: 6 · Conexión
-titulo: Todo conectado por una vía ciclable de 12 km
-texto: Aprovechando las antiguas vías del tren y los taludes que estamos trabajando, ==todas las intervenciones quedan interconectadas por una vía ciclable de 12 km==: **4 km** de antiguas vías del tren, **6 km** de bordos rehabilitados y **2 km** de caminos rurales rehabilitados.
-cifra: 12 km | de vía ciclable
+## resumen  (mapa con las 5 metas; se resalta la que está en foco)
+etiqueta: Resumen
+titulo: Un río, cinco metas
+texto: A la fecha, tenemos proyectos terminados, en proceso o en planeación que van a transformar la vida del río Tula y de quienes viven junto a él.
+
+## participa
+etiqueta: Participa
+titulo: Súmate a recuperar el río Tula
+texto: Restaurar el río Tula es un proyecto extremadamente ambicioso que solo se puede lograr con la participación de mucha gente. ¿Te interesa sumarte?
+enlaces: Participa en eventos -> https://forms.gle/ywk73PzvLo6HkGVFA | Recibe información -> https://forms.gle/ywk73PzvLo6HkGVFA | Sugerencias o propuestas de colaboración -> https://forms.gle/ywk73PzvLo6HkGVFA | Denuncia a una industria que contamina el río -> https://www.profepa.gob.mx/innovaportal/v/1156/1/mx/haz_tu_denuncia.html

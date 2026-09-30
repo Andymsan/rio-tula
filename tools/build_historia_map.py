@@ -85,6 +85,15 @@ def smooth_path(d, it=2):
 
 CAPAS["lake"] = smooth_path(CAPAS["lake"])
 
+def prepend_point(d, xy):
+    """Antepone un punto a un trazo M...L... (para conectarlo a otro elemento)."""
+    nums = re.findall(r'-?\d+\.?\d*', d)
+    resto = " L".join("%s,%s" % (nums[i], nums[i + 1]) for i in range(0, len(nums) - 1, 2))
+    return "M%.1f,%.1f L%s" % (xy[0], xy[1], resto)
+
+ZUMPANGO_MARKER = (258.8, 308.4)
+CAPAS["noch"] = prepend_point(CAPAS["noch"], ZUMPANGO_MARKER)  # el tajo nace en Zumpango
+
 # ─── etiquetas: (texto, x, y, pasos donde se ve, tamaño) ──────────────────
 lab = []
 def L(txt, xy, steps, size="m", cls=""):
@@ -93,6 +102,17 @@ def L(txt, xy, steps, size="m", cls=""):
 
 def punto(xy, step):
     return '<circle class="hito" data-step="%d" cx="%.1f" cy="%.1f" r="2.6"/>' % (step, xy[0], xy[1])
+
+def tenochtitlan(xy, step):
+    """Glifo estilo mapa colonial: traza urbana rodeada de agua, sobre calzadas en cruz."""
+    x, y = xy
+    return (
+        '<g class="tenoch" data-step="%d">'
+        '<circle class="tenoch-agua" cx="%.1f" cy="%.1f" r="5.2"/>'
+        '<path class="tenoch-calz" d="M%.1f,%.1f l0,-5 M%.1f,%.1f l0,5 M%.1f,%.1f l-5,0 M%.1f,%.1f l5,0"/>'
+        '<circle class="tenoch-isla" cx="%.1f" cy="%.1f" r="3"/>'
+        '</g>'
+    ) % (step, x, y, x, y, x, y, x, y, x, y, x, y)
 
 zoc = LL(-99.1332, 19.4326)           # Zócalo, Ciudad de México (antes Tenochtitlan)
 iztapalapa = LL(-99.0930, 19.3552)    # extremo sur del dique de Nezahualcóyotl
@@ -104,43 +124,40 @@ tep_pts = [LL(-99.263, 19.480), LL(-99.211, 19.529), LL(-99.196, 19.677)]
 tep_path = "M" + " L".join("%.1f,%.1f" % p for p in tep_pts)
 
 # estados (siempre)
-L("HIDALGO", (250, 62), range(0, 9), "st", "estado")
-L("ESTADO DE MÉXICO", (215, 380), range(0, 9), "st", "estado")
-L("CIUDAD DE MÉXICO", (zoc[0] - 4, zoc[1] + 26), [0, 3, 5], "st", "estado")
+L("HIDALGO", (250, 62), [i for i in range(9) if i not in (5, 6, 7)], "st", "estado")
+L("ESTADO DE MÉXICO", (215, 380), [i for i in range(9) if i not in (4, 5, 6, 7)], "st", "estado")
+L("CIUDAD DE MÉXICO", (zoc[0] - 4, zoc[1] + 26), [0, 3], "st", "estado")
 # cuenca / lagos
 L("Cuenca de México", (60, 470), [0], "s", "cuenca")
-L("Lago de Texcoco", (346, 612), [0, 1, 3], "m", "agua")
-L("Lago de Zumpango", C("Zumpango", 1, -18), [0, 2, 3], "s", "agua")
-L("Lago de Xochimilco", xochimilco, [0, 1, 3], "s", "agua")
+L("Lago de Texcoco", (346, 612), [0, 1], "m", "agua")
+L("Lago de Zumpango", C("Zumpango", 1, -18), [0, 2], "s", "agua")
+L("Lago de Xochimilco", xochimilco, [0, 1], "s", "agua")
 L("Tenochtitlan", (zoc[0] + 6, zoc[1] - 6), [1], "m", "hist")
-L("Ciudad de México", (zoc[0] + 8, zoc[1] - 8), [3, 5], "m", "ciudad")
+L("Ciudad de México", (zoc[0] + 8, zoc[1] - 8), [3], "m", "ciudad")
 L("Albarradón de Nezahualcóyotl", (zoc[0] + 22, zoc[1] + 66), [1], "s", "hist")
-L("Iztapalapa", (iztapalapa[0] + 6, iztapalapa[1] + 2), [1], "s", "lm")
-L("Azcapotzalco", (azcapotzalco[0] - 8, azcapotzalco[1] - 6), [1], "s", "lm")
 # lugares clave
-L("Huehuetoca", C("Huehuetoca", -6, 12), [2, 5], "m", "lm")
+L("Huehuetoca", C("Huehuetoca", -6, 12), [2], "m", "lm")
 L("Zumpango", C("Zumpango", 10, 8), [2, 3], "m", "lm")
 L("Tequixquiac", C("Tequixquiac", -22, 4), [2, 3], "s", "lm")
-L("Cuautitlán", (tep_pts[2][0] + 6, tep_pts[2][1] + 4), [5], "s", "lm")
-L("Tula de Allende", C("Tula de Allende", -8, -14), [4, 6, 8], "l", "lm key")
-L("Atotonilco de Tula", C("Atotonilco de Tula", 14, 0), [5, 6, 8], "m", "lm key")
-L("Tepeji del Río", C("Tepeji del Río de Ocampo", 0, 6), [5, 6], "s", "lm")
-L("Tezontepec de Aldama", C("Tezontepec de Aldama", 14, -2), [4, 8], "s", "lm")
-L("Tlaxcoapan", C("Tlaxcoapan", 12, 6), [4, 8], "s", "lm")
+
+L("Tula de Allende", C("Tula de Allende", -8, -14), [8], "l", "lm key")
+L("Atotonilco de Tula", C("Atotonilco de Tula", 14, 0), [8], "m", "lm key")
+
+L("Tezontepec de Aldama", C("Tezontepec de Aldama", 14, -2), [8], "s", "lm")
+L("Tlaxcoapan", C("Tlaxcoapan", 12, 6), [8], "s", "lm")
 L("Tepetitlán", C("Tepetitlán", -18, -8), [4], "s", "lm")
-L("Ecatepec", C("Ecatepec de Morelos", 30, -14), [3, 5], "s", "lm")
+L("Ecatepec", C("Ecatepec de Morelos", 30, -14), [3], "s", "lm")
 L("Valle del Mezquital", (70, 152), [4], "m", "hist")
 # elementos
-L("Presa Endhó", (141, 58), [4, 7, 8], "m", "agua")
-L("Presa Requena", (176, 196), [6, 8], "s", "agua")
+L("Presa Endhó", (141, 58), [4, 8], "m", "agua")
+L("Presa Requena", (176, 196), [8], "s", "agua")
 L("PTAR Atotonilco", (176, 179), [6, 8], "m", "ptar")
 L("Gran Canal del Desagüe", (262, 470), [3], "m", "canal")
 L("Tajo de Nochistongo", (200, 336), [2], "m", "tajo")
-L("Túnel Emisor Poniente", (tep_pts[1][0] + 10, tep_pts[1][1] - 8), [5], "s", "emisor")
-L("Emisor Central", (222, 410), [5], "m", "emisor")
+L("Túnel Emisor Poniente", (tep_pts[1][0] + 10, tep_pts[1][1] - 8), [5], "s", "tep")
+L("Emisor Central", (222, 410), [5], "m", "teo")
 L("Túnel Emisor Oriente", (325, 500), [5], "m", "teo")
-L("río Tula", (188, 132), [4, 7, 8], "s", "rio")
-L("río Rosas", (150, 158), [7], "s", "rio")
+L("río Tula", (188, 132), [4, 8], "s", "rio")
 L("Tula de Allende", (120, 118), [7], "l", "lm key")
 
 def capa(cls, step, d, extra=""):
@@ -155,7 +172,7 @@ svg.append(capa("waterbody", 0, L_["req"]))
 svg.append(capa("waterbody", 0, L_["tax"]))
 svg.append(capa("lake", 0, L_["lake"]))
 svg.append(capa("endho", 4, L_["endho"]))
-svg.append(capa("tulacity", 7, L_["tulacity"]))
+
 svg.append(capa("dique", 1, L_["dique"], ' pathLength="1"'))
 svg.append(punto(iztapalapa, 1))
 svg.append(punto(azcapotzalco, 1))
@@ -165,6 +182,8 @@ svg.append(capa("line tep", 5, tep_path, ' pathLength="1"'))
 svg.append(capa("line emisor", 5, L_["teo1"], ' pathLength="1"'))
 svg.append(capa("line teo", 5, L_["teo2"], ' pathLength="1"'))
 svg.append(capa("riotula", 0, L_["riotula"], ' pathLength="1"'))
+svg.append(capa("tulacity", 8, L_["tulacity"]))  # ciudad restaurada; en 2021 solo resalta el punto que pulsa
+svg.append(tenochtitlan(zoc, 1))
 svg.append('<g class="marker zump" data-step="2"><circle class="ping" cx="258.8" cy="308.4" r="4"/><circle class="dot" cx="258.8" cy="308.4" r="3.6"/></g>')
 svg.append('<g class="marker enfasis" id="hsEnfasis"><circle class="ping" cx="0" cy="0" r="4"/><circle class="dot" cx="0" cy="0" r="3.6"/></g>')
 svg.append('<g class="labels">' + "".join(lab) + "</g>")

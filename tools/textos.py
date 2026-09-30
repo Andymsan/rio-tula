@@ -44,7 +44,7 @@ class Textos:
         actual = None
         with open(ruta, encoding="utf-8") as f:
             for n, linea in enumerate(f.read().splitlines(), 1):
-                m = re.match(r'^##\s+([a-z0-9-]+)', linea)
+                m = re.match(r'^##\s+([a-z0-9.-]+)', linea)
                 if m:
                     actual = m.group(1)
                     if actual in self.s:

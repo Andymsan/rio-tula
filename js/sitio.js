@@ -122,7 +122,7 @@
      la cuenca completa) ────────────────────────────────────────────────── */
   const H_POS   = [0, 14, 28, 42, 56, 68, 78, 88, 100];
   // una sola cámara fija para las 9 épocas: [centro x, centro y, alto visible] en unidades del SVG (460×767)
-  const H_FULL  = [225, 400, 800];
+  const H_FULL  = [225, 405, 860];
   const H_CAM   = [H_FULL, H_FULL, H_FULL, H_FULL, H_FULL, H_FULL, H_FULL, H_FULL, H_FULL];
   // marcador de énfasis (círculo que pulsa): a dónde se mueve en cada época; sin entrada = oculto
   const H_ENF   = { 1: [281, 565], 6: [170.5, 182.3], 7: [117, 116], 8: [117, 116] };
@@ -156,7 +156,7 @@
     const q = sel => $(sel, svg);
     q('.lake').classList.toggle('drained', i >= 3);
     q('.riotula').classList.toggle('restored', i >= 8);
-    const city = q('.tulacity'); city.classList.toggle('flood', i === 7); city.classList.toggle('restored', i >= 8);
+    q('.tulacity').classList.toggle('restored', i >= 8);
     const enf = q('#hsEnfasis'), pos = H_ENF[i];
     enf.classList.toggle('on', !!pos);
     if (pos) $$('circle', enf).forEach(c => { c.setAttribute('cx', pos[0]); c.setAttribute('cy', pos[1]); });
@@ -169,30 +169,27 @@
 
   /* ── 5. Carruseles ────────────────────────────────────────────────── */
   const CAM_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>';
-  const EXTS = ['jpg', 'png'];
 
   function loadSlide(fig) {
-    const name = fig.dataset.foto, src = fig.dataset.src, cap = fig.dataset.cap || '';
-    const img = new Image();
-    img.alt = cap; img.decoding = 'async'; img.draggable = false;
-    let i = 0;
-    const placeholder = () => {
+    const src = fig.dataset.src, cap = fig.dataset.cap || '', pend = fig.dataset.pend;
+    const placeholder = (ruta) => {
       const ph = document.createElement('div'); ph.className = 'ph';
-      ph.innerHTML = CAM_SVG + '<b>Foto por agregar</b><small>' + (src || 'img/fotos/' + name + '.jpg') + '</small>' + (cap ? '<small><em>' + cap + '</em></small>' : '');
+      ph.innerHTML = CAM_SVG + '<b>Foto por agregar</b>';
+      const small = document.createElement('small'); small.textContent = ruta;
+      ph.append(small);
       fig.prepend(ph);
     };
-    const next = () => {
-      if (src) { if (i++ === 0) { img.src = src; return; } return placeholder(); }
-      if (i >= EXTS.length) return placeholder();
-      img.src = 'img/fotos/' + name + '.' + EXTS[i++];
-    };
+    if (pend) { placeholder(pend); return; }
+    if (!src) return;
+    const img = new Image();
+    img.alt = cap; img.decoding = 'async'; img.draggable = false;
     img.onload = () => {
       fig.prepend(img);
       if (fig.hasAttribute('data-contain')) fig.classList.add('contain');
       if (cap) { const fc = document.createElement('figcaption'); fc.textContent = cap; fig.append(fc); }
     };
-    img.onerror = next;
-    next();
+    img.onerror = () => placeholder(src);
+    img.src = src;
   }
 
   function initCarousel(root) {
@@ -219,12 +216,75 @@
     if (slides.length < 2) { $('.bu-prev', root).hidden = true; $('.bu-next', root).hidden = true; dots.hidden = true; }
   }
 
+  /* ── Resumen: mapa con hover-highlight de las 5 metas ─────────────── */
+  function initResumen() {
+    const root = $('#resumenStage'); if (!root) return;
+    const canvas = $('.canvas', root), metas = $$('#resumenMetas .meta');
+    function applyMetaCam(cam) {
+      let [x, y, z] = (cam || '0.5,0.5,1').split(',').map(Number);
+      if (mobile.matches) z = Math.max(1, z * 0.8);
+      const W = root.clientWidth, H = root.clientHeight;
+      const Wc = Math.max(W, H * 16 / 9), Hc = Wc * 9 / 16;
+      let tx = -z * (x - 0.5) * Wc, ty = -z * (y - 0.5) * Hc;
+      const mx = Math.max(0, (z * Wc - W) / 2), my = Math.max(0, (z * Hc - H) / 2);
+      tx = Math.min(mx, Math.max(-mx, tx));
+      ty = Math.min(my, Math.max(-my, ty));
+      canvas.style.setProperty('--tx', tx.toFixed(1) + 'px');
+      canvas.style.setProperty('--ty', ty.toFixed(1) + 'px');
+      canvas.style.setProperty('--z', z);
+    }
+    function show(li) {
+      metas.forEach(m => m.classList.toggle('active', m === li));
+      const d = li.dataset;
+      $$('.frame', canvas).forEach(f => f.classList.toggle('on', f.dataset.frame === d.frame));
+      const ovs = list(d.ov);      $$('.ov', canvas).forEach(o => o.classList.toggle('on', ovs.includes(o.dataset.ov)));
+      const pins = list(d.pins);   $$('.pin', canvas).forEach(p => p.classList.toggle('on', pins.includes(p.dataset.id)));
+      const lbls = list(d.labels); $$('.maplabel', canvas).forEach(p => p.classList.toggle('on', lbls.includes(p.dataset.id)));
+      applyMetaCam(d.cam);
+    }
+    metas.forEach(li => {
+      li.addEventListener('mouseenter', () => show(li));
+      li.addEventListener('focus', () => show(li));
+      li.addEventListener('click', () => show(li));
+    });
+    if (metas[0]) show(metas[0]);
+    addEventListener('resize', () => {
+      const on = metas.find(m => m.classList.contains('active'));
+      if (on) applyMetaCam(on.dataset.cam);
+    });
+  }
+
+  /* ── Lightbox: ampliar fotos (botón con lupa en cada carrusel) ────── */
+  function initLightbox() {
+    const box = $('#lightbox'); if (!box) return;
+    const img = $('#lightboxImg', box), cap = $('#lightboxCap', box);
+    function open(src, capTxt) {
+      img.src = src; img.alt = capTxt || ''; cap.textContent = capTxt || '';
+      box.classList.add('on');
+    }
+    function close() { box.classList.remove('on'); img.src = ''; }
+    $('.lightbox-close', box).addEventListener('click', close);
+    box.addEventListener('click', e => { if (e.target === box) close(); });
+    addEventListener('keydown', e => { if (e.key === 'Escape' && box.classList.contains('on')) close(); });
+    document.addEventListener('click', e => {
+      const btn = e.target.closest('.bu-zoom');
+      if (!btn) return;
+      const track = $('.bu-track', btn.closest('.burbuja'));
+      const slides = $$('.bu-slide', track);
+      const n = Math.round(track.scrollLeft / Math.max(1, track.clientWidth));
+      const foto = $('img', slides[n] || slides[0]);
+      if (foto) open(foto.src, foto.alt);
+    });
+  }
+
   /* ── Arranque ─────────────────────────────────────────────────────── */
   function boot() {
     buildNavObs(); buildStepObs();
     stages.forEach(st => { if (st.steps[0]) activate(st, st.steps[0], true); });
     // carruseles fuera del scroll por pasos (p. ej. el de "Compromiso 92")
     $$('[data-carousel]').forEach(initCarousel);
+    initResumen();
+    initLightbox();
   }
   let rz;
   addEventListener('resize', () => {

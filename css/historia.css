@@ -27,7 +27,7 @@
 /* ─ Agua ─ */
 .hmap .waterbody, .hmap .lake { fill: rgba(94, 168, 207, .38); stroke: rgba(50, 140, 195, .75); stroke-width: calc(var(--fs) * .12px); opacity: 0; transition: opacity 1s, fill 1.2s, stroke 1.2s; }
 .hmap .waterbody.on, .hmap .lake.on { opacity: 1; }
-.hmap .lake.drained { fill: rgba(94, 168, 207, .09); stroke: rgba(50, 140, 195, .3); }
+.hmap .lake.drained { opacity: 0; }
 .hmap .endho { fill: rgba(242, 193, 78, .45); stroke: #e0a520; stroke-width: calc(var(--fs) * .16px); opacity: 0; transition: opacity 1s; }
 .hmap .endho.on { opacity: 1; }
 
@@ -53,8 +53,14 @@
 .hmap .riotula.restored { stroke: #3fae7a; stroke-width: calc(var(--fs) * .4px); filter: drop-shadow(0 0 5px rgba(63, 174, 122, .6)); }
 .hmap .tulacity { fill: rgba(60, 75, 90, .05); stroke: rgba(60, 75, 90, .38); stroke-width: calc(var(--fs) * .16px); opacity: 0; transition: opacity .8s, fill .8s, stroke .8s; }
 .hmap .tulacity.on { opacity: 1; }
-.hmap .tulacity.flood { fill: rgba(196, 94, 26, .28); stroke: #c45e1a; }
 .hmap .tulacity.restored { fill: rgba(63, 174, 122, .2); stroke: #3fae7a; }
+
+/* ─ Tenochtitlan (glifo estilo mapa colonial: traza urbana rodeada de agua) ─ */
+.hmap .tenoch { opacity: 0; transition: opacity 1s; }
+.hmap .tenoch.on { opacity: 1; }
+.hmap .tenoch-agua { fill: rgba(94, 168, 207, .3); stroke: rgba(50, 140, 195, .6); stroke-width: calc(var(--fs) * .1px); }
+.hmap .tenoch-calz { fill: none; stroke: #e0a520; stroke-width: calc(var(--fs) * .1px); }
+.hmap .tenoch-isla { fill: #a8541a; stroke: #fbfbfa; stroke-width: calc(var(--fs) * .1px); }
 
 /* ─ Marcadores ─ */
 .hmap .marker { opacity: 0; transition: opacity .6s; }
@@ -85,8 +91,8 @@
 .hmap .lbl.ciudad { fill: #a8541a; font-weight: 800; }
 .hmap .lbl.canal  { fill: #a8741a; }
 .hmap .lbl.tajo   { fill: #c45e1a; }
-.hmap .lbl.emisor { fill: #2b7d90; }
-.hmap .lbl.teo    { fill: #2b7d90; }
+.hmap .lbl.tep    { fill: #6a5acd; }
+.hmap .lbl.teo    { fill: #3d93a6; }
 .hmap .lbl.ptar   { fill: #2b7d90; font-weight: 800; }
 .hmap .lbl.rio    { fill: #4a5d70; font-style: italic; }
 .hmap .lbl.lm     { fill: #2b3a48; }
