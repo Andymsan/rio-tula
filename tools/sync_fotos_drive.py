@@ -32,14 +32,17 @@ FOTOS_DIR = os.path.join(ROOT, "img", "fotos")
 IMAGENES = {"image/jpeg": ".jpg", "image/png": ".png", "image/webp": ".webp"}
 
 
-def parse_nombre(nombre_drive):
-    """'ecosistemas-4_41_ACTUAL - Zona inundable.jpg' -> ('ecosistemas-4', '41_ACTUAL - Zona inundable.jpg')"""
-    base, ext = os.path.splitext(nombre_drive)
+def parse_nombre(nombre_drive, mime_type):
+    """'ecosistemas-4_41_ACTUAL - Zona inundable.jpg' -> ('ecosistemas-4', '41_ACTUAL - Zona inundable.jpg')
+
+    La extensión se toma del tipo real del archivo (mimeType), no del nombre:
+    Drive a veces sube fotos sin que el nombre visible traiga extensión."""
+    base, _ = os.path.splitext(nombre_drive)
     partes = base.split("_", 2)
     if len(partes) != 3 or not partes[1].strip():
         return None
     seccion, orden, pie = partes
-    return seccion, "%s_%s%s" % (orden, pie, ext.lower())
+    return seccion, "%s_%s%s" % (orden, pie, IMAGENES[mime_type])
 
 
 def main():
@@ -76,7 +79,7 @@ def main():
                     continue
                 if f["mimeType"] not in IMAGENES:
                     continue
-                parsed = parse_nombre(f["name"])
+                parsed = parse_nombre(f["name"], f["mimeType"])
                 if not parsed:
                     ignorados.append(f["name"])
                     continue
