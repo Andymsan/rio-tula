@@ -86,7 +86,7 @@ descripcion: Cómo sumarte al proyecto
 
 ## historia-intro  (texto antes del mapa de la historia)
 etiqueta: 1 · El río y su historia
-titulo: Cómo se volió uno de los ríos más contaminados del país
+titulo: Cómo se volvió uno de los ríos más contaminados del país
 texto: Desliza hacia abajo para conocer la historia del río Tula.
 
 ## historia-0  (época 1)
