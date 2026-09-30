@@ -98,13 +98,20 @@ Invertir el orden. QUe vaya primero Drenaje de Tula y luego industrias.
 
 
 ## Resumen
-* Poner el mapa con todas las intervenciones y una tabla con las metas principales. Cada meta sería un elemento y que cuando se pase el cursor por arriba se highliteen los proyectos asociados.
+* Poner el mapa con todas las intervenciones y una tabla con las metas principales. Cada meta sería un elemento gráfico y que cuando le des click se muestre una descripción de la meta y se higliteen los proyectos en el mapa.
+Título: Acciones de saneamiento y Restauración del río Tula 2024 - 2030
+Subttitulo: El Gobierno de México está implementando una gran diversidad de acciones en el río Tula para cumplir con las siguientes metas principales:
 * Texto: A la fecha, tenemos proyectos terminados, en proceso o en planeación que van a transformar la vida de 
 1. Tratar todo el drenaje del río Tula (Atotonilco + Colectores)
+    La optimización de la PTAR Atotonilco va a permitir que todo el drenaje del Valle de Méxíco sea tratado durante secas. El proyecto de colectores va a captar la mayor parte de las descargas de drenaje al río Tula.
 2. Controlar la contaminación industrial (Industrias inspeccionadas + estaciones de monitoreo automático)
+    La Profepa y Conagua trabajan para inspeccionar y regularizar a todas las industrias que descargan al río Tula. Adicionalmente, estamos construyendo 5 estaciones de monitoreo automático de la calidad del agua para identificar descargas industriales oportunamente.
 3. Prevenir inundaciones en la ciudad de Tula (Desazolve + Estabilización de taludes + estaciones automáticas + Llanura de inundación Tres Culturas)
-4. Restaurar los ecosistemas que la dan vida al río (Saneamiento forestal + revegetación + ADVCs + Proectos de restauración)
+    La Conagua implementa obras para asegurar que el río Tula no se desborde como desazolve, estabilización de taludes, monitoreo automático y la recuperación de una llanura aluvial.
+4. Restaurar los ecosistemas que la dan vida al río (Saneamiento forestal + revegetación + ADVCs + Proyectos de restauración)
+    El sector ambiental federal trabaja junto para proteger y restaurar las riberas del río Tula, cuerpos de agua como la laguna de Bojay de 55 ha y más de 3,800 ha de suelo forestal.
 6. Construir espacio público ribereño para toda la población de Tula (los 5 proyectos de espacio público)
+   Para que la población de Tula pueda reconectar con el río, estamos construyendo 5 proyectos de espacio público ribereño que incluyen revegetación nativa, equipamiento público y agua limpia.
 
 ## Participa
 Esta sección debe tener la foto de mucha gente en una jornada de limpieza, un texto y unos botones con los links.
