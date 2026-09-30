@@ -118,21 +118,11 @@
   }
 
 
-  /* ── Historia: mapa SVG (relieve real + capas GIS; cámara que se acerca
-     progresivamente por época, viewBox 551.7×628.9) ─────────────────────── */
+  /* ── Historia: mapa SVG (relieve real + capas GIS; sin zoom por época —
+     una sola cámara fija, viewBox 551.7×628.9) ──────────────────────────── */
   const H_POS   = [0, 14, 28, 42, 56, 68, 78, 88, 100];
-  // cámara por época: [centro x, centro y, alto visible] en unidades del SVG
-  const H_CAM = [
-    [276, 314, 660],   // 0 · cuenca sin salida (vista completa)
-    [385, 600, 260],   // 1 · dique de Nezahualcóyotl / Tenochtitlan
-    [330, 280, 300],   // 2 · Tajo de Nochistongo (+ conexión a Zumpango)
-    [400, 520, 340],   // 3 · Gran Canal del Desagüe (+ lago de Texcoco)
-    [222, 112, 190],   // 4 · Presa Endhó
-    [340, 415, 400],   // 5 · los tres túneles
-    [264, 228, 170],   // 6 · PTAR Atotonilco
-    [211, 165, 110],   // 7 · inundación de Tula (2021)
-    [270, 260, 480],   // 8 · restauración 2024-2030
-  ];
+  const H_FULL  = [276, 314, 660];
+  const H_CAM   = [H_FULL, H_FULL, H_FULL, H_FULL, H_FULL, H_FULL, H_FULL, H_FULL, H_FULL];
   // marcador de énfasis (círculo que pulsa): a dónde se mueve en cada época; sin entrada = oculto
   const H_ENF   = { 1: [373, 609], 6: [264, 228], 7: [211, 165], 8: [211, 165] };
   let hView = null, hRaf = 0;
@@ -169,6 +159,7 @@
     q('.distritos').classList.toggle('on', i === 4);
     q('.dique').classList.toggle('on', i === 1);
     q('.manzanas').classList.toggle('on', i === 7);
+    q('.marker.zump').classList.toggle('on', i === 2);
     $$('.hito', svg).forEach(h => h.classList.toggle('on', i === 1));
     const enf = q('#hsEnfasis'), pos = H_ENF[i];
     enf.classList.toggle('on', !!pos);
@@ -226,7 +217,10 @@
     track.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse') return; down = true; sx = e.clientX; sl = track.scrollLeft; track.classList.add('drag'); });
     addEventListener('pointermove', e => { if (down) track.scrollLeft = sl - (e.clientX - sx); });
     addEventListener('pointerup', () => { if (!down) return; down = false; track.classList.remove('drag'); });
-    if (slides.length < 2) { $('.bu-prev', root).hidden = true; $('.bu-next', root).hidden = true; dots.hidden = true; }
+    if (slides.length < 2) {
+      $('.bu-prev', root).hidden = true; $('.bu-next', root).hidden = true; dots.hidden = true;
+      const hint = $('.bu-hint', root); if (hint) hint.hidden = true;
+    }
   }
 
   /* ── Resumen: mapa con hover-highlight de las 5 metas ─────────────── */
@@ -272,26 +266,45 @@
     });
   }
 
-  /* ── Lightbox: ampliar fotos (botón con lupa en cada carrusel) ────── */
+  /* ── Lightbox: ampliar fotos (botón con lupa en cada carrusel); sigue
+     funcionando como carrusel adentro, con las mismas fotos ──────────── */
   function initLightbox() {
     const box = $('#lightbox'); if (!box) return;
     const img = $('#lightboxImg', box), cap = $('#lightboxCap', box);
-    function open(src, capTxt) {
-      img.src = src; img.alt = capTxt || ''; cap.textContent = capTxt || '';
+    const prevBtn = $('.lightbox-prev', box), nextBtn = $('.lightbox-next', box);
+    let fotos = [], i = 0;
+    function render() {
+      const f = fotos[i];
+      img.src = f.src; img.alt = f.cap || ''; cap.textContent = f.cap || '';
+      const varias = fotos.length > 1;
+      prevBtn.hidden = nextBtn.hidden = !varias;
+    }
+    function open(track, startIndex) {
+      fotos = $$('.bu-slide', track).map(s => { const im = $('img', s); return im ? { src: im.src, cap: im.alt } : null; }).filter(Boolean);
+      if (!fotos.length) return;
+      i = Math.max(0, Math.min(startIndex, fotos.length - 1));
+      render();
       box.classList.add('on');
     }
     function close() { box.classList.remove('on'); img.src = ''; }
+    function step(dir) { if (fotos.length < 2) return; i = (i + dir + fotos.length) % fotos.length; render(); }
     $('.lightbox-close', box).addEventListener('click', close);
+    prevBtn.addEventListener('click', () => step(-1));
+    nextBtn.addEventListener('click', () => step(1));
     box.addEventListener('click', e => { if (e.target === box) close(); });
-    addEventListener('keydown', e => { if (e.key === 'Escape' && box.classList.contains('on')) close(); });
+    addEventListener('keydown', e => {
+      if (!box.classList.contains('on')) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowLeft') step(-1);
+      if (e.key === 'ArrowRight') step(1);
+    });
     document.addEventListener('click', e => {
       const btn = e.target.closest('.bu-zoom');
       if (!btn) return;
       const track = $('.bu-track', btn.closest('.burbuja'));
       const slides = $$('.bu-slide', track);
       const n = Math.round(track.scrollLeft / Math.max(1, track.clientWidth));
-      const foto = $('img', slides[n] || slides[0]);
-      if (foto) open(foto.src, foto.alt);
+      open(track, n);
     });
   }
 

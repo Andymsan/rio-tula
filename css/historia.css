@@ -31,8 +31,9 @@
 .hmap .delim.on { opacity: 1; }
 .hmap .rivers { fill: none; stroke: #025d6e; stroke-width: calc(var(--fs) * .16px); }
 .hmap .humedal { fill: rgba(194, 208, 186, .65); stroke: rgba(150, 170, 140, .5); stroke-width: calc(var(--fs) * .08px); }
-.hmap .distritos { fill: rgba(242, 234, 225, .85); stroke: rgba(141, 123, 91, .5); stroke-width: calc(var(--fs) * .1px); opacity: 0; transition: opacity 1s; }
+.hmap .distritos { stroke-width: calc(var(--fs) * .12px); opacity: 0; transition: opacity 1s; }
 .hmap .distritos.on { opacity: 1; }
+.hmap .canaldr { stroke-width: calc(var(--fs) * .18px); }
 .hmap .manzanas { fill: #a3a3a3; stroke: none; mix-blend-mode: multiply; opacity: 0; transition: opacity 1s; }
 .hmap .manzanas.on { opacity: .7; }
 
@@ -61,7 +62,7 @@
 .hmap .hito.on { opacity: 1; }
 
 /* ─ Río Tula y la ciudad ─ */
-.hmap .riotula { fill: none; stroke: rgba(109, 56, 30, .55); stroke-width: calc(var(--fs) * .2px); stroke-linecap: round; stroke-linejoin: round; transition: stroke .9s, stroke-width .9s, filter .9s; }
+.hmap .riotula { fill: none; stroke: #025d6e; stroke-width: calc(var(--fs) * .2px); stroke-linecap: round; stroke-linejoin: round; transition: stroke .9s, stroke-width .9s, filter .9s; }
 .hmap .riotula.restored { stroke: #025d6e; stroke-width: calc(var(--fs) * .28px); filter: drop-shadow(0 0 4px rgba(2, 93, 110, .55)); }
 .hmap .tulacity { fill: rgba(109, 56, 30, .05); stroke: rgba(109, 56, 30, .35); stroke-width: calc(var(--fs) * .14px); opacity: 0; transition: opacity .8s, fill .8s, stroke .8s; }
 .hmap .tulacity.on { opacity: 1; }

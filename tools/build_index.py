@@ -237,19 +237,12 @@ eco_steps = [
     step(".5,.55,1.05", "int", card("ecosistemas-0"), labels="endho parque"),
     step(".5,.5,1.7", "int", card("ecosistemas-1"), carousel("ecosistemas-1")),
     step(".585,.17,2.3", "int", card("ecosistemas-2"),
-         carousel("ecosistemas-2", [
-             ("img/mapa/z-bojay-zoom.webp", "Propuesta · humedal y sendero de Bojay", True),
-             ("img/mapa/z-bojay-verde.webp", "Propuesta · Bojay en planta", True),
-         ]), ov="bojay", pins="bojay", labels="endho"),
+         carousel("ecosistemas-2"), ov="bojay", pins="bojay", labels="endho"),
     step(".36,.24,1.6", "base", card("ecosistemas-3"), carousel("ecosistemas-3"), ov="rio", labels="anp parque"),
     # Zoom reducido para mostrar Bojay completo; incluye las isócronas (marco "acc",
     # misma cámara que "int") sin quitar pines ni capas de espacio público.
     step(".5,.55,1.0", "acc", card("ecosistemas-4"),
-         carousel("ecosistemas-4", [
-             ("img/mapa/z-rosas.webp", "Propuesta · Río Rosas", True),
-             ("img/mapa/z-sanlorenzo.webp", "Propuesta · San Lorenzo", True),
-             ("img/mapa/z-bojay-zoom.webp", "Propuesta · Bojay", True),
-         ]),
+         carousel("ecosistemas-4"),
          ov="bojay trescult rosas sanlorenzo chamizal", pins="bojay trescult rosas sanlorenzo chamizal"),
 ]
 eco = cap("ecosistemas", "verde", T.t("ecosistemas", "banner"), eco_canvas, eco_steps)
@@ -408,21 +401,26 @@ def promesa():
     a, b, c = (kfpair("promesa-1", "cifra%d" % i) for i in (1, 2, 3))
     t1, t2 = kfpair("promesa-2", "tarjeta1"), kfpair("promesa-2", "tarjeta2")
     foto = carousel("promesa-1", etiqueta="Foto")
-    bg = ' style="background-image:url(img/mapa/historia-final.webp)"'
-    return ('<section class="s-promesa" id="promesa" data-nav="light">'
-            '<div class="pm-beat pm-beat-dark"%s><div class="pm-scrim"></div><div class="pm-wrap pm-1"><div class="rv">'
-            '<div class="pm-92">92</div>'
-            '<p class="pm-kicker">%s</p><h2 class="pm-h">%s<span>%s</span></h2><p class="pm-sub">%s</p>'
+    return ('<section class="s-promesa" id="promesa" data-nav="light" '
+            'style="background-image:url(img/mapa/historia-final.webp)">'
+            '<div class="pm-scrim"></div><div class="pm-fade"></div>'
+            '<div class="pm-grid">'
+            '<div class="pm-text rv">'
+            '<p class="pm-kicker">%s</p>'
+            '<div class="pm-92-row"><div class="pm-92">92</div><div><h2 class="pm-h">%s</h2><p class="pm-h-sub">%s</p></div></div>'
+            '<p class="pm-sub">%s</p>'
             '<div class="tula-facts"><div><b>%s</b><span>%s</span></div><div><b>%s</b><span>%s</span></div><div><b>%s</b><span>%s</span></div></div>'
-            '</div>%s</div></div>'
-            '<div class="pm-beat pm-beat-dark"%s><div class="pm-scrim"></div><div class="pm-wrap pm-2"><p class="pm-kicker rv">%s</p><h2 class="rv">%s</h2>'
-            '<div class="nums rv"><div class="n"><b>%s</b><span>%s</span></div>'
-            '<div class="n"><b>%s</b><span>%s</span></div></div>'
-            '<p class="pm-puente rv">%s<span>↓</span></p><p class="pm-fuentes rv">%s</p></div></div></section>'
-            % (bg, T.t("promesa-1", "etiqueta"), T.t("promesa-1", "titulo"), T.t("promesa-1", "titulo2"), T.t("promesa-1", "texto"),
-               a[0], a[1], b[0], b[1], c[0], c[1], foto,
-               bg, T.t("promesa-2", "etiqueta"), T.t("promesa-2", "titulo"),
-               t1[0], t1[1], t2[0], t2[1], T.t("promesa-2", "puente"), T.t("promesa-2", "fuentes")))
+            '<div class="pm-divider"></div>'
+            '<p class="pm-kicker">%s</p><h3 class="pm-h2">%s</h3>'
+            '<div class="nums"><div class="n"><b>%s</b><span>%s</span></div><div class="n"><b>%s</b><span>%s</span></div></div>'
+            '<p class="pm-puente">%s<span>↓</span></p><p class="pm-fuentes">%s</p>'
+            '</div>'
+            '<div class="pm-photo">%s</div>'
+            '</div></section>'
+            % (T.t("promesa-1", "etiqueta"), T.t("promesa-1", "titulo"), T.t("promesa-1", "titulo2"), T.t("promesa-1", "texto"),
+               a[0], a[1], b[0], b[1], c[0], c[1],
+               T.t("promesa-2", "etiqueta"), T.t("promesa-2", "titulo"),
+               t1[0], t1[1], t2[0], t2[1], T.t("promesa-2", "puente"), T.t("promesa-2", "fuentes"), foto))
 
 def pie():
     return '<footer>%s<br>%s</footer>' % (T.t("sitio", "pie1"), T.t("sitio", "pie2"))
@@ -458,7 +456,7 @@ PLANTILLA = '''<!DOCTYPE html>
 
 <div class="borrador">%(aviso)s <button id="borradorClose" type="button" aria-label="Cerrar aviso">×</button></div>
 
-<div class="lightbox" id="lightbox"><button class="lightbox-close" type="button" aria-label="Cerrar">×</button><img id="lightboxImg" alt=""><div class="lightbox-cap" id="lightboxCap"></div></div>
+<div class="lightbox" id="lightbox"><button class="lightbox-close" type="button" aria-label="Cerrar">×</button><button class="lightbox-nav lightbox-prev" type="button" aria-label="Anterior">‹</button><img id="lightboxImg" alt=""><button class="lightbox-nav lightbox-next" type="button" aria-label="Siguiente">›</button><div class="lightbox-cap" id="lightboxCap"></div></div>
 
 %(hero)s
 

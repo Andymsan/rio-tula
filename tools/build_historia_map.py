@@ -97,7 +97,7 @@ def build_hillshade():
 HS_X, HS_Y, HS_W, HS_H = build_hillshade()
 
 # ─── geojson -> path SVG ────────────────────────────────────────────────────
-VIEW_BOX_PAD = 15000  # margen (m) para clip de capas grandes (estados)
+VIEW_BOX_PAD = 150000  # margen (m) generoso: que el borde del recorte no se vea ni con la cámara más abierta
 CLIPBOX = box(E0 - VIEW_BOX_PAD, N0 - H_SVG / K - VIEW_BOX_PAD, E0 + W_SVG / K + VIEW_BOX_PAD, N0 + VIEW_BOX_PAD)
 
 def _ring(coords, close):
@@ -209,27 +209,36 @@ def prepend_point(d, xy):
     resto = " L".join("%s,%s" % (nums[i], nums[i + 1]) for i in range(0, len(nums) - 1, 2))
     return "M%.1f,%.1f L%s" % (xy[0], xy[1], resto)
 
-# ─── distritos de riego: viene en lon/lat (CRS84) -> reproyectar ───────────
-def distritos_riego_path():
+# ─── distritos de riego: viene en lon/lat (CRS84) -> reproyectar. Solo los 3
+# que tocan la cuenca del Tula (003 Tula, 100 Alfajayucan, 112 Ajacuba); cada
+# uno con su color y su canal principal (dr<clave>_pr.geojson).
+DISTRITOS_COLOR = {"003": "#d17b3f", "100": "#7a6bb0", "112": "#b8577a"}
+
+def distritos_riego():
     fc = load("distritos de riego.geojson")
     to_utm14 = Transformer.from_crs("EPSG:4326", "EPSG:32614", always_xy=True).transform
-    parts = []
+    out = {}
     for f in fc["features"]:
-        g = shape(f["geometry"])
-        g = shp_transform(to_utm14, g)
+        clave = f["properties"]["clvdr"]
+        if clave not in DISTRITOS_COLOR:
+            continue
+        g = shp_transform(to_utm14, shape(f["geometry"]))
         g = g.intersection(CLIPBOX)
         if g.is_empty:
             continue
         g = g.simplify(30, preserve_topology=True)
-        parts.append(path_d(g))
-    return " ".join(parts)
+        out[clave] = {"path": path_d(g), "centro": P(*g.centroid.coords[0])}
+    return out
+
+def canal_principal_path(clave):
+    return layer_path("dr%s_pr.geojson" % clave, simplify_m=10, clip=True)
 
 # ══════════════════════════════════════════════════════════════════════════
 #  CAPAS
 # ══════════════════════════════════════════════════════════════════════════
-d_edomex = layer_path("edomex.geojson", simplify_m=40, clip=True)
-d_hidalgo = layer_path("hidalgo.geojson", simplify_m=40, clip=True)
-d_cdmx = layer_path("cdmx.geojson", simplify_m=25, clip=True)
+d_edomex = layer_path("edomex.geojson", simplify_m=40)
+d_hidalgo = layer_path("hidalgo.geojson", simplify_m=40)
+d_cdmx = layer_path("cdmx.geojson", simplify_m=25)
 d_cuenca = layer_path("gran cuenca del valle de mexico.geojson", simplify_m=15)
 d_delim = layer_path("delimitacion.geojson", simplify_m=15)
 d_lake = layer_path("lago de texcoco.geojson", simplify_m=20, clip=True)
@@ -243,7 +252,9 @@ _riotula_parts = [path_d(g.simplify(10, preserve_topology=True))
 d_riotula = " ".join(_riotula_parts)
 d_presas = layer_path("presas.geojson", simplify_m=8, clip=True)
 d_humedales = layer_path("humedales.geojson", simplify_m=8, clip=True)
-d_distritos = distritos_riego_path()
+DISTRITOS = distritos_riego()
+for _clv in DISTRITOS:
+    DISTRITOS[_clv]["canal"] = canal_principal_path(_clv)
 
 # cuerpos de agua con nombre (Endhó, Requena, Taxhimay)
 _cuerpos = feature_geoms(load("cuerpos de agua.geojson"))
@@ -281,9 +292,13 @@ teo1_mid = P(teo1_mid.x, teo1_mid.y)
 teo2_mid = _red["Tunel Emisor Oriente"].interpolate(0.5, normalized=True)
 teo2_mid = P(teo2_mid.x, teo2_mid.y)
 
-# tajo de nochistongo: trazo real (la feature con coordenadas, no la vacía)
-_tajo_geom = next(shape(f["geometry"]) for f in load("tajo de nochistongo.geojson")["features"]
-                  if f.get("geometry") and f["geometry"].get("coordinates"))
+# tajo de nochistongo: trazo real, completo (la feature larga y detallada;
+# trae un pequeño defecto de digitalización al inicio -dos puntos de más que
+# regresan sobre sí mismos-, se quitan esos dos puntos).
+_tajo_coords = [f["geometry"]["coordinates"] for f in load("tajo de nochistongo.geojson")["features"]
+                if f.get("geometry") and f["geometry"].get("coordinates")][1]
+_tajo_coords = [_tajo_coords[1]] + _tajo_coords[3:]
+_tajo_geom = shape({"type": "LineString", "coordinates": _tajo_coords})
 d_tajo = path_d(_tajo_geom)
 tajo_mid = _tajo_geom.interpolate(0.5, normalized=True)
 tajo_mid = P(tajo_mid.x, tajo_mid.y)
@@ -338,22 +353,25 @@ L("Huehuetoca", C("Huehuetoca", -6, 12), [2], "m", "lm")
 L("Zumpango", C("Zumpango", 10, 14), [2, 3], "s", "lm")
 L("Tequixquiac", C("Tequixquiac", -22, 4), [2, 3], "s", "lm")
 L("Tula de Allende", C("Tula de Allende", -8, -14), [8], "l", "lm key")
-L("Atotonilco de Tula", C("Atotonilco de Tula", 16, 14), [8], "m", "lm key")
+L("Atotonilco de Tula", C("Atotonilco de Tula", 34, 6), [8], "m", "lm key")
 L("Tezontepec de Aldama", C("Tezontepec de Aldama", 14, 12), [8], "s", "lm")
 L("Tlaxcoapan", C("Tlaxcoapan", 12, 6), [8], "s", "lm")
 L("Tepetitlán", C("Tepetitlán", -18, -8), [4], "s", "lm")
 L("Ecatepec", C("Ecatepec de Morelos", 30, -14), [3], "s", "lm")
 L("Valle del Mezquital", (endho_c[0] - 32, endho_c[1] + 46), [4], "m", "hist")
+for _clv, _d in DISTRITOS.items():
+    lab.append('<text class="lbl s distritodr" data-show="4" x="%.1f" y="%.1f" style="fill:%s">DR %s</text>'
+               % (_d["centro"][0], _d["centro"][1], DISTRITOS_COLOR[_clv], _clv))
 # elementos (posiciones tomadas de la geometría real)
 L("Presa Endhó", (endho_c[0] + 8, endho_c[1] - 6), [4, 8], "m", "agua")
-L("Presa Requena", (requena_c[0] + 8, requena_c[1]), [8], "s", "agua")
-L("PTAR Atotonilco", (atot_c[0] + 8, atot_c[1] - 14), [6, 8], "m", "ptar")
+L("Presa Requena", (requena_c[0] - 8, requena_c[1] + 18), [8], "s", "agua")
+L("PTAR Atotonilco", (atot_c[0] + 10, atot_c[1] - 2), [6, 8], "m", "ptar")
 L("Gran Canal del Desagüe", (canal_mid[0] + 8, canal_mid[1]), [3], "m", "canal")
 L("Tajo de Nochistongo", (tajo_mid[0] - 34, tajo_mid[1] - 20), [2], "s", "tajo")
 L("Túnel Emisor Poniente", (tep_mid[0] - 46, tep_mid[1] - 14), [5], "s", "tep")
 L("Emisor Central", (teo1_mid[0] - 10, teo1_mid[1] - 26), [5], "s", "teo")
 L("Túnel Emisor Oriente", (teo2_mid[0] + 10, teo2_mid[1] + 18), [5], "s", "teo")
-L("río Tula", (requena_c[0] - 30, requena_c[1] - 30), [i for i in range(9) if i not in (0, 1)], "s", "rio")
+L("río Tula", (requena_c[0] - 55, requena_c[1] - 45), [i for i in range(9) if i not in (0, 1)], "s", "rio")
 L("Tula de Allende", C("Tula de Allende", -8, -14), [7], "l", "lm key")
 
 # ══════════════════════════════════════════════════════════════════════════
@@ -377,7 +395,9 @@ svg.append(capa("lake", 0, d_lake))
 svg.append(capa("endho", 4, d_endho))
 svg.append(capa("waterbody", 4, d_requena))
 svg.append(capa("endho", 6, d_atotonilco))
-svg.append(capa("distritos", 4, d_distritos))
+for _clv, _d in DISTRITOS.items():
+    svg.append(capa("distritos", 4, _d["path"], ' style="fill:%s33;stroke:%s"' % (DISTRITOS_COLOR[_clv], DISTRITOS_COLOR[_clv])))
+    svg.append(capa("line canaldr", 4, _d["canal"], ' pathLength="1" style="stroke:%s"' % DISTRITOS_COLOR[_clv]))
 svg.append(capa("riotula", 0, d_riotula, ' pathLength="1"'))
 svg.append(capa("tulacity", 8, d_tulacity))  # ciudad restaurada; en 2021 (paso 7) solo resalta el punto que pulsa
 svg.append(capa("manzanas", 7, d_manzanas))  # manzanas de la ciudad; solo visibles en el acercamiento de la inundación
