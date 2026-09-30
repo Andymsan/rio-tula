@@ -30,14 +30,20 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FOTOS_DIR = os.path.join(ROOT, "img", "fotos")
 
 IMAGENES = {"image/jpeg": ".jpg", "image/png": ".png", "image/webp": ".webp"}
+EXTS_CONOCIDAS = (".jpg", ".jpeg", ".png", ".webp")
 
 
 def parse_nombre(nombre_drive, mime_type):
     """'ecosistemas-4_41_ACTUAL - Zona inundable.jpg' -> ('ecosistemas-4', '41_ACTUAL - Zona inundable.jpg')
 
     La extensión se toma del tipo real del archivo (mimeType), no del nombre:
-    Drive a veces sube fotos sin que el nombre visible traiga extensión."""
-    base, _ = os.path.splitext(nombre_drive)
+    Drive a veces sube fotos sin que el nombre visible traiga extensión, y en
+    ese caso NO hay que recortar nada (ojo con pies de foto con números
+    decimales, como "Más de 1.5 m de azolve": ahí el ".5..." no es una
+    extensión, aunque tenga un punto)."""
+    base = nombre_drive
+    if nombre_drive.lower().endswith(EXTS_CONOCIDAS):
+        base, _ = os.path.splitext(nombre_drive)
     partes = base.split("_", 2)
     if len(partes) != 3 or not partes[1].strip():
         return None
