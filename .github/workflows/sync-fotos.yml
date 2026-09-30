@@ -1,0 +1,47 @@
+name: Traer fotos nuevas de Drive
+
+# Revisa cada 15 minutos la carpeta de Google Drive donde se suben las fotos
+# y agrega al repositorio las que falten (según su nombre, ver
+# tools/sync_fotos_drive.py). Si llega alguna, también reconstruye el sitio.
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sincronizar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Preparar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Instalar dependencias
+        run: pip install google-api-python-client google-auth
+
+      - name: Traer fotos nuevas de Drive
+        id: fotos
+        env:
+          GDRIVE_SA_KEY: ${{ secrets.GDRIVE_SA_KEY }}
+          GDRIVE_FOLDER_ID: ${{ secrets.GDRIVE_FOLDER_ID }}
+        run: python tools/sync_fotos_drive.py
+
+      - name: Reconstruir el sitio si hay fotos nuevas
+        if: steps.fotos.outputs.nuevas == '1'
+        run: python tools/build_index.py
+
+      - name: Guardar el resultado
+        if: steps.fotos.outputs.nuevas == '1'
+        run: |
+          git config user.name "Sitio Río Tula (automático)"
+          git config user.email "actions@users.noreply.github.com"
+          git add img/fotos index.html
+          git commit -m "Nuevas fotos desde Drive [automático]"
+          git push

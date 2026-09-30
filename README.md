@@ -42,10 +42,20 @@ data/                 ← GeoJSON del visor (mapa.html)
 | **Cambiar un texto** | editar `TEXTOS.md` en GitHub. La página se reconstruye sola. |
 | **Cambiar qué imagen/zoom/pines lleva un paso** | editar `tools/build_index.py` y correr `python tools/build_index.py` |
 | **Cambiar el mapa de la historia** | `python tools/build_historia_map.py` (necesita la carpeta de diseño) y subir `historia_mapa.html` |
-| **Poner una foto** | guardarla en `img/fotos/<id-de-sección>/` con el nombre `<orden>_<pie de foto>.<ext>` (ver `img/fotos/LEEME.md`) |
+| **Poner una foto** | guardarla en `img/fotos/<id-de-sección>/` con el nombre `<orden>_<pie de foto>.<ext>` (ver `img/fotos/LEEME.md`), **o** subirla a la carpeta de Drive (se trae sola cada 15 min, ver abajo) |
 | **Cambiar un render/capa** | reemplazar el PNG en la carpeta de diseño → `python tools/build_assets.py` |
 | **Cambiar un color de tema** | `css/temas.css` (+ el filtro SVG de la capa en `tools/build_index.py`, variable `FILTROS`) |
 | **Marcar un dato como pendiente** | envolverlo con `pend("…")` en `tools/build_index.py` (se ve amarillo) |
+
+## Fotos desde Google Drive
+
+Una carpeta de Drive recibe las fotos con el nombre `<sección>_<orden>_<pie de foto>.ext`
+(por ejemplo `ecosistemas-3_1_Puma encontrado en una ADVC - 2026.jpg`). Cada 15 minutos,
+`.github/workflows/sync-fotos.yml` corre `tools/sync_fotos_drive.py`, que trae las fotos
+nuevas a `img/fotos/<sección>/` y reconstruye el sitio si hizo falta. Necesita dos secretos
+del repositorio (Settings → Secrets and variables → Actions):
+- `GDRIVE_SA_KEY`: el JSON de una cuenta de servicio de Google con acceso de lectura a esa carpeta.
+- `GDRIVE_FOLDER_ID`: el id de la carpeta de Drive (la parte de la URL después de `/folders/`).
 
 ## Otros
 
