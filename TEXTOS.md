@@ -258,7 +258,7 @@ fotos: San Lorenzo · antes | San Lorenzo · después | El Chamizal · obra en p
 ## inundaciones-2  (Desazolve)
 etiqueta: 2 · Desazolve
 titulo: Más espacio para que el agua fluya
-texto: Cuando el río está azolvado —lleno de lodo y basura—, hay menos espacio para que el agua pueda fluir sin desbordarse. En 2025, ==desazolvamos 3.9 km de río==, removiendo más de 90,000,000 m3 de sedimentos, basura y escombros.
+texto: Cuando el río está azolvado —lleno de lodo y basura—, hay menos espacio para que el agua pueda fluir sin desbordarse. En 2025, ==desazolvamos 3.9 km de río==, removiendo más de 176,000 ton de sedimentos, basura y escombros.
 cifra: 3.9 km | de río desazolvado · terminado en 2025
 chips: Hasta 25% de la capacidad del río recuperada
 fotos: Desazolve del cauce | Antes y después
