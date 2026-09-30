@@ -72,13 +72,20 @@ Total: 35.8 km.
 
 ## Capas geográficas pendientes (requieren insumo adicional)
 
-- Red de ríos/escurrimientos (tipo SIATL) para el mapa de historia.
-- Topografía / relieve para distinguir cuencas en el mapa de historia (hay DEM
-  disponible en la carpeta de diseño; falta procesarlo).
-- Distritos de riego (historia, presa Endhó).
-- Trazo oficial del Tajo de Nochistongo y del dique de Nezahualcóyotl (se usan
-  aproximaciones).
 - Georreferenciación de los mapas de Calidad, Inundaciones y Ecosistemas (hoy son
   imágenes con puntos ubicados a ojo): sin esto no se pueden agregar con precisión
-  capas nuevas (industrias, estaciones de monitoreo, cárcamo de bombeo, vía del tren)
-  sobre esos mapas.
+  capas nuevas (industrias, estaciones de monitoreo, cárcamo de bombeo) sobre esos
+  mapas.
+- Dique de Nezahualcóyotl: se sigue usando una aproximación (línea recta entre
+  Iztapalapa y Azcapotzalco); no hay trazo oficial en las capas entregadas.
+- Trazo de calles/colonias para el mapa de historia (para ponerle nombre a las
+  colonias en la escena de inundación/taludes, si es que se agrega ahí).
+
+### Resuelto (30-sep-2026, con las capas GIS reales de la carpeta de diseño)
+
+El mapa de historia ahora usa relieve real (hillshade del DEM), límites reales de
+estado/cuenca/subcuencas del proyecto, la red de ríos, el trazo real del Tajo de
+Nochistongo y de los túneles/Gran Canal, los distritos de riego y los cuerpos de
+agua con nombre (Endhó, Requena, Taxhimay). Pendiente de tu revisión: el encuadre
+de cámara por época (lo elegí yo; puede necesitar ajuste) y la posición de un par
+de etiquetas.

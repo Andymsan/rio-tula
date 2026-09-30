@@ -17,12 +17,18 @@
 .hist .cap-stage { background: #fbfbfa; }
 
 .hmap { position: absolute; inset: 0; width: 100%; height: 100%; display: block; --fs: 10; }
+.hmap .hillshade { opacity: .9; }
 
-/* ─ Base: sólo líneas finas (como el original); sin divisiones municipales ─ */
-.hmap .estados { fill: none; stroke: rgba(60, 75, 90, .55); stroke-width: calc(var(--fs) * .14px); stroke-dasharray: 3 3; }
-.hmap .cuenca { fill: none; stroke: rgba(60, 75, 90, .6); stroke-width: calc(var(--fs) * .17px); stroke-dasharray: 3 3; opacity: 0; transition: opacity 1.2s; }
+/* ─ Base: relieve + límites reales (estados, cuenca, delimitación del proyecto) ─ */
+.hmap .estados { fill: none; stroke: rgba(196, 94, 26, .55); stroke-width: calc(var(--fs) * .1px); stroke-dasharray: 2 2; }
+.hmap .cuenca { fill: none; stroke: rgba(60, 75, 90, .55); stroke-width: calc(var(--fs) * .14px); stroke-dasharray: 3 3; opacity: 0; transition: opacity 1.2s; }
 .hmap .cuenca.on { opacity: 1; }
+.hmap .delim { fill: none; stroke: rgba(45, 90, 100, .6); stroke-width: calc(var(--fs) * .16px); stroke-dasharray: 5 2 1 2; opacity: 0; transition: opacity 1.2s; }
+.hmap .delim.on { opacity: 1; }
 .hmap .rivers { fill: none; stroke: rgba(94, 168, 207, .85); stroke-width: calc(var(--fs) * .16px); }
+.hmap .humedal { fill: rgba(94, 168, 207, .22); stroke: rgba(50, 140, 195, .35); stroke-width: calc(var(--fs) * .08px); }
+.hmap .distritos { fill: rgba(224, 165, 32, .18); stroke: rgba(224, 165, 32, .5); stroke-width: calc(var(--fs) * .1px); stroke-dasharray: 1 2; opacity: 0; transition: opacity 1s; }
+.hmap .distritos.on { opacity: 1; }
 
 /* ─ Agua ─ */
 .hmap .waterbody, .hmap .lake { fill: rgba(94, 168, 207, .38); stroke: rgba(50, 140, 195, .75); stroke-width: calc(var(--fs) * .12px); opacity: 0; transition: opacity 1s, fill 1.2s, stroke 1.2s; }
@@ -43,6 +49,7 @@
 .hmap .tep    { stroke: #6a5acd; }
 .hmap .emisor { stroke: #3d93a6; }
 .hmap .teo    { stroke: #3d93a6; }
+.hmap .tren   { stroke: #6b6558; }
 
 /* ─ Puntos históricos (extremos del dique, etc.) ─ */
 .hmap .hito { fill: #a8541a; stroke: #fbfbfa; stroke-width: calc(var(--fs) * .12px); opacity: 0; transition: opacity .8s; }
@@ -97,6 +104,7 @@
 .hmap .lbl.rio    { fill: #4a5d70; font-style: italic; }
 .hmap .lbl.lm     { fill: #2b3a48; }
 .hmap .lbl.key    { fill: #111c27; font-weight: 800; }
+.hmap .lbl.tren   { fill: #6b6558; }
 
 /* ─ Línea del tiempo ─ */
 .hs-timeline { position: absolute; z-index: 4; left: 62%; bottom: 20px; transform: translateX(-50%); width: min(470px, 44vw); padding: 12px 22px 24px; background: rgba(255,255,255,.9); border-radius: 16px; box-shadow: 0 10px 30px -14px rgba(0,0,0,.35); }

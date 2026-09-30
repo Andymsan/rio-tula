@@ -118,14 +118,23 @@
   }
 
 
-  /* ── Historia: mapa SVG (sin zoom por época — Ariel pidió que se vea siempre
-     la cuenca completa) ────────────────────────────────────────────────── */
+  /* ── Historia: mapa SVG (relieve real + capas GIS; cámara que se acerca
+     progresivamente por época, viewBox 551.7×628.9) ─────────────────────── */
   const H_POS   = [0, 14, 28, 42, 56, 68, 78, 88, 100];
-  // una sola cámara fija para las 9 épocas: [centro x, centro y, alto visible] en unidades del SVG (460×767)
-  const H_FULL  = [225, 405, 860];
-  const H_CAM   = [H_FULL, H_FULL, H_FULL, H_FULL, H_FULL, H_FULL, H_FULL, H_FULL, H_FULL];
+  // cámara por época: [centro x, centro y, alto visible] en unidades del SVG
+  const H_CAM = [
+    [276, 314, 660],   // 0 · cuenca sin salida (vista completa)
+    [365, 610, 220],   // 1 · dique de Nezahualcóyotl / Tenochtitlan
+    [330, 280, 300],   // 2 · Tajo de Nochistongo (+ conexión a Zumpango)
+    [400, 520, 340],   // 3 · Gran Canal del Desagüe (+ lago de Texcoco)
+    [222, 112, 190],   // 4 · Presa Endhó
+    [340, 415, 400],   // 5 · los tres túneles
+    [242, 232, 170],   // 6 · PTAR Atotonilco
+    [211, 165, 110],   // 7 · inundación de Tula (2021)
+    [270, 260, 520],   // 8 · restauración 2024-2030 (+ tren México-Querétaro)
+  ];
   // marcador de énfasis (círculo que pulsa): a dónde se mueve en cada época; sin entrada = oculto
-  const H_ENF   = { 1: [281, 565], 6: [170.5, 182.3], 7: [117, 116], 8: [117, 116] };
+  const H_ENF   = { 1: [373, 609], 6: [246, 243], 7: [211, 165], 8: [211, 165] };
   let hView = null, hRaf = 0;
 
   function hDraw(st, v) {

@@ -1,37 +1,50 @@
 # -*- coding: utf-8 -*-
 """
-Genera tools/fragmentos/historia_mapa.html: el MAPA SVG de la Historia (obras,
-etiquetas, ríos). Los TEXTOS de cada época viven en TEXTOS.md.
-Este script sólo se corre en la computadora de Andrea (usa los datos de la carpeta de diseño);
-el resultado (historia_mapa.html) se sube al repositorio.
+Genera tools/fragmentos/historia_mapa.html (el mapa SVG de la Historia) y
+img/mapa/hillshade.webp (relieve de fondo) a partir de capas GIS reales.
+Sólo se corre en la computadora de Andrea (usa los datos de la carpeta de
+diseño); los resultados (historia_mapa.html, hillshade.webp) se suben al
+repositorio.
 
     python tools/build_historia_map.py
 
-Entradas
-  · municipios.geojson  (carpeta de diseño, UTM 14N) — SOLO para ubicar etiquetas de lugares
-    con precisión (su centroide). Ya NO se dibujan los polígonos/límites municipales.
-  · capas históricas ya proyectadas al SVG (lago 1519, Tajo de Nochistongo, Gran Canal,
-    túneles, presa Endhó, río Tula...) tomadas de tools/fragmentos/historia_capas.json
-    (se extrajeron de la primera versión del mapa; no cambian).
-Proyección: x = K*(E-E0), y = K*(N0-N)   (UTM 14N -> unidades SVG, viewBox 460x767)
+Entradas (carpeta de diseño, todas en UTM 14N salvo donde se indica)
+  geojson/municipios.geojson        — sólo para ubicar etiquetas (centroide)
+  geojson/edomex.geojson, hidalgo.geojson, cdmx.geojson   — límites estatales reales
+  geojson/gran cuenca del valle de mexico.geojson         — límite de la cuenca
+  geojson/delimitacion.geojson      — las 5 subcuencas del proyecto del río Tula
+                                       (Cuautitlán, Presa Requena, Presa Endhó,
+                                       Salado, Tula)
+  geojson/lago de texcoco.geojson   — extensión histórica del lago
+  geojson/cuerpos de agua.geojson   — Endhó, Requena, Taxhimay (con nombre)
+  geojson/tula.geojson              — red de ríos/escurrimientos (tipo SIATL)
+  geojson/red valle de mexico.geojson — Gran Canal, Emisor Poniente/Central,
+                                         Túnel Emisor Oriente (trazo real)
+  geojson/tajo de nochistongo.geojson — trazo real del Tajo
+  geojson/distritos de riego.geojson — en lon/lat (CRS84); se reproyecta
+  geojson/tren mx qro.geojson        — para la época 2024-2030 (historia-8)
+  tif/srtm.tif                       — DEM (EPSG:4326) para el hillshade
 
-Comentarios de Ariel aplicados (24-sep-2026):
-  · Se quitan las divisiones municipales (siguen usándose sólo para ubicar etiquetas)
-    y las capas "modernas" (humedales/cuerpos/red actuales) — el mapa histórico ya no las usa.
-  · El Túnel Emisor Poniente (1962) aparece conectado hacia Cuautitlán (ruta aproximada:
-    Vaso del Cristo → Barrientos → Cuautitlán; ver fuentes en REDISENO-2027.md).
-  · Se agregan Lago de Xochimilco, y los puntos Iztapalapa/Azcapotzalco del dique de
-    Nezahualcóyotl.
-  · El "lago" se suaviza con Chaikin (2 pasadas) para que no se vea con esquinas de polígono.
-  · El zoom por época se quitó (ver H_CAM en js/sitio.js: una sola cámara fija).
+Proyección: x = K*(E-E0), y = K*(N0-N)  (UTM 14N -> unidades SVG).
+El encuadre (E0, N0, K) se calcula a partir del DEM, de forma que cubra
+cómodamente las 5 subcuencas del proyecto (ver DELIM_BBOX abajo).
 """
 import json, os, re
-from shapely.geometry import shape
+import numpy as np
+from PIL import Image
+from shapely.geometry import shape, box
+from shapely.ops import transform as shp_transform
 from pyproj import Transformer
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DISEÑO = r"E:\03_Trabajo\01_SEMARNAT\01_rio tula\2026\01_riotula\diseño\geojson"
-K, E0, N0 = 0.006566, 443196.0, 2234750.0
+DISENO = r"E:\03_Trabajo\01_SEMARNAT\01_rio tula\2026\01_riotula\diseño\geojson"
+TIF = r"E:\03_Trabajo\01_SEMARNAT\01_rio tula\2026\01_riotula\diseño\tif\srtm.tif"
+
+# ─── proyección: encuadre calculado a partir del DEM reproyectado ──────────
+E0, N0 = 428560.2, 2242443.8
+K = 0.0065
+W_SVG = round((513430.2 - E0) * K, 1)
+H_SVG = round((N0 - 2145693.8) * K, 1)
 
 def P(e, n):
     return (K * (e - E0), K * (N0 - n))
@@ -40,21 +53,130 @@ to_utm = Transformer.from_crs("EPSG:4326", "EPSG:32614", always_xy=True).transfo
 def LL(lon, lat):
     return P(*to_utm(lon, lat))
 
-# ─── capas históricas ya proyectadas ───────────────────────────────────────
-CAPAS = json.load(open(os.path.join(ROOT, "tools", "fragmentos", "historia_capas.json"), encoding="utf-8"))
+def load(fn):
+    return json.load(open(os.path.join(DISENO, fn), encoding="utf-8"))
 
-# ─── municipios: SOLO para ubicar etiquetas (ya no se dibujan sus límites) ─
-mun = json.load(open(os.path.join(DISEÑO, "municipios.geojson"), encoding="utf-8"))
+# ─── hillshade: DEM (EPSG:4326) -> UTM14N -> relieve suave en PNG/WebP ─────
+def build_hillshade():
+    import rasterio
+    from rasterio.warp import calculate_default_transform, reproject, Resampling
+    with rasterio.open(TIF) as src:
+        transform, width, height = calculate_default_transform(
+            src.crs, "EPSG:32614", src.width, src.height, *src.bounds, resolution=90)
+        dem = np.zeros((height, width), dtype=np.float32)
+        reproject(
+            source=rasterio.band(src, 1), destination=dem,
+            src_transform=src.transform, src_crs=src.crs,
+            dst_transform=transform, dst_crs="EPSG:32614",
+            resampling=Resampling.bilinear, src_nodata=src.nodata, dst_nodata=np.nan,
+        )
+    valid = ~np.isnan(dem)
+    dem_f = np.where(valid, dem, np.nanmedian(dem))
+    gy, gx = np.gradient(dem_f, 90.0)
+    slope = np.pi / 2 - np.arctan(np.hypot(gx, gy))
+    aspect = np.arctan2(-gx, gy)
+    az, alt = np.deg2rad(315), np.deg2rad(45)
+    shade = np.clip(np.sin(alt) * np.sin(slope) + np.cos(alt) * np.cos(slope) * np.cos(az - aspect), 0, 1)
+    lo, hi = 222, 255
+    gray = (lo + shade * (hi - lo)).astype(np.uint8)
+    rgb = np.stack([gray, gray, np.clip(gray.astype(np.int16) - 2, 0, 255).astype(np.uint8)], axis=-1)
+    img = Image.fromarray(rgb, "RGB")
+    out_dir = os.path.join(ROOT, "img", "mapa")
+    os.makedirs(out_dir, exist_ok=True)
+    img.save(os.path.join(out_dir, "hillshade.webp"), "WEBP", quality=82, method=6)
+    # bounds del raster reproyectado, en unidades SVG (para posicionarlo)
+    left, top = transform.c, transform.f
+    right, bottom = left + transform.a * width, top + transform.e * height
+    x0, y0 = P(left, top)
+    x1, y1 = P(right, bottom)
+    print("hillshade.webp: %dx%d px -> svg x[%.1f,%.1f] y[%.1f,%.1f]" % (width, height, x0, x1, y0, y1))
+    return x0, y0, x1 - x0, y1 - y0
+
+HS_X, HS_Y, HS_W, HS_H = build_hillshade()
+
+# ─── geojson -> path SVG ────────────────────────────────────────────────────
+VIEW_BOX_PAD = 15000  # margen (m) para clip de capas grandes (estados)
+CLIPBOX = box(E0 - VIEW_BOX_PAD, N0 - H_SVG / K - VIEW_BOX_PAD, E0 + W_SVG / K + VIEW_BOX_PAD, N0 + VIEW_BOX_PAD)
+
+def _ring(coords, close):
+    pts = [P(c[0], c[1]) for c in coords]
+    s = "M" + " L".join("%.2f,%.2f" % p for p in pts)
+    return s + " Z" if close else s
+
+def path_d(geom):
+    gt = geom.geom_type
+    if gt == "Polygon":
+        parts = [_ring(list(geom.exterior.coords), True)]
+        parts += [_ring(list(r.coords), True) for r in geom.interiors]
+        return " ".join(parts)
+    if gt == "MultiPolygon":
+        parts = []
+        for poly in geom.geoms:
+            parts.append(_ring(list(poly.exterior.coords), True))
+            parts += [_ring(list(r.coords), True) for r in poly.interiors]
+        return " ".join(parts)
+    if gt == "LineString":
+        return _ring(list(geom.coords), False)
+    if gt == "MultiLineString":
+        return " ".join(_ring(list(ls.coords), False) for ls in geom.geoms)
+    if gt == "GeometryCollection":
+        return " ".join(path_d(g) for g in geom.geoms if not g.is_empty)
+    return ""
+
+def feature_geoms(fc, simplify_m=0, clip=False):
+    out = []
+    for f in fc["features"]:
+        g = f.get("geometry")
+        if not g or not g.get("coordinates"):
+            continue
+        geom = shape(g)
+        if clip:
+            geom = geom.intersection(CLIPBOX)
+            if geom.is_empty:
+                continue
+        if simplify_m:
+            geom = geom.simplify(simplify_m, preserve_topology=True)
+        out.append((geom, f.get("properties", {})))
+    return out
+
+def layer_path(fn, simplify_m=0, clip=False):
+    geoms = feature_geoms(load(fn), simplify_m, clip)
+    return " ".join(path_d(g) for g, _ in geoms)
+
+# ─── municipios: para ubicar etiquetas, y el polígono real de Tula de Allende ─
+mun = load("municipios.geojson")
 centros = {}
+tulacity_geom = None
 for f in mun["features"]:
-    rp = shape(f["geometry"]).representative_point()
-    centros[f["properties"]["NOMGEO"]] = P(rp.x, rp.y)
+    nombre = f["properties"]["NOMGEO"]
+    geom = shape(f["geometry"])
+    centros[nombre] = P(geom.representative_point().x, geom.representative_point().y)
+    if nombre == "Tula de Allende":
+        tulacity_geom = geom.simplify(15, preserve_topology=True)
+d_tulacity = path_d(tulacity_geom) if tulacity_geom else ""
 
 def C(nm, dx=0, dy=0):
     x, y = centros[nm]
     return (x + dx, y + dy)
 
-# ─── suavizado de esquinas (Chaikin corner-cutting) ────────────────────────
+def mid_of(fn, name_field, name_value, prop_key="Name"):
+    """Punto medio (a lo largo de la línea) de la feature con name_field==name_value."""
+    for f in load(fn)["features"]:
+        if f["properties"].get(prop_key) == name_value:
+            g = shape(f["geometry"])
+            m = g.interpolate(0.5, normalized=True)
+            return P(m.x, m.y)
+    raise KeyError(name_value)
+
+def centroid_of(fn, prop_key, value):
+    for f in load(fn)["features"]:
+        if f["properties"].get(prop_key) == value:
+            g = shape(f["geometry"])
+            c = g.centroid
+            return P(c.x, c.y)
+    raise KeyError(value)
+
+# ─── suavizado de esquinas (Chaikin corner-cutting), para el lago ──────────
 def _chaikin(pts, closed, it=2):
     for _ in range(it):
         n = len(pts)
@@ -70,7 +192,6 @@ def _chaikin(pts, closed, it=2):
     return pts
 
 def smooth_path(d, it=2):
-    """Suaviza cada subtrazo (M...L...[Z]) de un path con Chaikin."""
     out = []
     for sub in re.findall(r'M[^M]*', d):
         closed = bool(re.search(r'Z\s*$', sub))
@@ -78,23 +199,95 @@ def smooth_path(d, it=2):
         pts = [(nums[i], nums[i + 1]) for i in range(0, len(nums) - 1, 2)]
         pts = _chaikin(pts, closed, it)
         s = "M" + " L".join("%.2f,%.2f" % p for p in pts)
-        if closed:
-            s += " Z"
-        out.append(s)
+        out.append(s + (" Z" if closed else ""))
     return " ".join(out)
 
-CAPAS["lake"] = smooth_path(CAPAS["lake"])
-
 def prepend_point(d, xy):
-    """Antepone un punto a un trazo M...L... (para conectarlo a otro elemento)."""
     nums = re.findall(r'-?\d+\.?\d*', d)
     resto = " L".join("%s,%s" % (nums[i], nums[i + 1]) for i in range(0, len(nums) - 1, 2))
     return "M%.1f,%.1f L%s" % (xy[0], xy[1], resto)
 
-ZUMPANGO_MARKER = (258.8, 308.4)
-CAPAS["noch"] = prepend_point(CAPAS["noch"], ZUMPANGO_MARKER)  # el tajo nace en Zumpango
+# ─── distritos de riego: viene en lon/lat (CRS84) -> reproyectar ───────────
+def distritos_riego_path():
+    fc = load("distritos de riego.geojson")
+    to_utm14 = Transformer.from_crs("EPSG:4326", "EPSG:32614", always_xy=True).transform
+    parts = []
+    for f in fc["features"]:
+        g = shape(f["geometry"])
+        g = shp_transform(to_utm14, g)
+        g = g.intersection(CLIPBOX)
+        if g.is_empty:
+            continue
+        g = g.simplify(30, preserve_topology=True)
+        parts.append(path_d(g))
+    return " ".join(parts)
 
-# ─── etiquetas: (texto, x, y, pasos donde se ve, tamaño) ──────────────────
+# ══════════════════════════════════════════════════════════════════════════
+#  CAPAS
+# ══════════════════════════════════════════════════════════════════════════
+d_edomex = layer_path("edomex.geojson", simplify_m=40, clip=True)
+d_hidalgo = layer_path("hidalgo.geojson", simplify_m=40, clip=True)
+d_cdmx = layer_path("cdmx.geojson", simplify_m=25, clip=True)
+d_cuenca = layer_path("gran cuenca del valle de mexico.geojson", simplify_m=15)
+d_delim = layer_path("delimitacion.geojson", simplify_m=15)
+d_lake = layer_path("lago de texcoco.geojson", simplify_m=20, clip=True)
+d_lake = smooth_path(d_lake, it=1)
+d_rivers = layer_path("tula.geojson", simplify_m=10)
+# el/los tramo(s) del río que cruzan Tula de Allende (para resaltar "río restaurado" en la época 8)
+_riotula_buf = tulacity_geom.buffer(2500) if tulacity_geom else None
+_riotula_parts = [path_d(g.simplify(10, preserve_topology=True))
+                  for g, _ in feature_geoms(load("tula.geojson"))
+                  if _riotula_buf is not None and g.intersects(_riotula_buf)]
+d_riotula = " ".join(_riotula_parts)
+d_presas = layer_path("presas.geojson", simplify_m=8, clip=True)
+d_humedales = layer_path("humedales.geojson", simplify_m=8, clip=True)
+d_distritos = distritos_riego_path()
+d_tren = layer_path("tren mx qro.geojson", simplify_m=15, clip=True)
+
+# cuerpos de agua con nombre (Endhó, Requena, Taxhimay)
+_cuerpos = feature_geoms(load("cuerpos de agua.geojson"))
+_cuerpos_by_name = {p["nombre"]: g for g, p in _cuerpos}
+d_endho = path_d(_cuerpos_by_name["Endho"])
+d_requena = path_d(_cuerpos_by_name["Requena"])
+d_taxhimay = path_d(_cuerpos_by_name["Taxhimay"])
+endho_c = P(*_cuerpos_by_name["Endho"].centroid.coords[0])
+requena_c = P(*_cuerpos_by_name["Requena"].centroid.coords[0])
+
+# red valle de méxico: Gran Canal (+2), Emisor Poniente/Central, Túnel Emisor Oriente
+_red = {p["Name"]: g for g, p in feature_geoms(load("red valle de mexico.geojson"))}
+d_canal = path_d(_red["Gran Canal"]) + " " + path_d(_red["Gran Canal 2"])
+d_tep = path_d(_red["Emisor Poniente"])
+d_teo1 = path_d(_red["Emisor Central"])
+d_teo2 = path_d(_red["Tunel Emisor Oriente"])
+canal_mid = _red["Gran Canal"].interpolate(0.5, normalized=True)
+canal_mid = P(canal_mid.x, canal_mid.y)
+tep_mid = _red["Emisor Poniente"].interpolate(0.6, normalized=True)
+tep_mid = P(tep_mid.x, tep_mid.y)
+teo1_mid = _red["Emisor Central"].interpolate(0.5, normalized=True)
+teo1_mid = P(teo1_mid.x, teo1_mid.y)
+teo2_mid = _red["Tunel Emisor Oriente"].interpolate(0.5, normalized=True)
+teo2_mid = P(teo2_mid.x, teo2_mid.y)
+
+# tajo de nochistongo: trazo real (la feature con coordenadas, no la vacía)
+_tajo_geom = next(shape(f["geometry"]) for f in load("tajo de nochistongo.geojson")["features"]
+                  if f.get("geometry") and f["geometry"].get("coordinates"))
+d_tajo = path_d(_tajo_geom)
+tajo_mid = _tajo_geom.interpolate(0.5, normalized=True)
+tajo_mid = P(tajo_mid.x, tajo_mid.y)
+
+# conectar el tajo con Zumpango (marcador manual, ver ZUMPANGO_MARKER)
+zumpango_c = C("Zumpango")
+d_tajo = prepend_point(d_tajo, zumpango_c)
+
+# ─── puntos de referencia (lon/lat) ─────────────────────────────────────────
+zoc = LL(-99.1332, 19.4326)            # Zócalo, Ciudad de México (antes Tenochtitlan)
+iztapalapa = LL(-99.0930, 19.3552)     # extremo sur del dique de Nezahualcóyotl
+azcapotzalco = LL(-99.1868, 19.4837)   # extremo norte del dique
+d_dique = "M%.1f,%.1f L%.1f,%.1f" % (iztapalapa[0], iztapalapa[1], azcapotzalco[0], azcapotzalco[1])
+
+# ══════════════════════════════════════════════════════════════════════════
+#  ETIQUETAS
+# ══════════════════════════════════════════════════════════════════════════
 lab = []
 def L(txt, xy, steps, size="m", cls=""):
     lab.append('<text class="lbl %s %s" data-show="%s" x="%.1f" y="%.1f">%s</text>' %
@@ -104,7 +297,6 @@ def punto(xy, step):
     return '<circle class="hito" data-step="%d" cx="%.1f" cy="%.1f" r="2.6"/>' % (step, xy[0], xy[1])
 
 def tenochtitlan(xy, step):
-    """Glifo estilo mapa colonial: traza urbana rodeada de agua, sobre calzadas en cruz."""
     x, y = xy
     return (
         '<g class="tenoch" data-step="%d">'
@@ -114,24 +306,14 @@ def tenochtitlan(xy, step):
         '</g>'
     ) % (step, x, y, x, y, x, y, x, y, x, y, x, y)
 
-zoc = LL(-99.1332, 19.4326)           # Zócalo, Ciudad de México (antes Tenochtitlan)
-iztapalapa = LL(-99.0930, 19.3552)    # extremo sur del dique de Nezahualcóyotl
-azcapotzalco = LL(-99.1868, 19.4837)  # extremo norte del dique
-xochimilco = LL(-99.1029, 19.2647)    # Lago de Xochimilco
-
-# ruta aproximada del Túnel Emisor Poniente (1962): Vaso del Cristo -> Barrientos -> Cuautitlán
-tep_pts = [LL(-99.263, 19.480), LL(-99.211, 19.529), LL(-99.196, 19.677)]
-tep_path = "M" + " L".join("%.1f,%.1f" % p for p in tep_pts)
-
-# estados (siempre)
-L("HIDALGO", (250, 62), [i for i in range(9) if i not in (5, 6, 7)], "st", "estado")
-L("ESTADO DE MÉXICO", (215, 380), [i for i in range(9) if i not in (4, 5, 6, 7)], "st", "estado")
+# estados (siempre, salvo en los pasos donde estorban)
+L("HIDALGO", (W_SVG * 0.62, H_SVG * 0.12), [i for i in range(9) if i not in (5, 6, 7)], "st", "estado")
+L("ESTADO DE MÉXICO", (W_SVG * 0.4, H_SVG * 0.72), [i for i in range(9) if i not in (4, 5, 6, 7)], "st", "estado")
 L("CIUDAD DE MÉXICO", (zoc[0] - 4, zoc[1] + 26), [0, 3], "st", "estado")
 # cuenca / lagos
-L("Cuenca de México", (60, 470), [0], "s", "cuenca")
-L("Lago de Texcoco", (346, 612), [0, 1], "m", "agua")
+L("Cuenca de México", (W_SVG * 0.12, H_SVG * 0.68), [0], "s", "cuenca")
+L("Lago de Texcoco", (zoc[0] - 30, zoc[1] + 16), [0, 1], "m", "agua")
 L("Lago de Zumpango", C("Zumpango", 1, -18), [0, 2], "s", "agua")
-L("Lago de Xochimilco", xochimilco, [0, 1], "s", "agua")
 L("Tenochtitlan", (zoc[0] + 6, zoc[1] - 6), [1], "m", "hist")
 L("Ciudad de México", (zoc[0] + 8, zoc[1] - 8), [3], "m", "ciudad")
 L("Albarradón de Nezahualcóyotl", (zoc[0] + 22, zoc[1] + 66), [1], "s", "hist")
@@ -139,59 +321,75 @@ L("Albarradón de Nezahualcóyotl", (zoc[0] + 22, zoc[1] + 66), [1], "s", "hist"
 L("Huehuetoca", C("Huehuetoca", -6, 12), [2], "m", "lm")
 L("Zumpango", C("Zumpango", 10, 8), [2, 3], "m", "lm")
 L("Tequixquiac", C("Tequixquiac", -22, 4), [2, 3], "s", "lm")
-
 L("Tula de Allende", C("Tula de Allende", -8, -14), [8], "l", "lm key")
 L("Atotonilco de Tula", C("Atotonilco de Tula", 14, 0), [8], "m", "lm key")
-
 L("Tezontepec de Aldama", C("Tezontepec de Aldama", 14, -2), [8], "s", "lm")
 L("Tlaxcoapan", C("Tlaxcoapan", 12, 6), [8], "s", "lm")
 L("Tepetitlán", C("Tepetitlán", -18, -8), [4], "s", "lm")
 L("Ecatepec", C("Ecatepec de Morelos", 30, -14), [3], "s", "lm")
-L("Valle del Mezquital", (70, 152), [4], "m", "hist")
-# elementos
-L("Presa Endhó", (141, 58), [4, 8], "m", "agua")
-L("Presa Requena", (176, 196), [8], "s", "agua")
-L("PTAR Atotonilco", (176, 179), [6, 8], "m", "ptar")
-L("Gran Canal del Desagüe", (262, 470), [3], "m", "canal")
-L("Tajo de Nochistongo", (200, 336), [2], "m", "tajo")
-L("Túnel Emisor Poniente", (tep_pts[1][0] + 10, tep_pts[1][1] - 8), [5], "s", "tep")
-L("Emisor Central", (222, 410), [5], "m", "teo")
-L("Túnel Emisor Oriente", (325, 500), [5], "m", "teo")
-L("río Tula", (188, 132), [4, 8], "s", "rio")
-L("Tula de Allende", (120, 118), [7], "l", "lm key")
+L("Valle del Mezquital", (endho_c[0] - 32, endho_c[1] + 46), [4], "m", "hist")
+# elementos (posiciones tomadas de la geometría real)
+L("Presa Endhó", (endho_c[0] + 8, endho_c[1] - 6), [4, 8], "m", "agua")
+L("Presa Requena", (requena_c[0] + 8, requena_c[1]), [8], "s", "agua")
+L("PTAR Atotonilco", (requena_c[0] - 4, requena_c[1] + 22), [6, 8], "m", "ptar")
+L("Gran Canal del Desagüe", (canal_mid[0] + 8, canal_mid[1]), [3], "m", "canal")
+L("Tajo de Nochistongo", (tajo_mid[0] - 10, tajo_mid[1] - 8), [2], "m", "tajo")
+L("Túnel Emisor Poniente", (tep_mid[0] + 10, tep_mid[1] - 8), [5], "s", "tep")
+L("Emisor Central", (teo1_mid[0] - 10, teo1_mid[1]), [5], "m", "teo")
+L("Túnel Emisor Oriente", (teo2_mid[0] + 8, teo2_mid[1]), [5], "m", "teo")
+L("río Tula", (requena_c[0] - 30, requena_c[1] - 30), [4, 8], "s", "rio")
+L("Tula de Allende", C("Tula de Allende", -8, -14), [7], "l", "lm key")
+L("Tren México-Querétaro", (W_SVG * 0.72, H_SVG * 0.28), [8], "s", "tren")
 
+# ══════════════════════════════════════════════════════════════════════════
+#  ENSAMBLE DEL SVG
+# ══════════════════════════════════════════════════════════════════════════
 def capa(cls, step, d, extra=""):
     return '<path class="%s" data-step="%s"%s d="%s"/>' % (cls, step, extra, d)
 
-L_ = CAPAS
-svg = ['<svg class="hmap" id="hmap" viewBox="0 0 460 767" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Mapa del Valle de México y el río Tula">']
-svg.append(capa("estados", 0, L_["estados"]))
-svg.append(capa("cuenca", 0, L_["cuenca"]))
-svg.append(capa("rivers", 0, L_["rivers"]))
-svg.append(capa("waterbody", 0, L_["req"]))
-svg.append(capa("waterbody", 0, L_["tax"]))
-svg.append(capa("lake", 0, L_["lake"]))
-svg.append(capa("endho", 4, L_["endho"]))
+svg = ['<svg class="hmap" id="hmap" viewBox="0 0 %.1f %.1f" preserveAspectRatio="xMidYMid meet" '
+       'role="img" aria-label="Mapa del Valle de México y el río Tula">' % (W_SVG, H_SVG)]
+svg.append('<image class="hillshade" href="img/mapa/hillshade.webp" x="%.1f" y="%.1f" width="%.1f" height="%.1f" '
+           'preserveAspectRatio="none"/>' % (HS_X, HS_Y, HS_W, HS_H))
+svg.append(capa("delim", 0, d_delim))
+svg.append(capa("cuenca", 0, d_cuenca))
+svg.append(capa("estados", 0, d_edomex + " " + d_hidalgo + " " + d_cdmx))
+svg.append(capa("humedal", 0, d_humedales))
+svg.append(capa("waterbody", 0, d_presas))
+svg.append(capa("waterbody", 0, d_taxhimay))
+svg.append(capa("rivers", 0, d_rivers))
+svg.append(capa("lake", 0, d_lake))
+svg.append(capa("endho", 4, d_endho))
+svg.append(capa("waterbody", 4, d_requena))
+svg.append(capa("distritos", 4, d_distritos))
+svg.append(capa("riotula", 0, d_riotula, ' pathLength="1"'))
+svg.append(capa("tulacity", 8, d_tulacity))  # ciudad restaurada; en 2021 (paso 7) solo resalta el punto que pulsa
 
-svg.append(capa("dique", 1, L_["dique"], ' pathLength="1"'))
+svg.append(capa("dique", 1, d_dique, ' pathLength="1"'))
 svg.append(punto(iztapalapa, 1))
 svg.append(punto(azcapotzalco, 1))
-svg.append(capa("line noch", 2, L_["noch"], ' pathLength="1"'))
-svg.append(capa("line canal", 3, L_["canal"], ' pathLength="1"'))
-svg.append(capa("line tep", 5, tep_path, ' pathLength="1"'))
-svg.append(capa("line emisor", 5, L_["teo1"], ' pathLength="1"'))
-svg.append(capa("line teo", 5, L_["teo2"], ' pathLength="1"'))
-svg.append(capa("riotula", 0, L_["riotula"], ' pathLength="1"'))
-svg.append(capa("tulacity", 8, L_["tulacity"]))  # ciudad restaurada; en 2021 solo resalta el punto que pulsa
+svg.append(capa("line noch", 2, d_tajo, ' pathLength="1"'))
+svg.append(capa("line canal", 3, d_canal, ' pathLength="1"'))
+svg.append(capa("line tep", 5, d_tep, ' pathLength="1"'))
+svg.append(capa("line emisor", 5, d_teo1, ' pathLength="1"'))
+svg.append(capa("line teo", 5, d_teo2, ' pathLength="1"'))
+svg.append(capa("line tren", 8, d_tren, ' pathLength="1"'))
 svg.append(tenochtitlan(zoc, 1))
-svg.append('<g class="marker zump" data-step="2"><circle class="ping" cx="258.8" cy="308.4" r="4"/><circle class="dot" cx="258.8" cy="308.4" r="3.6"/></g>')
+svg.append('<g class="marker zump" data-step="2"><circle class="ping" cx="%.1f" cy="%.1f" r="4"/>'
+           '<circle class="dot" cx="%.1f" cy="%.1f" r="3.6"/></g>' % (zumpango_c[0], zumpango_c[1], zumpango_c[0], zumpango_c[1]))
 svg.append('<g class="marker enfasis" id="hsEnfasis"><circle class="ping" cx="0" cy="0" r="4"/><circle class="dot" cx="0" cy="0" r="3.6"/></g>')
 svg.append('<g class="labels">' + "".join(lab) + "</g>")
 svg.append("</svg>")
 
 open(os.path.join(ROOT, "tools", "fragmentos", "historia_mapa.html"), "w", encoding="utf-8").write("".join(svg))
-print("historia_mapa.html:", sum(len(x) for x in svg) // 1024, "KB;", len(lab), "etiquetas")
-print("  zocalo %.0f,%.0f" % zoc, " iztapalapa %.0f,%.0f" % iztapalapa, " azcapotzalco %.0f,%.0f" % azcapotzalco)
-for n in ("Tula de Allende", "Huehuetoca", "Zumpango", "Atotonilco de Tula"):
-    print("  centro", n, "%.0f,%.0f" % centros[n])
-print("  marcador de énfasis: Tula de Allende %.0f,%.0f  ·  PTAR Atotonilco 170.5,182.3" % centros["Tula de Allende"])
+print("historia_mapa.html: %d KB; %d etiquetas" % (sum(len(x) for x in svg) // 1024, len(lab)))
+print("viewBox: 0 0 %.1f %.1f" % (W_SVG, H_SVG))
+print("zocalo %.0f,%.0f  endho %.0f,%.0f  requena %.0f,%.0f" % (zoc[0], zoc[1], endho_c[0], endho_c[1], requena_c[0], requena_c[1]))
+print("tula de allende:", C("Tula de Allende"))
+print("iztapalapa %.0f,%.0f  azcapotzalco %.0f,%.0f  zumpango %.0f,%.0f" % (iztapalapa[0], iztapalapa[1], azcapotzalco[0], azcapotzalco[1], zumpango_c[0], zumpango_c[1]))
+print("tajo_mid %.0f,%.0f  canal_mid %.0f,%.0f" % (tajo_mid[0], tajo_mid[1], canal_mid[0], canal_mid[1]))
+print("tep_mid %.0f,%.0f  teo1_mid %.0f,%.0f  teo2_mid %.0f,%.0f" % (tep_mid[0], tep_mid[1], teo1_mid[0], teo1_mid[1], teo2_mid[0], teo2_mid[1]))
+_tren_g = feature_geoms(load("tren mx qro.geojson"))
+if _tren_g:
+    b = _tren_g[0][0].bounds
+    print("tren bounds utm:", b, "-> svg", P(b[0], b[1]), P(b[2], b[3]))
