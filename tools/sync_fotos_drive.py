@@ -3,7 +3,8 @@
 Descarga fotos nuevas de la carpeta de Google Drive de Ariel y las coloca en
 img/fotos/<sección>/ con el nombre que ya usa el sitio.
 
-Convención de nombres en Drive (una sola carpeta, sin subcarpetas):
+Convención de nombres en Drive (recorre la carpeta y todas sus subcarpetas,
+por ejemplo "6_Ecosistemas" dentro de la carpeta principal):
     <seccion>_<orden>_<pie de foto>.<ext>
     ejemplo: ecosistemas-4_41_ACTUAL - Zona inundable Tres Culturas.jpg
 donde <seccion> es el id de una sección de TEXTOS.md (p. ej. "ecosistemas-3").
@@ -56,37 +57,44 @@ def main():
         json.loads(sa_key), scopes=["https://www.googleapis.com/auth/drive.readonly"])
     drive = build("drive", "v3", credentials=creds)
 
+    CARPETA = "application/vnd.google-apps.folder"
     nuevos = []
     ignorados = []
-    page_token = None
-    while True:
-        resp = drive.files().list(
-            q="'%s' in parents and trashed = false" % folder_id,
-            fields="nextPageToken, files(id, name, mimeType)",
-            pageToken=page_token,
-        ).execute()
-        for f in resp.get("files", []):
-            if f["mimeType"] not in IMAGENES:
-                continue
-            parsed = parse_nombre(f["name"])
-            if not parsed:
-                ignorados.append(f["name"])
-                continue
-            seccion, archivo = parsed
-            destino = os.path.join(FOTOS_DIR, seccion, archivo)
-            if os.path.exists(destino):
-                continue  # ya la tenemos
-            os.makedirs(os.path.dirname(destino), exist_ok=True)
-            buf = io.BytesIO()
-            downloader = MediaIoBaseDownload(buf, drive.files().get_media(fileId=f["id"]))
-            done = False
-            while not done:
-                _, done = downloader.next_chunk()
-            open(destino, "wb").write(buf.getvalue())
-            nuevos.append(os.path.join("img", "fotos", seccion, archivo))
-        page_token = resp.get("nextPageToken")
-        if not page_token:
-            break
+    por_visitar = [folder_id]
+    while por_visitar:
+        actual = por_visitar.pop(0)
+        page_token = None
+        while True:
+            resp = drive.files().list(
+                q="'%s' in parents and trashed = false" % actual,
+                fields="nextPageToken, files(id, name, mimeType)",
+                pageToken=page_token,
+            ).execute()
+            for f in resp.get("files", []):
+                if f["mimeType"] == CARPETA:
+                    por_visitar.append(f["id"])  # subcarpeta (p. ej. "6_Ecosistemas"): también se revisa
+                    continue
+                if f["mimeType"] not in IMAGENES:
+                    continue
+                parsed = parse_nombre(f["name"])
+                if not parsed:
+                    ignorados.append(f["name"])
+                    continue
+                seccion, archivo = parsed
+                destino = os.path.join(FOTOS_DIR, seccion, archivo)
+                if os.path.exists(destino):
+                    continue  # ya la tenemos
+                os.makedirs(os.path.dirname(destino), exist_ok=True)
+                buf = io.BytesIO()
+                downloader = MediaIoBaseDownload(buf, drive.files().get_media(fileId=f["id"]))
+                done = False
+                while not done:
+                    _, done = downloader.next_chunk()
+                open(destino, "wb").write(buf.getvalue())
+                nuevos.append(os.path.join("img", "fotos", seccion, archivo))
+            page_token = resp.get("nextPageToken")
+            if not page_token:
+                break
 
     if ignorados:
         print("Nombres que no siguen la convención <seccion>_<orden>_<pie> (se ignoraron):")
