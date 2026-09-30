@@ -239,9 +239,9 @@ eco_steps = [
     step(".585,.17,2.3", "int", card("ecosistemas-2"),
          carousel("ecosistemas-2"), ov="bojay", pins="bojay", labels="endho"),
     step(".36,.24,1.6", "base", card("ecosistemas-3"), carousel("ecosistemas-3"), ov="rio", labels="anp parque"),
-    # Zoom reducido para mostrar Bojay completo; incluye las isócronas (marco "acc",
-    # misma cámara que "int") sin quitar pines ni capas de espacio público.
-    step(".5,.55,1.0", "acc", card("ecosistemas-4"),
+    # Cámara desplazada hacia arriba para que Bojay (cerca del borde superior
+    # de la imagen) no se corte; incluye las isócronas (marco "acc").
+    step(".5,.4,1.0", "acc", card("ecosistemas-4"),
          carousel("ecosistemas-4"),
          ov="bojay trescult rosas sanlorenzo chamizal", pins="bojay trescult rosas sanlorenzo chamizal"),
 ]
@@ -433,9 +433,9 @@ PLANTILLA = '''<!DOCTYPE html>
   <title>%(titulo)s</title>
   <meta name="description" content="%(descripcion)s" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/temas.css?v=6" />
-  <link rel="stylesheet" href="css/historia.css?v=6" />
-  <link rel="stylesheet" href="css/capitulos.css?v=6" />
+  <link rel="stylesheet" href="css/temas.css?v=7" />
+  <link rel="stylesheet" href="css/historia.css?v=7" />
+  <link rel="stylesheet" href="css/capitulos.css?v=7" />
   <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
@@ -478,7 +478,7 @@ PLANTILLA = '''<!DOCTYPE html>
 
 %(pie)s
 
-<script src="js/sitio.js?v=6"></script>
+<script src="js/sitio.js?v=7"></script>
 </body>
 </html>
 '''
