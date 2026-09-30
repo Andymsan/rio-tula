@@ -320,7 +320,7 @@ titulo: Cinco lugares para reconectar con el río
 texto: En la ciudad de Tula estamos construyendo ==5 proyectos de espacio público junto al río==.
 
 texto2: En cada uno de estos sitios la población podrá disfrutar de vegetación nativa, espacios seguros para convivir, ejercitarse o divertirse y agua limpia en el río Rosas, los humedales de Tres Culturas y la laguna de Bojay.
-cifra: 52 % | de la población a 15 min a pie
+cifra: 52 % | de la población de Tula a 15 min a pie de algún proyecto
 fuente: Isócronas de accesibilidad: OpenRouteService.
 fotos: Propuesta · Río Rosas | Propuesta · San Lorenzo | Propuesta · Bojay | Espacio público ribereño
 
