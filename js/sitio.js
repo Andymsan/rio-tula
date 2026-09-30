@@ -234,7 +234,11 @@
       canvas.style.setProperty('--z', z);
     }
     function show(li) {
-      metas.forEach(m => m.classList.toggle('active', m === li));
+      metas.forEach(m => {
+        const on = m === li;
+        m.classList.toggle('active', on);
+        m.setAttribute('aria-expanded', String(on));
+      });
       const d = li.dataset;
       $$('.frame', canvas).forEach(f => f.classList.toggle('on', f.dataset.frame === d.frame));
       const ovs = list(d.ov);      $$('.ov', canvas).forEach(o => o.classList.toggle('on', ovs.includes(o.dataset.ov)));
@@ -243,9 +247,10 @@
       applyMetaCam(d.cam);
     }
     metas.forEach(li => {
-      li.addEventListener('mouseenter', () => show(li));
-      li.addEventListener('focus', () => show(li));
       li.addEventListener('click', () => show(li));
+      li.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); show(li); }
+      });
     });
     if (metas[0]) show(metas[0]);
     addEventListener('resize', () => {

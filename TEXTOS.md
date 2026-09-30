@@ -328,9 +328,10 @@ fotos: Propuesta · Río Rosas | Propuesta · San Lorenzo | Propuesta · Bojay |
 
 ---
 
-## resumen  (mapa con las 5 metas; se resalta la que está en foco)
+## resumen  (mapa con las 5 metas; clic en una meta muestra su descripción y resalta sus proyectos)
 etiqueta: Resumen
-titulo: Un río, cinco metas
+titulo: Acciones de saneamiento y restauración del río Tula 2024-2030
+subtitulo: El Gobierno de México está implementando una gran diversidad de acciones en el río Tula para cumplir con las siguientes metas principales:
 texto: A la fecha, tenemos proyectos terminados, en proceso o en planeación que van a transformar la vida del río Tula y de quienes viven junto a él.
 
 ## participa

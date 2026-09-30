@@ -257,24 +257,36 @@ eco = cap("ecosistemas", "verde", T.t("ecosistemas", "banner"), eco_canvas, eco_
 # ═══════════════════════════════════════════════════════════════════════════
 #  RESUMEN (mapa con las 5 metas; se resalta la que está en foco)
 # ═══════════════════════════════════════════════════════════════════════════
-# (cámara, marco, capas [+ "tint-x" para recolorear], pines, etiquetas, título, detalle)
+# (cámara, marco, capas [+ "tint-x" para recolorear], pines, etiquetas, título, detalle, descripción)
 METAS = [
     (".55,.5,1.05", "col", "", "atot colec cfe", "", "Tratar todo el drenaje del río Tula",
-     "Optimización de Atotonilco + colectores del río Tula"),
+     "Optimización de Atotonilco + colectores del río Tula",
+     "La optimización de la PTAR Atotonilco va a permitir que todo el drenaje del Valle de México sea "
+     "tratado durante secas. El proyecto de colectores va a captar la mayor parte de las descargas de "
+     "drenaje al río Tula."),
     (".55,.47,1.25", "col", "", "", "", "Controlar la contaminación industrial",
-     "Industrias inspeccionadas + estaciones de monitoreo automático"),
+     "Industrias inspeccionadas + estaciones de monitoreo automático",
+     "La Profepa y Conagua trabajan para inspeccionar y regularizar a todas las industrias que descargan "
+     "al río Tula. Adicionalmente, estamos construyendo 5 estaciones de monitoreo automático de la "
+     "calidad del agua para identificar descargas industriales oportunamente."),
     (".5,.55,1.05", "int", "sanlorenzo chamizal trescult rosas tint-naranja", "sanlorenzo chamizal trescult rosas", "",
      "Prevenir inundaciones en la ciudad de Tula",
-     "Desazolve + estabilización de taludes + estaciones automáticas + llanura de inundación en Tres Culturas"),
+     "Desazolve + estabilización de taludes + estaciones automáticas + llanura de inundación en Tres Culturas",
+     "La Conagua implementa obras para asegurar que el río Tula no se desborde: desazolve, estabilización "
+     "de taludes, monitoreo automático y la recuperación de una llanura aluvial."),
     (".36,.24,1.3", "base", "rio", "", "anp parque", "Restaurar los ecosistemas que le dan vida al río",
-     "Saneamiento forestal + revegetación + ADVC + proyectos de restauración"),
+     "Saneamiento forestal + revegetación + ADVC + proyectos de restauración",
+     "El sector ambiental federal trabaja para proteger y restaurar las riberas del río Tula, cuerpos de "
+     "agua como la laguna de Bojay de 55 ha y más de 3,800 ha de suelo forestal."),
     (".5,.55,1.05", "int", "bojay trescult rosas sanlorenzo chamizal tint-verde", "bojay trescult rosas sanlorenzo chamizal", "",
-     "Construir espacio público ribereño para toda la población de Tula", "Los 5 proyectos de espacio público"),
+     "Construir espacio público ribereño para toda la población de Tula", "Los 5 proyectos de espacio público",
+     "Para que la población de Tula pueda reconectar con el río, estamos construyendo 5 proyectos de "
+     "espacio público ribereño que incluyen revegetación nativa, equipamiento público y agua limpia."),
 ]
 
 def resumen_canvas():
     ovs, tint_por_ov = set(), {}
-    for _, _, ovlist, _, _, _, _ in METAS:
+    for _, _, ovlist, _, _, _, _, _ in METAS:
         parts = ovlist.split()
         tint = next((p for p in parts if p.startswith("tint-")), "")
         for name in parts:
@@ -292,19 +304,21 @@ def resumen_canvas():
     html += mlabel("parque", 0.62, 0.465, "Parque Nacional y<br>Atlantes de Tula")
     return html
 
-def resumen_meta(i, cam, frame_, ovlist, pins, labels, titulo, detalle):
+def resumen_meta(i, cam, frame_, ovlist, pins, labels, titulo, detalle, desc):
     ov_sin_tint = " ".join(x for x in ovlist.split() if not x.startswith("tint-"))
-    return ('<li class="meta" tabindex="0" data-cam="%s" data-frame="%s" data-ov="%s" data-pins="%s" data-labels="%s">'
-            '<b>%d</b><div><strong>%s</strong><span>%s</span></div></li>'
-            % (cam, frame_, ov_sin_tint, pins, labels, i + 1, fmt(titulo), fmt(detalle)))
+    return ('<li class="meta" tabindex="0" role="button" aria-expanded="false" '
+            'data-cam="%s" data-frame="%s" data-ov="%s" data-pins="%s" data-labels="%s">'
+            '<b>%d</b><div><strong>%s</strong><span>%s</span><p class="meta-desc">%s</p></div></li>'
+            % (cam, frame_, ov_sin_tint, pins, labels, i + 1, fmt(titulo), fmt(detalle), fmt(desc)))
 
 def resumen():
     metas_html = "".join(resumen_meta(i, *m) for i, m in enumerate(METAS))
     return ('<section class="s-resumen tema-azul" id="resumen" data-nav="light">'
-            '<div class="section-inner"><span class="s-tag">%s</span><h2 class="s-title">%s</h2><p class="s-body">%s</p></div>'
+            '<div class="section-inner"><span class="s-tag">%s</span><h2 class="s-title">%s</h2>'
+            '<p class="s-subtitle">%s</p><p class="s-body">%s</p></div>'
             '<div class="resumen-wrap"><div class="resumen-stage" id="resumenStage"><div class="canvas">%s</div><div class="wash"></div></div>'
             '<ul class="resumen-metas" id="resumenMetas">%s</ul></div></section>'
-            % (T.t("resumen", "etiqueta"), T.t("resumen", "titulo"), T.t("resumen", "texto"),
+            % (T.t("resumen", "etiqueta"), T.t("resumen", "titulo"), T.t("resumen", "subtitulo"), T.t("resumen", "texto"),
                resumen_canvas(), metas_html))
 
 # ═══════════════════════════════════════════════════════════════════════════
