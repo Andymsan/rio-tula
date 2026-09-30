@@ -1,56 +1,118 @@
-# Comentarios Ariel
+# Comentarios Ariel - V2
 
-Hola Claude de Andrea, soy Ariel. En este documento voy a poner comentarios a la página. Muchas gracias por todo tu apoyo para este gran proyecto.
+Hola Claude de Andrea, soy Ariel. En cada actualización del documento voy a borrar los comentarios anteriores y actualizar el número del titulo (V2).
 
+
+## General
+* Creo que deberíamos usar solo la tipografía oficial Noto Sans. Si necesitas una tipografía adicional, creo que el Gob de Mexico tiene la tipografía Patria para títulos.
+* Agregar una lupita a las fotos para que se puedan ver en grande.
 
 ## portada  (primera pantalla)
-* Cambiar la letra del título a Noto Sans Bold con el color azul del río en los mapas
-* Que en los números del índice no haya un 0 antes
-* Es posible que Clidad del agua, inundaciones y ecosistemas sean subindices de 3 El Proyecto?
+* Tenemos que tener una paleta de colores mejor establecida. Para el título del río debe ser el azul del río de los mapas: #3c7e81ff o el azul que usaba Andrea antes en las ppts: #2f5d6dff. Escoje uno.
+* Vamos a simplificar el índice: 1. La Historia del río Tula. 2. El Proyecto. 2.1 Calidad del agua, 2.2 Inundaciones, 2.3 Ecosistemas y espacio Público, 2.4 Resumen, 3. Participa
 
 ## historia-0  (época 1)
-Sobre el mapa
-* Quitar las divisiones municipales y todos los elementos más recientes como el PELT y las ANPS.
-* Que en esta sección no haya zooms. Que se vea siempre la cuenca completa del Valle de México y la cuenca del Tula hasta donde la tienes definida ahora (la confluencia + un cachito) y poco a poco se agreguen y transformen elementos.
-* Si se puede agregar los demás ríos como en el mapa de ejemplo del PELT para que se vea claro como todos los escurrimientos llegan a los grandes lagos, sería genial.
-* Marcar Lago de Zumpango, Lago de Texcoco, Lago de Xochimilco (corroborar que sea el nombre correcto)
-* Si es posible, suavizar las esquinas de la capa del lago para que se vea más real y menos inventada, sería genial.
+* Las capas de los ríos están en el portal de Conagua SIATL. Creo que Andrea está actualizando el mapa. La idea de tenerlos es que se entienda que es una cuenca donde todos los escurrimientos llevan a los tres grandes lagos. 
+* Agregar la topografía para que se vea claramente las cuencas.
+* Hacer más zoom out para que se vea completa la presa Endhó y la cuenca del Valle de México.
 
 ## historia-1  (época 2)
-* Es posible agregar una fuente? Si sí, usar esta: https://rdahayl.org/index.php/rdahayl/article/view/157/399 (si encuentras una más chida, adelante)
-* Se supone que el dique iba desde iztapalapa hasta Aztacoalco. SI se pueden marcar esos puntos en el mapa, bien.
-* <img width="487" height="748" alt="image" src="https://github.com/user-attachments/assets/30555514-ebf0-4f46-9fae-0efc7b028926" />
+* Quitar la etiqueta de Azcapotzalco. Solo la de Nezahualcoyotl.
+* Debería haber algo en el mapa que muestre nezahualcoyotl. Lo ideal sería algo similar a los clásicos mapas coloniales que muestran un trazo urbano rodeado de agua.
+* El tajo de nochistongo debería conectar con el lago de zumpango. Investiga bien cuál es el trazo del tajo.
 
 ## historia-2  (época 3)
+* El tajo de nochistongo debería conectar con el lago de zumpango. Investiga bien cuál es el trazo del tajo.
 
+## historia-3  (época 4)
+* Aquí tiene que desaparecer la capa de los grandes lagos y dejar solo los lagos que existen actualmente en el Valle de México.
+
+## historia-4  (época 5) - Presa Endhó
+* Poner la capa de los distritos de riego.
+* Quitar las etiqueta de Tlaxcoapan, Tula de Allende, Estado de México.
+* Quitar la capa de los grandes lagos.
+* El recorte de
+  
 ## historia-5  (época 6)
-* Agregar el Tunel Emisor Poniente que debe estar conectado al Cuautitlán
+* Quietar las etiquetas de Tepeji del Rïo, Atotonilco de Tula, Huehuetoca, Estado de México, Ciudad de México, Ecatepec, Cuautilán, Hidalgo.
+* Usar el mismo color de la etiqueta que del tunel.
+* Quitar ya la capa de los lagos y del albarradón.
+
+## historia-6  (época 7)
+* Quitar las etiquetas: Presa Requena, Atotonilco de TUla, Tepeji del río, Estado de México, Hidalgo. --> Quiero que solo haya un elemento que se resalta por periodo.
 
 ## historia-7  (época 8 — la más delicada, revisar con cuidado)
-* Poner el circulo azul que pulsa en la ciudad de Tula en vez de en Atotonilco.
-* Marcar el río Tula y el río Rosas
+* Dejar de resaltar el municipio de Tula. Solo la ciudad con el puntito que pulsa.
+* Quitar etiquetas de río Tula y Rosas.
+* Quitar etiqueta de Estado de México e Hdalgo.
+* QUitar etiqueta de Presa Endhó.
 
 ## promesa-1  (Compromiso 92, primera pantalla)
-* Quitar el 92 grande. Lo puse en la etiqueta, con eso es suficiente.
-* Chance poner la foto de la presidenta en la toma de protesta?
+
 
 ## promesa-1  (Compromiso 92, primera pantalla)
-* Cambié a municipios directamente beneficiados. Puse 12 pero no tengo idea. Haz una prpuesta.
+
 
 
 ## proyecto-0  (paso 1)
-*Esta sección y la siguiente se debe simplificar en una sola. Podemos borrar las secciones de los hexágonos y poner esa figura desde aquí sin los números de la cantidad de proyectos
 
 
-## proyecto-1  (paso 2: se enciende el hexágono de calidad del agua)
+## proyecto-4  (paso 5: donde se cruzan)
+* Quitar esta sección. No es necesaria.
 
 ## calidad-2  (Industria)
 Invertir el orden. QUe vaya primero Drenaje de Tula y luego industrias.
 
 ## calidad-3  (Drenaje de Tula / colectores)
-* Revisar dato de distancia de colectores
+* Mostrar en el mapa el cárcamo de bombeo
+
+## calidad-2  (Industria 
+* Agregar la capa de las inspecciones realizadas con una etiqueta.
+
+## calidad-4  (Monitoreo)
+* Agregar la capa de los sitios de monitoreo y de las 5 estaciones de monitoreo automático con una etiqueta para cada una.
+* Cambiar la etiqueta de PTAR Atotonilco por Centro de Vigilancia del Agua.
+
+## inundaciones-3  (Monitoreo de caudal)
+* Falta la capa de las estaciones
+
+## inundaciones-4  (Tres Culturas)
+* La capa de la llanura está arriba de la capa del río. Debe ser al reves.
+
+## ecosistemas-0  (introducción)
+
+## ecosistemas-1  (Riberas)
+* Agregar capas de árboles saneados y zonas revegetadas
+
+## ecosistemas-4  (Espacio público)
+* Hacer zoom out para que se vea Bojay completo.
+* Agregar las vias del tren México Querétaro con una etiqueta y la estación.
+* Pongamos en este mapa también las isocronas sin modificar las capas y etqieutas existentes de espacio público. - Junté la parte siguiente con esta.
+
+## ecosistemas-5  (Alcance)
+* QUitar esta sección.
+
+## ecosistemas-6  (Conexión)
+* Por ahora quitemos esta sección
 
 
+## Resumen
+* Poner el mapa con todas las intervenciones y una tabla con las metas principales. Cada meta sería un elemento y que cuando se pase el cursor por arriba se highliteen los proyectos asociados.
+* Texto: A la fecha, tenemos proyectos terminados, en proceso o en planeación que van a transformar la vida de 
+1. Tratar todo el drenaje del río Tula (Atotonilco + Colectores)
+2. Controlar la contaminación industrial (Industrias inspeccionadas + estaciones de monitoreo automático)
+3. Prevenir inundaciones en la ciudad de Tula (Desazolve + Estabilización de taludes + estaciones automáticas + Llanura de inundación Tres Culturas)
+4. Restaurar los ecosistemas que la dan vida al río (Saneamiento forestal + revegetación + ADVCs + Proectos de restauración)
+6. Construir espacio público ribereño para toda la población de Tula (los 5 proyectos de espacio público)
+
+## Participa
+Esta sección debe tener la foto de mucha gente en una jornada de limpieza, un texto y unos botones con los links.
+Texto: Restaurar el río Tula es un proyecto extremadamente ambicioso que solo se puede lograr con la participación de mucha gente. Te interesa sumarte?
+Links:
+1. Participa en eventos [https://forms.gle/ywk73PzvLo6HkGVFA]
+2. Recibe información [https://forms.gle/ywk73PzvLo6HkGVFA]
+3. Sugerencias o propuestas de colaboración [https://forms.gle/ywk73PzvLo6HkGVFA]
+4. Denuncia a una industria que contamina el río [https://www.profepa.gob.mx/innovaportal/v/1156/1/mx/haz_tu_denuncia.html]
 ---
 
 ## Respuestas de Claude (24-sep-2026)
