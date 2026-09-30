@@ -19,7 +19,7 @@ Hola Claude de Andrea, soy Ariel. En cada actualización del documento voy a bor
 
 ## historia-1  (época 2)
 * Quitar la etiqueta de Azcapotzalco. Solo la de Nezahualcoyotl.
-* Debería haber algo en el mapa que muestre nezahualcoyotl. Lo ideal sería algo similar a los clásicos mapas coloniales que muestran un trazo urbano rodeado de agua.
+* Debería haber algo en el mapa que muestre Tenochtitlán. Lo ideal sería algo similar a los clásicos mapas coloniales que muestran un trazo urbano rodeado de agua.
 * El tajo de nochistongo debería conectar con el lago de zumpango. Investiga bien cuál es el trazo del tajo.
 
 ## historia-2  (época 3)
