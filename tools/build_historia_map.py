@@ -72,6 +72,9 @@ def build_hillshade():
         )
     valid = ~np.isnan(dem)
     dem_f = np.where(valid, dem, np.nanmedian(dem))
+    # margen (reflejando el borde) para que el fondo nunca se corte en pantallas muy anchas/angostas
+    pad = max(width, height) // 2
+    dem_f = np.pad(dem_f, pad, mode="reflect")
     gy, gx = np.gradient(dem_f, 90.0)
     slope = np.pi / 2 - np.arctan(np.hypot(gx, gy))
     aspect = np.arctan2(-gx, gy)
@@ -84,9 +87,9 @@ def build_hillshade():
     out_dir = os.path.join(ROOT, "img", "mapa")
     os.makedirs(out_dir, exist_ok=True)
     img.save(os.path.join(out_dir, "hillshade.webp"), "WEBP", quality=82, method=6)
-    # bounds del raster reproyectado, en unidades SVG (para posicionarlo)
-    left, top = transform.c, transform.f
-    right, bottom = left + transform.a * width, top + transform.e * height
+    # bounds del raster reproyectado (con el margen agregado), en unidades SVG
+    left, top = transform.c - pad * transform.a, transform.f - pad * transform.e
+    right, bottom = left + transform.a * (width + 2 * pad), top + transform.e * (height + 2 * pad)
     x0, y0 = P(left, top)
     x1, y1 = P(right, bottom)
     print("hillshade.webp: %dx%d px -> svg x[%.1f,%.1f] y[%.1f,%.1f]" % (width, height, x0, x1, y0, y1))
@@ -253,6 +256,18 @@ d_taxhimay = path_d(_cuerpos_by_name["Taxhimay"])
 endho_c = P(*_cuerpos_by_name["Endho"].centroid.coords[0])
 requena_c = P(*_cuerpos_by_name["Requena"].centroid.coords[0])
 
+# manzanas de la ciudad de Tula (para el acercamiento de la inundación de 2021)
+_manzanas_buf = tulacity_geom.buffer(1800) if tulacity_geom else None
+_manzanas_parts = [path_d(g.simplify(3, preserve_topology=True))
+                   for g, _ in feature_geoms(load("manzanas.geojson"))
+                   if _manzanas_buf is not None and g.intersects(_manzanas_buf)]
+d_manzanas = " ".join(_manzanas_parts)
+
+# planta de tratamiento de Atotonilco (polígono real)
+_atot_geom = feature_geoms(load("atotonilco.geojson"))[0][0]
+d_atotonilco = path_d(_atot_geom)
+atot_c = P(*_atot_geom.centroid.coords[0])
+
 # red valle de méxico: Gran Canal (+2), Emisor Poniente/Central, Túnel Emisor Oriente
 _red = {p["Name"]: g for g, p in feature_geoms(load("red valle de mexico.geojson"))}
 d_canal = path_d(_red["Gran Canal"]) + " " + path_d(_red["Gran Canal 2"])
@@ -282,8 +297,10 @@ d_tajo = prepend_point(d_tajo, zumpango_c)
 # ─── puntos de referencia (lon/lat) ─────────────────────────────────────────
 zoc = LL(-99.1332, 19.4326)            # Zócalo, Ciudad de México (antes Tenochtitlan)
 iztapalapa = LL(-99.0930, 19.3552)     # extremo sur del dique de Nezahualcóyotl
-azcapotzalco = LL(-99.1868, 19.4837)   # extremo norte del dique
-d_dique = "M%.1f,%.1f L%.1f,%.1f" % (iztapalapa[0], iztapalapa[1], azcapotzalco[0], azcapotzalco[1])
+atzacoalco = LL(-99.1050, 19.4900)     # extremo norte del dique (hacia Ecatepec)
+dique_bend = LL(-99.1180, 19.4450)     # quiebre del dique junto a la ciudad
+d_dique = "M%.1f,%.1f L%.1f,%.1f L%.1f,%.1f" % (
+    iztapalapa[0], iztapalapa[1], dique_bend[0], dique_bend[1], atzacoalco[0], atzacoalco[1])
 
 # ══════════════════════════════════════════════════════════════════════════
 #  ETIQUETAS
@@ -331,7 +348,7 @@ L("Valle del Mezquital", (endho_c[0] - 32, endho_c[1] + 46), [4], "m", "hist")
 # elementos (posiciones tomadas de la geometría real)
 L("Presa Endhó", (endho_c[0] + 8, endho_c[1] - 6), [4, 8], "m", "agua")
 L("Presa Requena", (requena_c[0] + 8, requena_c[1]), [8], "s", "agua")
-L("PTAR Atotonilco", (requena_c[0] - 4, requena_c[1] + 22), [6, 8], "m", "ptar")
+L("PTAR Atotonilco", (atot_c[0] + 8, atot_c[1]), [6, 8], "m", "ptar")
 L("Gran Canal del Desagüe", (canal_mid[0] + 8, canal_mid[1]), [3], "m", "canal")
 L("Tajo de Nochistongo", (tajo_mid[0] - 42, tajo_mid[1] - 4), [2], "m", "tajo")
 L("Túnel Emisor Poniente", (tep_mid[0] + 10, tep_mid[1] - 8), [5], "s", "tep")
@@ -361,13 +378,15 @@ svg.append(capa("rivers", 0, d_rivers))
 svg.append(capa("lake", 0, d_lake))
 svg.append(capa("endho", 4, d_endho))
 svg.append(capa("waterbody", 4, d_requena))
+svg.append(capa("endho", 6, d_atotonilco))
 svg.append(capa("distritos", 4, d_distritos))
 svg.append(capa("riotula", 0, d_riotula, ' pathLength="1"'))
 svg.append(capa("tulacity", 8, d_tulacity))  # ciudad restaurada; en 2021 (paso 7) solo resalta el punto que pulsa
+svg.append(capa("manzanas", 7, d_manzanas))  # manzanas de la ciudad; solo visibles en el acercamiento de la inundación
 
 svg.append(capa("dique", 1, d_dique, ' pathLength="1"'))
 svg.append(punto(iztapalapa, 1))
-svg.append(punto(azcapotzalco, 1))
+svg.append(punto(atzacoalco, 1))
 svg.append(capa("line noch", 2, d_tajo, ' pathLength="1"'))
 svg.append(capa("line canal", 3, d_canal, ' pathLength="1"'))
 svg.append(capa("line tep", 5, d_tep, ' pathLength="1"'))
@@ -386,9 +405,10 @@ print("historia_mapa.html: %d KB; %d etiquetas" % (sum(len(x) for x in svg) // 1
 print("viewBox: 0 0 %.1f %.1f" % (W_SVG, H_SVG))
 print("zocalo %.0f,%.0f  endho %.0f,%.0f  requena %.0f,%.0f" % (zoc[0], zoc[1], endho_c[0], endho_c[1], requena_c[0], requena_c[1]))
 print("tula de allende:", C("Tula de Allende"))
-print("iztapalapa %.0f,%.0f  azcapotzalco %.0f,%.0f  zumpango %.0f,%.0f" % (iztapalapa[0], iztapalapa[1], azcapotzalco[0], azcapotzalco[1], zumpango_c[0], zumpango_c[1]))
+print("iztapalapa %.0f,%.0f  atzacoalco %.0f,%.0f  zumpango %.0f,%.0f" % (iztapalapa[0], iztapalapa[1], atzacoalco[0], atzacoalco[1], zumpango_c[0], zumpango_c[1]))
 print("tajo_mid %.0f,%.0f  canal_mid %.0f,%.0f" % (tajo_mid[0], tajo_mid[1], canal_mid[0], canal_mid[1]))
 print("tep_mid %.0f,%.0f  teo1_mid %.0f,%.0f  teo2_mid %.0f,%.0f" % (tep_mid[0], tep_mid[1], teo1_mid[0], teo1_mid[1], teo2_mid[0], teo2_mid[1]))
+print("atot_c %.0f,%.0f  manzanas: %d features, %d KB" % (atot_c[0], atot_c[1], len(_manzanas_parts), len(d_manzanas)//1024))
 _tren_g = feature_geoms(load("tren mx qro.geojson"))
 if _tren_g:
     b = _tren_g[0][0].bounds

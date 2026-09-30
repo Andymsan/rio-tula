@@ -123,9 +123,9 @@
   const H_POS   = [0, 14, 28, 42, 56, 68, 78, 88, 100];
   // una sola cámara fija para las 9 épocas: [centro x, centro y, alto visible]
   const H_FULL  = [276, 314, 660];
-  const H_CAM   = [H_FULL, H_FULL, H_FULL, H_FULL, H_FULL, H_FULL, H_FULL, H_FULL, H_FULL];
+  const H_CAM   = [H_FULL, H_FULL, H_FULL, H_FULL, H_FULL, H_FULL, H_FULL, [211, 165, 130], H_FULL];
   // marcador de énfasis (círculo que pulsa): a dónde se mueve en cada época; sin entrada = oculto
-  const H_ENF   = { 1: [373, 609], 6: [246, 243], 7: [211, 165], 8: [211, 165] };
+  const H_ENF   = { 1: [373, 609], 6: [264, 228], 7: [211, 165], 8: [211, 165] };
   let hView = null, hRaf = 0;
 
   function hDraw(st, v) {
@@ -158,6 +158,9 @@
     q('.riotula').classList.toggle('restored', i >= 8);
     q('.tulacity').classList.toggle('restored', i >= 8);
     q('.distritos').classList.toggle('on', i === 4);
+    q('.dique').classList.toggle('on', i === 1);
+    q('.manzanas').classList.toggle('on', i === 7);
+    $$('.hito', svg).forEach(h => h.classList.toggle('on', i === 1));
     const enf = q('#hsEnfasis'), pos = H_ENF[i];
     enf.classList.toggle('on', !!pos);
     if (pos) $$('circle', enf).forEach(c => { c.setAttribute('cx', pos[0]); c.setAttribute('cy', pos[1]); });

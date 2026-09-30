@@ -76,10 +76,12 @@ Total: 35.8 km.
   imágenes con puntos ubicados a ojo): sin esto no se pueden agregar con precisión
   capas nuevas (industrias, estaciones de monitoreo, cárcamo de bombeo) sobre esos
   mapas.
-- Dique de Nezahualcóyotl: se sigue usando una aproximación (línea recta entre
-  Iztapalapa y Azcapotzalco); no hay trazo oficial en las capas entregadas.
-- Trazo de calles/colonias para el mapa de historia (para ponerle nombre a las
-  colonias en la escena de inundación/taludes, si es que se agrega ahí).
+- Dique de Nezahualcóyotl: se sigue usando una aproximación (línea quebrada entre
+  Iztapalapa, un punto junto a la ciudad y Atzacoalco); no hay trazo oficial en las
+  capas entregadas.
+- Trazo de calles/colonias para el mapa de historia, sección de Inundaciones
+  (taludes de San Lorenzo/Chamizal) — solo se agregó para la ciudad de Tula
+  (inundación de 2021), usando `manzanas.geojson`.
 
 ### Resuelto (30-sep-2026, con las capas GIS reales de la carpeta de diseño)
 

@@ -14,7 +14,7 @@
 .hs-intro-plain .s-title { color: var(--ink); }
 .hs-intro-plain .s-body { color: #555; margin-top: 16px; }
 
-.hist .cap-stage { background: #fbfbfa; }
+.hist .cap-stage { background: #f3f3f3; }
 
 .hmap { position: absolute; inset: 0; width: 100%; height: 100%; display: block; --fs: 10; }
 .hmap .hillshade { opacity: 1; }
@@ -32,6 +32,8 @@
 .hmap .humedal { fill: rgba(194, 208, 186, .65); stroke: rgba(150, 170, 140, .5); stroke-width: calc(var(--fs) * .08px); }
 .hmap .distritos { fill: rgba(242, 234, 225, .85); stroke: rgba(141, 123, 91, .5); stroke-width: calc(var(--fs) * .1px); opacity: 0; transition: opacity 1s; }
 .hmap .distritos.on { opacity: 1; }
+.hmap .manzanas { fill: #a3a3a3; stroke: none; mix-blend-mode: multiply; opacity: 0; transition: opacity 1s; }
+.hmap .manzanas.on { opacity: .7; }
 
 /* ─ Agua ─ */
 .hmap .waterbody, .hmap .lake { fill: rgba(2, 93, 110, .8); stroke: #025d6e; stroke-width: calc(var(--fs) * .1px); opacity: 0; transition: opacity 1s, fill 1.2s, stroke 1.2s; }
