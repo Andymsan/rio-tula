@@ -317,9 +317,9 @@ fotos: Área Destinada Voluntariamente a la Conservación | Restauración forest
 ## ecosistemas-4  (Espacio público)
 etiqueta: 4 · Espacio público
 titulo: Cinco lugares para reconectar con el río
-texto: En la ciudad de Tula estamos construyendo ==5 sitios de espacio público ribereño==.
+texto: En la ciudad de Tula estamos construyendo ==5 proyectos de espacio público junto al río==.
 
-texto2: En cada uno de estos sitios estamos haciendo: **saneamiento, revegetación con plantas nativas, prevención de inundaciones y equipamiento de espacio público.**
+texto2: En cada uno de estos sitios la población podrá disfrutar de vegetación nativa, espacios seguros para convivir, ejercitarse o divertirse y agua limpia en el río Rosas, los humedales de Tres Culturas y la laguna de Bojay.
 cifra: 52 % | de la población a 15 min a pie
 fuente: Isócronas de accesibilidad: OpenRouteService.
 fotos: Propuesta · Río Rosas | Propuesta · San Lorenzo | Propuesta · Bojay | Espacio público ribereño
