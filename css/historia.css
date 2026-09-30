@@ -24,18 +24,18 @@
    (estados) · rojizo #6d381e (delimitación del proyecto) · teal #025d6e
    (agua) · negro (obras) · beige #f2eae1 (distritos de riego) ·
    verde salvia #c2d0ba (humedales) */
-.hmap .estados { fill: none; stroke: #8a7a3f; stroke-width: calc(var(--fs) * .06px); stroke-dasharray: 2 2; }
-.hmap .cuenca { fill: none; stroke: #c9a227; stroke-width: calc(var(--fs) * .11px); opacity: 0; transition: opacity 1.2s; }
+.hmap .estados { fill: none; stroke: #8a7a3f; stroke-width: calc(var(--fs) * .04px); transition: opacity 1s; stroke-dasharray: 2 2; }
+.hmap .cuenca { fill: none; stroke: #c9a227; stroke-width: calc(var(--fs) * .10px); opacity: 0; transition: opacity 1.2s; }
 .hmap .cuenca.on { opacity: 1; }
-.hmap .delim { fill: none; stroke: #6d381e; stroke-width: calc(var(--fs) * .15px); opacity: 0; transition: opacity 1.2s; }
+.hmap .delim { fill: none; stroke: #6d381e; stroke-width: calc(var(--fs) * .10px); opacity: 0; transition: opacity 1.2s; }
 .hmap .delim.on { opacity: 1; }
-.hmap .rivers { fill: none; stroke: #025d6e; stroke-width: calc(var(--fs) * .16px); }
 .hmap .humedal { fill: rgba(194, 208, 186, .65); stroke: rgba(150, 170, 140, .5); stroke-width: calc(var(--fs) * .08px); }
 .hmap .distritos { stroke-width: calc(var(--fs) * .05px); opacity: 0; transition: opacity 1s; }
 .hmap .distritos.on { opacity: 1; }
-.hmap .canaldr { stroke-width: calc(var(--fs) * .04px); }
+.hmap .canaldr { stroke-width: calc(var(--fs) * .02px); }
 .hmap .manzanas { fill: #a3a3a3; stroke: none; mix-blend-mode: multiply; opacity: 0; transition: opacity 1s; }
 .hmap .manzanas.on { opacity: .7; }
+.hmap .rivers { fill: none; stroke: #025d6e; stroke-width: calc(var(--fs) * .16px); }
 
 /* ─ Agua ─ */
 .hmap .waterbody, .hmap .lake { fill: rgba(2, 93, 110, .8); stroke: #025d6e; stroke-width: calc(var(--fs) * .1px); opacity: 0; transition: opacity 1s, fill 1.2s, stroke 1.2s; }
