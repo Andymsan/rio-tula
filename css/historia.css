@@ -31,9 +31,9 @@
 .hmap .delim.on { opacity: 1; }
 .hmap .rivers { fill: none; stroke: #025d6e; stroke-width: calc(var(--fs) * .16px); }
 .hmap .humedal { fill: rgba(194, 208, 186, .65); stroke: rgba(150, 170, 140, .5); stroke-width: calc(var(--fs) * .08px); }
-.hmap .distritos { stroke-width: calc(var(--fs) * .12px); opacity: 0; transition: opacity 1s; }
+.hmap .distritos { stroke-width: calc(var(--fs) * .05px); opacity: 0; transition: opacity 1s; }
 .hmap .distritos.on { opacity: 1; }
-.hmap .canaldr { stroke-width: calc(var(--fs) * .18px); }
+.hmap .canaldr { stroke-width: calc(var(--fs) * .08px); }
 .hmap .manzanas { fill: #a3a3a3; stroke: none; mix-blend-mode: multiply; opacity: 0; transition: opacity 1s; }
 .hmap .manzanas.on { opacity: .7; }
 

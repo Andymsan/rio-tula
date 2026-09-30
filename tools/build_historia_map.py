@@ -352,20 +352,20 @@ L("Albarradón de Nezahualcóyotl", (zoc[0] + 22, zoc[1] + 66), [1], "s", "hist"
 L("Huehuetoca", C("Huehuetoca", -6, 12), [2], "m", "lm")
 L("Zumpango", C("Zumpango", 10, 14), [2, 3], "s", "lm")
 L("Tequixquiac", C("Tequixquiac", -22, 4), [2, 3], "s", "lm")
-L("Tula de Allende", C("Tula de Allende", -8, -14), [8], "l", "lm key")
-L("Atotonilco de Tula", C("Atotonilco de Tula", 34, 6), [8], "m", "lm key")
+L("Tula de Allende", C("Tula de Allende", -8, -14), [8], "m", "lm key")
+L("Atotonilco de Tula", C("Atotonilco de Tula", 34, 6), [8], "s", "lm key")
 L("Tezontepec de Aldama", C("Tezontepec de Aldama", 14, 12), [8], "s", "lm")
 L("Tlaxcoapan", C("Tlaxcoapan", 12, 6), [8], "s", "lm")
 L("Tepetitlán", C("Tepetitlán", -18, -8), [4], "s", "lm")
 L("Ecatepec", C("Ecatepec de Morelos", 30, -14), [3], "s", "lm")
 L("Valle del Mezquital", (endho_c[0] - 32, endho_c[1] + 46), [4], "m", "hist")
 for _clv, _d in DISTRITOS.items():
-    lab.append('<text class="lbl s distritodr" data-show="4" x="%.1f" y="%.1f" style="fill:%s">DR %s</text>'
+    lab.append('<text class="lbl s distritodr" data-show="4 5 6 7 8" x="%.1f" y="%.1f" style="fill:%s">DR %s</text>'
                % (_d["centro"][0], _d["centro"][1], DISTRITOS_COLOR[_clv], _clv))
 # elementos (posiciones tomadas de la geometría real)
 L("Presa Endhó", (endho_c[0] + 8, endho_c[1] - 6), [4, 8], "m", "agua")
 L("Presa Requena", (requena_c[0] - 8, requena_c[1] + 18), [8], "s", "agua")
-L("PTAR Atotonilco", (atot_c[0] + 10, atot_c[1] - 2), [6, 8], "m", "ptar")
+L("PTAR Atotonilco", (atot_c[0] + 10, atot_c[1] - 2), [6, 8], "s", "ptar")
 L("Gran Canal del Desagüe", (canal_mid[0] + 8, canal_mid[1]), [3], "m", "canal")
 L("Tajo de Nochistongo", (tajo_mid[0] - 34, tajo_mid[1] - 20), [2], "s", "tajo")
 L("Túnel Emisor Poniente", (tep_mid[0] - 46, tep_mid[1] - 14), [5], "s", "tep")
@@ -396,7 +396,7 @@ svg.append(capa("endho", 4, d_endho))
 svg.append(capa("waterbody", 4, d_requena))
 svg.append(capa("endho", 6, d_atotonilco))
 for _clv, _d in DISTRITOS.items():
-    svg.append(capa("distritos", 4, _d["path"], ' style="fill:%s33;stroke:%s"' % (DISTRITOS_COLOR[_clv], DISTRITOS_COLOR[_clv])))
+    svg.append(capa("distritos", 4, _d["path"], ' style="fill:%s1a;stroke:%s"' % (DISTRITOS_COLOR[_clv], DISTRITOS_COLOR[_clv])))
     svg.append(capa("line canaldr", 4, _d["canal"], ' pathLength="1" style="stroke:%s"' % DISTRITOS_COLOR[_clv]))
 svg.append(capa("riotula", 0, d_riotula, ' pathLength="1"'))
 svg.append(capa("tulacity", 8, d_tulacity))  # ciudad restaurada; en 2021 (paso 7) solo resalta el punto que pulsa

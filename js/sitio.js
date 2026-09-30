@@ -156,7 +156,7 @@
     q('.lake').classList.toggle('drained', i >= 3);
     q('.riotula').classList.toggle('restored', i >= 8);
     q('.tulacity').classList.toggle('restored', i >= 8);
-    q('.distritos').classList.toggle('on', i === 4);
+    q('.distritos').classList.toggle('on', i >= 4);
     q('.dique').classList.toggle('on', i === 1);
     q('.manzanas').classList.toggle('on', i === 7);
     q('.marker.zump').classList.toggle('on', i === 2);
