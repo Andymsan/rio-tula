@@ -20,11 +20,12 @@
 .hmap .hillshade { opacity: 1; }
 
 /* ─ Base: relieve + límites reales (paleta tomada del mapa de referencia) ─
-   ocre #8a7a3f (estados) · rojizo #6d381e (delimitación del proyecto) ·
-   teal #025d6e (agua) · negro (obras) · beige #f2eae1 (distritos de riego) ·
+   amarillo #c9a227 (gran cuenca del Valle de México) · ocre punteado #8a7a3f
+   (estados) · rojizo #6d381e (delimitación del proyecto) · teal #025d6e
+   (agua) · negro (obras) · beige #f2eae1 (distritos de riego) ·
    verde salvia #c2d0ba (humedales) */
-.hmap .estados { fill: none; stroke: #8a7a3f; stroke-width: calc(var(--fs) * .09px); }
-.hmap .cuenca { fill: none; stroke: rgba(90, 90, 80, .4); stroke-width: calc(var(--fs) * .1px); stroke-dasharray: 3 3; opacity: 0; transition: opacity 1.2s; }
+.hmap .estados { fill: none; stroke: #8a7a3f; stroke-width: calc(var(--fs) * .06px); stroke-dasharray: 2 2; }
+.hmap .cuenca { fill: none; stroke: #c9a227; stroke-width: calc(var(--fs) * .11px); opacity: 0; transition: opacity 1.2s; }
 .hmap .cuenca.on { opacity: 1; }
 .hmap .delim { fill: none; stroke: #6d381e; stroke-width: calc(var(--fs) * .15px); opacity: 0; transition: opacity 1.2s; }
 .hmap .delim.on { opacity: 1; }
@@ -54,7 +55,6 @@
 .hmap .tep    { stroke: #1a1a1a; }
 .hmap .emisor { stroke: #1a1a1a; }
 .hmap .teo    { stroke: #1a1a1a; }
-.hmap .tren   { stroke: #1a1a1a; }
 
 /* ─ Puntos históricos (extremos del dique, etc.) ─ */
 .hmap .hito { fill: #1a1a1a; stroke: #fbfbfa; stroke-width: calc(var(--fs) * .12px); opacity: 0; transition: opacity .8s; }
@@ -97,7 +97,10 @@
 .hmap .lbl.l  { font-size: calc(var(--fs) * 1.55px); font-weight: 800; }
 .hmap .lbl.st { font-size: calc(var(--fs) * 1.5px); letter-spacing: calc(var(--fs) * .3px); fill: #8a7a3f; font-weight: 700; stroke: none; }
 .hmap .lbl.st.on { opacity: .6; }
-.hmap .lbl.cuenca { fill: #6b6558; font-style: italic; }
+.hmap .lbl.cuenca { fill: #9c7f1f; font-style: italic; }
+.hmap .lbl.delim  { fill: #6d381e; font-style: italic; }
+.hmap .lbl.estado { fill: #8a7a3f; font-weight: 700; letter-spacing: calc(var(--fs) * .1px); }
+.hmap .lbl.estado.on { opacity: .75; }
 .hmap .lbl.agua   { fill: #025d6e; font-style: italic; }
 .hmap .lbl.hist   { fill: #6d381e; }
 .hmap .lbl.ciudad { fill: #6d381e; font-weight: 800; }
@@ -109,7 +112,6 @@
 .hmap .lbl.rio    { fill: #025d6e; font-style: italic; }
 .hmap .lbl.lm     { fill: #2b2b28; }
 .hmap .lbl.key    { fill: #111111; font-weight: 800; }
-.hmap .lbl.tren   { fill: #1a1a1a; }
 
 /* ─ Línea del tiempo ─ */
 .hs-timeline { position: absolute; z-index: 4; left: 62%; bottom: 20px; transform: translateX(-50%); width: min(470px, 44vw); padding: 12px 22px 24px; background: rgba(255,255,255,.9); border-radius: 16px; box-shadow: 0 10px 30px -14px rgba(0,0,0,.35); }
