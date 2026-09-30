@@ -106,35 +106,38 @@ li.idx-sub { margin-left: 22px; }
 li.idx-sub a { padding: 10px 14px; background: rgba(0,0,0,.015); }
 li.idx-sub b { font-size: 16px; }
 
-/* ─── Compromiso 92 (claro) ─── */
-.s-promesa { background: #f6f4ef; color: var(--ink); }
+/* ─── Compromiso 92 (estilo "informe de gobierno": oscuro, con el mapa
+   final de la historia de fondo) ─── */
+.s-promesa { background: #0e2023; color: #fff; }
 .pm-beat { min-height: 90svh; display: flex; align-items: center; justify-content: center; padding: 96px 28px; position: relative; }
-.pm-beat + .pm-beat { background: #fff; }
-.pm-wrap { width: min(1060px, 100%); }
-.pm-1 { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 28px; }
+.pm-beat-dark { background-size: cover; background-position: center; }
+.pm-scrim { position: absolute; inset: 0; background: linear-gradient(175deg, rgba(8,20,23,.86), rgba(8,20,23,.95)); }
+.pm-wrap { width: min(1060px, 100%); position: relative; z-index: 1; }
+.pm-1 { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; }
 .pm-1 .pm-sub { max-width: 60ch; }
 .pm-1 .tula-facts { justify-content: center; }
+.pm-92 { font: 900 clamp(90px, 13vw, 168px)/1 'Noto Sans', sans-serif; color: #d9b45c; letter-spacing: -.02em; text-shadow: 0 10px 40px rgba(0,0,0,.4); }
 /* la burbuja de foto aquí vive fuera del scroll por pasos, así que no depende
    de ".step.active" para mostrarse (si no, quedaba invisible para siempre) */
-.pm-1 .burbuja { grid-column: auto; justify-self: center; align-self: auto; width: min(100%, 380px); aspect-ratio: 4/3; margin: 0; opacity: 1 !important; transform: none !important; }
-.pm-kicker { font-size: 12px; letter-spacing: .22em; text-transform: uppercase; color: #6b6b6b; font-weight: 700; margin-bottom: 16px; }
-.pm-h { font-family: 'Noto Sans', sans-serif; font-weight: 700; font-size: clamp(28px, 4vw, 50px); line-height: 1.12; }
-.pm-h em { font-style: italic; color: #d9534a; }
-.pm-h span { display: block; margin-top: 12px; font-size: .62em; color: #1f6fd6; }
-.pm-sub { margin-top: 20px; font-size: clamp(15px, 1.5vw, 18px); line-height: 1.7; color: #555; max-width: 52ch; }
+.pm-1 .burbuja { grid-column: auto; justify-self: center; align-self: auto; width: min(100%, 380px); aspect-ratio: 4/3; margin: 28px 0 0; opacity: 1 !important; transform: none !important; border-color: #d9b45c; }
+.pm-kicker { font-size: 12px; letter-spacing: .22em; text-transform: uppercase; color: #d9b45c; font-weight: 700; margin-bottom: 16px; }
+.pm-h { font-family: 'Noto Sans', sans-serif; font-weight: 700; font-size: clamp(28px, 4vw, 50px); line-height: 1.12; color: #fff; }
+.pm-h em { font-style: normal; color: #d9b45c; }
+.pm-h span { display: block; margin-top: 12px; font-size: .62em; color: rgba(255,255,255,.72); }
+.pm-sub { margin-top: 20px; font-size: clamp(15px, 1.5vw, 18px); line-height: 1.7; color: rgba(255,255,255,.8); max-width: 52ch; }
 .tula-facts { display: flex; flex-wrap: wrap; gap: 14px 34px; margin-top: 26px; }
-.tula-facts b { display: block; font-family: 'Noto Sans', sans-serif; font-weight: 900; font-size: clamp(30px, 3.6vw, 44px); line-height: 1; color: #1f6fd6; }
-.tula-facts span { display: block; margin-top: 6px; font-size: 13px; color: #666; }
-.pm-2 h2 { font-family: 'Noto Sans', sans-serif; font-size: clamp(26px, 3.6vw, 44px); line-height: 1.15; max-width: 22ch; }
+.tula-facts b { display: block; font-family: 'Noto Sans', sans-serif; font-weight: 900; font-size: clamp(30px, 3.6vw, 44px); line-height: 1; color: #d9b45c; }
+.tula-facts span { display: block; margin-top: 6px; font-size: 13px; color: rgba(255,255,255,.65); }
+.pm-2 h2 { font-family: 'Noto Sans', sans-serif; font-size: clamp(26px, 3.6vw, 44px); line-height: 1.15; max-width: 22ch; color: #fff; }
 .nums { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; margin-top: 44px; }
-.nums .n { background: #f6f4ef; border-radius: 22px; padding: 30px 30px 26px; border-top: 6px solid var(--nc, #ec6f66); }
-.nums .n b { display: block; font-family: 'Noto Sans', sans-serif; font-weight: 900; font-size: clamp(40px, 5vw, 64px); line-height: 1; color: var(--nc, #ec6f66); }
-.nums .n span { display: block; margin-top: 10px; font-size: 15px; line-height: 1.5; color: #444; }
-.pm-puente { margin-top: 52px; font-family: 'Noto Sans', sans-serif; font-style: italic; font-size: clamp(20px, 2.4vw, 28px); color: var(--ink); }
-.pm-puente span { display: block; font-family: 'Noto Sans', sans-serif; font-style: normal; font-size: 22px; margin-top: 10px; color: #ec6f66; animation: bob 1.8s ease-in-out infinite; }
+.nums .n { background: rgba(255,255,255,.08); border-radius: 22px; padding: 30px 30px 26px; border-top: 6px solid #d9b45c; backdrop-filter: blur(6px); }
+.nums .n b { display: block; font-family: 'Noto Sans', sans-serif; font-weight: 900; font-size: clamp(40px, 5vw, 64px); line-height: 1; color: #d9b45c; }
+.nums .n span { display: block; margin-top: 10px; font-size: 15px; line-height: 1.5; color: rgba(255,255,255,.82); }
+.pm-puente { margin-top: 52px; font-family: 'Noto Sans', sans-serif; font-style: italic; font-size: clamp(20px, 2.4vw, 28px); color: #fff; }
+.pm-puente span { display: block; font-family: 'Noto Sans', sans-serif; font-style: normal; font-size: 22px; margin-top: 10px; color: #d9b45c; animation: bob 1.8s ease-in-out infinite; }
 @keyframes bob { 50% { transform: translateY(8px); } }
-.pm-fuentes { margin-top: 36px; font-size: 12px; color: #888; line-height: 1.6; }
-.pm-fuentes a { color: #666; }
+.pm-fuentes { margin-top: 36px; font-size: 12px; color: rgba(255,255,255,.5); line-height: 1.6; }
+.pm-fuentes a { color: rgba(255,255,255,.7); }
 
 /* ─── Escenario: mapa fijo + textitos que pasan encima ─── */
 .cap { position: relative; background: #eceae5; display: grid; }

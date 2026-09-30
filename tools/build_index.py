@@ -408,18 +408,20 @@ def promesa():
     a, b, c = (kfpair("promesa-1", "cifra%d" % i) for i in (1, 2, 3))
     t1, t2 = kfpair("promesa-2", "tarjeta1"), kfpair("promesa-2", "tarjeta2")
     foto = carousel("promesa-1", etiqueta="Foto")
+    bg = ' style="background-image:url(img/mapa/historia-final.webp)"'
     return ('<section class="s-promesa" id="promesa" data-nav="light">'
-            '<div class="pm-beat"><div class="pm-wrap pm-1"><div class="rv">'
+            '<div class="pm-beat pm-beat-dark"%s><div class="pm-scrim"></div><div class="pm-wrap pm-1"><div class="rv">'
+            '<div class="pm-92">92</div>'
             '<p class="pm-kicker">%s</p><h2 class="pm-h">%s<span>%s</span></h2><p class="pm-sub">%s</p>'
             '<div class="tula-facts"><div><b>%s</b><span>%s</span></div><div><b>%s</b><span>%s</span></div><div><b>%s</b><span>%s</span></div></div>'
             '</div>%s</div></div>'
-            '<div class="pm-beat"><div class="pm-wrap pm-2"><p class="pm-kicker rv">%s</p><h2 class="rv">%s</h2>'
-            '<div class="nums rv"><div class="n" style="--nc:#1f6fd6"><b>%s</b><span>%s</span></div>'
-            '<div class="n" style="--nc:#ec6f66"><b>%s</b><span>%s</span></div></div>'
+            '<div class="pm-beat pm-beat-dark"%s><div class="pm-scrim"></div><div class="pm-wrap pm-2"><p class="pm-kicker rv">%s</p><h2 class="rv">%s</h2>'
+            '<div class="nums rv"><div class="n"><b>%s</b><span>%s</span></div>'
+            '<div class="n"><b>%s</b><span>%s</span></div></div>'
             '<p class="pm-puente rv">%s<span>↓</span></p><p class="pm-fuentes rv">%s</p></div></div></section>'
-            % (T.t("promesa-1", "etiqueta"), T.t("promesa-1", "titulo"), T.t("promesa-1", "titulo2"), T.t("promesa-1", "texto"),
+            % (bg, T.t("promesa-1", "etiqueta"), T.t("promesa-1", "titulo"), T.t("promesa-1", "titulo2"), T.t("promesa-1", "texto"),
                a[0], a[1], b[0], b[1], c[0], c[1], foto,
-               T.t("promesa-2", "etiqueta"), T.t("promesa-2", "titulo"),
+               bg, T.t("promesa-2", "etiqueta"), T.t("promesa-2", "titulo"),
                t1[0], t1[1], t2[0], t2[1], T.t("promesa-2", "puente"), T.t("promesa-2", "fuentes")))
 
 def pie():
