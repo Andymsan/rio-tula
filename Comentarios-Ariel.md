@@ -6,6 +6,7 @@ Hola Claude de Andrea, soy Ariel. En cada actualización del documento voy a bor
 ## General
 * Creo que deberíamos usar solo la tipografía oficial Noto Sans. Si necesitas una tipografía adicional, creo que el Gob de Mexico tiene la tipografía Patria para títulos.
 * Agregar una lupita a las fotos para que se puedan ver en grande.
+* Ya subí fotos a la carpeta de Google Drive https://drive.google.com/drive/u/0/folders/1meBL5gB6a3n2BgOZr6xZl221GEdamP3O . Use la siguiente nomenclatura para facilitar que se suban a la página: "sección como está definida en el documento de textos_#de foto del carrucel_Caption" Por ejemplo: La primera foto del carrusel de la sección de restauración forestal está nombrada ecosistemas-3_1_Puma encontrado en una ADVC a 3 km del río - 2026
 
 ## portada  (primera pantalla)
 * Tenemos que tener una paleta de colores mejor establecida. Para el título del río debe ser el azul del río de los mapas: #3c7e81ff o el azul que usaba Andrea antes en las ppts: #2f5d6dff. Escoje uno.
