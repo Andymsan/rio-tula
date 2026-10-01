@@ -187,7 +187,7 @@ centro: Río | Tula
 ## proyecto-0  (paso 1)
 etiqueta: El proyecto
 titulo: Un río, tres objetivos, 37 proyectos
-texto: 
+texto: ""
 
 
 cifra: $1,478 MDP | invertidos en 2025 y 2026
