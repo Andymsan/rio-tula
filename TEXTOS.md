@@ -92,14 +92,14 @@ texto: Desliza hacia abajo para conocer la historia del río Tula.
 ## historia-0  (época 1)
 epoca: ~700,000 años atrás
 titulo: Una cuenca sin salida
-texto: Erupciones de los volcanes del sur cerraron la cuenca del Valle de México. A partir de este momento, la lluvia dejó de fluir hacia el mar y formó tres grandes lagos en la parte más baja de la cuenca. Por la evaporación, poco a poco los lagos se volvieron salados.
+texto: Erupciones de los volcanes del sur cerraron la cuenca del Valle de México. A partir de este momento, la lluvia dejó de fluir hacia el mar y formó tres grandes lagos en la parte más baja de la cuenca. Por la evaporación, poco a poco los lagos se volvieron salados. ==La cuenca del Valle de México y del río Tula estaban totalmente separadas.==
 banner: Hace ~700 mil años
 linea: 700 mil a.C.
 
 ## historia-1  (época 2)
 epoca: 1449
 titulo: El dique de Nezahualcóyotl
-texto: El tlatoani **Nezahualcóyotl** construyó un dique de 17 km, entre Iztapalapa y Azcapotzalco, para prevenir inundaciones y separar el agua salada del lago de Texcoco del agua dulce donde vivía la población de Tenochtitlán. Esta es la primera obra hidráulica que empezó a transformar la cuenca.
+texto: El tlatoani **Nezahualcóyotl** construyó un dique de 17 km, entre Iztapalapa y Azcapotzalco, para prevenir inundaciones y separar el agua salada del lago de Texcoco del agua dulce donde vivía la población de Tenochtitlán. ==Esta es la primera obra hidráulica que empezó a transformar la cuenca==.
 fuente: Fuente: [Revista de Arqueología Histórica Argentina y Latinoamericana](https://rdahayl.org/index.php/rdahayl/article/view/157/399)
 banner: 1449 · Texcoco
 linea: 1449
@@ -107,35 +107,35 @@ linea: 1449
 ## historia-2  (época 3)
 epoca: 1607–1789
 titulo: El Tajo de Nochistongo
-texto: Por órdenes de un Virrey, empezó la construcción de un canal que duró 172 años. El objetivo fue abrir la cuenca y permitir que el agua del lago de Zumpango fluya hacia el río Tula reduciendo riesgos de inundación en la ciudad de México. A partir de su finalización en **1789**, las dos cuencas se interconectaron, permitiendo que una parte del agua de lluvia y drenaje del Valle de México fluyera hacia el río Tula. 
+texto: Por órdenes de un Virrey, empezó la construcción de un canal que duró 172 años. El objetivo fue abrir la cuenca y permitir que el agua del río Cuautitlán y Tepozotlán fluya hacia el río Tula reduciendo riesgos de inundación en la ciudad de México. A partir de su finalización en **1789**, ==las dos cuencas se interconectaron, permitiendo que una parte del agua de lluvia y drenaje del Valle de México fluyera hacia el río Tula.== 
 banner: 1607–1789 · Nochistongo
 linea: 1789
 
 ## historia-3  (época 4)
 epoca: 1900
 titulo: El Gran Canal del Desagüe
-texto: En 1900, Porfirio Díaz inauguró el Gran Canal del Desagüe para vaciar el lago de Texcoco y permitir que más drenaje de la ciudad fluya hacia el río Tula. Esta obra permitió que los grandes lagos se terminaran de vaciar desecando el Valle de México.
+texto: En **1900**, Porfirio Díaz inauguró el Gran Canal del Desagüe para vaciar el lago de Texcoco y permitir que más drenaje de la ciudad fluya hacia el río Tula. Esta obra permitió que ==los grandes lagos se terminaran de vaciar desecando el Valle de México.==
 banner: 1900 · Gran Canal
 linea: 1900
 
 ## historia-4  (época 5)
 epoca: 1951
 titulo: La presa Endhó
-texto: Se construyó la presa Endhó para almacenar agua del río Tula y usarla para riego. Un valle seco se volvió zona de cultivo conocida como el **Valle del Mezquital** que hoy alimenta una gran parte de la ciudad. Con los años, la presa recibió cada vez más aguas residuales almacenando contaminantes.
+texto: Se construyó la presa Endhó para almacenar agua del río Tula y usarla para riego. Un valle seco se volvió zona de cultivo conocida como el **Valle del Mezquital** que hoy alimenta una gran parte de la ciudad de México. Con los años, la presa recibió cada vez más aguas residuales almacenando contaminantes.
 banner: 1951 · Presa Endhó
 linea: 1951
 
 ## historia-5  (época 6)
 epoca: 1962, 1975 y 2019
 titulo: Los grandes túneles de drenaje
-texto: Tres grandes obras de drenaje se construyeron para mandar la mayor parte de las aguas residuales y de lluvia de la ciudad hacia el río Tula: El Túnel Emisor Poniente (1962), el Túnel Emisor Central (1975) y el Túnel Emisor Oriente (2019). Estas obras completaron la infraestructura que interconecta las dos cuencas.
+texto: Tres grandes obras de drenaje se construyeron para mandar la mayor parte de las aguas residuales y de lluvia de la ciudad hacia el río Tula: El Túnel Emisor Poniente (1962), el Túnel Emisor Central (1975) y el Túnel Emisor Oriente (2019). Estas obras completaron ==la infraestructura que interconecta las dos cuencas.==
 banner: 1975 y 2019 · Túneles
 linea: 1975–2019
 
 ## historia-6  (época 7)
 epoca: 2018
-titulo: La planta de Atotonilco
-texto: Hasta este momento, todas las aguas residuales del río Tula, usadas en su mayoría para riego, no recibian ningún tratamiento. Para reducir riesgos asociados al riego con drenaje y para sanear el río Tula se contruyó la planta de tratamiento de Atotonilco, la tercera más grande del mundo.
+titulo: La planta de tratamiento de Atotonilco
+texto: Hasta este momento, todas las aguas residuales del río Tula, usadas en su mayoría para riego, no recibian ningún tratamiento. Para reducir riesgos asociados al riego con drenaje y para sanear el río Tula, ==se contruyó la planta de tratamiento de Atotonilco, la tercera más grande del mundo.==
 banner: 2018 · PTAR Atotonilco
 linea: 2018
 
@@ -162,15 +162,15 @@ titulo2: El río Tula, Atoyac y Lerma Santiago.
 texto: Inicia uno de los proyectos ambientales más ambiciosos del país.
 cifra1: 191 km | de río Tula
 cifra2: 2 estados | Estado de México e Hidalgo
-cifra3: 13 municipios | directamente beneficiados según la base de proyectos
-fotos: Presidenta Claudia Sheinbaum Pardo en la toma de protesta (1 de octubre de 2024)
+cifra3: 13 municipios | directamente beneficiados
+fotos: Presidenta Claudia Sheinbaum Pardo en la toma de protesta - 1 de octubre de 2024
 
 ## promesa-2  (Compromiso 92, la inversión)
 etiqueta: La inversión
 titulo: Recursos para el proyecto del río Tula
 tarjeta1: $1,478 MDP | de inversión documentada en el río Tula en 2025 y 2026, entre Conagua, Semarnat, Conafor, Conanp y el Gobierno de Hidalgo.
 tarjeta2: +20 mil millones | de pesos destinados durante el sexenio para el saneamiento de los tres ríos prioritarios: Lerma-Santiago, Tula y Atoyac.
-puente: Descubre qué se está haciendo, y dónde.
+puente: Descubre qué se está haciendo en el río Tula.
 fuentes: Fuentes: [Contralínea (16 jul 2026)](https://contralinea.com.mx/interno/semana/gobierno-invertira-mas-de-20-mil-mdp-para-sanear-los-rios-lerma-santiago-tula-y-atoyac/) · [Ámbito](https://www.ambito.com/mexico/informacion-general/claudia-sheinbaum-ordena-limpiar-los-tres-rios-mas-contaminados-mexico-cuales-son-y-como-se-hara-este-historico-saneamiento-n6300195) · base de proyectos 2025–2026.
 
 ---
@@ -179,19 +179,19 @@ fuentes: Fuentes: [Contralínea (16 jul 2026)](https://contralinea.com.mx/intern
 banner: El proyecto
 
 ## hexagonos  (texto de cada hexágono, sin número — Ariel pidió quitarlo)
-rosa: Calidad del agua
-naranja: Inundaciones
-verde: Ecosistemas y | espacio público
+rosa: Mejorar la calidad del agua
+naranja: Prevenir inundaciones
+verde: Restaurar ecosistemas y | construir espacio público
 centro: Río | Tula
 
 ## proyecto-0  (paso 1)
 etiqueta: El proyecto
 titulo: Un río, tres objetivos, 37 proyectos
-texto: El proyecto conempla 3 objetivos principales: 
-1. Mejorar la calidad del agua, 2. Prevenir inundaciones, 3. Restauración y espacio público.
-Actualmente contamos con ==37 proyectos==: unos terminados, otros en obra y otros en planeación para el 2027. 
-cifra: $1,478 MDP | de inversión documentada en 2025 y 2026
-chips: Conagua | Semarnat | Conafor | Conanp | Profepa | Gobierno de Hidalgo
+texto: 
+
+
+cifra: $1,478 MDP | invertidos en 2025 y 2026
+chips: Semarnat | Conagua | Profepa | Conafor | Conanp |  Gobierno de Hidalgo
 
 ---
 
@@ -251,10 +251,10 @@ cifra: 6 | proyectos de gestión de inundaciones
 
 ## inundaciones-1  (Taludes)
 etiqueta: 1 · Taludes
-titulo: Taludes más firmes
+titulo: Taludes más protegidos
 texto: Las zonas del río altamente erosionadas representan un riesgo para la población que vive cerca. Desde 2025, empezamos a ==estabilizar  los **4.5 km** de taludes críticos de las zonas urbanas==.
 cifra: 4.5 km | 1 km terminado · 1.7 km en obra · 1.8 km en planeación
-chips: San Lorenzo | El Chamizal | San Marcos | Ahuehuetes | Talud: la pendiente a la orilla del río
+chips: San Lorenzo | El Chamizal | San Marcos | Talud: el borde del río
 fotos: San Lorenzo · antes | San Lorenzo · después | El Chamizal · obra en proceso
 
 ## inundaciones-2  (Desazolve)
@@ -300,12 +300,12 @@ cifra: 27 km | de riberas en proceso de restauración
 chips: Subsecretaría de restauración · Conagua · Conafor | 1,600 árboles saneados en 2025 | 300 árboles plantados | 
 fotos: Saneamiento forestal de riberas | Revegetación de riberas
 
-## ecosistemas-2  (Humedales y Endhó)
-etiqueta: 2 · Humedales y Endhó
+## ecosistemas-2  (Cuerpos de agua)
+etiqueta: 2 · Laguna de Bojay
 titulo: Agua limpia cerca de Tula
-texto: La laguna de Bojay es un cuerpo de agua de 55 hectareas alimentado por manantiales que actualmente se contamina por agua del río Tula. En 2027, vamos a reabilitar el bordo para aislar la laguna del río Tula y ==contar con un cuerpo de agua limpia y con vida acuática a 2 km de la ciudad de Tula==. Adicionalmente, vamos a construir un sistema de humedales para tratar el drenaje de la comunidad que actualmente se vierte a la laguna.
+texto: La laguna de Bojay es un cuerpo de agua de 55 hectareas alimentado por manantiales que actualmente se contamina por agua del río Tula. Empezamos a trabajar en 2026 en la recuperación del manantial. En 2027, vamos a reabilitar el bordo para aislar la laguna del río Tula y ==contar con un cuerpo de agua limpia y con vida acuática a 2 km de la ciudad de Tula==. Adicionalmente, vamos a construir un sistema de humedales para tratar el drenaje de la comunidad que actualmente se vierte a la laguna.
 cifra: 55 ha | de cuerpo de agua limpia a partir de 2027
-chips: Semarnat · Conagua | Proyecto en licitación | Manantial restaurado
+chips: Semarnat · Conagua | Proyecto en licitación | Manantial restaurado en 2026
 fotos: Propuesta · humedal y sendero de Bojay | Propuesta · Bojay en planta | Ciénegas de Endhó (Bojay)
 
 ## ecosistemas-3  (Bosques)
@@ -332,7 +332,7 @@ fotos: Propuesta · Río Rosas | Propuesta · San Lorenzo | Propuesta · Bojay |
 etiqueta: Resumen
 titulo: Acciones de saneamiento y restauración del río Tula 2024-2030
 subtitulo: El Gobierno de México está implementando una gran diversidad de acciones en el río Tula para cumplir con las siguientes metas principales:
-texto: A la fecha, tenemos proyectos terminados, en proceso o en planeación que van a transformar la vida del río Tula y de quienes viven junto a él.
+texto: 
 
 ## participa
 etiqueta: Participa
