@@ -332,7 +332,7 @@ fotos: Propuesta · Río Rosas | Propuesta · San Lorenzo | Propuesta · Bojay |
 etiqueta: Resumen
 titulo: Acciones de saneamiento y restauración del río Tula 2024-2030
 subtitulo: El Gobierno de México está implementando una gran diversidad de acciones en el río Tula para cumplir con las siguientes metas principales:
-texto: 
+texto: ""
 
 ## participa
 etiqueta: Participa
