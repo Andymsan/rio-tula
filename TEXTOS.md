@@ -41,17 +41,17 @@ Los nombres de lugares en los mapas, los colores y el orden de las secciones.
 titulo: Río Tula — Plan de Saneamiento y Restauración 2024–2030
 descripcion: La historia del río Tula y el plan para sanearlo y restaurarlo: calidad del agua, inundaciones, ecosistemas y espacio público.
 logo: Río Tula
-logo_sub: / Plan 2024–2030
+logo_sub: / Proyecto 2024–2030
 boton_indice: ☰ Índice
 titulo_indice: Índice
 aviso: Borrador · las fotos son marcadores
-pie1: Secretaría de Medio Ambiente y Recursos Naturales · Plan de Saneamiento y Restauración del Río Tula 2024–2030
+pie1: Secretaría de Medio Ambiente y Recursos Naturales · Pproyecto de Saneamiento y Restauración del Río Tula 2024–2030
 pie2: Datos: base de proyectos 2025–2026 (Conagua, Semarnat, Conafor, Conanp, Profepa y Gobierno de Hidalgo)
 
 ## portada  (primera pantalla)
 eyebrow: Proyecto de saneamiento y restauración · 2024–2030
 titulo: Río Tula
-subtitulo: Descubre cómo el río Tula se convirtió en uno de los más contaminados del país y qué estamos haciendo para transformarlo.
+subtitulo: Descubre **cómo** el río Tula se convirtió en uno de los más contaminados del país y **qué** estamos haciendo para transformarlo.
 boton: Comenzar el recorrido ↓
 
 ## indice-1  (recuadro 1 del índice: lleva a la Historia)
@@ -92,14 +92,14 @@ texto: Desliza hacia abajo para conocer la historia del río Tula.
 ## historia-0  (época 1)
 epoca: ~700,000 años atrás
 titulo: Una cuenca sin salida
-texto: Erupciones de los volcanes del sur cerraron la cuenca del Valle de México. A partir de este momento, la lluvia dejó de fluir hacia el mar y formó tres grandes lagos en la parte más baja de la cuenca. Por la evaporación, poco a poco los lagos se volvieron salados. ==La cuenca del Valle de México y del río Tula estaban totalmente separadas.==
+texto: Erupciones de los volcanes del sur cerraron la cuenca del Valle de México. A partir de este momento, la lluvia dejó de fluir hacia el mar y formó tres grandes lagos en la parte más baja de la cuenca. Por la evaporación, poco a poco los lagos se volvieron salados. ==Las cuencas del Valle de México y la del río Tula estaban totalmente separadas.==
 banner: Hace ~700 mil años
 linea: 700 mil a.C.
 
 ## historia-1  (época 2)
 epoca: 1449
 titulo: El dique de Nezahualcóyotl
-texto: El tlatoani **Nezahualcóyotl** construyó un dique de 17 km, entre Iztapalapa y Azcapotzalco, para prevenir inundaciones y separar el agua salada del lago de Texcoco del agua dulce donde vivía la población de Tenochtitlán. ==Esta es la primera obra hidráulica que empezó a transformar la cuenca==.
+texto: El tlatoani **Nezahualcóyotl** construyó una barrera de tierra, rocas y madera de 17 km para prevenir inundaciones y separar el agua salada del lago de Texcoco del agua dulce donde vivía la población de Tenochtitlán. ==Esta es la primera obra hidráulica que empezó a transformar la cuenca==.
 fuente: Fuente: [Revista de Arqueología Histórica Argentina y Latinoamericana](https://rdahayl.org/index.php/rdahayl/article/view/157/399)
 banner: 1449 · Texcoco
 linea: 1449
@@ -149,8 +149,8 @@ linea: 2021
 ## historia-8  (época 9)
 epoca: 2024–2030
 titulo: Comienza la restauración
-texto: La presidenta Claudia Sheinbaum anuncia que limpiar el río Tula, así como el Atoyac y el Lerma Santiago es uno de sus 100 compromisos. La restauración del río Tula se vuelve una prioridad nacional dando inicio a una transformación histórica del río.
-banner: 2024–2030 · Restauración
+texto: La presidenta Claudia Sheinbaum anuncia que ==limpiar el río Tula, así como el Atoyac y el Lerma Santiago es uno de sus 100 compromisos==. La restauración del río Tula se vuelve una **prioridad nacional** dando inicio a una transformación histórica del río.
+banner: 2024–2030 - Proyecto de restauración y saneamiento
 linea: 2024
 
 ---
@@ -179,15 +179,15 @@ fuentes: Fuentes: [Contralínea (16 jul 2026)](https://contralinea.com.mx/intern
 banner: El proyecto
 
 ## hexagonos  (texto de cada hexágono, sin número — Ariel pidió quitarlo)
-rosa: Mejorar la calidad del agua
-naranja: Prevenir inundaciones
-verde: Restaurar ecosistemas y | construir espacio público
+rosa: 1. Mejorar | la calidad del agua
+naranja: 2. Prevenir inundaciones
+verde: 3. Restaurar ecosistemas y | construir espacio público
 centro: Río | Tula
 
 ## proyecto-0  (paso 1)
 etiqueta: El proyecto
 titulo: Un río, tres objetivos, 37 proyectos
-texto: ""
+texto: Descubre todo lo que estamos haciendo por el río Tula y la población que vive cerca.
 
 
 cifra: $1,478 MDP | invertidos en 2025 y 2026
@@ -201,16 +201,16 @@ banner: Calidad del agua
 ## calidad-0  (introducción)
 etiqueta: Frente 1 · Calidad del agua
 titulo: Cuidar el agua que llega al río
-texto: Existen ==tres fuentes principales de contaminación== del río Tula que estamos atendiendo en este proyecto: 
+texto: Existen ==tres fuentes principales de contaminación== del río que estamos atendiendo en este proyecto: 
 1. El drenaje sin tratamiento del Valle de México; 2. El drenaje de la zona metropolitana de Tula y 3. Las descargas contaminantes industriales.
 cifra: 15 | proyectos de calidad del agua
-chips: 1 · Atotonilco | 2 · Drenaje de Tula | 3 · Industria
+chips: 1 · Atotonilco | 2 · Colector | 3 · Industria
 
 ## calidad-1  (Atotonilco)
 etiqueta: 1 · Atotonilco
 titulo: Tratar más agua en la planta de Atotonilco
 texto: Históricamente la PTAR Atotonilco trataba **31 m³/s** en promedio. En 2026, incrementamos el caudal tratado a **38 m³/s** y, a partir de 2027, ==la PTAR Atotonilco va a tratar todo el drenaje del río en temporada de secas.==
-cifra: +7 m³/s | adicionales de agua del río tratada
+cifra: +7 m³/s | adicionales de agua del río tratada desde 2026
 chips: PTAR: planta de tratamiento de aguas residuales | Conagua · $112 mdp/año
 fotos: PTAR Atotonilco | Operación de la planta | Caudal tratado
 
