@@ -1,10 +1,19 @@
-# Comentarios Ariel - V3
+# Comentarios Ariel - V4
 
 
 
 
 ## General
-* en muchas de las páginas, el mapa no tiene todos los proyectos que se mencionan en el texto. Haz una tabla con cada sección, qué proyectos tiene y qué capas tiene, Claude. 
+* Vamos a hacer un cambio sustancial en la página:
+1. vamos a mover la sección de la historia del rio a una subpagina. por ahora la página es completamente lineal. vamos a conservar la narrativa principal como está, pero empecemos a construir ramas con información adicional como la historia. 
+2. la página va a iniciar con una introducción llamada "De dónde viene el agua del río Tula". en esa sección debe haber un mapa que muestre los tributarios (TEC, TEO, El Salto, Gran Canal y los tributarios naturales) cada uno con una etiqueta que  en azul los ríos y en gris oscuro la infraestructura con el nombre y el año de inauguración entre parentesis. también tiene que tener la Cd. Tula, presa Endhó, PTAR y distritos de riego. 
+"El río Tula recibe el drenaje y agua pluvial del Valle de México mediante el Túnel Emisor Central (TEC), Túnel Emisor Oriente (TEO) y el río el Salto (también conocido como Tajo de Nochistongo). Toda esta agua se junta en un punto conocido como el Portal de Salida desde donde se puede enviar a la Planta de Tratamiento de Agua Residuales (PTAR) de Atotonilco o directamente al río Tula. La PTAR envia una parte del agua tratada a los Distritos de Riego del Valle del Mezquital y la otra la regresa al río. Más adelante, el río Tula recibe agua de los ríos Tepeji,Tlautla y Rosas, así como drenaje de la Zona Metropolitana de Tula. Finalmente, el río desemboca en la presa Endhó donde el agua se almacena para riego. toda esta infraestructura ha generado problemáticas como la contaminación riesgos de inundación y degradación ambiental que se están atendiendo con el Proyecto de Saneamiento y Restauración del Río Tula."
+ en esta sección sería ideal poder tener unos pie charts interactivos, uno en secas y uno en lluvias. y chance con eso podemos hacer menos de hueva el texto.  
+3. después de esta sección, tengamos una sección en pantalla completa con las fotos de diagnóstico cada una con su pie de página.
+4. en vez de hablar de Calidad del agua, inundaciones, etc. vamos a hablar de Un río más limpio, un río más seguro, un río más vivo, y un río para todas y todos. cada uno de estos slogans se debe mostrar en un banner de toda la página con una foto atrás. después ya se muestra cómo vamos a lograr eso con los proyectos como estaban antes. 
+
+
+* en muchas de las páginas, el mapa no tiene todos los proyectos que se mencionan en el texto. Claude, haz una tabla con cada sección, qué proyectos tiene y qué capas ya están en el mapa. 
 * hay que buscar lugares para acortar la página. lo más fácil es juntar proyectos en una sola página. échale una pensada y me dices.
 * cambiar la Lupita por simplemente un click en la foto que haga que se expanda en grande. también quitar el desliza. y hacer que de la última foto regrese a la primera si sigues picando las flechitas.
 
