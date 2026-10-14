@@ -50,7 +50,7 @@ modo_noche: Modo noche
 modo_daltonismo: Modo daltonismo
 titulo_indice: Índice
 aviso: Borrador · las fotos son marcadores
-pie1: Secretaría de Medio Ambiente y Recursos Naturales · Pproyecto de Saneamiento y Restauración del Río Tula 2024–2030
+pie1: Secretaría de Medio Ambiente y Recursos Naturales · Proyecto de Saneamiento y Restauración del Río Tula 2024–2030
 pie2: Datos: base de proyectos 2025–2026 (Conagua, Semarnat, Conafor, Conanp, Profepa y Gobierno de Hidalgo)
 
 ## portada  (primera pantalla)
@@ -283,7 +283,7 @@ chips: PTAR: planta de tratamiento de aguas residuales | Conagua · $112 mdp/añ
 fotos: PTAR Atotonilco | Operación de la planta | Caudal tratado
 
 ## calidad-3  (Drenaje de Tula / colectores — ahora el punto 2: Ariel pidió invertir el orden con Industria)
-estado: obra | Etapa 1 al 89 % de avance
+estado: obra | Etapa 1 al 89 % de avance
 etiqueta: 2 · Drenaje de Tula
 titulo: Tratar las aguas residuales de la ciudad de Tula
 texto: Todo el drenaje de la zona metropolitana de Tula se vierte al río sin tratamiento. El gobierno del estado de Hidalgo construye ==35 km colectores que van a captar 72 descargas y enviarlas a la PTAR de CFE== para su tratamiento. Los primeros 10 km de colectores y el cárcamo de bombeo ya están construidos.
@@ -323,7 +323,7 @@ cifra: 330 m³/s | caudal máximo registrado desde 2021, sin inundar Tula
 fuente: Fuente: Conagua.
 
 ## inundaciones-1  (Taludes)
-estado: obra | 1 km terminado · El Chamizal 82 % · San Lorenzo 78 %
+estado: obra | 1 km terminado · El Chamizal 82 % · San Lorenzo 78 %
 avance: 1 | 1.7 | 1.8 | km
 etiqueta: 1 · Taludes
 titulo: Taludes más protegidos
@@ -430,6 +430,11 @@ texto: El sector ambiental federal trabaja para proteger y restaurar las riberas
 ## resumen-5  (meta 5)
 titulo: Construir espacio público ribereño para toda la población de Tula
 texto: Para que la población de Tula pueda reconectar con el río, estamos construyendo 5 proyectos de espacio público ribereño que incluyen revegetación nativa, equipamiento público y agua limpia.
+
+## fuentes  (fuentes y notas metodológicas — sustento técnico; Ariel: revisar y completar)
+titulo: Fuentes y notas metodológicas
+items: **Caudales:** base de caudales del proyecto; promedios 2021–2024 de la temporada de secas (estiaje) y de lluvias. | **Calidad del agua:** DBO en mg/L de la hoja de calidad del proyecto, temporada de secas. | **Inundaciones:** capacidad del río y caudal máximo registrado, Conagua. | **Inversión:** base de proyectos 2025–2026, Contralínea (16 jul 2026) y Ámbito. | **Accesibilidad a pie:** isócronas calculadas con OpenRouteService. | **Mapas:** capas SIG del proyecto; relieve sombreado calculado a partir del modelo digital de elevación SRTM.
+nota: Las cifras son promedios o valores máximos de los periodos indicados y pueden actualizarse conforme se publiquen nuevos datos.
 
 ## participa
 etiqueta: Participa

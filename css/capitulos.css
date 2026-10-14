@@ -641,3 +641,64 @@ html[data-cvd] .estado.e-obra { background: #fde8d6; color: #9b4300; }
 html[data-cvd] .estado.e-terminado { background: #d9ecf7; color: #00507d; }
 html[data-cvd] .av-bar .a1, html[data-cvd] .av-leg .a1::before { background: #0072b2; }
 html[data-cvd] .av-bar .a2, html[data-cvd] .av-leg .a2::before { background: #e69f00; }
+
+/* ═════════════════════════════════════════════════════════════════════════
+   Estilo institucional: formas rectas, sombras mínimas, resaltado discreto,
+   sin animaciones decorativas. Tipografía y colores oficiales sin cambios.
+   ═════════════════════════════════════════════════════════════════════════ */
+.btn, .nav-btn, .or-tab, .or-btn, .link-btn, .a11y-btn, .hero-cta .btn { border-radius: 4px; }
+.btn { padding: 13px 26px; font-weight: 600; letter-spacing: .01em; box-shadow: none; }
+.btn:hover, .or-btn:hover { transform: none; }
+.btn-dark { box-shadow: none; }
+.nav-btn { padding: 8px 16px; border-color: rgba(0,0,0,.28); }
+.or-tab { padding: 8px 16px 8px 10px; }
+.or-tab i, .or-tab.on i { border-radius: 3px; }
+.or-btn { border-width: 1.5px; padding: 10px 22px; }
+.card { border-radius: 6px; box-shadow: 0 1px 2px rgba(0,0,0,.08), 0 14px 34px -20px rgba(0,0,0,.35); }
+.burbuja { border-radius: 6px; border-width: 3px; box-shadow: 0 1px 2px rgba(0,0,0,.1), 0 14px 34px -20px rgba(0,0,0,.4); }
+.bu-btn, .lightbox-nav { border-radius: 4px; }
+.facts li { border-radius: 3px; background: transparent; border: 1px solid var(--tema-tint); color: #4a4a4a; font-weight: 500; }
+.estado { border-radius: 3px; }
+.av-h, .or-chip, .nums .n { border-radius: 6px; }
+.av-ico { border-radius: 6px; }
+.or-map, .or-pane[data-pane="mp"] .or-map { border-radius: 6px; box-shadow: 0 1px 2px rgba(0,0,0,.08), 0 14px 34px -22px rgba(0,0,0,.4); }
+.lr { border-radius: 10px; box-shadow: 0 1px 2px rgba(0,0,0,.1), 0 10px 26px -14px rgba(0,0,0,.4); }
+.a11y-menu { border-radius: 8px; }
+
+/* Banner de cada frente: tarjeta blanca con barra del color del frente (sin relleno saturado) */
+.banner.dos { background: #fff; color: #1b2428; border-radius: 3px; border-left: 6px solid var(--tema-fill); padding: 9px 22px 9px 10px; box-shadow: 0 1px 2px rgba(0,0,0,.1), 0 10px 26px -14px rgba(0,0,0,.4); }
+.banner .bn { border-radius: 3px; background: var(--tema-fill); color: #1b2428; width: 36px; height: 36px; line-height: 36px; font-weight: 800; }
+.banner .bt strong { font-weight: 800; letter-spacing: -.01em; }
+.banner .bt small { color: #5a5550; opacity: 1; font-weight: 500; text-transform: uppercase; letter-spacing: .08em; font-size: 11px; }
+.lr-i.past .lr-dot, .lr-i.on .lr-dot { color: #1b2428; }
+.lr-i.on .lr-dot { animation: none; box-shadow: 0 0 0 4px color-mix(in srgb, var(--c) 28%, transparent); }
+
+/* Resaltado discreto (subrayado de color) en lugar de marcador fosforescente */
+mark.fluor, .or-baj mark, .or-baj .fluor, .or-cierre .fluor { background: none; color: inherit; font-weight: 700; padding: 0; border-radius: 0;
+  box-shadow: inset 0 -.38em 0 color-mix(in srgb, var(--tema-fill, #025d6e) 30%, transparent); }
+.or-baj .fluor, .or-cierre .fluor { box-shadow: inset 0 -.38em 0 rgba(2,93,110,.2); }
+
+/* Sin animaciones decorativas */
+.estado.e-obra i, .av-live, .pm-puente span, .lr-i.on .lr-dot { animation: none; }
+.av-live { box-shadow: none; }
+
+/* Marcador de foto pendiente: plano, sin rayas */
+.ph { background: #eeece8; border: 1px dashed #c9c4bb; }
+
+/* Cifras: peso 700-800 en lugar de 900 */
+.kf b, .pm-92, .av-h b, .nums .n b, .or-chip b, .tula-facts b { font-weight: 800; }
+.dn-v { font-weight: 800; }
+
+/* ─── Fuentes y notas metodológicas ─── */
+.s-fuentes { background: #f3f1ed; border-top: 1px solid #e0dbd4; padding: 44px 0 52px; }
+.fu-in { max-width: 1100px; margin: 0 auto; padding: 0 28px; }
+.fu-in h2 { font: 700 13px 'Noto Sans', sans-serif; letter-spacing: .16em; text-transform: uppercase; color: #5a5550; margin: 0 0 16px; }
+.fu-in ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 10px 36px; }
+.fu-in li { font-size: 13px; line-height: 1.55; color: #4a4a4a; padding-left: 14px; position: relative; }
+.fu-in li::before { content: ""; position: absolute; left: 0; top: .62em; width: 5px; height: 5px; background: #8a847b; }
+.fu-in li strong { color: #1b2428; }
+.fu-nota { font-size: 12px; color: #7a746c; margin-top: 16px; }
+html[data-cvd] .banner.dos .bn { background: var(--tema-fill); }
+
+.estado { align-items: flex-start; line-height: 1.35; }
+.estado i { margin-top: .32em; }

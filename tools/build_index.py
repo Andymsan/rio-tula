@@ -399,9 +399,9 @@ idx_items, idx_list = indice()
 _, idx_list_hist = indice(True)
 
 FILTROS = '''<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
-<filter id="f-rosa"    color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.941  0 0 0 0 0.576  0 0 0 0 0.549  0 0 0 1 0"/></filter>
-<filter id="f-naranja" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.969  0 0 0 0 0.545  0 0 0 0 0.384  0 0 0 1 0"/></filter>
-<filter id="f-naranja-x2" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.969  0 0 0 0 0.545  0 0 0 0 0.384  0 0 0 2.6 0"/></filter>
+<filter id="f-rosa"    color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.882  0 0 0 0 0.612  0 0 0 0 0.580  0 0 0 1 0"/></filter>
+<filter id="f-naranja" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.918  0 0 0 0 0.486  0 0 0 0 0.188  0 0 0 1 0"/></filter>
+<filter id="f-naranja-x2" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.918  0 0 0 0 0.486  0 0 0 0 0.188  0 0 0 2.6 0"/></filter>
 <filter id="f-verde"   color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.549  0 0 0 0 0.529  0 0 0 0 0.114  0 0 0 1 0"/></filter>
 <filter id="f-slate"   color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.396  0 0 0 0 0.455  0 0 0 0 0.545  0 0 0 1 0"/></filter>
 </defs></svg>'''
@@ -488,7 +488,7 @@ def diagnostico():
 LEMAS = {"limpio": ("img/calidad.jpg", "#f0938c"), "seguro": ("img/inundaciones.jpg", "#f78b62"),
          "vivo": ("img/restauracion.jpg", "#cdd36a"), "todos": ("img/plan.jpg", "#d9b45c")}
 
-RAIL_COLORES = {"limpio": "#e0665c", "seguro": "#e8743a", "vivo": "#8c871d", "todos": "#b8892a"}
+RAIL_COLORES = {"limpio": "#e19c94", "seguro": "#ea7c30", "vivo": "#8c871d", "todos": "#b8892a"}
 
 def rail():
     """Guía fija a la izquierda: los cuatro lemas como puntos numerados sobre una línea (aparecen juntos, se abren y resaltan el actual)."""
@@ -501,6 +501,11 @@ def lema(k):
     """Ancla invisible al inicio de cada frente (la usan la guía lateral y sus enlaces)."""
     return '<section class="s-lema" id="lema-%s" aria-hidden="true"></section>' % k
 
+def fuentes():
+    items = "".join("<li>%s</li>" % fmt(x) for x in T.lista("fuentes", "items"))
+    return ('<section class="s-fuentes" id="fuentes" data-nav="light"><div class="fu-in"><h2>%s</h2><ul>%s</ul><p class="fu-nota">%s</p></div></section>'
+            % (T.t("fuentes", "titulo"), items, T.t("fuentes", "nota")))
+
 def pie():
     return '<footer>%s<br>%s</footer>' % (T.t("sitio", "pie1"), T.t("sitio", "pie2"))
 
@@ -512,9 +517,9 @@ PLANTILLA = '''<!DOCTYPE html>
   <title>%(titulo)s</title>
   <meta name="description" content="%(descripcion)s" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/temas.css?v=14" />
-  <link rel="stylesheet" href="css/historia.css?v=14" />
-  <link rel="stylesheet" href="css/capitulos.css?v=14" />
+  <link rel="stylesheet" href="css/temas.css?v=15" />
+  <link rel="stylesheet" href="css/historia.css?v=15" />
+  <link rel="stylesheet" href="css/capitulos.css?v=15" />
   <script>(function(){var h=document.documentElement;h.classList.add('js');try{var s=localStorage;if(s.getItem('rt-noche')==='1')h.dataset.theme='dark';if(s.getItem('rt-cvd')==='1')h.dataset.cvd='1'}catch(e){}})()</script>
 </head>
 <body>
@@ -550,7 +555,7 @@ PLANTILLA = '''<!DOCTYPE html>
 
 %(contenido)s
 
-<script src="js/sitio.js?v=14"></script>
+<script src="js/sitio.js?v=15"></script>
 </body>
 </html>
 '''
@@ -569,7 +574,7 @@ def construir():
     contenido = "\n\n".join([
         rail(), hero(), origen(), diagnostico(), promesa(), avance(), hub,
         lema("limpio"), calidad, lema("seguro"), inund, lema("vivo"), eco, lema("todos"), espacio,
-        resumen(), participa(), pie()])
+        resumen(), participa(), fuentes(), pie()])
     return PLANTILLA % comun(logo_href="#top", idx_list=idx_list, contenido=contenido,
                              nav_href="historia.html", nav_texto=T.t("sitio", "boton_historia"))
 

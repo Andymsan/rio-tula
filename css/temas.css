@@ -11,16 +11,16 @@
 
 :root {
   /* Calidad del agua / saneamiento */
-  --rosa:        #f0938c;   /* color de mapa (ruta de colectores)          */
-  --rosa-fill:   #e97b73;   /* rellenos con texto blanco (banner, tarjeta) */
-  --rosa-dark:   #b9463f;   /* texto/títulos sobre fondo claro             */
-  --rosa-tint:   rgba(240, 147, 140, .22);
+  --rosa:        #e19c94;   /* color de mapa (ruta de colectores)          */
+  --rosa-fill:   #e19c94;   /* rellenos con texto blanco (banner, tarjeta) */
+  --rosa-dark:   #a4524a;   /* texto/títulos sobre fondo claro             */
+  --rosa-tint:   rgba(225, 156, 148, .26);
 
   /* Gestión de inundaciones */
-  --naranja:      #f78b62;
-  --naranja-fill: #ef7443;
-  --naranja-dark: #bf4a1c;
-  --naranja-tint: rgba(247, 139, 98, .22);
+  --naranja:      #ea7c30;
+  --naranja-fill: #ea7c30;
+  --naranja-dark: #b05510;
+  --naranja-tint: rgba(234, 124, 48, .24);
 
   /* Ecosistemas y espacio público (verde oliva del render) */
   --verde:        #8c871d;
