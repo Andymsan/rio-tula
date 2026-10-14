@@ -441,6 +441,49 @@
     secs.forEach(s => { io.observe(s); $('.lema-in', s).addEventListener('click', () => s.classList.remove('play')); });
   }
 
+  /* ── Accesibilidad: modo noche y modo daltonismo (se recuerdan en este navegador) ── */
+  function initA11y() {
+    const root = $('.a11y'); if (!root) return;
+    const btn = $('#a11yBtn'), noche = $('#swNoche'), cvd = $('#swCvd');
+    const guardar = (k, v) => { try { localStorage.setItem(k, v ? '1' : '0'); } catch (e) {} };
+    const toggle = open => { root.classList.toggle('open', open); btn.setAttribute('aria-expanded', String(open)); };
+    btn.addEventListener('click', e => { e.stopPropagation(); toggle(!root.classList.contains('open')); });
+    document.addEventListener('click', e => { if (!root.contains(e.target)) toggle(false); });
+    addEventListener('keydown', e => { if (e.key === 'Escape') toggle(false); });
+
+    const CVD_DR = { '#d17b3f': '#e69f00', '#7a6bb0': '#0072b2', '#b8577a': '#cc79a7' };
+    const FILTROS = { 'f-rosa': [0, 0.447, 0.698, 1], 'f-naranja': [0.835, 0.369, 0, 1], 'f-naranja-x2': [0.835, 0.369, 0, 2.6], 'f-verde': [0, 0.62, 0.451, 1] };
+    const lerp = (a, b, t) => a.map((v, i) => Math.round(v + (b[i] - v) * t));
+    const rgb = c => '#' + c.map(v => v.toString(16).padStart(2, '0')).join('');
+    const cvdDbo = d => { const az = [86, 180, 233], am = [240, 228, 66], rj = [213, 94, 0]; return rgb(d <= 50 ? az : d <= 100 ? lerp(az, am, (d - 50) / 50) : lerp(am, rj, Math.min(1, (d - 100) / 50))); };
+    function aplicarCvd(on) {
+      document.documentElement.toggleAttribute('data-cvd', on);
+      Object.entries(FILTROS).forEach(([id, v]) => {
+        const m = document.querySelector('#' + id + ' feColorMatrix'); if (!m) return;
+        if (!m.dataset.orig) m.dataset.orig = m.getAttribute('values');
+        m.setAttribute('values', on ? '0 0 0 0 ' + v[0] + '  0 0 0 0 ' + v[1] + '  0 0 0 0 ' + v[2] + '  0 0 0 ' + v[3] + ' 0' : m.dataset.orig);
+      });
+      $$('.sankey.mode-cal .sk-l').forEach(p => {
+        if (!p.dataset.fill) p.dataset.fill = p.getAttribute('fill');
+        p.setAttribute('fill', on && p.dataset.dbo ? cvdDbo(Number(p.dataset.dbo)) : p.dataset.fill);
+      });
+      $$('.sk-grad').forEach(g => {
+        if (!g.dataset.bg) g.dataset.bg = g.getAttribute('style');
+        g.setAttribute('style', on ? 'background:linear-gradient(90deg,#56b4e9,#f0e442 62%,#d55e00)' : g.dataset.bg);
+      });
+      $$('[style]').forEach(el => {
+        const st = el.getAttribute('style') || '';
+        if (on) { if (/#(d17b3f|7a6bb0|b8577a)/i.test(st)) { if (!el.dataset.st) el.dataset.st = st; el.setAttribute('style', st.replace(/#(d17b3f|7a6bb0|b8577a)/gi, m => CVD_DR[m.toLowerCase()])); } }
+        else if (el.dataset.st) { el.setAttribute('style', el.dataset.st); delete el.dataset.st; }
+      });
+    }
+    noche.checked = document.documentElement.dataset.theme === 'dark';
+    cvd.checked = document.documentElement.hasAttribute('data-cvd');
+    noche.addEventListener('change', () => { if (noche.checked) document.documentElement.dataset.theme = 'dark'; else delete document.documentElement.dataset.theme; guardar('rt-noche', noche.checked); });
+    cvd.addEventListener('change', () => { aplicarCvd(cvd.checked); guardar('rt-cvd', cvd.checked); });
+    if (cvd.checked) aplicarCvd(true);
+  }
+
   /* ── Arranque ─────────────────────────────────────────────────────── */
   function boot() {
     buildNavObs(); buildStepObs();
@@ -451,6 +494,7 @@
     initOrigen();
     initRail();
     initLemas();
+    initA11y();
     initContadores();
     fitAll();
     initLightbox();

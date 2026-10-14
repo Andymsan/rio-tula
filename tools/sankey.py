@@ -6,7 +6,7 @@ DR-003, río Tula) + afluentes de la lámina de caudales (Requena, Tlautla, Cd. 
 río Rosas, Pemex). Donde no hay DBO el flujo va en gris ("sin dato").
 """
 
-W, H, NW, K = 1180, 470, 14, 8.2     # ancho, alto, ancho de nodo, px por m³/s
+W, H, NW, K = 1180, 500, 14, 8.2     # ancho, alto, ancho de nodo, px por m³/s
 COLX = [175, 365, 570, 790, 965]
 
 # id: (nombre, columna, y superior)
@@ -15,7 +15,8 @@ NODOS = {
     "tec":     ("TEC y TEO", 0, 70),
     "portal":  ("Portal de Salida", 1, 60),
     "ptar":    ("PTAR Atotonilco", 2, 190),
-    "dr3":     ("Agricultura · distrito de riego 003", 3, 232),
+    "dr3":     ("Agricultura · distrito de riego 003", 3, 262),
+    "perd":    ("Pérdidas en la planta", 3, 218),
     "rio":     ("Río Tula", 3, 30),
     "requena": ("Presa Requena", 3, 104),
     "tlautla": ("Río Tlautla", 3, 128),
@@ -25,14 +26,15 @@ NODOS = {
     "final":   ("Río Tula, hacia Endhó", 4, 30),
 }
 
-# origen, destino, caudal, DBO (None = sin dato)
+# origen, destino, caudal (m³/s, estiaje 2021-2024, "Aprovechamientos y caudales.xlsx"), DBO (None = sin dato)
+# Portal = TEC y TEO 33.0 + El Salto 1.17 = 34.17.  Planta: recibe 32.07 y entrega 26.29 a riego, 4.78 al río y pierde 1.0.
 FLUJOS = [
-    ("tec", "portal", 33.0, 150), ("salto", "portal", 1.2, 50),
-    ("portal", "ptar", 31.0, 150), ("portal", "rio", 2.1, 100),
-    ("ptar", "dr3", 26.3, 50), ("ptar", "rio", 4.0, 100),
-    ("rio", "final", 6.1, 50), ("requena", "final", 0.1, 20),
-    ("tlautla", "final", 0.3, None), ("cdtula", "final", 0.2, None),
-    ("rosas", "final", 0.3, None), ("pemex", "final", 0.3, None),
+    ("tec", "portal", 33.0, 150), ("salto", "portal", 1.1718, 50),
+    ("portal", "ptar", 32.0718, 150), ("portal", "rio", 2.1, 100),
+    ("ptar", "dr3", 26.28996, 50), ("ptar", "rio", 4.78184, 100), ("ptar", "perd", 1.0, None),
+    ("rio", "final", 6.88184, 50), ("requena", "final", 0.0748, 20),
+    ("tlautla", "final", 0.3292, None), ("cdtula", "final", 0.172, None),
+    ("rosas", "final", 0.32537, None), ("pemex", "final", 0.3, None),
 ]
 
 def _lerp(a, b, t):
@@ -51,7 +53,7 @@ def color(dbo):
     return "#%02x%02x%02x" % c
 
 def _fmt(v):
-    return ("%.1f" % v)
+    return ("%.2f" % v) if v < 1 else ("%.1f" % v)
 
 def svg(modo=""):
     val = {k: 0.0 for k in NODOS}
@@ -85,7 +87,7 @@ def svg(modo=""):
         p = ("M%.1f,%.1f C%.1f,%.1f %.1f,%.1f %.1f,%.1f L%.1f,%.1f C%.1f,%.1f %.1f,%.1f %.1f,%.1f Z"
              % (x0, ys[i], xm, ys[i], xm, yt[i], x1, yt[i], x1, yt[i] + t, xm, yt[i] + t, xm, ys[i] + t, x0, ys[i] + t))
         tip = "%s → %s|%s m³/s|%s" % (NODOS[o][0], NODOS[d][0], _fmt(q), "" if azul else (("DBO %d mg/L" % dbo) if dbo else "Sin dato de DBO"))
-        out.append('<path class="sk-l" d="%s" fill="%s" data-tip="%s" data-o="%s" data-d="%s"/>' % (p, "#3f93ab" if azul else color(dbo), tip, o, d))
+        out.append('<path class="sk-l" d="%s" fill="%s" data-tip="%s" data-o="%s" data-d="%s" data-dbo="%s"/>' % (p, "#3f93ab" if azul else color(dbo), tip, o, d, dbo if dbo else ""))
     for k, (nombre, col, y0) in NODOS.items():
         out.append('<rect class="sk-n" x="%d" y="%.1f" width="%d" height="%.1f"/>' % (x[k], y0, NW, alto[k]))
         v = _fmt(val[k]) + " m³/s"
@@ -93,7 +95,7 @@ def svg(modo=""):
         if NODOS[k][1] == 0:
             out.append('<text class="sk-t%s" x="%d" y="%.1f" text-anchor="end"><tspan>%s</tspan><tspan class="v" x="%d" dy="15">%s</tspan></text>'
                        % (" b" if grande else "", x[k] - 8, cy[k] - (2 if grande else 0), nombre, x[k] - 8, v))
-        elif k in ("requena", "tlautla", "cdtula", "rosas", "pemex"):
+        elif k in ("requena", "tlautla", "cdtula", "rosas", "pemex", "perd"):
             out.append('<text class="sk-t s" x="%d" y="%.1f" dominant-baseline="middle">%s · %s</text>' % (x[k] + NW + 6, cy[k], nombre, v))
         elif k == "dr3":
             out.append('<text class="sk-t b" x="%d" y="%.1f"><tspan>%s</tspan><tspan class="v" x="%d" dy="15">%s · va a riego</tspan></text>'

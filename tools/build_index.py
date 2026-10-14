@@ -459,13 +459,13 @@ def origen():
             '<div class="or-map">%s<div class="or-leyenda"><span><i class="l-rio"></i>Ríos</span><span><i class="l-infra"></i>Infraestructura (año de inauguración)</span>'
             '<span><i class="l-dr"></i>Distritos de riego</span></div></div></div></div>'
             '<div class="or-pane" data-pane="ll">%s<p class="or-nota">%s</p></div>'
-            '<div class="or-pane" data-pane="va"><p class="or-baj">%s</p>%s<div class="or-chips">%s</div></div>'
+            '<div class="or-pane" data-pane="va"><p class="or-baj">%s</p>%s<div class="or-chips">%s</div><p class="or-nota">%s</p></div>'
             '<div class="or-pane" data-pane="cal"><p class="or-baj">%s</p>%s%s<p class="or-nota">%s</p></div>'
             '<div class="or-pie"><p class="or-cierre">%s</p><a class="or-btn" href="historia.html">%s</a></div>'
             '</div></section>'
             % (T.t("origen", "etiqueta"), T.t("origen", "titulo"), botones, pasos, rd("tools/fragmentos/origen_mapa.html"),
                pastel, T.t("origen", "llega_nota"),
-               T.t("origen", "va"), sankey.svg("mode-va"), chips,
+               T.t("origen", "va"), sankey.svg("mode-va"), chips, T.t("origen", "nota_va"),
                T.t("origen", "calidad"), sankey.svg("mode-cal"), sankey.leyenda(), T.t("origen", "nota"),
                T.t("origen", "cierre"), T.t("origen", "boton")))
 
@@ -517,10 +517,10 @@ PLANTILLA = '''<!DOCTYPE html>
   <title>%(titulo)s</title>
   <meta name="description" content="%(descripcion)s" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/temas.css?v=12" />
-  <link rel="stylesheet" href="css/historia.css?v=12" />
-  <link rel="stylesheet" href="css/capitulos.css?v=12" />
-  <script>document.documentElement.classList.add('js')</script>
+  <link rel="stylesheet" href="css/temas.css?v=13" />
+  <link rel="stylesheet" href="css/historia.css?v=13" />
+  <link rel="stylesheet" href="css/capitulos.css?v=13" />
+  <script>(function(){var h=document.documentElement;h.classList.add('js');try{var s=localStorage;if(s.getItem('rt-noche')==='1')h.dataset.theme='dark';if(s.getItem('rt-cvd')==='1')h.dataset.cvd='1'}catch(e){}})()</script>
 </head>
 <body data-lema-seg="%(lema_seg)s">
 %(filtros)s
@@ -530,6 +530,16 @@ PLANTILLA = '''<!DOCTYPE html>
   <a class="nav-logo" href="%(logo_href)s">%(logo)s <span>%(logo_sub)s</span></a>
   <div class="nav-right">
     <a class="nav-btn nav-link" href="%(nav_href)s">%(nav_texto)s</a>
+    <div class="a11y">
+      <button class="nav-btn a11y-btn" id="a11yBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="a11yMenu" aria-label="%(acc_titulo)s" title="%(acc_titulo)s">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v18" /><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg>
+      </button>
+      <div class="a11y-menu" id="a11yMenu" role="group" aria-label="%(acc_titulo)s">
+        <p class="a11y-t">%(acc_titulo)s</p>
+        <label class="a11y-sw"><input type="checkbox" id="swNoche"><span class="sw"></span><span>%(acc_noche)s</span></label>
+        <label class="a11y-sw"><input type="checkbox" id="swCvd"><span class="sw"></span><span>%(acc_cvd)s</span></label>
+      </div>
+    </div>
     <button class="nav-btn" id="idxBtn" type="button">%(boton_indice)s</button>
   </div>
 </nav>
@@ -545,7 +555,7 @@ PLANTILLA = '''<!DOCTYPE html>
 
 %(contenido)s
 
-<script src="js/sitio.js?v=12"></script>
+<script src="js/sitio.js?v=13"></script>
 </body>
 </html>
 '''
@@ -555,7 +565,8 @@ def comun(**extra):
         titulo=attr(T.raw("sitio", "titulo")), descripcion=attr(T.raw("sitio", "descripcion")),
         logo=T.t("sitio", "logo"), logo_sub=T.t("sitio", "logo_sub"), boton_indice=T.t("sitio", "boton_indice"),
         titulo_indice=T.t("sitio", "titulo_indice"), aviso=T.t("sitio", "aviso"), filtros=FILTROS,
-        lema_seg=attr(T.raw("sitio", "lema_segundos", requerido=False) or "3"))
+        lema_seg=attr(T.raw("sitio", "lema_segundos", requerido=False) or "3"),
+        acc_titulo=T.t("sitio", "boton_acc"), acc_noche=T.t("sitio", "modo_noche"), acc_cvd=T.t("sitio", "modo_daltonismo"))
     d.update(extra)
     return d
 

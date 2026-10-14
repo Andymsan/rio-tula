@@ -45,6 +45,9 @@ logo_sub: / Proyecto 2024–2030
 boton_indice: ☰ Índice
 boton_historia: La historia
 boton_proyecto: El proyecto
+boton_acc: Accesibilidad
+modo_noche: Modo noche
+modo_daltonismo: Modo daltonismo
 titulo_indice: Índice
 aviso: Borrador · las fotos son marcadores
 lema_segundos: 3
@@ -107,11 +110,12 @@ tab4: Qué tan limpia
 llega_secas: Secas
 llega_lluvias: Lluvias
 llega_nota: Caudal promedio de cada temporada, 2021–2024, en m³/s. Fuente: base de caudales del proyecto.
-va: Casi toda el agua tratada en Atotonilco se usa en el campo.
-va_agri: 26.3 m³/s | van a la agricultura (distrito de riego 003) · 78 %
-va_rio: 7.3 m³/s | siguen por el río Tula hacia la presa Endhó · 22 %
+va: La mayor parte del agua tratada en Atotonilco se usa en el campo.
+va_agri: 26.3 m³/s | van a la agricultura (distrito de riego 003) · 76 %
+va_rio: 8.1 m³/s | siguen por el río Tula hacia la presa Endhó · 24 %
+nota_va: Caudal en m³/s en temporada de secas (promedio 2021–2024).
 calidad: El agua entra al Portal de Salida con **150 mg/L** de DBO y, tras pasar por Atotonilco, llega a riego con **50 mg/L**.
-nota: Caudal en m³/s. El color indica la contaminación del agua (DBO, en mg/L): entre menos, mejor.
+nota: Caudal en m³/s en temporada de secas (promedio 2021–2024). El color indica la contaminación del agua (DBO, en mg/L): entre menos, mejor.
 cierre: Esta infraestructura ha generado contaminación, riesgo de inundación y degradación ambiental. ==Eso es lo que estamos atendiendo.==
 boton: Conocer la historia del río →
 
