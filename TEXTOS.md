@@ -106,7 +106,7 @@ tab3: A dónde va
 tab4: Qué tan limpia
 llega_secas: Secas
 llega_lluvias: Lluvias
-llega_nota: Secas: caudales de operación. Lluvias: flujos máximos de la inundación de 2021 (Conagua). Caudal en m³/s.
+llega_nota: Caudal promedio de cada temporada, 2021–2024, en m³/s. Fuente: base de caudales del proyecto.
 va: Casi toda el agua tratada en Atotonilco se usa en el campo.
 va_agri: 26.3 m³/s | van a la agricultura (distrito de riego 003) · 78 %
 va_rio: 7.3 m³/s | siguen por el río Tula hacia la presa Endhó · 22 %
