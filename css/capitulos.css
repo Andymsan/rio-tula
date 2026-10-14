@@ -570,10 +570,11 @@ a.nav-btn { text-decoration: none; display: inline-block; }
 .or-pane[data-pane="ll"].on, .or-pane[data-pane="va"].on, .or-pane[data-pane="cal"].on { display: flex; flex-direction: column; justify-content: center; }
 .sankey { height: min(48svh, 460px); }
 .sankey.mode-va .sk-l { opacity: .12; }
-.sankey.mode-va .sk-l[data-d="dr3"], .sankey.mode-va .sk-l[data-d="final"] { opacity: .95; }
+.sankey.mode-va .sk-l[data-d="dr3"], .sankey.mode-va .sk-l[data-d="final"] { opacity: .9; }
+.sankey.mode-va .sk-l[data-d="dr3"] { fill: #1f6f8b; }
 .or-chips { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; margin-top: 10px; }
 .or-chip { display: flex; align-items: center; gap: 14px; background: #fff; border: 1px solid #e0dbd4; border-left: 5px solid #025d6e; border-radius: 14px; padding: 10px 18px; box-shadow: 0 10px 24px -16px rgba(0,0,0,.35); }
-.or-chip:first-child { border-left-color: #6aa84f; }
+.or-chip:first-child { border-left-color: #3f93ab; }
 .or-chip b { font: 900 clamp(24px, 2.6vw, 34px)/1 'Noto Sans', sans-serif; color: var(--ink); white-space: nowrap; }
 .or-chip span { font-size: 13.5px; line-height: 1.35; color: #4a4a4a; max-width: 24ch; }
 .or-pie { margin-top: 14px; display: flex; align-items: center; justify-content: center; gap: 18px; flex-wrap: wrap; max-width: 1000px; margin-left: auto; margin-right: auto; padding: 0 20px; }

@@ -103,9 +103,9 @@ tab1: Mapa
 tab2: De dónde llega
 tab3: A dónde va
 tab4: Qué tan limpia
-llega: En secas, **93 %** del agua que recibe el río es drenaje del Valle de México. En la inundación de 2021 fue solo **34 %**: el resto vino de ríos, presas y escurrimientos de la cuenca.
-llega_secas: En secas | caudales de operación
-llega_lluvias: Inundación de 2021 | flujos máximos (Conagua)
+llega_secas: Secas
+llega_lluvias: Lluvias
+llega_nota: Secas: caudales de operación. Lluvias: flujos máximos de la inundación de 2021 (Conagua). Caudal en m³/s.
 va: Casi toda el agua tratada en Atotonilco se usa en el campo.
 va_agri: 26.3 m³/s | van a la agricultura (distrito de riego 003) · 78 %
 va_rio: 7.3 m³/s | siguen por el río Tula hacia la presa Endhó · 22 %

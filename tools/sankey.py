@@ -75,6 +75,7 @@ def svg(modo=""):
         o, d, q, _ = FLUJOS[i]
         yt[i] = ent[d]; ent[d] += max(q * K, 1.6)
 
+    azul = modo == "mode-va"
     out = ['<svg class="sankey %s" viewBox="0 0 %d %d" role="img" '
            'aria-label="Caudales del río Tula, coloreados por calidad del agua">' % (modo, W, H)]
     for i, (o, d, q, dbo) in enumerate(FLUJOS):
@@ -83,8 +84,8 @@ def svg(modo=""):
         xm = (x0 + x1) / 2
         p = ("M%.1f,%.1f C%.1f,%.1f %.1f,%.1f %.1f,%.1f L%.1f,%.1f C%.1f,%.1f %.1f,%.1f %.1f,%.1f Z"
              % (x0, ys[i], xm, ys[i], xm, yt[i], x1, yt[i], x1, yt[i] + t, xm, yt[i] + t, xm, ys[i] + t, x0, ys[i] + t))
-        tip = "%s → %s|%s m³/s|%s" % (NODOS[o][0], NODOS[d][0], _fmt(q), ("DBO %d mg/L" % dbo) if dbo else "Sin dato de DBO")
-        out.append('<path class="sk-l" d="%s" fill="%s" data-tip="%s" data-o="%s" data-d="%s"/>' % (p, color(dbo), tip, o, d))
+        tip = "%s → %s|%s m³/s|%s" % (NODOS[o][0], NODOS[d][0], _fmt(q), "" if azul else (("DBO %d mg/L" % dbo) if dbo else "Sin dato de DBO"))
+        out.append('<path class="sk-l" d="%s" fill="%s" data-tip="%s" data-o="%s" data-d="%s"/>' % (p, "#3f93ab" if azul else color(dbo), tip, o, d))
     for k, (nombre, col, y0) in NODOS.items():
         out.append('<rect class="sk-n" x="%d" y="%.1f" width="%d" height="%.1f"/>' % (x[k], y0, NW, alto[k]))
         v = _fmt(val[k]) + " m³/s"

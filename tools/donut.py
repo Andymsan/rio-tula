@@ -36,8 +36,8 @@ def donut(idx, titulo, nota):
         acc += frac
     return ('<figure class="dn"><svg viewBox="-110 -110 220 220" role="img" aria-label="%s"><g transform="rotate(-90)">%s</g>'
             '<g class="dn-c"><text class="dn-v" y="2">%s</text><text class="dn-u" y="22">m³/s</text></g></svg>'
-            '<figcaption><b>%s</b><span>%s</span></figcaption></figure>'
-            % (titulo, "".join(segs), _num(total), titulo, nota)), total
+            '<figcaption><b>%s</b></figcaption></figure>'
+            % (titulo, "".join(segs), _num(total), titulo)), total
 
 def leyenda():
     filas = "".join('<li data-i="%d"><i style="background:%s"></i><span>%s</span><b>%s</b><b>%s</b></li>'

@@ -352,7 +352,7 @@
     $$('.sk-l', sk).forEach(p => {
       const show = e => {
         const [a, q, d] = p.dataset.tip.split('|');
-        tip.innerHTML = '<b>' + a + '</b><br>' + q + ' · ' + d;
+        tip.innerHTML = '<b>' + a + '</b><br>' + q + (d ? ' · ' + d : '');
         tip.style.left = Math.min(e.clientX + 14, innerWidth - 230) + 'px'; tip.style.top = (e.clientY + 14) + 'px';
         tip.classList.add('on'); sk.classList.add('dim'); $$('.sk-l.hv', sk).forEach(x => x.classList.remove('hv')); p.classList.add('hv');
       };

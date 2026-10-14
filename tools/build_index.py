@@ -448,9 +448,7 @@ AV_ICONOS = [
 
 def origen():
     pasos = "".join("<li>%s</li>" % fmt(x) for x in T.lista("origen", "pasos"))
-    sec = [x.strip() for x in T.raw("origen", "llega_secas").split("|")]
-    llu = [x.strip() for x in T.raw("origen", "llega_lluvias").split("|")]
-    pastel = donut.pastel(sec[0], sec[1], llu[0], llu[1])
+    pastel = donut.pastel(T.t("origen", "llega_secas"), "", T.t("origen", "llega_lluvias"), "")
     chips = "".join('<div class="or-chip"><b class="cnt">%s</b><span>%s</span></div>' % kfpair("origen", k) for k in ("va_agri", "va_rio"))
     botones = "".join('<button class="or-tab%s" type="button" data-tab="%s"><i>%d</i>%s</button>' % (" on" if n == 0 else "", k, n + 1, T.t("origen", "tab%d" % (n + 1)))
                       for n, k in enumerate(("mp", "ll", "va", "cal")))
@@ -460,13 +458,13 @@ def origen():
             '<div class="or-pane on" data-pane="mp"><div class="or-wrap"><ol class="or-pasos" id="orPasos">%s</ol>'
             '<div class="or-map">%s<div class="or-leyenda"><span><i class="l-rio"></i>Ríos</span><span><i class="l-infra"></i>Infraestructura (año de inauguración)</span>'
             '<span><i class="l-dr"></i>Distritos de riego</span></div></div></div></div>'
-            '<div class="or-pane" data-pane="ll"><p class="or-baj">%s</p>%s</div>'
+            '<div class="or-pane" data-pane="ll">%s<p class="or-nota">%s</p></div>'
             '<div class="or-pane" data-pane="va"><p class="or-baj">%s</p>%s<div class="or-chips">%s</div></div>'
             '<div class="or-pane" data-pane="cal"><p class="or-baj">%s</p>%s%s<p class="or-nota">%s</p></div>'
             '<div class="or-pie"><p class="or-cierre">%s</p><a class="or-btn" href="historia.html">%s</a></div>'
             '</div></section>'
             % (T.t("origen", "etiqueta"), T.t("origen", "titulo"), botones, pasos, rd("tools/fragmentos/origen_mapa.html"),
-               T.t("origen", "llega"), pastel,
+               pastel, T.t("origen", "llega_nota"),
                T.t("origen", "va"), sankey.svg("mode-va"), chips,
                T.t("origen", "calidad"), sankey.svg("mode-cal"), sankey.leyenda(), T.t("origen", "nota"),
                T.t("origen", "cierre"), T.t("origen", "boton")))
