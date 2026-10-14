@@ -313,6 +313,21 @@
     document.addEventListener('ampliar', e => open(e.detail.track, e.detail.index));
   }
 
+  /* ── Introducción: mapa de afluentes (tamaño de letra constante y resalte al pasar por cada paso) ── */
+  function initOrigen() {
+    const svg = $('#omap'); if (!svg) return;
+    const vb = svg.viewBox.baseVal;
+    const fit = () => { const k = Math.min(svg.clientWidth / vb.width, svg.clientHeight / vb.height) || 1; svg.style.setProperty('--fs', (11.5 / k).toFixed(3)); };
+    fit(); addEventListener('resize', fit);
+    const ks = [['tec', 'teo', 'salto', 'canal'], ['portal', 'ptar', 'dr'], ['rios', 'presa', 'tula', 'endho']];
+    const off = () => { svg.classList.remove('hl'); $$('[data-k].is, #orPasos li.is').forEach(el => el.classList.remove('is')); };
+    $$('#orPasos li').forEach((li, i) => {
+      const on = () => { off(); svg.classList.add('hl'); li.classList.add('is'); $$('[data-k]', svg).forEach(el => el.classList.toggle('is', (ks[i] || []).includes(el.dataset.k))); };
+      li.addEventListener('mouseenter', on); li.addEventListener('mouseleave', off);
+      li.addEventListener('click', () => (li.classList.contains('is') ? off() : on()));
+    });
+  }
+
   /* ── Arranque ─────────────────────────────────────────────────────── */
   function boot() {
     buildNavObs(); buildStepObs();
@@ -320,6 +335,7 @@
     // carruseles fuera del scroll por pasos (p. ej. el de "Compromiso 92")
     $$('[data-carousel]').forEach(initCarousel);
     initResumen();
+    initOrigen();
     initLightbox();
   }
   let rz;

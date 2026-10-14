@@ -336,3 +336,78 @@ footer { background: #eceae5; color: #6b6b6b; text-align: center; padding: 34px 
   .lightbox-nav { width: 38px; height: 38px; font-size: 22px; }
   .lightbox-prev { left: 6px; } .lightbox-next { right: 6px; }
 }
+
+/* ─── Portada: segundo botón ───────────────────────────────────────────── */
+.btn-claro { background: rgba(255,255,255,.85); color: var(--ink); box-shadow: 0 0 0 1px rgba(0,0,0,.12) inset; }
+
+/* ─── Introducción: de dónde viene el agua del río Tula ────────────────── */
+.s-origen { background: #fbfbfa; padding: 96px 0 72px; }
+.or-wrap { max-width: 1240px; margin: 0 auto; padding: 0 28px; display: grid; grid-template-columns: minmax(300px, .8fr) 1.2fr; gap: 40px; align-items: center; }
+.or-text .s-tag { color: #025d6e; }
+.or-pasos { list-style: none; counter-reset: p; padding: 0; margin: 6px 0 22px; display: grid; gap: 16px; }
+.or-pasos li { position: relative; padding: 4px 8px 4px 46px; font-size: 15.5px; line-height: 1.6; color: #3d3d3d; font-weight: 300; border-radius: 10px; transition: background .2s; cursor: default; }
+.or-pasos li:hover, .or-pasos li.is { background: rgba(2, 93, 110, .08); }
+.or-pasos li::before { counter-increment: p; content: counter(p); position: absolute; left: 6px; top: 4px; width: 28px; height: 28px; border-radius: 50%; background: #025d6e; color: #fff; font: 700 13px 'Noto Sans', sans-serif; display: grid; place-items: center; }
+.or-pasos strong { color: var(--ink); font-weight: 600; }
+.or-cierre { font-size: 15.5px; line-height: 1.65; color: #3d3d3d; margin-bottom: 20px; }
+.or-cierre mark, .or-cierre .fluor { background: #025d6e; color: #fff; padding: 1px 6px; border-radius: 4px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.or-link { display: inline-block; font: 700 14px 'Noto Sans', sans-serif; color: #025d6e; text-decoration: none; border-bottom: 2px solid currentColor; padding-bottom: 2px; }
+.or-link:hover { color: #6d381e; }
+.or-map { position: relative; height: min(84vh, 860px); min-height: 520px; border-radius: 20px; overflow: hidden; background: #f3f3f3; box-shadow: 0 30px 70px -34px rgba(0,0,0,.45); }
+.omap { width: 100%; height: 100%; display: block; --fs: 1; }
+.omap .hillshade { opacity: 1; }
+.omap .o-delim { fill: none; stroke: #6d381e; stroke-width: calc(var(--fs) * .12px); opacity: .5; }
+.omap .o-dr { stroke-width: calc(var(--fs) * .08px); }
+.omap .o-drcanal { fill: none; stroke-width: calc(var(--fs) * .1px); }
+.omap .o-rio { fill: none; stroke: #025d6e; stroke-width: calc(var(--fs) * .14px); }
+.omap .o-agua { fill: rgba(2, 93, 110, .8); stroke: #025d6e; stroke-width: calc(var(--fs) * .1px); }
+.omap .o-ptar { fill: rgba(2, 93, 110, .85); stroke: #025d6e; stroke-width: calc(var(--fs) * .2px); }
+.omap .o-infra { fill: none; stroke: #3b3f46; stroke-width: calc(var(--fs) * .28px); stroke-linecap: round; stroke-linejoin: round; }
+.omap .o-pt { fill: #fff; stroke: #3b3f46; stroke-width: calc(var(--fs) * .2px); }
+.omap .o-pt.tula { fill: #6d381e; stroke: #fff; }
+.omap .ol { font-family: 'Noto Sans', sans-serif; font-size: calc(var(--fs) * 1px); paint-order: stroke; stroke: rgba(255,255,255,.88); stroke-width: calc(var(--fs) * .28px); stroke-linejoin: round; }
+.omap .ol.b { font-weight: 800; }
+.omap .o-i { fill: #3b3f46; font-weight: 600; }
+.omap .o-r { fill: #025d6e; font-style: italic; font-weight: 600; }
+.omap .o-c { fill: #111; }
+.omap .o-dr-l { font-weight: 700; font-size: calc(var(--fs) * .95px); }
+.omap [data-k] { transition: opacity .25s, stroke-width .25s; }
+.omap.hl [data-k] { opacity: .22; }
+.omap.hl [data-k].is { opacity: 1; }
+.omap.hl .o-infra.is { stroke-width: calc(var(--fs) * .5px); }
+.or-leyenda { position: absolute; left: 12px; bottom: 12px; display: flex; flex-wrap: wrap; gap: 6px 14px; padding: 8px 12px; background: rgba(255,255,255,.92); border-radius: 12px; font: 600 11.5px 'Noto Sans', sans-serif; color: #3d3d3d; max-width: calc(100% - 24px); }
+.or-leyenda i { display: inline-block; width: 18px; height: 0; border-top: 3px solid; margin-right: 6px; vertical-align: middle; }
+.or-leyenda .l-rio { border-color: #025d6e; } .or-leyenda .l-infra { border-color: #3b3f46; } .or-leyenda .l-dr { border-color: #d17b3f; border-top-width: 6px; opacity: .6; }
+
+/* ─── Diagnóstico: fotos a pantalla completa ───────────────────────────── */
+.s-diag { position: relative; height: 100vh; min-height: 520px; background: #10181a; color: #fff; --tema-fill: #fff; }
+.s-diag .burbuja { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; margin: 0; border: 0; border-radius: 0; box-shadow: none; background: #10181a; opacity: 1 !important; transform: none !important; }
+.s-diag .bu-slide figcaption { font-size: clamp(14px, 1.5vw, 19px); padding: 80px 8vw 34px; background: linear-gradient(transparent, rgba(0,0,0,.78)); }
+.s-diag .bu-dots { top: auto; bottom: 14px; }
+.s-diag .ph { background: repeating-linear-gradient(45deg, #1a2527, #1a2527 14px, #162022 14px, #162022 28px); color: #9fb0b3; }
+.s-diag .ph svg { color: #9fb0b3; }
+.diag-head { position: absolute; left: 0; right: 0; top: 0; z-index: 4; padding: 88px 8vw 70px; background: linear-gradient(rgba(0,0,0,.72), transparent); pointer-events: none; }
+.diag-head .s-tag { color: #f0c987; margin-bottom: 8px; }
+.diag-head h2 { font: 800 clamp(28px, 4vw, 52px)/1.1 'Noto Sans', sans-serif; }
+
+/* ─── Lemas: banner de pantalla completa que se queda unos segundos ───── */
+.s-lema { position: relative; height: 190vh; background: #10181a; }
+.lema-in { position: sticky; top: 0; height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; color: #fff; overflow: hidden; background-size: cover; background-position: center; }
+.lema-in::before { content: ""; position: absolute; inset: 0; background: linear-gradient(rgba(8,20,23,.5), rgba(8,20,23,.74)); }
+.lema-txt { position: relative; max-width: 960px; padding: 0 28px; }
+.lema-tag { display: inline-block; font: 700 13px 'Noto Sans', sans-serif; letter-spacing: .24em; text-transform: uppercase; color: var(--lema); }
+.lema-h { font: 900 clamp(46px, 9vw, 120px)/1 'Noto Sans', sans-serif; margin: 16px 0 20px; text-shadow: 0 6px 40px rgba(0,0,0,.45); }
+.lema-p { font-size: clamp(17px, 2vw, 25px); font-weight: 300; line-height: 1.5; max-width: 660px; margin: 0 auto; opacity: .94; }
+.lema-flecha { position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%); font-size: 26px; color: var(--lema); animation: lemaFlecha 1.8s ease-in-out infinite; }
+@keyframes lemaFlecha { 0%, 100% { transform: translate(-50%, 0); opacity: .6; } 50% { transform: translate(-50%, 8px); opacity: 1; } }
+
+/* ─── Subpágina de la historia: cierre ─────────────────────────────────── */
+.hs-fin { background: #fbfbfa; text-align: center; padding: 80px 28px 96px; display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.hs-volver { font: 600 14px 'Noto Sans', sans-serif; color: #5a5550; text-decoration: none; border-bottom: 1px solid currentColor; }
+
+@media (max-width: 900px) {
+  .or-wrap { grid-template-columns: 1fr; gap: 24px; padding: 0 20px; }
+  .or-map { height: 70vh; min-height: 420px; }
+  .s-origen { padding: 72px 0 48px; }
+  .s-lema { height: 160vh; }
+}

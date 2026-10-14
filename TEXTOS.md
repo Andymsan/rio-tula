@@ -39,7 +39,7 @@ Los nombres de lugares en los mapas, los colores y el orden de las secciones.
 
 ## sitio  (datos generales de toda la página)
 titulo: Río Tula — Plan de Saneamiento y Restauración 2024–2030
-descripcion: La historia del río Tula y el plan para sanearlo y restaurarlo: calidad del agua, inundaciones, ecosistemas y espacio público.
+descripcion: El proyecto para sanear y restaurar el río Tula: un río más limpio, más seguro, más vivo y para todas y todos.
 logo: Río Tula
 logo_sub: / Proyecto 2024–2030
 boton_indice: ☰ Índice
@@ -53,41 +53,83 @@ eyebrow: Proyecto de saneamiento y restauración · 2024–2030
 titulo: Río Tula
 subtitulo: Descubre **cómo** el río Tula se convirtió en uno de los más contaminados del país y **qué** estamos haciendo para transformarlo.
 boton: Comenzar el recorrido ↓
+boton2: Conoce la historia del río →
 
-## indice-1  (recuadro 1 del índice: lleva a la Historia)
-titulo: Historia
-descripcion: Cómo llegó el río a esta condición
+## indice-origen  (recuadro 1 del índice: lleva a "De dónde viene el agua")
+titulo: De dónde viene el agua
+descripcion: Los afluentes del río Tula
 
-## indice-2  (lleva a El proyecto)
+## indice-historia  (lleva a la subpágina de la Historia)
+titulo: Historia del río
+descripcion: Cómo llegó a esta condición
+
+## indice-proyecto  (lleva a El proyecto)
 titulo: El proyecto
-descripcion: Tres frentes, un mismo río
+descripcion: Cuatro mensajes, un mismo río
 
-## indice-2.1  (subíndice: Calidad del agua)
-titulo: Calidad del agua
-descripcion: Atotonilco, industria, colectores y monitoreo
+## indice-limpio  (subíndice: Un río más limpio)
+titulo: Un río más limpio
+descripcion: Atotonilco, drenaje de Tula, industria y monitoreo
 
-## indice-2.2  (subíndice: Inundaciones)
-titulo: Inundaciones
-descripcion: Taludes, desazolve y más espacio para el agua
+## indice-seguro  (subíndice: Un río más seguro)
+titulo: Un río más seguro
+descripcion: Taludes, desazolve y monitoreo del caudal
 
-## indice-2.3  (subíndice: Ecosistemas y espacio público)
-titulo: Ecosistemas y espacio público
-descripcion: Riberas, humedales, bosques y cinco sitios
+## indice-vivo  (subíndice: Un río más vivo)
+titulo: Un río más vivo
+descripcion: Riberas, laguna de Bojay y bosques
 
-## indice-2.4  (subíndice: Resumen)
+## indice-todos  (subíndice: Un río para todas y todos)
+titulo: Un río para todas y todos
+descripcion: Cinco lugares para reconectar con el río
+
+## indice-resumen  (subíndice: Resumen)
 titulo: Resumen
 descripcion: El mapa completo y las cinco metas del proyecto
 
-## indice-3  (lleva a Participa)
+## indice-participa  (lleva a Participa)
 titulo: Participa
 descripcion: Cómo sumarte al proyecto
 
 ---
 
-## historia-intro  (texto antes del mapa de la historia)
+## origen  (introducción: De dónde viene el agua del río Tula — mantenerla BREVE)
+etiqueta: Introducción
+titulo: De dónde viene el agua del río Tula
+pasos: El río Tula recibe el drenaje y la lluvia del Valle de México por cuatro vías: el **Túnel Emisor Central**, el **Túnel Emisor Oriente**, el **río El Salto** (Tajo de Nochistongo) y el **Gran Canal**. | Toda esta agua se junta en el **Portal de Salida** y de ahí va a la **PTAR Atotonilco** o directo al río. La planta envía una parte del agua tratada a los **distritos de riego** del Valle del Mezquital y regresa el resto al río. | Río abajo, el Tula recibe a los ríos **Tepeji, Tlautla y Rosas** y el drenaje de la zona metropolitana de Tula, y termina en la **presa Endhó**, donde se almacena para riego.
+cierre: Esta infraestructura ha generado contaminación, riesgo de inundación y degradación ambiental: ==eso es lo que atiende el Proyecto de Saneamiento y Restauración del Río Tula.==
+boton: Conoce la historia del río →
+
+## diagnostico  (fotos de diagnóstico, pantalla completa; carpeta img/fotos/diagnostico/)
+etiqueta: Diagnóstico
+titulo: Así encontramos el río
+
+## lema-limpio  (banner de pantalla completa; foto opcional en img/fotos/lema-limpio/)
+etiqueta: Frente 1 · Calidad del agua
+titulo: Un río más limpio
+texto: Tratamos más agua, captamos el drenaje de Tula y vigilamos a la industria.
+
+## lema-seguro  (banner; foto opcional en img/fotos/lema-seguro/)
+etiqueta: Frente 2 · Inundaciones
+titulo: Un río más seguro
+texto: Protegemos a las familias de Tula cuando el río crece.
+
+## lema-vivo  (banner; foto opcional en img/fotos/lema-vivo/)
+etiqueta: Frente 3 · Ecosistemas
+titulo: Un río más vivo
+texto: Recuperamos riberas, bosques y cuerpos de agua para que el río vuelva a tener vida.
+
+## lema-todos  (banner; foto opcional en img/fotos/lema-todos/)
+etiqueta: Frente 4 · Espacio público
+titulo: Un río para todas y todos
+texto: Construimos lugares para que la gente de Tula se reconecte con su río.
+
+## historia-intro  (texto antes del mapa de la historia — ahora es la subpágina historia.html)
 etiqueta: 1 · El río y su historia
 titulo: Cómo se volvió uno de los ríos más contaminados del país
 texto: Desliza hacia abajo para conocer la historia del río Tula.
+boton: Ver qué estamos haciendo →
+volver: ← Volver al inicio
 
 ## historia-0  (época 1)
 epoca: ~700,000 años atrás
@@ -275,6 +317,9 @@ fotos: Estación de monitoreo de caudal
 
 ## ecosistemas  (capítulo 3)
 banner: Ecosistemas y espacio público
+
+## espacio-publico  (capítulo 4)
+banner: Espacio público
 
 ## ecosistemas-0  (introducción)
 etiqueta: Frente 3 · Ecosistemas y espacio público

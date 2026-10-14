@@ -424,3 +424,70 @@ print("iztapalapa %.0f,%.0f  atzacoalco %.0f,%.0f  zumpango %.0f,%.0f" % (iztapa
 print("tajo_mid %.0f,%.0f  canal_mid %.0f,%.0f" % (tajo_mid[0], tajo_mid[1], canal_mid[0], canal_mid[1]))
 print("tep_mid %.0f,%.0f  teo1_mid %.0f,%.0f  teo2_mid %.0f,%.0f" % (tep_mid[0], tep_mid[1], teo1_mid[0], teo1_mid[1], teo2_mid[0], teo2_mid[1]))
 print("atot_c %.0f,%.0f  manzanas: %d features, %d KB" % (atot_c[0], atot_c[1], len(_manzanas_parts), len(d_manzanas)//1024))
+
+# ══════════════════════════════════════════════════════════════════════════
+#  MAPA DE LA INTRODUCCIÓN: "De dónde viene el agua del río Tula"
+#  (tools/fragmentos/origen_mapa.html) — mismas capas, vista fija y sin época
+# ══════════════════════════════════════════════════════════════════════════
+from shapely.ops import nearest_points
+INFRA = "#3b3f46"   # gris oscuro: infraestructura
+
+def _end_norte(geom):
+    pts = [c for g in (geom.geoms if hasattr(geom, "geoms") else [geom]) for c in (g.coords[0], g.coords[-1])]
+    return max(pts, key=lambda c: c[1])
+
+_tec_geom, _teo_geom = _red["Emisor Central"], _red["Tunel Emisor Oriente"]
+_pn = [_end_norte(_tec_geom), _end_norte(_teo_geom)]
+portal = P((_pn[0][0] + _pn[1][0]) / 2, (_pn[0][1] + _pn[1][1]) / 2)
+
+def _en_rio(nombre_mun, dx=0, dy=0):
+    g = shape(next(f["geometry"] for f in mun["features"] if f["properties"]["NOMGEO"] == nombre_mun))
+    c = g.representative_point()
+    q = nearest_points(_rios_geom, c)[0]
+    x, y = P(q.x, q.y)
+    return (x + dx, y + dy)
+
+om = []
+def OL(txt, xy, cls, anchor="start"):
+    om.append('<text class="ol %s" x="%.1f" y="%.1f" text-anchor="%s">%s</text>' % (cls, xy[0], xy[1], anchor, txt))
+def OP(cls, k, d, extra=""):
+    om.append('<path class="%s" data-k="%s"%s d="%s"/>' % (cls, k, extra, d))
+
+OV_X0, OV_Y0, OV_W, OV_H = 40, -20, 470, 660
+om.append('<svg class="omap" id="omap" viewBox="%d %d %d %d" preserveAspectRatio="xMidYMid meet" role="img" '
+          'aria-label="Mapa de los afluentes del río Tula">' % (OV_X0, OV_Y0, OV_W, OV_H))
+om.append('<image class="hillshade" href="img/mapa/hillshade.webp" x="%.1f" y="%.1f" width="%.1f" height="%.1f" preserveAspectRatio="none"/>' % (HS_X, HS_Y, HS_W, HS_H))
+OP("o-delim", "cuenca", d_delim)
+for _clv, _d in DISTRITOS.items():
+    OP("o-dr", "dr", _d["path"], ' style="fill:%s22;stroke:%s"' % (DISTRITOS_COLOR[_clv], DISTRITOS_COLOR[_clv]))
+    OP("o-drcanal", "dr", _d["canal"], ' style="stroke:%s"' % DISTRITOS_COLOR[_clv])
+OP("o-rio", "rios", path_d(_rios_geom))
+OP("o-agua", "presa", d_endho)
+OP("o-agua", "presa", d_requena)
+OP("o-ptar", "ptar", d_atotonilco)
+OP("o-infra", "canal", d_canal)
+OP("o-infra", "salto", d_tajo)
+OP("o-infra", "tec", d_teo1)
+OP("o-infra", "teo", d_teo2)
+for k, (x, y) in dict(portal=portal, tula=C("Tula de Allende"), ptar=atot_c, endho=endho_c).items():
+    om.append('<circle class="o-pt %s" data-k="%s" cx="%.1f" cy="%.1f" r="3"/>' % (k, k, x, y))
+# etiquetas: ríos en azul, infraestructura en gris oscuro con su año de inauguración
+OL("Túnel Emisor Central (1975)", (teo1_mid[0] - 10, teo1_mid[1] - 6), "o-i", "end")
+OL("Túnel Emisor Oriente (2019)", (teo2_mid[0] + 10, teo2_mid[1] + 14), "o-i")
+OL("Gran Canal (1900)", (canal_mid[0] + 10, canal_mid[1]), "o-i")
+OL("El Salto · Tajo de Nochistongo (1789)", (tajo_mid[0] - 10, tajo_mid[1] - 8), "o-i", "end")
+OL("Portal de Salida", (portal[0] + 9, portal[1] + 11), "o-i b")
+OL("PTAR Atotonilco", (atot_c[0] + 9, atot_c[1] - 4), "o-i b")
+OL("Tula de Allende", (C("Tula de Allende")[0] - 8, C("Tula de Allende")[1] - 9), "o-c b", "end")
+OL("Presa Endhó", (endho_c[0] + 10, endho_c[1] - 8), "o-r b")
+OL("río Tula", (requena_c[0] - 28, requena_c[1] - 30), "o-r", "end")
+OL("río Tepeji", _en_rio("Tepeji del Río de Ocampo", 6, -5), "o-r", "end")
+OL("río Tlautla", _en_rio("Tlaxcoapan", -6, 12), "o-r", "end")
+OL("río Rosas", _en_rio("Tula de Allende", -5, 12), "o-r", "end")
+for _clv, _d in DISTRITOS.items():
+    nombres = {"003": "DR 003 Tula", "100": "DR 100 Alfajayucan", "112": "DR 112 Ajacuba"}
+    OL(nombres[_clv], (_d["centro"][0], max(_d["centro"][1], OV_Y0 + 16)), "o-dr-l", "middle")
+    om[-1] = om[-1].replace('class="ol o-dr-l"', 'class="ol o-dr-l" style="fill:%s"' % DISTRITOS_COLOR[_clv])
+om.append("</svg>")
+open(os.path.join(ROOT, "tools", "fragmentos", "origen_mapa.html"), "w", encoding="utf-8").write("".join(om))
+print("origen_mapa.html: %d KB · portal %.0f,%.0f" % (sum(len(x) for x in om) // 1024, portal[0], portal[1]))

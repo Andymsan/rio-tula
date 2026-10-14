@@ -4,7 +4,8 @@ Sitio del Plan de Saneamiento y Restauración del Río Tula (2024–2030).
 
 | Página | Qué es |
 |---|---|
-| `index.html` | **Sitio de scroll (borrador, todo en claro):** portada con índice → historia (mapa con municipios) → compromiso 92 → el proyecto → calidad del agua → inundaciones → ecosistemas y espacio público → resumen (mapa con las 5 metas) → participa |
+| `index.html` | **Sitio de scroll (borrador):** portada con índice → de dónde viene el agua del río Tula (mapa de afluentes) → fotos de diagnóstico → compromiso 92 → el proyecto → cuatro lemas a pantalla completa (un río más limpio / seguro / vivo / para todas y todos), cada uno seguido de sus proyectos → resumen (mapa con las 5 metas) → participa |
+| `historia.html` | **Subpágina de la historia del río** (mapa por épocas); se llega desde la portada y la introducción |
 | `mapa.html` | Visor interactivo (Leaflet). No se enlaza desde el sitio; se conserva por si se necesita. |
 
 ## Cómo verlo
@@ -15,7 +16,7 @@ Sitio del Plan de Saneamiento y Restauración del Río Tula (2024–2030).
 ## Estructura
 
 ```
-index.html            ← GENERADO (no editar a mano): TEXTOS.md + tools/build_index.py
+index.html, historia.html ← GENERADOS (no editar a mano): TEXTOS.md + tools/build_index.py
 TEXTOS.md             ← TODOS LOS TEXTOS de la página (se editan aquí, en GitHub)
 COMENTARIOS.md        ← comentarios de revisión sobre el sitio (se reemplaza en cada ronda)
 DATOS.md              ← cifras de referencia, fuentes y datos pendientes de confirmar
@@ -56,6 +57,12 @@ nuevas a `img/fotos/<sección>/` y reconstruye el sitio si hizo falta. Necesita 
 del repositorio (Settings → Secrets and variables → Actions):
 - `GDRIVE_SA_KEY`: el JSON de una cuenta de servicio de Google con acceso de lectura a esa carpeta.
 - `GDRIVE_FOLDER_ID`: el id de la carpeta de Drive (la parte de la URL después de `/folders/`).
+
+## Fotos de los lemas y del diagnóstico
+
+Nombres de archivo en Drive (`<sección>_<orden>_<pie de foto>`): `diagnostico_1_…` (carrusel de pantalla completa) y
+`lema-limpio_1_…`, `lema-seguro_1_…`, `lema-vivo_1_…`, `lema-todos_1_…` (la primera foto de cada una es el fondo del banner).
+Mientras no haya foto, el banner usa una imagen provisional.
 
 ## Otros
 

@@ -230,13 +230,19 @@ eco_steps = [
     step(".585,.17,2.3", "int", card("ecosistemas-2"),
          carousel("ecosistemas-2"), ov="bojay", pins="bojay", labels="endho"),
     step(".36,.24,1.6", "base", card("ecosistemas-3"), carousel("ecosistemas-3"), ov="rio", labels="anp parque"),
-    # Cámara desplazada hacia arriba para que Bojay (cerca del borde superior
-    # de la imagen) no se corte; incluye las isócronas (marco "acc").
+
+]
+eco = cap("ecosistemas", "verde", T.t("ecosistemas", "banner"), eco_canvas, eco_steps)
+
+# Espacio público: capítulo propio ("Un río para todas y todos"). Cámara desplazada
+# hacia arriba para que Bojay (cerca del borde superior de la imagen) no se corte;
+# incluye las isócronas (marco "acc").
+ep_steps = [
     step(".5,.4,1.0", "acc", card("ecosistemas-4"),
          carousel("ecosistemas-4"),
          ov="bojay trescult rosas sanlorenzo chamizal", pins="bojay trescult rosas sanlorenzo chamizal"),
 ]
-eco = cap("ecosistemas", "verde", T.t("ecosistemas", "banner"), eco_canvas, eco_steps)
+espacio = cap("espacio-publico", "verde", T.t("espacio-publico", "banner"), eco_canvas, ep_steps)
 
 # ═══════════════════════════════════════════════════════════════════════════
 #  RESUMEN (mapa con las 5 metas; se resalta la que está en foco)
@@ -283,10 +289,11 @@ def resumen():
     metas_html = "".join(resumen_meta(i, *m) for i, m in enumerate(METAS))
     return ('<section class="s-resumen tema-azul" id="resumen" data-nav="light">'
             '<div class="section-inner"><span class="s-tag">%s</span><h2 class="s-title">%s</h2>'
-            '<p class="s-subtitle">%s</p><p class="s-body">%s</p></div>'
+            '<p class="s-subtitle">%s</p>%s</div>'
             '<div class="resumen-wrap"><div class="resumen-stage" id="resumenStage"><div class="canvas">%s</div><div class="wash"></div></div>'
             '<ul class="resumen-metas" id="resumenMetas">%s</ul></div></section>'
-            % (T.t("resumen", "etiqueta"), T.t("resumen", "titulo"), T.t("resumen", "subtitulo"), T.t("resumen", "texto"),
+            % (T.t("resumen", "etiqueta"), T.t("resumen", "titulo"), T.t("resumen", "subtitulo"),
+               ('<p class="s-body">%s</p>' % T.t("resumen", "texto")) if T.raw("resumen", "texto", requerido=False) not in (None, '""') else "",
                resumen_canvas(), metas_html))
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -331,24 +338,39 @@ def historia_section():
 # ═══════════════════════════════════════════════════════════════════════════
 #  PÁGINA
 # ═══════════════════════════════════════════════════════════════════════════
-# índice: 1 Historia · 2 El proyecto (2.1-2.4 subíndices) · 3 Participa.
-# El compromiso presidencial queda como contenido (entre Historia y El proyecto)
-# pero no aparece como punto del índice.
+# índice: 1 De dónde viene el agua · 2 Historia (subpágina) · 3 El proyecto (3.1-3.5) · 4 Participa.
+# El compromiso presidencial queda como contenido pero no aparece como punto del índice.
 INDICE = [
-    ("1", "#historia", "#1f6fd6", ""),
-    ("2", "#proyecto", "#1f6fd6", ""),
-    ("2.1", "#calidad", "#f0938c", "sub"),
-    ("2.2", "#inundaciones", "#f78b62", "sub"),
-    ("2.3", "#ecosistemas", "#8c871d", "sub"),
-    ("2.4", "#resumen", "#1f6fd6", "sub"),
-    ("3", "#participa", "#3fae7a", ""),
+    ("origen", "#origen", "#1f6fd6", ""),
+    ("historia", "historia.html", "#1f6fd6", ""),
+    ("proyecto", "#proyecto", "#1f6fd6", ""),
+    ("limpio", "#calidad", "#f0938c", "sub"),
+    ("seguro", "#inundaciones", "#f78b62", "sub"),
+    ("vivo", "#ecosistemas", "#8c871d", "sub"),
+    ("todos", "#espacio-publico", "#8c871d", "sub"),
+    ("resumen", "#resumen", "#1f6fd6", "sub"),
+    ("participa", "#participa", "#3fae7a", ""),
 ]
-idx_items = idx_list = ""
-for num, h, c, sub in INDICE:
-    k = "indice-" + num
-    cls = " idx-sub" if sub else ""
-    idx_items += '<a class="idx-item%s" href="%s" style="--c:%s"><b>%s</b><span>%s</span></a>' % (cls, h, c, num, T.t(k, "titulo"))
-    idx_list += '<li class="%s"><a href="%s" style="--c:%s"><b>%s</b><span>%s<small>%s</small></span></a></li>' % (sub, h, c, num, T.t(k, "titulo"), T.t(k, "descripcion"))
+
+def indice(desde_historia=False):
+    """(tarjetas del hero, lista del panel). En la subpágina los enlaces a la portada llevan index.html."""
+    items = lista = ""
+    n = sub_n = 0
+    for k, h, c, sub in INDICE:
+        if sub:
+            sub_n += 1; num = "%d.%d" % (n, sub_n)
+        else:
+            n += 1; sub_n = 0; num = str(n)
+        if desde_historia and h.startswith("#"):
+            h = "index.html" + h
+        key = "indice-" + k
+        cls = " idx-sub" if sub else ""
+        items += '<a class="idx-item%s" href="%s" style="--c:%s"><b>%s</b><span>%s</span></a>' % (cls, h, c, num, T.t(key, "titulo"))
+        lista += '<li class="%s"><a href="%s" style="--c:%s"><b>%s</b><span>%s<small>%s</small></span></a></li>' % (sub, h, c, num, T.t(key, "titulo"), T.t(key, "descripcion"))
+    return items, lista
+
+idx_items, idx_list = indice()
+_, idx_list_hist = indice(True)
 
 FILTROS = '''<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
 <filter id="f-rosa"    color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.941  0 0 0 0 0.576  0 0 0 0 0.549  0 0 0 1 0"/></filter>
@@ -362,9 +384,9 @@ def hero():
     return ('<header class="hero" id="top" data-nav="light">'
             '<div class="hero-bg"></div><div class="hero-glow"></div>'
             '<p class="hs-eyebrow">%s</p><h1 class="hs-main-title">%s</h1><p class="hs-subtitle">%s</p>'
-            '<div class="hero-cta"><a class="btn btn-dark" href="#historia">%s</a></div>'
+            '<div class="hero-cta"><a class="btn btn-dark" href="#origen">%s</a><a class="btn btn-claro" href="historia.html">%s</a></div>'
             '<div class="idx-grid" aria-label="Índice">%s</div></header>'
-            % (T.t("portada", "eyebrow"), T.t("portada", "titulo"), T.t("portada", "subtitulo"), T.t("portada", "boton"), idx_items))
+            % (T.t("portada", "eyebrow"), T.t("portada", "titulo"), T.t("portada", "subtitulo"), T.t("portada", "boton"), T.t("portada", "boton2"), idx_items))
 
 def kfpair(id_, campo):
     partes = [x.strip() for x in T.raw(id_, campo).split("|", 1)]
@@ -394,6 +416,37 @@ def promesa():
                T.t("promesa-2", "etiqueta"), T.t("promesa-2", "titulo"),
                t1[0], t1[1], t2[0], t2[1], T.t("promesa-2", "puente"), T.t("promesa-2", "fuentes"), foto))
 
+def origen():
+    pasos = "".join("<li>%s</li>" % fmt(x) for x in T.lista("origen", "pasos"))
+    return ('<section class="s-origen" id="origen" data-nav="light"><div class="or-wrap">'
+            '<div class="or-text rv"><span class="s-tag">%s</span><h2 class="s-title">%s</h2>'
+            '<ol class="or-pasos" id="orPasos">%s</ol><p class="or-cierre">%s</p>'
+            '<a class="or-link" href="historia.html">%s</a></div>'
+            '<div class="or-map rv">%s'
+            '<div class="or-leyenda"><span><i class="l-rio"></i>Ríos</span><span><i class="l-infra"></i>Infraestructura (año de inauguración)</span>'
+            '<span><i class="l-dr"></i>Distritos de riego</span></div></div>'
+            '</div></section>'
+            % (T.t("origen", "etiqueta"), T.t("origen", "titulo"), pasos, T.t("origen", "cierre"), T.t("origen", "boton"),
+               rd("tools/fragmentos/origen_mapa.html")))
+
+def diagnostico():
+    return ('<section class="s-diag" id="diagnostico" data-nav="dark">%s'
+            '<div class="diag-head"><span class="s-tag">%s</span><h2>%s</h2></div></section>'
+            % (carousel("diagnostico", etiqueta="Fotos de diagnóstico"), T.t("diagnostico", "etiqueta"), T.t("diagnostico", "titulo")))
+
+LEMAS = {"limpio": ("img/calidad.jpg", "#f0938c"), "seguro": ("img/inundaciones.jpg", "#f78b62"),
+         "vivo": ("img/restauracion.jpg", "#cdd36a"), "todos": ("img/plan.jpg", "#d9b45c")}
+
+def lema(k):
+    id_ = "lema-" + k
+    fb, color = LEMAS[k]
+    fotos = fotos_de(id_)
+    bg = fotos[0][0] if fotos else fb
+    return ('<section class="s-lema" id="%s" data-nav="dark" style="--lema:%s"><div class="lema-in" style="background-image:url(%s)">'
+            '<div class="lema-txt rv"><span class="lema-tag">%s</span><h2 class="lema-h">%s</h2><p class="lema-p">%s</p></div>'
+            '<span class="lema-flecha">↓</span></div></section>'
+            % (id_, color, attr(bg).replace(" ", "%20"), T.t(id_, "etiqueta"), T.t(id_, "titulo"), T.t(id_, "texto")))
+
 def pie():
     return '<footer>%s<br>%s</footer>' % (T.t("sitio", "pie1"), T.t("sitio", "pie2"))
 
@@ -405,9 +458,9 @@ PLANTILLA = '''<!DOCTYPE html>
   <title>%(titulo)s</title>
   <meta name="description" content="%(descripcion)s" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/temas.css?v=7" />
-  <link rel="stylesheet" href="css/historia.css?v=7" />
-  <link rel="stylesheet" href="css/capitulos.css?v=7" />
+  <link rel="stylesheet" href="css/temas.css?v=8" />
+  <link rel="stylesheet" href="css/historia.css?v=8" />
+  <link rel="stylesheet" href="css/capitulos.css?v=8" />
   <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
@@ -415,7 +468,7 @@ PLANTILLA = '''<!DOCTYPE html>
 <div id="progress"></div>
 
 <nav id="main-nav">
-  <a class="nav-logo" href="#top">%(logo)s <span>%(logo_sub)s</span></a>
+  <a class="nav-logo" href="%(logo_href)s">%(logo)s <span>%(logo_sub)s</span></a>
   <div class="nav-right">
     <button class="nav-btn" id="idxBtn" type="button">%(boton_indice)s</button>
   </div>
@@ -430,45 +483,42 @@ PLANTILLA = '''<!DOCTYPE html>
 
 <div class="lightbox" id="lightbox"><button class="lightbox-close" type="button" aria-label="Cerrar">×</button><button class="lightbox-nav lightbox-prev" type="button" aria-label="Anterior">‹</button><img id="lightboxImg" alt=""><button class="lightbox-nav lightbox-next" type="button" aria-label="Siguiente">›</button><div class="lightbox-cap" id="lightboxCap"></div></div>
 
-%(hero)s
+%(contenido)s
 
-%(historia)s
-
-%(promesa)s
-
-%(hub)s
-
-%(calidad)s
-
-%(inund)s
-
-%(eco)s
-
-%(resumen)s
-
-%(participa)s
-
-%(pie)s
-
-<script src="js/sitio.js?v=7"></script>
+<script src="js/sitio.js?v=8"></script>
 </body>
 </html>
 '''
 
-def construir():
-    return PLANTILLA % dict(
+def comun(**extra):
+    d = dict(
         titulo=attr(T.raw("sitio", "titulo")), descripcion=attr(T.raw("sitio", "descripcion")),
         logo=T.t("sitio", "logo"), logo_sub=T.t("sitio", "logo_sub"), boton_indice=T.t("sitio", "boton_indice"),
-        titulo_indice=T.t("sitio", "titulo_indice"), aviso=T.t("sitio", "aviso"),
-        filtros=FILTROS, idx_list=idx_list, hero=hero(), historia=historia_section(), promesa=promesa(),
-        hub=hub, calidad=calidad, inund=inund, eco=eco, resumen=resumen(), participa=participa(), pie=pie())
+        titulo_indice=T.t("sitio", "titulo_indice"), aviso=T.t("sitio", "aviso"), filtros=FILTROS)
+    d.update(extra)
+    return d
+
+def construir():
+    contenido = "\n\n".join([
+        hero(), origen(), diagnostico(), promesa(), hub,
+        lema("limpio"), calidad, lema("seguro"), inund, lema("vivo"), eco, lema("todos"), espacio,
+        resumen(), participa(), pie()])
+    return PLANTILLA % comun(logo_href="#top", idx_list=idx_list, contenido=contenido)
+
+def construir_historia():
+    fin = ('<section class="hs-fin" data-nav="light"><a class="btn btn-dark" href="index.html#promesa">%s</a>'
+           '<a class="hs-volver" href="index.html">%s</a></section>' % (T.t("historia-intro", "boton"), T.t("historia-intro", "volver")))
+    return PLANTILLA % comun(titulo=attr("Historia del río Tula — " + T.raw("sitio", "titulo")), logo_href="index.html",
+                             idx_list=idx_list_hist, contenido=historia_section() + fin + pie())
 
 try:
     page = construir()
+    page_historia = construir_historia()
 except TextosError as e:
     sys.exit("\nERROR EN LOS TEXTOS: %s\n(index.html no se modificó.)\n" % e)
 
 open(os.path.join(ROOT, "index.html"), "w", encoding="utf-8").write(page)
+open(os.path.join(ROOT, "historia.html"), "w", encoding="utf-8").write(page_historia)
 
 # ─── LEEME de fotos ────────────────────────────────────────────────────────
 rows = "\n".join("| `img/fotos/%s/1_<pie de foto>.jpg` |" % s for s in SECCIONES_FOTOS)
