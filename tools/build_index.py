@@ -131,10 +131,18 @@ def step(cam, frame_, card_html, bub="", **kw):
         at += ' data-%s="%s"' % (k, v)
     return '<article class="step"%s>%s%s</article>' % (at, card_html, bub)
 
-def cap(id_, tema, banner, canvas_inner, steps, extra_stage=""):
+def banner_html(texto, num=None):
+    """'Un río más limpio | Calidad del agua' -> lema grande + frente chico (con el número del lema)."""
+    if "|" not in texto:
+        return '<div class="banner">%s</div>' % texto
+    a, b = [x.strip() for x in texto.split("|", 1)]
+    n = '<b class="bn">%s</b>' % num if num else ""
+    return '<div class="banner dos">%s<span class="bt"><strong>%s</strong><small>%s</small></span></div>' % (n, a, b)
+
+def cap(id_, tema, banner, canvas_inner, steps, extra_stage="", num=None):
     return ('<section class="cap tema-%s" id="%s" data-tema="%s" data-nav="light">'
-            '<div class="cap-stage"><div class="canvas">%s</div>%s<div class="banner">%s</div></div>'
-            '<div class="cap-steps">%s</div></section>' % (tema, id_, tema, canvas_inner, extra_stage, banner, "".join(steps)))
+            '<div class="cap-stage"><div class="canvas">%s</div>%s%s</div>'
+            '<div class="cap-steps">%s</div></section>' % (tema, id_, tema, canvas_inner, extra_stage, banner_html(banner, num), "".join(steps)))
 
 # ═══════════════════════════════════════════════════════════════════════════
 #  COORDENADAS (marco 16:9 de los renders; comparten cámara: int / base / acc)
@@ -209,7 +217,7 @@ calidad_steps = [
     step(".55,.47,1.25", "col", card("calidad-2"), carousel("calidad-2"), pins=""),
     step(".55,.46,1.05", "col", card("calidad-4"), carousel("calidad-4"), pins="boya atot"),
 ]
-calidad = cap("calidad", "rosa", T.t("calidad", "banner"), calidad_canvas, calidad_steps)
+calidad = cap("calidad", "rosa", T.raw("calidad", "banner"), calidad_canvas, calidad_steps, num=1)
 
 # ═══════════════════════════════════════════════════════════════════════════
 #  INUNDACIONES  (naranja) — marcos "int" y "col"
@@ -229,7 +237,7 @@ inund_steps = [
     step(".5,.44,1.6", "int", card("inundaciones-2"), carousel("inundaciones-2"), ov="tramo", pins="trescult rosas"),
     step(".55,.5,1.0", "col", card("inundaciones-3"), carousel("inundaciones-3")),
 ]
-inund = cap("inundaciones", "naranja", T.t("inundaciones", "banner"), inund_canvas, inund_steps)
+inund = cap("inundaciones", "naranja", T.raw("inundaciones", "banner"), inund_canvas, inund_steps, num=2)
 
 # ═══════════════════════════════════════════════════════════════════════════
 #  ECOSISTEMAS Y ESPACIO PÚBLICO (verde) — marcos "int", "base", "acc"
@@ -250,7 +258,7 @@ eco_steps = [
     step(".36,.24,1.6", "base", card("ecosistemas-3"), carousel("ecosistemas-3"), ov="rio", labels="anp parque"),
 
 ]
-eco = cap("ecosistemas", "verde", T.t("ecosistemas", "banner"), eco_canvas, eco_steps)
+eco = cap("ecosistemas", "verde", T.raw("ecosistemas", "banner"), eco_canvas, eco_steps, num=3)
 
 # Espacio público: capítulo propio ("Un río para todas y todos"). Cámara desplazada
 # hacia arriba para que Bojay (cerca del borde superior de la imagen) no se corte;
@@ -260,7 +268,7 @@ ep_steps = [
          carousel("ecosistemas-4"),
          ov="bojay trescult rosas sanlorenzo chamizal", pins="bojay trescult rosas sanlorenzo chamizal"),
 ]
-espacio = cap("espacio-publico", "verde", T.t("espacio-publico", "banner"), eco_canvas, ep_steps)
+espacio = cap("espacio-publico", "verde", T.raw("espacio-publico", "banner"), eco_canvas, ep_steps, num=4)
 
 # ═══════════════════════════════════════════════════════════════════════════
 #  RESUMEN (mapa con las 5 metas; se resalta la que está en foco)
@@ -403,8 +411,8 @@ def hero():
             '<div class="hero-bg"></div><div class="hero-glow"></div>'
             '<p class="hs-eyebrow">%s</p><h1 class="hs-main-title">%s</h1><p class="hs-subtitle">%s</p>'
             '<div class="hero-cta"><a class="btn btn-dark" href="#origen">%s</a><a class="btn btn-claro" href="historia.html">%s</a></div>'
-            '<div class="idx-grid" aria-label="Índice">%s</div></header>'
-            % (T.t("portada", "eyebrow"), T.t("portada", "titulo"), T.t("portada", "subtitulo"), T.t("portada", "boton"), T.t("portada", "boton2"), idx_items))
+            '</header>'
+            % (T.t("portada", "eyebrow"), T.t("portada", "titulo"), T.t("portada", "subtitulo"), T.t("portada", "boton"), T.t("portada", "boton2")))
 
 def kfpair(id_, campo):
     partes = [x.strip() for x in T.raw(id_, campo).split("|", 1)]
@@ -418,41 +426,51 @@ def promesa():
     return ('<section class="s-promesa" id="promesa" data-nav="light" '
             'style="background-image:url(img/mapa/historia-final.webp)">'
             '<div class="pm-scrim"></div><div class="pm-fade"></div>'
-            '<div class="pm-grid">'
-            '<div class="pm-text rv">'
+            '<div class="pm-grid"><div class="pm-text rv">'
             '<p class="pm-kicker">%s</p>'
             '<div class="pm-92-row"><div class="pm-92">92</div><div><h2 class="pm-h">%s</h2><p class="pm-h-sub">%s</p></div></div>'
-            '<p class="pm-sub">%s</p>'
-            '<div class="pm-divider"></div>'
-            '<p class="pm-kicker">%s</p><h3 class="pm-h2">%s</h3>'
-            '<div class="nums"><div class="n"><b>%s</b><span>%s</span></div><div class="n"><b>%s</b><span>%s</span></div></div>'
+            '<p class="pm-kicker pm-k2">%s</p>'
+            '<div class="nums"><div class="n"><b class="cnt">%s</b><span>%s</span></div><div class="n"><b class="cnt">%s</b><span>%s</span></div></div>'
             '<p class="pm-puente">%s<span>↓</span></p><p class="pm-fuentes">%s</p>'
-            '</div>'
-            '<div class="pm-photo">%s</div>'
-            '</div></section>'
-            % (T.t("promesa-1", "etiqueta"), T.t("promesa-1", "titulo"), T.t("promesa-1", "titulo2"), T.t("promesa-1", "texto"),
-               T.t("promesa-2", "etiqueta"), T.t("promesa-2", "titulo"),
+            '</div><div class="pm-photo">%s</div></div></section>'
+            % (T.t("promesa-1", "etiqueta"), T.t("promesa-1", "titulo"), T.t("promesa-1", "titulo2"), T.t("promesa-2", "etiqueta"),
                t1[0], t1[1], t2[0], t2[1], T.t("promesa-2", "puente"), T.t("promesa-2", "fuentes"), foto))
 
+AV_ICONOS = [
+    '<path d="M12 3C16 9 19 12 19 15.5A7 7 0 0 1 5 15.5C5 12 8 9 12 3Z"/>',
+    '<circle cx="11" cy="11" r="6"/><path d="M16 16l5 5"/>',
+    '<path d="M3 8h11a4 4 0 0 1 4 4v8"/><path d="M3 13h6a4 4 0 0 1 4 4v3"/>',
+    '<path d="M3 9q3-4 6 0t6 0t6 0M3 15q3-4 6 0t6 0t6 0"/>',
+    '<circle cx="12" cy="12" r="2"/><path d="M7.5 7.5a6 6 0 0 0 0 9M16.5 7.5a6 6 0 0 1 0 9M4.5 4.5a10 10 0 0 0 0 15M19.5 4.5a10 10 0 0 1 0 15"/>',
+    '<path d="M12 21v-6M12 15c-4 0-6-3-5-6 0-2 2-4 5-4s5 2 5 4c1 3-1 6-5 6z"/>',
+    '<path d="M5 19C5 9 10 5 20 4c0 10-4 15-14 15zM5 19l8-8"/>',
+]
+
 def origen():
+    pasos = "".join("<li>%s</li>" % fmt(x) for x in T.lista("origen", "pasos"))
     return ('<section class="s-origen" id="origen" data-nav="light">'
-            '<div class="or-top rv"><span class="s-tag">%s</span><h2 class="s-title">%s</h2><p class="or-baj">%s</p></div>'
-            '<div class="or-tabs" role="tablist"><button class="or-tab on" type="button" data-tab="sk">%s</button>'
-            '<button class="or-tab" type="button" data-tab="mp">%s</button></div>'
-            '<div class="or-pane on rv" data-pane="sk">%s%s<p class="or-nota">%s</p></div>'
-            '<div class="or-pane" data-pane="mp"><div class="or-map">%s'
-            '<div class="or-leyenda"><span><i class="l-rio"></i>Ríos</span><span><i class="l-infra"></i>Infraestructura (año de inauguración)</span>'
-            '<span><i class="l-dr"></i>Distritos de riego</span></div></div></div>'
-            '<div class="or-pie"><p class="or-cierre">%s</p><a class="or-link" href="historia.html">%s</a></div>'
+            '<div class="or-top rv"><span class="s-tag">%s</span><h2 class="s-title">%s</h2></div>'
+            '<div class="or-tabs" role="tablist"><button class="or-tab on" type="button" data-tab="mp">%s</button>'
+            '<button class="or-tab" type="button" data-tab="sk">%s</button></div>'
+            '<div class="or-pane on" data-pane="mp"><div class="or-wrap"><ol class="or-pasos" id="orPasos">%s</ol>'
+            '<div class="or-map">%s<div class="or-leyenda"><span><i class="l-rio"></i>Ríos</span><span><i class="l-infra"></i>Infraestructura (año de inauguración)</span>'
+            '<span><i class="l-dr"></i>Distritos de riego</span></div></div></div></div>'
+            '<div class="or-pane" data-pane="sk"><p class="or-baj">%s</p>%s%s<p class="or-nota">%s</p></div>'
+            '<div class="or-pie"><p class="or-cierre">%s</p><a class="or-btn" href="historia.html">%s</a></div>'
             '</section>'
-            % (T.t("origen", "etiqueta"), T.t("origen", "titulo"), T.t("origen", "bajada"), T.t("origen", "tab1"), T.t("origen", "tab2"),
-               sankey.svg(), sankey.leyenda(), T.t("origen", "nota"), rd("tools/fragmentos/origen_mapa.html"),
+            % (T.t("origen", "etiqueta"), T.t("origen", "titulo"), T.t("origen", "tab1"), T.t("origen", "tab2"), pasos,
+               rd("tools/fragmentos/origen_mapa.html"), T.t("origen", "bajada"), sankey.svg(), sankey.leyenda(), T.t("origen", "nota"),
                T.t("origen", "cierre"), T.t("origen", "boton")))
 
 def avance():
-    hechos = "".join('<div class="av-h"><b>%s</b><span>%s</span></div>' % kfpair("avance", "hecho%d" % i) for i in range(1, 8))
-    return ('<section class="s-avance" id="avance" data-nav="light"><div class="av-in rv"><span class="s-tag">%s</span>'
-            '<h2 class="s-title">%s</h2><div class="av-grid">%s</div></div></section>'
+    hechos = ""
+    for i in range(1, 8):
+        n, txt = kfpair("avance", "hecho%d" % i)
+        hechos += ('<div class="av-h"><span class="av-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" '
+                   'stroke-linecap="round" stroke-linejoin="round">%s</svg></span><b class="cnt">%s</b><span class="av-t">%s</span></div>' % (AV_ICONOS[i - 1], n, txt))
+    hechos += '<a class="av-h av-cta" href="#proyecto"><span>%s</span></a>' % T.t("avance", "siguiente")
+    return ('<section class="s-avance" id="avance" data-nav="light"><div class="av-in"><div class="rv"><span class="s-tag"><i class="av-live"></i>%s</span>'
+            '<h2 class="s-title">%s</h2></div><div class="av-grid">%s</div></div></section>'
             % (T.t("avance", "etiqueta"), T.t("avance", "titulo"), hechos))
 
 def diagnostico():
@@ -466,9 +484,10 @@ LEMAS = {"limpio": ("img/calidad.jpg", "#f0938c"), "seguro": ("img/inundaciones.
 RAIL_COLORES = {"limpio": "#e0665c", "seguro": "#e8743a", "vivo": "#8c871d", "todos": "#b8892a"}
 
 def rail():
-    """Guía fija a la izquierda: los cuatro lemas como puntos sobre una línea (aparecen juntos, se abren y resaltan el actual)."""
-    its = "".join('<a class="lr-i" href="#lema-%s" data-k="%s" style="--c:%s;--t:%d%%"><i class="lr-dot"></i><span class="lr-lab">%s</span></a>'
-                  % (k, k, RAIL_COLORES[k], n * 25, T.t("lema-" + k, "titulo")) for n, k in enumerate(LEMAS))
+    """Guía fija a la izquierda: los cuatro lemas como puntos numerados sobre una línea (aparecen juntos, se abren y resaltan el actual)."""
+    its = "".join('<a class="lr-i" href="#lema-%s" data-k="%s" data-t="%s" aria-label="%s" style="--c:%s;--t:%d%%"><i class="lr-dot">%d</i></a>'
+                  % (k, k, attr(T.raw("lema-" + k, "titulo")), attr(T.raw("lema-" + k, "titulo")), RAIL_COLORES[k], n * 25, n + 1)
+                  for n, k in enumerate(LEMAS))
     return '<nav class="lr" id="lemaRail" aria-label="Los cuatro lemas del proyecto"><span class="lr-line"><b id="lrFill"></b></span>%s</nav>' % its
 
 def lema(k):
@@ -492,9 +511,9 @@ PLANTILLA = '''<!DOCTYPE html>
   <title>%(titulo)s</title>
   <meta name="description" content="%(descripcion)s" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/temas.css?v=9" />
-  <link rel="stylesheet" href="css/historia.css?v=9" />
-  <link rel="stylesheet" href="css/capitulos.css?v=9" />
+  <link rel="stylesheet" href="css/temas.css?v=10" />
+  <link rel="stylesheet" href="css/historia.css?v=10" />
+  <link rel="stylesheet" href="css/capitulos.css?v=10" />
   <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
@@ -504,6 +523,7 @@ PLANTILLA = '''<!DOCTYPE html>
 <nav id="main-nav">
   <a class="nav-logo" href="%(logo_href)s">%(logo)s <span>%(logo_sub)s</span></a>
   <div class="nav-right">
+    <a class="nav-btn nav-link" href="%(nav_href)s">%(nav_texto)s</a>
     <button class="nav-btn" id="idxBtn" type="button">%(boton_indice)s</button>
   </div>
 </nav>
@@ -519,7 +539,7 @@ PLANTILLA = '''<!DOCTYPE html>
 
 %(contenido)s
 
-<script src="js/sitio.js?v=9"></script>
+<script src="js/sitio.js?v=10"></script>
 </body>
 </html>
 '''
@@ -537,12 +557,14 @@ def construir():
         rail(), hero(), origen(), diagnostico(), promesa(), avance(), hub,
         lema("limpio"), calidad, lema("seguro"), inund, lema("vivo"), eco, lema("todos"), espacio,
         resumen(), participa(), pie()])
-    return PLANTILLA % comun(logo_href="#top", idx_list=idx_list, contenido=contenido)
+    return PLANTILLA % comun(logo_href="#top", idx_list=idx_list, contenido=contenido,
+                             nav_href="historia.html", nav_texto=T.t("sitio", "boton_historia"))
 
 def construir_historia():
     fin = ('<section class="hs-fin" data-nav="light"><a class="btn btn-dark" href="index.html#promesa">%s</a>'
            '<a class="hs-volver" href="index.html">%s</a></section>' % (T.t("historia-intro", "boton"), T.t("historia-intro", "volver")))
     return PLANTILLA % comun(titulo=attr("Historia del río Tula — " + T.raw("sitio", "titulo")), logo_href="index.html",
+                             nav_href="index.html", nav_texto=T.t("sitio", "boton_proyecto"),
                              idx_list=idx_list_hist, contenido=historia_section() + fin + pie())
 
 try:

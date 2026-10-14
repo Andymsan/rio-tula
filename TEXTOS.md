@@ -43,6 +43,8 @@ descripcion: El proyecto para sanear y restaurar el río Tula: un río más limp
 logo: Río Tula
 logo_sub: / Proyecto 2024–2030
 boton_indice: ☰ Índice
+boton_historia: La historia
+boton_proyecto: El proyecto
 titulo_indice: Índice
 aviso: Borrador · las fotos son marcadores
 pie1: Secretaría de Medio Ambiente y Recursos Naturales · Pproyecto de Saneamiento y Restauración del Río Tula 2024–2030
@@ -93,15 +95,16 @@ descripcion: Cómo sumarte al proyecto
 
 ---
 
-## origen  (introducción: De dónde viene el agua del río Tula — SOLO una frase; el protagonista es el diagrama)
+## origen  (introducción: De dónde viene el agua del río Tula — primero el mapa; el diagrama de caudales va en la segunda pestaña)
 etiqueta: Introducción
 titulo: De dónde viene el agua del río Tula
+pasos: El río Tula recibe el drenaje y la lluvia del Valle de México por cuatro vías: el **Túnel Emisor Central**, el **Túnel Emisor Oriente**, el **río El Salto** (Tajo de Nochistongo) y el **Gran Canal**. | Toda esta agua se junta en el **Portal de Salida** y de ahí va a la **PTAR Atotonilco** o directo al río. La planta envía una parte del agua tratada a los **distritos de riego** del Valle del Mezquital y regresa el resto al río. | Río abajo, el Tula recibe a los ríos **Tepeji, Tlautla y Rosas** y el drenaje de la zona metropolitana de Tula, y termina en la **presa Endhó**, donde se almacena para riego.
 bajada: El drenaje del Valle de México llega al Portal de Salida: ==casi toda se trata en Atotonilco y la mayor parte va a riego.==
-tab1: Caudales y calidad
-tab2: Mapa
+tab1: Mapa
+tab2: Caudales y calidad
 nota: Caudal en m³/s. El color indica la contaminación del agua (DBO, en mg/L): entre menos, mejor.
-cierre: Esto ha causado contaminación, riesgo de inundación y degradación ambiental. ==Eso es lo que estamos atendiendo.==
-boton: Conoce la historia del río →
+cierre: Esta infraestructura ha generado contaminación, riesgo de inundación y degradación ambiental. ==Eso es lo que estamos atendiendo.==
+boton: Conocer la historia del río →
 
 ## diagnostico  (fotos de diagnóstico, pantalla completa; carpeta img/fotos/diagnostico/)
 etiqueta: Diagnóstico
@@ -204,15 +207,13 @@ linea: 2024
 etiqueta: Compromiso presidencial 92
 titulo: Limpiar y sanear *los tres ríos más contaminados* del país
 titulo2: El río Tula, Atoyac y Lerma Santiago.
-texto: Inicia uno de los proyectos ambientales más ambiciosos del país.
 fotos: Presidenta Claudia Sheinbaum Pardo en la toma de protesta - 1 de octubre de 2024
 
 ## promesa-2  (Compromiso 92, la inversión)
 etiqueta: La inversión
-titulo: Recursos para el proyecto del río Tula
-tarjeta1: $1,478 MDP | de inversión documentada en el río Tula en 2025 y 2026, entre Conagua, Semarnat, Conafor, Conanp y el Gobierno de Hidalgo.
-tarjeta2: +20 mil millones | de pesos destinados durante el sexenio para el saneamiento de los tres ríos prioritarios: Lerma-Santiago, Tula y Atoyac.
-puente: Descubre qué se está haciendo en el río Tula.
+tarjeta1: $1,478 MDP | invertidos en el río Tula en 2025 y 2026
+tarjeta2: +$20,000 MDP | en el sexenio para sanear los tres ríos
+puente: Esto es lo que ya está pasando
 fuentes: Fuentes: [Contralínea (16 jul 2026)](https://contralinea.com.mx/interno/semana/gobierno-invertira-mas-de-20-mil-mdp-para-sanear-los-rios-lerma-santiago-tula-y-atoyac/) · [Ámbito](https://www.ambito.com/mexico/informacion-general/claudia-sheinbaum-ordena-limpiar-los-tres-rios-mas-contaminados-mexico-cuales-son-y-como-se-hara-este-historico-saneamiento-n6300195) · base de proyectos 2025–2026.
 
 ---
@@ -227,6 +228,7 @@ hecho4: 3.9 km | de río desazolvado
 hecho5: 21 | estaciones de caudal instaladas
 hecho6: 1,900 | árboles saneados o plantados en las riberas
 hecho7: 1,700 ha | certificadas para conservación
+siguiente: Conoce cada proyecto ↓
 
 ## proyecto  (El proyecto: los tres hexágonos)
 banner: El proyecto
@@ -249,7 +251,7 @@ chips: Semarnat | Conagua | Profepa | Conafor | Conanp |  Gobierno de Hidalgo
 ---
 
 ## calidad  (capítulo 1)
-banner: Calidad del agua
+banner: Un río más limpio | Calidad del agua
 
 ## calidad-0  (introducción)
 etiqueta: Frente 1 · Calidad del agua
@@ -298,7 +300,7 @@ fotos: Estación automática de calidad | Muestreo manual
 ---
 
 ## inundaciones  (capítulo 2)
-banner: Gestión de inundaciones
+banner: Un río más seguro | Inundaciones
 
 ## inundaciones-0  (introducción — muy delicada, revisar con cuidado)
 etiqueta: Frente 2 · Inundaciones
@@ -340,10 +342,10 @@ fotos: Estación de monitoreo de caudal
 ---
 
 ## ecosistemas  (capítulo 3)
-banner: Ecosistemas y espacio público
+banner: Un río más vivo | Ecosistemas
 
 ## espacio-publico  (capítulo 4: dentro del lema "Un río para todas y todos")
-banner: Un río para todas y todos
+banner: Un río para todas y todos | Espacio público
 
 ## ecosistemas-0  (introducción)
 etiqueta: Frente 3 · Ecosistemas

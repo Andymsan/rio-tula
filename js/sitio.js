@@ -313,17 +313,24 @@
     document.addEventListener('ampliar', e => open(e.detail.track, e.detail.index));
   }
 
-  /* ── Introducción: pestañas (caudales / mapa), tooltip del Sankey y letra constante del mapa ── */
+  /* ── Introducción: pestañas (mapa / caudales), resalte por paso, tooltip del Sankey y letra constante del mapa ── */
   function initOrigen() {
     const svg = $('#omap'); if (!svg) return;
     const vb = svg.viewBox.baseVal;
     const fit = () => { const k = Math.min(svg.clientWidth / vb.width, svg.clientHeight / vb.height) || 1; svg.style.setProperty('--fs', (11.5 / k).toFixed(3)); };
-    addEventListener('resize', fit);
+    fit(); addEventListener('resize', fit);
     $$('.or-tab').forEach(b => b.addEventListener('click', () => {
       $$('.or-tab').forEach(x => x.classList.toggle('on', x === b));
       $$('.or-pane').forEach(p => p.classList.toggle('on', p.dataset.pane === b.dataset.tab));
       fit();
     }));
+    const ks = [['tec', 'teo', 'salto', 'canal'], ['portal', 'ptar', 'dr'], ['rios', 'presa', 'tula', 'endho']];
+    const offMapa = () => { svg.classList.remove('hl'); $$('[data-k].is, #orPasos li.is').forEach(el => el.classList.remove('is')); };
+    $$('#orPasos li').forEach((li, i) => {
+      const on = () => { offMapa(); svg.classList.add('hl'); li.classList.add('is'); $$('[data-k]', svg).forEach(el => el.classList.toggle('is', (ks[i] || []).includes(el.dataset.k))); };
+      li.addEventListener('mouseenter', on); li.addEventListener('mouseleave', offMapa);
+      li.addEventListener('click', () => (li.classList.contains('is') ? offMapa() : on()));
+    });
     const sk = $('#sankey'); if (!sk) return;
     const tip = document.createElement('div'); tip.className = 'sk-tip'; document.body.append(tip);
     const off = () => { tip.classList.remove('on'); sk.classList.remove('dim'); $$('.sk-l.hv', sk).forEach(p => p.classList.remove('hv')); };
@@ -362,6 +369,22 @@
     upd();
   }
 
+  /* ── Números que cuentan hacia arriba al entrar en pantalla ── */
+  function initContadores() {
+    const els = $$('.cnt'); if (!els.length || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const obs = new IntersectionObserver(es => es.forEach(e => {
+      if (!e.isIntersecting) return;
+      obs.unobserve(e.target);
+      const el = e.target, m = el.textContent.match(/^(\D*?)(\d[\d,]*\.?\d*)(.*)$/);
+      if (!m) return;
+      const dec = (m[2].split('.')[1] || '').length, coma = m[2].includes(','), fin = parseFloat(m[2].replace(/,/g, '')), t0 = performance.now(), dur = 1300;
+      const fmt = v => { let s = v.toFixed(dec); if (coma) { const [a, b] = s.split('.'); s = a.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + (b ? '.' + b : ''); } return s; };
+      const tick = now => { const k = Math.min(1, (now - t0) / dur), v = fin * (1 - Math.pow(1 - k, 3)); el.textContent = m[1] + fmt(v) + m[3]; if (k < 1) requestAnimationFrame(tick); };
+      requestAnimationFrame(tick);
+    }), { threshold: 0.6 });
+    els.forEach(el => obs.observe(el));
+  }
+
   /* ── Arranque ─────────────────────────────────────────────────────── */
   function boot() {
     buildNavObs(); buildStepObs();
@@ -371,6 +394,7 @@
     initResumen();
     initOrigen();
     initRail();
+    initContadores();
     initLightbox();
   }
   let rz;
