@@ -313,19 +313,53 @@
     document.addEventListener('ampliar', e => open(e.detail.track, e.detail.index));
   }
 
-  /* ── Introducción: mapa de afluentes (tamaño de letra constante y resalte al pasar por cada paso) ── */
+  /* ── Introducción: pestañas (caudales / mapa), tooltip del Sankey y letra constante del mapa ── */
   function initOrigen() {
     const svg = $('#omap'); if (!svg) return;
     const vb = svg.viewBox.baseVal;
     const fit = () => { const k = Math.min(svg.clientWidth / vb.width, svg.clientHeight / vb.height) || 1; svg.style.setProperty('--fs', (11.5 / k).toFixed(3)); };
-    fit(); addEventListener('resize', fit);
-    const ks = [['tec', 'teo', 'salto', 'canal'], ['portal', 'ptar', 'dr'], ['rios', 'presa', 'tula', 'endho']];
-    const off = () => { svg.classList.remove('hl'); $$('[data-k].is, #orPasos li.is').forEach(el => el.classList.remove('is')); };
-    $$('#orPasos li').forEach((li, i) => {
-      const on = () => { off(); svg.classList.add('hl'); li.classList.add('is'); $$('[data-k]', svg).forEach(el => el.classList.toggle('is', (ks[i] || []).includes(el.dataset.k))); };
-      li.addEventListener('mouseenter', on); li.addEventListener('mouseleave', off);
-      li.addEventListener('click', () => (li.classList.contains('is') ? off() : on()));
+    addEventListener('resize', fit);
+    $$('.or-tab').forEach(b => b.addEventListener('click', () => {
+      $$('.or-tab').forEach(x => x.classList.toggle('on', x === b));
+      $$('.or-pane').forEach(p => p.classList.toggle('on', p.dataset.pane === b.dataset.tab));
+      fit();
+    }));
+    const sk = $('#sankey'); if (!sk) return;
+    const tip = document.createElement('div'); tip.className = 'sk-tip'; document.body.append(tip);
+    const off = () => { tip.classList.remove('on'); sk.classList.remove('dim'); $$('.sk-l.hv', sk).forEach(p => p.classList.remove('hv')); };
+    $$('.sk-l', sk).forEach(p => {
+      const show = e => {
+        const [a, q, d] = p.dataset.tip.split('|');
+        tip.innerHTML = '<b>' + a + '</b><br>' + q + ' · ' + d;
+        tip.style.left = Math.min(e.clientX + 14, innerWidth - 230) + 'px'; tip.style.top = (e.clientY + 14) + 'px';
+        tip.classList.add('on'); sk.classList.add('dim'); $$('.sk-l.hv', sk).forEach(x => x.classList.remove('hv')); p.classList.add('hv');
+      };
+      p.addEventListener('mousemove', show); p.addEventListener('click', show); p.addEventListener('mouseleave', off);
     });
+    addEventListener('scroll', off, { passive: true });
+  }
+
+  /* ── Guía lateral de los cuatro lemas: aparece junta, se abre y resalta el lema actual ── */
+  function initRail() {
+    const rail = $('#lemaRail'); if (!rail) return;
+    const ks = ['limpio', 'seguro', 'vivo', 'todos'], lemas = ks.map(k => $('#lema-' + k)), fin = $('#resumen');
+    const items = $$('.lr-i', rail), fill = $('#lrFill');
+    let tick = false, timer = 0;
+    function upd() {
+      tick = false;
+      const vh = innerHeight, first = lemas[0].getBoundingClientRect().top, end = fin ? fin.getBoundingClientRect().top : Infinity;
+      const vis = first < vh * 0.55 && end > vh * 0.45;
+      if (vis && !rail.classList.contains('show')) { rail.classList.add('show'); clearTimeout(timer); timer = setTimeout(() => rail.classList.add('spread'), 520); }
+      if (!vis) { clearTimeout(timer); rail.classList.remove('show', 'spread'); }
+      let act = -1;
+      lemas.forEach((l, i) => { if (l.getBoundingClientRect().top <= vh * 0.5) act = i; });
+      items.forEach((it, i) => { it.classList.toggle('on', i === act); it.classList.toggle('past', i < act); });
+      if (act >= 0) { rail.style.setProperty('--lc', items[act].style.getPropertyValue('--c')); fill.style.height = Math.max(0, 5 + act * 0.2325 * rail.clientHeight) + 'px'; }
+      else fill.style.height = '0';
+    }
+    addEventListener('scroll', () => { if (!tick) { tick = true; requestAnimationFrame(upd); } }, { passive: true });
+    addEventListener('resize', upd);
+    upd();
   }
 
   /* ── Arranque ─────────────────────────────────────────────────────── */
@@ -336,6 +370,7 @@
     $$('[data-carousel]').forEach(initCarousel);
     initResumen();
     initOrigen();
+    initRail();
     initLightbox();
   }
   let rz;

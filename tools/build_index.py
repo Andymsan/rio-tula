@@ -16,6 +16,7 @@ import os, re, sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from textos import Textos, TextosError, fmt, attr
+import sankey
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FOTOS_DIR = os.path.join(ROOT, "img", "fotos")
@@ -87,8 +88,17 @@ def carousel(id_=None, extra=None, etiqueta="Fotos del proyecto"):
             '<button class="bu-btn bu-next" type="button" aria-label="Siguiente">›</button></div>'
             % (etiqueta, "".join(slides)))
 
+ESTADOS = {"terminado": "Terminado", "obra": "En obra", "licitacion": "En licitación", "curso": "En marcha", "planeacion": "En planeación"}
+
 def card(id_):
-    h = '<div class="card"><div class="tag">%s</div><h3>%s</h3>' % (T.t(id_, "etiqueta"), T.t(id_, "titulo"))
+    h = '<div class="card"><div class="tag">%s</div>' % T.t(id_, "etiqueta")
+    est = T.raw(id_, "estado", requerido=False)
+    if est:
+        partes = [x.strip() for x in est.split("|", 1)]
+        if len(partes) != 2 or partes[0] not in ESTADOS:
+            raise TextosError('En "## %s", "estado:" debe ser "tipo | texto" con tipo = %s.' % (id_, ", ".join(ESTADOS)))
+        h += '<div class="estado e-%s"><i></i><b>%s</b><span>· %s</span></div>' % (partes[0], ESTADOS[partes[0]], fmt(partes[1]))
+    h += '<h3>%s</h3>' % T.t(id_, "titulo")
     for campo in ("texto", "texto2", "texto3"):
         v = T.t(id_, campo, requerido=(campo == "texto"))
         if v:
@@ -99,6 +109,14 @@ def card(id_):
         if len(partes) != 2:
             raise TextosError('En "## %s", el campo "cifra:" debe ser "número | explicación".' % id_)
         h += '<div class="kf"><b>%s</b><span>%s</span></div>' % (fmt(partes[0]), fmt(partes[1]))
+    av = T.raw(id_, "avance", requerido=False)
+    if av:
+        n = [x.strip() for x in av.split("|")]
+        if len(n) != 4:
+            raise TextosError('En "## %s", "avance:" debe ser "terminado | en obra | en planeación | unidad".' % id_)
+        h += ('<div class="avance"><div class="av-bar"><i class="a1" style="flex:%s"></i><i class="a2" style="flex:%s"></i><i class="a3" style="flex:%s"></i></div>'
+              '<div class="av-leg"><span class="a1">%s %s terminado</span><span class="a2">%s %s en obra</span><span class="a3">%s %s en planeación</span></div></div>'
+              % (n[0], n[1], n[2], n[0], n[3], n[1], n[3], n[2], n[3]))
     chips = T.lista(id_, "chips", requerido=False)
     if chips:
         h += '<ul class="facts">%s</ul>' % "".join("<li>%s</li>" % fmt(c) for c in chips)
@@ -417,17 +435,25 @@ def promesa():
                t1[0], t1[1], t2[0], t2[1], T.t("promesa-2", "puente"), T.t("promesa-2", "fuentes"), foto))
 
 def origen():
-    pasos = "".join("<li>%s</li>" % fmt(x) for x in T.lista("origen", "pasos"))
-    return ('<section class="s-origen" id="origen" data-nav="light"><div class="or-wrap">'
-            '<div class="or-text rv"><span class="s-tag">%s</span><h2 class="s-title">%s</h2>'
-            '<ol class="or-pasos" id="orPasos">%s</ol><p class="or-cierre">%s</p>'
-            '<a class="or-link" href="historia.html">%s</a></div>'
-            '<div class="or-map rv">%s'
+    return ('<section class="s-origen" id="origen" data-nav="light">'
+            '<div class="or-top rv"><span class="s-tag">%s</span><h2 class="s-title">%s</h2><p class="or-baj">%s</p></div>'
+            '<div class="or-tabs" role="tablist"><button class="or-tab on" type="button" data-tab="sk">%s</button>'
+            '<button class="or-tab" type="button" data-tab="mp">%s</button></div>'
+            '<div class="or-pane on rv" data-pane="sk">%s%s<p class="or-nota">%s</p></div>'
+            '<div class="or-pane" data-pane="mp"><div class="or-map">%s'
             '<div class="or-leyenda"><span><i class="l-rio"></i>Ríos</span><span><i class="l-infra"></i>Infraestructura (año de inauguración)</span>'
-            '<span><i class="l-dr"></i>Distritos de riego</span></div></div>'
-            '</div></section>'
-            % (T.t("origen", "etiqueta"), T.t("origen", "titulo"), pasos, T.t("origen", "cierre"), T.t("origen", "boton"),
-               rd("tools/fragmentos/origen_mapa.html")))
+            '<span><i class="l-dr"></i>Distritos de riego</span></div></div></div>'
+            '<div class="or-pie"><p class="or-cierre">%s</p><a class="or-link" href="historia.html">%s</a></div>'
+            '</section>'
+            % (T.t("origen", "etiqueta"), T.t("origen", "titulo"), T.t("origen", "bajada"), T.t("origen", "tab1"), T.t("origen", "tab2"),
+               sankey.svg(), sankey.leyenda(), T.t("origen", "nota"), rd("tools/fragmentos/origen_mapa.html"),
+               T.t("origen", "cierre"), T.t("origen", "boton")))
+
+def avance():
+    hechos = "".join('<div class="av-h"><b>%s</b><span>%s</span></div>' % kfpair("avance", "hecho%d" % i) for i in range(1, 8))
+    return ('<section class="s-avance" id="avance" data-nav="light"><div class="av-in rv"><span class="s-tag">%s</span>'
+            '<h2 class="s-title">%s</h2><div class="av-grid">%s</div></div></section>'
+            % (T.t("avance", "etiqueta"), T.t("avance", "titulo"), hechos))
 
 def diagnostico():
     return ('<section class="s-diag" id="diagnostico" data-nav="dark">%s'
@@ -436,6 +462,14 @@ def diagnostico():
 
 LEMAS = {"limpio": ("img/calidad.jpg", "#f0938c"), "seguro": ("img/inundaciones.jpg", "#f78b62"),
          "vivo": ("img/restauracion.jpg", "#cdd36a"), "todos": ("img/plan.jpg", "#d9b45c")}
+
+RAIL_COLORES = {"limpio": "#e0665c", "seguro": "#e8743a", "vivo": "#8c871d", "todos": "#b8892a"}
+
+def rail():
+    """Guía fija a la izquierda: los cuatro lemas como puntos sobre una línea (aparecen juntos, se abren y resaltan el actual)."""
+    its = "".join('<a class="lr-i" href="#lema-%s" data-k="%s" style="--c:%s;--t:%d%%"><i class="lr-dot"></i><span class="lr-lab">%s</span></a>'
+                  % (k, k, RAIL_COLORES[k], n * 25, T.t("lema-" + k, "titulo")) for n, k in enumerate(LEMAS))
+    return '<nav class="lr" id="lemaRail" aria-label="Los cuatro lemas del proyecto"><span class="lr-line"><b id="lrFill"></b></span>%s</nav>' % its
 
 def lema(k):
     id_ = "lema-" + k
@@ -458,9 +492,9 @@ PLANTILLA = '''<!DOCTYPE html>
   <title>%(titulo)s</title>
   <meta name="description" content="%(descripcion)s" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/temas.css?v=8" />
-  <link rel="stylesheet" href="css/historia.css?v=8" />
-  <link rel="stylesheet" href="css/capitulos.css?v=8" />
+  <link rel="stylesheet" href="css/temas.css?v=9" />
+  <link rel="stylesheet" href="css/historia.css?v=9" />
+  <link rel="stylesheet" href="css/capitulos.css?v=9" />
   <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
@@ -485,7 +519,7 @@ PLANTILLA = '''<!DOCTYPE html>
 
 %(contenido)s
 
-<script src="js/sitio.js?v=8"></script>
+<script src="js/sitio.js?v=9"></script>
 </body>
 </html>
 '''
@@ -500,7 +534,7 @@ def comun(**extra):
 
 def construir():
     contenido = "\n\n".join([
-        hero(), origen(), diagnostico(), promesa(), hub,
+        rail(), hero(), origen(), diagnostico(), promesa(), avance(), hub,
         lema("limpio"), calidad, lema("seguro"), inund, lema("vivo"), eco, lema("todos"), espacio,
         resumen(), participa(), pie()])
     return PLANTILLA % comun(logo_href="#top", idx_list=idx_list, contenido=contenido)

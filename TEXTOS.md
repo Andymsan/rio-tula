@@ -81,7 +81,7 @@ descripcion: Riberas, laguna de Bojay y bosques
 
 ## indice-todos  (subíndice: Un río para todas y todos)
 titulo: Un río para todas y todos
-descripcion: Cinco lugares para reconectar con el río
+descripcion: Espacio público: cinco lugares para reconectar con el río
 
 ## indice-resumen  (subíndice: Resumen)
 titulo: Resumen
@@ -93,11 +93,14 @@ descripcion: Cómo sumarte al proyecto
 
 ---
 
-## origen  (introducción: De dónde viene el agua del río Tula — mantenerla BREVE)
+## origen  (introducción: De dónde viene el agua del río Tula — SOLO una frase; el protagonista es el diagrama)
 etiqueta: Introducción
 titulo: De dónde viene el agua del río Tula
-pasos: El río Tula recibe el drenaje y la lluvia del Valle de México por cuatro vías: el **Túnel Emisor Central**, el **Túnel Emisor Oriente**, el **río El Salto** (Tajo de Nochistongo) y el **Gran Canal**. | Toda esta agua se junta en el **Portal de Salida** y de ahí va a la **PTAR Atotonilco** o directo al río. La planta envía una parte del agua tratada a los **distritos de riego** del Valle del Mezquital y regresa el resto al río. | Río abajo, el Tula recibe a los ríos **Tepeji, Tlautla y Rosas** y el drenaje de la zona metropolitana de Tula, y termina en la **presa Endhó**, donde se almacena para riego.
-cierre: Esta infraestructura ha generado contaminación, riesgo de inundación y degradación ambiental: ==eso es lo que atiende el Proyecto de Saneamiento y Restauración del Río Tula.==
+bajada: El drenaje del Valle de México llega al Portal de Salida: ==casi toda se trata en Atotonilco y la mayor parte va a riego.==
+tab1: Caudales y calidad
+tab2: Mapa
+nota: Caudal en m³/s. El color indica la contaminación del agua (DBO, en mg/L): entre menos, mejor.
+cierre: Esto ha causado contaminación, riesgo de inundación y degradación ambiental. ==Eso es lo que estamos atendiendo.==
 boton: Conoce la historia del río →
 
 ## diagnostico  (fotos de diagnóstico, pantalla completa; carpeta img/fotos/diagnostico/)
@@ -214,6 +217,17 @@ fuentes: Fuentes: [Contralínea (16 jul 2026)](https://contralinea.com.mx/intern
 
 ---
 
+## avance  (franja "Ya está en marcha" — solo hechos ya reportados en las secciones del proyecto)
+etiqueta: Ya está en marcha
+titulo: Lo que ya se hizo en 2025 y 2026
+hecho1: 38 m³/s | de agua tratada en Atotonilco (+7 m³/s)
+hecho2: 92 | inspecciones a industrias
+hecho3: 10 km | de colectores y el cárcamo ya construidos
+hecho4: 3.9 km | de río desazolvado
+hecho5: 21 | estaciones de caudal instaladas
+hecho6: 1,900 | árboles saneados o plantados en las riberas
+hecho7: 1,700 ha | certificadas para conservación
+
 ## proyecto  (El proyecto: los tres hexágonos)
 banner: El proyecto
 
@@ -246,6 +260,7 @@ cifra: 15 | proyectos de calidad del agua
 chips: 1 · Atotonilco | 2 · Colector | 3 · Industria
 
 ## calidad-1  (Atotonilco)
+estado: curso | Operando con más caudal desde 2026
 etiqueta: 1 · Atotonilco
 titulo: Tratar más agua en la planta de Atotonilco
 texto: Históricamente la PTAR Atotonilco trataba **31 m³/s** en promedio. En 2026, incrementamos el caudal tratado a **38 m³/s** y, a partir de 2027, ==la PTAR Atotonilco va a tratar todo el drenaje del río en temporada de secas.==
@@ -254,6 +269,7 @@ chips: PTAR: planta de tratamiento de aguas residuales | Conagua · $112 mdp/añ
 fotos: PTAR Atotonilco | Operación de la planta | Caudal tratado
 
 ## calidad-3  (Drenaje de Tula / colectores — ahora el punto 2: Ariel pidió invertir el orden con Industria)
+estado: obra | Etapa 1 al 89 % de avance
 etiqueta: 2 · Drenaje de Tula
 titulo: Tratar las aguas residuales de la ciudad de Tula
 texto: Todo el drenaje de la zona metropolitana de Tula se vierte al río sin tratamiento. El gobierno del estado de Hidalgo construye ==35 km colectores que van a captar 72 descargas y enviarlas a la PTAR de CFE== para su tratamiento. Los primeros 10 km de colectores y el cárcamo de bombeo ya están construidos.
@@ -262,6 +278,7 @@ chips: Gobierno de Hidalgo · $570 MDP | Etapa 1 en ejecución (89 %) | Etapa 2 
 fotos: Colector del río Tula · etapa 1 | Línea de conducción a la planta de la CFE | Cárcamo de bombeo
 
 ## calidad-2  (Industria — ahora el punto 3: Ariel pidió invertir el orden con Drenaje de Tula)
+estado: curso | 92 inspecciones hechas · 29 industrias en certificación
 etiqueta: 3 · Industria
 titulo: Controlar la contaminación industrial
 texto: Durante este sexenio, la Conagua y Profepa van a ==inspeccionar al menos dos veces a **todas** las empresas que descargan al río Tula y sus tributarios== para asegurar que no contaminen el río. A la fecha, hemos hecho **92 inspecciones** y estamos capacitando y certificando a **29 industrias** para mejorar sus procesos.
@@ -270,6 +287,7 @@ chips: Profepa | Conagua | Centro Regional de Prevención Ambiental (UTTT)
 fotos: Inspección a una industria | Centro Regional de Prevención Ambiental
 
 ## calidad-4  (Monitoreo)
+estado: obra | Estaciones y Centro de Vigilancia del Agua
 etiqueta: 4 · Monitoreo
 titulo: Medir cómo mejora el agua
 texto: Para conocer a detalle la calidad del río, estamos realizando 3 campañas de monitoreo manual cada año en **más de 95 sitios**. Adicionalmente, estamos instalando ==5 estaciones de monitoreo automático== para conocer la calidad del río en tiempo real. Todos estos datos se van visualizar en el Centro de Vigilancia del Agua que estamos construyendo en la PTAR Atotonilco y vas a poder visitar a partir de 2027.
@@ -286,17 +304,22 @@ banner: Gestión de inundaciones
 etiqueta: Frente 2 · Inundaciones
 titulo: Cuidar a Tula cuando el río crece
 texto: En septiembre de 2021, el agua del río inundó la ciudad de Tula. Miles de familias perdieron sus pertenencias y hubo personas que fallecieron. Estamos implementando una gran diversidad de proyectos para ==proteger a las familias de Tula==.
-cifra: 6 | proyectos de gestión de inundaciones
+texto2: Hoy el río aguanta más: en 2021 su capacidad era de **250 m³/s** y la capacidad de diseño de las obras de 2024 es de **500 m³/s**. ==El máximo registrado desde 2021 fue de 330 m³/s (2024) y no hubo inundación.==
+cifra: 330 m³/s | caudal máximo registrado desde 2021, sin inundar Tula
+fuente: Fuente: Conagua.
 
 ## inundaciones-1  (Taludes)
+estado: obra | 1 km terminado · El Chamizal 82 % · San Lorenzo 78 %
+avance: 1 | 1.7 | 1.8 | km
 etiqueta: 1 · Taludes
 titulo: Taludes más protegidos
 texto: Las zonas del río altamente erosionadas representan un riesgo para la población que vive cerca. Desde 2025, empezamos a ==estabilizar  los **4.5 km** de taludes críticos de las zonas urbanas==.
-cifra: 4.5 km | 1 km terminado · 1.7 km en obra · 1.8 km en planeación
+cifra: 4.5 km | de taludes críticos en zonas urbanas
 chips: San Lorenzo | El Chamizal | San Marcos | Talud: el borde del río
 fotos: San Lorenzo · antes | San Lorenzo · después | El Chamizal · obra en proceso
 
 ## inundaciones-2  (Desazolve)
+estado: terminado | 3.9 km desazolvados en 2025
 etiqueta: 2 · Desazolve
 titulo: Más espacio para que el agua fluya
 texto: Cuando el río está azolvado —lleno de lodo y basura—, hay menos espacio para que el agua pueda fluir sin desbordarse. En 2025, ==desazolvamos 3.9 km de río==, removiendo más de 176,000 ton de sedimentos, basura y escombros.
@@ -305,6 +328,7 @@ chips: Hasta 25% de la capacidad del río recuperada
 fotos: Desazolve del cauce | Antes y después
 
 ## inundaciones-3  (Monitoreo de caudal)
+estado: terminado | 21 estaciones instaladas en 2025
 etiqueta: 3 · Monitoreo automático del río
 titulo: Tomar decisiones con información en tiempo real
 texto: Instalamos **21 estaciones** para conocer cuánta agua fluye en cada segmento del río cada 5 minutos. Esta información va a permitir ==operar el sistema de drenaje y presas de forma eficiente y segura==.
@@ -318,16 +342,17 @@ fotos: Estación de monitoreo de caudal
 ## ecosistemas  (capítulo 3)
 banner: Ecosistemas y espacio público
 
-## espacio-publico  (capítulo 4)
-banner: Espacio público
+## espacio-publico  (capítulo 4: dentro del lema "Un río para todas y todos")
+banner: Un río para todas y todos
 
 ## ecosistemas-0  (introducción)
-etiqueta: Frente 3 · Ecosistemas y espacio público
+etiqueta: Frente 3 · Ecosistemas
 titulo: Regresarle la vida al río
 texto: Para regresarle la vida a un río, es necesario ==recuperar ecosistemas como cuerpos de agua, humedales, riberas y zonas boscosas en la cuenca alta==.
 cifra: 9 | proyectos de restauración y espacio público
 
 ## ecosistemas-1  (Riberas)
+estado: curso | 1,600 árboles saneados · 300 plantados
 etiqueta: 1 · Riberas
 titulo: Árboles sanos en las orillas del río
 texto: A la fecha, hemos saneado **1,600 árboles ribereños** para quitarles heno motita —una planta que crece sobre las ramas— y ramas muertas. Adicionalmente, hemos plantado **300 árboles de 3 m** en la zona urbana de Tula. Junto con Conafor, estamos trabajando en ==limpiar, sanear o reforestar las riberas del río desde su nacimiento hasta la presa Endhó==.
@@ -336,6 +361,7 @@ chips: Subsecretaría de restauración · Conagua · Conafor | 1,600 árboles sa
 fotos: Saneamiento forestal de riberas | Revegetación de riberas
 
 ## ecosistemas-2  (Cuerpos de agua)
+estado: licitacion | Manantial restaurado en 2026 · bordo en 2027
 etiqueta: 2 · Laguna de Bojay
 titulo: Agua limpia cerca de Tula
 texto: La laguna de Bojay es un cuerpo de agua de 55 hectareas alimentado por manantiales que actualmente se contamina por agua del río Tula. Empezamos a trabajar en 2026 en la recuperación del manantial. En 2027, vamos a reabilitar el bordo para aislar la laguna del río Tula y ==contar con un cuerpo de agua limpia y con vida acuática a 2 km de la ciudad de Tula==. Adicionalmente, vamos a construir un sistema de humedales para tratar el drenaje de la comunidad que actualmente se vierte a la laguna.
@@ -344,6 +370,7 @@ chips: Semarnat · Conagua | Proyecto en licitación | Manantial restaurado en 2
 fotos: Propuesta · humedal y sendero de Bojay | Propuesta · Bojay en planta | Ciénegas de Endhó (Bojay)
 
 ## ecosistemas-3  (Bosques)
+estado: curso | 1,700 ha certificadas · 2,152 ha en restauración
 etiqueta: 3 · Bosques
 titulo: Conservación y restauración de bosques
 texto: A inicios de sexenio, existían solo **100 ha** de áreas naturales protegidas en la cuenca. A la fecha, la Conanp ha certificado ==1,700 ha de Áreas Destinadas Voluntariamente a la Conservación== generando espacios protegidos de la mano de la comunidad. Adicionalmente, la Conafor está ==restaurando 2,152 ha de suelo forestal== junto con ejidos de la cuenca.
@@ -352,6 +379,7 @@ chips: ADVC: terreno que sus dueños deciden proteger | Conafor · 65 mdp | Cona
 fotos: Área Destinada Voluntariamente a la Conservación | Restauración forestal con ejidos
 
 ## ecosistemas-4  (Espacio público)
+estado: obra | 5 proyectos de espacio público
 etiqueta: 4 · Espacio público
 titulo: Cinco lugares para reconectar con el río
 texto: En la ciudad de Tula estamos construyendo ==5 proyectos de espacio público junto al río==.

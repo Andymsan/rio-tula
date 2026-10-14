@@ -341,16 +341,6 @@ footer { background: #eceae5; color: #6b6b6b; text-align: center; padding: 34px 
 .btn-claro { background: rgba(255,255,255,.85); color: var(--ink); box-shadow: 0 0 0 1px rgba(0,0,0,.12) inset; }
 
 /* ─── Introducción: de dónde viene el agua del río Tula ────────────────── */
-.s-origen { background: #fbfbfa; padding: 96px 0 72px; }
-.or-wrap { max-width: 1240px; margin: 0 auto; padding: 0 28px; display: grid; grid-template-columns: minmax(300px, .8fr) 1.2fr; gap: 40px; align-items: center; }
-.or-text .s-tag { color: #025d6e; }
-.or-pasos { list-style: none; counter-reset: p; padding: 0; margin: 6px 0 22px; display: grid; gap: 16px; }
-.or-pasos li { position: relative; padding: 4px 8px 4px 46px; font-size: 15.5px; line-height: 1.6; color: #3d3d3d; font-weight: 300; border-radius: 10px; transition: background .2s; cursor: default; }
-.or-pasos li:hover, .or-pasos li.is { background: rgba(2, 93, 110, .08); }
-.or-pasos li::before { counter-increment: p; content: counter(p); position: absolute; left: 6px; top: 4px; width: 28px; height: 28px; border-radius: 50%; background: #025d6e; color: #fff; font: 700 13px 'Noto Sans', sans-serif; display: grid; place-items: center; }
-.or-pasos strong { color: var(--ink); font-weight: 600; }
-.or-cierre { font-size: 15.5px; line-height: 1.65; color: #3d3d3d; margin-bottom: 20px; }
-.or-cierre mark, .or-cierre .fluor { background: #025d6e; color: #fff; padding: 1px 6px; border-radius: 4px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
 .or-link { display: inline-block; font: 700 14px 'Noto Sans', sans-serif; color: #025d6e; text-decoration: none; border-bottom: 2px solid currentColor; padding-bottom: 2px; }
 .or-link:hover { color: #6d381e; }
 .or-map { position: relative; height: min(84vh, 860px); min-height: 520px; border-radius: 20px; overflow: hidden; background: #f3f3f3; box-shadow: 0 30px 70px -34px rgba(0,0,0,.45); }
@@ -406,8 +396,93 @@ footer { background: #eceae5; color: #6b6b6b; text-align: center; padding: 34px 
 .hs-volver { font: 600 14px 'Noto Sans', sans-serif; color: #5a5550; text-decoration: none; border-bottom: 1px solid currentColor; }
 
 @media (max-width: 900px) {
-  .or-wrap { grid-template-columns: 1fr; gap: 24px; padding: 0 20px; }
   .or-map { height: 70vh; min-height: 420px; }
-  .s-origen { padding: 72px 0 48px; }
   .s-lema { height: 160vh; }
 }
+
+/* ─── Introducción: Sankey de caudales y calidad ───────────────────────── */
+.s-origen { background: #fbfbfa; padding: 96px 0 64px; }
+.or-top { max-width: 820px; margin: 0 auto; padding: 0 28px; text-align: center; }
+.or-top .s-tag { color: #025d6e; }
+.or-baj { font-size: clamp(16px, 1.7vw, 20px); line-height: 1.55; color: #3d3d3d; font-weight: 300; }
+.or-baj mark, .or-baj .fluor, .or-cierre .fluor { background: #025d6e; color: #fff; padding: 1px 6px; border-radius: 4px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.or-tabs { display: flex; justify-content: center; gap: 6px; margin: 26px auto 18px; }
+.or-tab { font: 700 13px 'Noto Sans', sans-serif; padding: 9px 20px; border-radius: 22px; border: 1px solid #c8c2bb; background: #fff; color: #5a5550; cursor: pointer; }
+.or-tab.on { background: #025d6e; border-color: #025d6e; color: #fff; }
+.or-pane { display: none; max-width: 1240px; margin: 0 auto; padding: 0 20px; }
+.or-pane.on { display: block; }
+.or-pane[data-pane="mp"] .or-map { max-width: 760px; margin: 0 auto; }
+.sankey { width: 100%; height: auto; display: block; overflow: visible; }
+.sk-l { opacity: .86; transition: opacity .2s; cursor: pointer; }
+.sankey.dim .sk-l { opacity: .22; }
+.sankey.dim .sk-l.hv { opacity: 1; }
+.sk-n { fill: #2b3a40; }
+.sk-t { font: 700 13.5px 'Noto Sans', sans-serif; fill: #1b2428; paint-order: stroke; stroke: #fbfbfa; stroke-width: 3px; stroke-linejoin: round; }
+.sk-t .v { font-weight: 500; font-size: 12.5px; fill: #4a5459; }
+.sk-t.s { font-size: 11.5px; font-weight: 600; }
+.sk-ley { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; margin: 14px 0 4px; font: 600 11.5px 'Noto Sans', sans-serif; color: #4a5459; }
+.sk-esc { display: inline-flex; flex-direction: column; gap: 3px; width: 250px; }
+.sk-grad { height: 10px; border-radius: 6px; display: block; }
+.sk-ticks { display: flex; justify-content: space-between; }
+.sk-ticks b { font-weight: 600; }
+.sk-nd { display: inline-flex; align-items: center; gap: 6px; margin-left: 14px; }
+.sk-nd i { width: 14px; height: 10px; border-radius: 3px; display: inline-block; }
+.or-nota { text-align: center; font-size: 12.5px; color: #7a746c; margin-top: 6px; }
+.sk-tip { position: fixed; z-index: 9999; pointer-events: none; background: #1b2428; color: #fff; font: 500 12.5px/1.45 'Noto Sans', sans-serif; padding: 8px 12px; border-radius: 10px; opacity: 0; transition: opacity .15s; box-shadow: 0 10px 28px rgba(0,0,0,.35); }
+.sk-tip.on { opacity: 1; }
+.or-pie { max-width: 720px; margin: 34px auto 0; padding: 0 28px; text-align: center; }
+.or-pie .or-cierre { font-size: 16px; line-height: 1.6; color: #3d3d3d; margin-bottom: 14px; }
+.or-leyenda { position: absolute; left: 12px; bottom: 12px; }
+.or-map { position: relative; }
+@media (max-width: 900px) { .sk-t { font-size: 17px; } .sk-t .v { font-size: 15px; } .sk-t.s { font-size: 14px; } .sankey { min-width: 760px; } .or-pane[data-pane="sk"] { overflow-x: auto; } }
+
+/* ─── Estado de cada proyecto ──────────────────────────────────────────── */
+.estado { display: inline-flex; align-items: center; gap: 7px; margin: 0 0 8px; padding: 4px 11px 4px 9px; border-radius: 20px; font: 600 11.5px/1.3 'Noto Sans', sans-serif; color: #3d3d3d; background: rgba(0,0,0,.05); }
+.estado i { width: 9px; height: 9px; border-radius: 50%; background: currentColor; flex: none; }
+.estado b { font-weight: 800; white-space: nowrap; }
+.estado span { min-width: 0; }
+.estado.e-terminado { background: #e3f1e8; color: #1f6b3e; }
+.estado.e-obra { background: #fdeadb; color: #b4520f; }
+.estado.e-obra i { animation: estPulso 1.8s ease-in-out infinite; }
+.estado.e-curso { background: #e1eff2; color: #025d6e; }
+.estado.e-licitacion { background: #ece8f6; color: #5e4fa0; }
+.estado.e-planeacion { background: #eceae6; color: #6b665e; }
+@keyframes estPulso { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
+.avance { margin: 12px 0 4px; }
+.av-bar { display: flex; height: 12px; border-radius: 8px; overflow: hidden; gap: 2px; }
+.av-bar i { display: block; }
+.av-bar .a1, .av-leg .a1::before { background: #2f7d4f; }
+.av-bar .a2, .av-leg .a2::before { background: #e08a3c; }
+.av-bar .a3, .av-leg .a3::before { background: #c9c4bb; }
+.av-leg { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 7px; font: 600 11.5px 'Noto Sans', sans-serif; color: #4a4a4a; }
+.av-leg span::before { content: ""; display: inline-block; width: 9px; height: 9px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+
+/* ─── Franja: lo que ya está en marcha ─────────────────────────────────── */
+.s-avance { background: #0e2023; color: #fff; padding: 72px 0 80px; }
+.av-in { max-width: 1160px; margin: 0 auto; padding: 0 28px; }
+.s-avance .s-tag { color: #d9b45c; }
+.s-avance .s-title { color: #fff; max-width: 760px; }
+.av-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-top: 30px; }
+.av-h { background: rgba(255,255,255,.06); border: 1px solid rgba(217,180,92,.28); border-top: 3px solid #d9b45c; border-radius: 14px; padding: 18px 18px 16px; }
+.av-h b { display: block; font: 900 clamp(24px, 2.3vw, 34px)/1.05 'Noto Sans', sans-serif; color: #d9b45c; margin-bottom: 8px; }
+.av-h span { font-size: 14px; line-height: 1.4; color: rgba(255,255,255,.88); }
+
+/* ─── Guía lateral: los cuatro lemas ───────────────────────────────────── */
+.lr { position: fixed; left: 8px; top: 50%; height: min(74vh, 700px); width: 30px; transform: translateY(-50%); z-index: 60; padding: 0; background: rgba(255,255,255,.9); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); border-radius: 18px; box-shadow: 0 8px 30px -10px rgba(0,0,0,.4); opacity: 0; transform: translateY(-50%) scale(.6); transform-origin: left center; pointer-events: none; transition: opacity .5s, transform .6s cubic-bezier(.2,.9,.3,1.2); }
+.lr.show { opacity: 1; transform: translateY(-50%) scale(1); pointer-events: auto; }
+.lr-line { position: absolute; left: 14px; top: 20px; bottom: 20px; width: 2px; background: #d9d4cc; border-radius: 2px; transform: scaleY(.05); transform-origin: top; transition: transform .9s .1s ease; }
+.lr.spread .lr-line { transform: scaleY(1); }
+.lr-line b { position: absolute; left: 0; top: 0; width: 100%; height: 0; background: var(--lc, #025d6e); border-radius: 2px; transition: height .6s ease, background .4s; }
+.lr-i { position: absolute; left: 0; width: 30px; top: calc(50% - 8px); display: flex; flex-direction: column; align-items: center; gap: 7px; text-decoration: none; color: #8a847b; transition: top .9s cubic-bezier(.2,.9,.25,1.15), color .3s; }
+.lr.spread .lr-i { top: calc(18px + var(--t) * .93); }
+.lr-dot { width: 14px; height: 14px; border-radius: 50%; background: #fff; border: 2.5px solid #bdb7ad; display: block; box-sizing: border-box; transition: transform .35s, background .3s, border-color .3s, box-shadow .3s; flex: none; }
+.lr-lab { writing-mode: vertical-rl; transform: rotate(180deg); font: 700 12px 'Noto Sans', sans-serif; letter-spacing: .02em; white-space: nowrap; opacity: 0; transition: opacity .5s .5s, color .3s; }
+.lr.spread .lr-lab { opacity: 1; }
+.lr-i.past .lr-dot { background: var(--c); border-color: var(--c); }
+.lr-i.on { color: var(--c); }
+.lr-i.on .lr-dot { background: var(--c); border-color: var(--c); transform: scale(1.5); box-shadow: 0 0 0 5px color-mix(in srgb, var(--c) 25%, transparent); animation: lrPulso 2s ease-out infinite; }
+.lr-i.on .lr-lab { font-weight: 900; }
+.lr-i:hover { color: #1b2428; }
+@keyframes lrPulso { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--c) 45%, transparent); } 100% { box-shadow: 0 0 0 12px transparent; } }
+@media (max-height: 760px) { .lr-lab { font-size: 10.5px; } }
+@media (max-width: 900px) { .lr { left: 3px; width: 22px; height: 40vh; border-radius: 12px; } .lr-line { left: 10px; } .lr-i { width: 22px; } .lr-lab { display: none; } }
