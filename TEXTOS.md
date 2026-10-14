@@ -95,13 +95,21 @@ descripcion: Cómo sumarte al proyecto
 
 ---
 
-## origen  (introducción: De dónde viene el agua del río Tula — primero el mapa; el diagrama de caudales va en la segunda pestaña)
+## origen  (introducción dinámica: botones Mapa / De dónde llega / A dónde va / Qué tan limpia)
 etiqueta: Introducción
 titulo: De dónde viene el agua del río Tula
 pasos: El río Tula recibe el drenaje y la lluvia del Valle de México por cuatro vías: el **Túnel Emisor Central**, el **Túnel Emisor Oriente**, el **río El Salto** (Tajo de Nochistongo) y el **Gran Canal**. | Toda esta agua se junta en el **Portal de Salida** y de ahí va a la **PTAR Atotonilco** o directo al río. La planta envía una parte del agua tratada a los **distritos de riego** del Valle del Mezquital y regresa el resto al río. | Río abajo, el Tula recibe a los ríos **Tepeji, Tlautla y Rosas** y el drenaje de la zona metropolitana de Tula, y termina en la **presa Endhó**, donde se almacena para riego.
-bajada: El drenaje del Valle de México llega al Portal de Salida: ==casi toda se trata en Atotonilco y la mayor parte va a riego.==
 tab1: Mapa
-tab2: Caudales y calidad
+tab2: De dónde llega
+tab3: A dónde va
+tab4: Qué tan limpia
+llega: En secas, **93 %** del agua que recibe el río es drenaje del Valle de México. En la inundación de 2021 fue solo **34 %**: el resto vino de ríos, presas y escurrimientos de la cuenca.
+llega_secas: En secas | caudales de operación
+llega_lluvias: Inundación de 2021 | flujos máximos (Conagua)
+va: Casi toda el agua tratada en Atotonilco se usa en el campo.
+va_agri: 26.3 m³/s | van a la agricultura (distrito de riego 003) · 78 %
+va_rio: 7.3 m³/s | siguen por el río Tula hacia la presa Endhó · 22 %
+calidad: El agua entra al Portal de Salida con **150 mg/L** de DBO y, tras pasar por Atotonilco, llega a riego con **50 mg/L**.
 nota: Caudal en m³/s. El color indica la contaminación del agua (DBO, en mg/L): entre menos, mejor.
 cierre: Esta infraestructura ha generado contaminación, riesgo de inundación y degradación ambiental. ==Eso es lo que estamos atendiendo.==
 boton: Conocer la historia del río →

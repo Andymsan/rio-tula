@@ -322,7 +322,7 @@
     $$('.or-tab').forEach(b => b.addEventListener('click', () => {
       $$('.or-tab').forEach(x => x.classList.toggle('on', x === b));
       $$('.or-pane').forEach(p => p.classList.toggle('on', p.dataset.pane === b.dataset.tab));
-      fit();
+      fit(); fitSections();
     }));
     const ks = [['tec', 'teo', 'salto', 'canal'], ['portal', 'ptar', 'dr'], ['rios', 'presa', 'tula', 'endho']];
     const offMapa = () => { svg.classList.remove('hl'); $$('[data-k].is, #orPasos li.is').forEach(el => el.classList.remove('is')); };
@@ -331,9 +331,24 @@
       li.addEventListener('mouseenter', on); li.addEventListener('mouseleave', offMapa);
       li.addEventListener('click', () => (li.classList.contains('is') ? offMapa() : on()));
     });
-    const sk = $('#sankey'); if (!sk) return;
     const tip = document.createElement('div'); tip.className = 'sk-tip'; document.body.append(tip);
-    const off = () => { tip.classList.remove('on'); sk.classList.remove('dim'); $$('.sk-l.hv', sk).forEach(p => p.classList.remove('hv')); };
+    const off = () => { tip.classList.remove('on'); $$('.sankey.dim').forEach(x => x.classList.remove('dim')); $$('.sk-l.hv').forEach(p => p.classList.remove('hv')); };
+    $$('.dn').forEach(f => {
+      const v = $('.dn-v', f), u = $('.dn-u', f), v0 = v.textContent, u0 = u.textContent;
+      $$('.dn-seg', f).forEach(sg => {
+        sg.addEventListener('mouseenter', e => {
+          sg.classList.add('on'); f.classList.add('hv'); v.textContent = sg.dataset.p + ' %'; u.textContent = sg.dataset.v + ' m³/s';
+          tip.innerHTML = '<b>' + sg.dataset.n + '</b>'; tip.classList.add('on');
+        });
+        sg.addEventListener('mousemove', e => { tip.style.left = Math.min(e.clientX + 14, innerWidth - 260) + 'px'; tip.style.top = (e.clientY + 14) + 'px'; });
+        sg.addEventListener('mouseleave', () => { sg.classList.remove('on'); f.classList.remove('hv'); v.textContent = v0; u.textContent = u0; tip.classList.remove('on'); });
+      });
+    });
+    $$('.dn-ley li[data-i]').forEach(li => {
+      const set = on => $$('.dn-seg[data-i="' + li.dataset.i + '"]').forEach(sg => { sg.classList.toggle('on', on); sg.closest('.dn').classList.toggle('hv', on); li.classList.toggle('on', on); });
+      li.addEventListener('mouseenter', () => set(true)); li.addEventListener('mouseleave', () => set(false));
+    });
+    $$('.sankey').forEach(sk => {
     $$('.sk-l', sk).forEach(p => {
       const show = e => {
         const [a, q, d] = p.dataset.tip.split('|');
@@ -342,6 +357,7 @@
         tip.classList.add('on'); sk.classList.add('dim'); $$('.sk-l.hv', sk).forEach(x => x.classList.remove('hv')); p.classList.add('hv');
       };
       p.addEventListener('mousemove', show); p.addEventListener('click', show); p.addEventListener('mouseleave', off);
+    });
     });
     addEventListener('scroll', off, { passive: true });
   }
@@ -358,6 +374,9 @@
       const vis = first < vh * 0.55 && end > vh * 0.45;
       if (vis && !rail.classList.contains('show')) { rail.classList.add('show'); clearTimeout(timer); timer = setTimeout(() => rail.classList.add('spread'), 520); }
       if (!vis) { clearTimeout(timer); rail.classList.remove('show', 'spread'); }
+      const ban = $$('.cap-stage .banner.dos').map(b => b.getBoundingClientRect()).find(r => r.top > 40 && r.top < vh * 0.45);
+      rail.style.top = (ban ? ban.bottom + 14 : 176) + 'px';
+      rail.classList.toggle('con', !!ban);
       let act = -1;
       lemas.forEach((l, i) => { if (l.getBoundingClientRect().top <= vh * 0.5) act = i; });
       items.forEach((it, i) => { it.classList.toggle('on', i === act); it.classList.toggle('past', i < act); });
@@ -385,6 +404,30 @@
     els.forEach(el => obs.observe(el));
   }
 
+  /* ── Ajuste a la pantalla: cada sección y cada tarjeta caben en el 100 % de la vista ── */
+  function fitSections() {
+    $$('[data-fit]').forEach(sec => {
+      const inner = $('.fit-in', sec); if (!inner) return;
+      inner.style.zoom = '';
+      if (mobile.matches) return;
+      const cs = getComputedStyle(sec), pad = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
+      const h = inner.getBoundingClientRect().height, avail = innerHeight - pad;
+      if (h > avail) inner.style.zoom = Math.max(0.5, avail / h).toFixed(3);
+    });
+  }
+  function fitCards() {
+    $$('.cap .step .card').forEach(c => {
+      c.style.zoom = '';
+      if (mobile.matches) return;
+      const top = c.closest('.cap').classList.contains('hist') ? 140 : 176, avail = innerHeight - top - 28, h = c.offsetHeight;
+      if (h > avail) c.style.zoom = Math.max(0.55, avail / h).toFixed(3);
+    });
+  }
+  function fitAll() { fitSections(); fitCards(); }
+  addEventListener('resize', () => { clearTimeout(fitAll.t); fitAll.t = setTimeout(fitAll, 120); });
+  addEventListener('load', fitAll);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitAll);
+
   /* ── Arranque ─────────────────────────────────────────────────────── */
   function boot() {
     buildNavObs(); buildStepObs();
@@ -395,6 +438,7 @@
     initOrigen();
     initRail();
     initContadores();
+    fitAll();
     initLightbox();
   }
   let rz;

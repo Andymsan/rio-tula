@@ -16,7 +16,7 @@ import os, re, sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from textos import Textos, TextosError, fmt, attr
-import sankey
+import sankey, donut
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FOTOS_DIR = os.path.join(ROOT, "img", "fotos")
@@ -423,10 +423,10 @@ def kfpair(id_, campo):
 def promesa():
     t1, t2 = kfpair("promesa-2", "tarjeta1"), kfpair("promesa-2", "tarjeta2")
     foto = carousel("promesa-1", etiqueta="Foto")
-    return ('<section class="s-promesa" id="promesa" data-nav="light" '
+    return ('<section class="s-promesa" id="promesa" data-nav="light" data-fit '
             'style="background-image:url(img/mapa/historia-final.webp)">'
             '<div class="pm-scrim"></div><div class="pm-fade"></div>'
-            '<div class="pm-grid"><div class="pm-text rv">'
+            '<div class="pm-grid fit-in"><div class="pm-text rv">'
             '<p class="pm-kicker">%s</p>'
             '<div class="pm-92-row"><div class="pm-92">92</div><div><h2 class="pm-h">%s</h2><p class="pm-h-sub">%s</p></div></div>'
             '<p class="pm-kicker pm-k2">%s</p>'
@@ -448,18 +448,27 @@ AV_ICONOS = [
 
 def origen():
     pasos = "".join("<li>%s</li>" % fmt(x) for x in T.lista("origen", "pasos"))
-    return ('<section class="s-origen" id="origen" data-nav="light">'
+    sec = [x.strip() for x in T.raw("origen", "llega_secas").split("|")]
+    llu = [x.strip() for x in T.raw("origen", "llega_lluvias").split("|")]
+    pastel = donut.pastel(sec[0], sec[1], llu[0], llu[1])
+    chips = "".join('<div class="or-chip"><b class="cnt">%s</b><span>%s</span></div>' % kfpair("origen", k) for k in ("va_agri", "va_rio"))
+    botones = "".join('<button class="or-tab%s" type="button" data-tab="%s"><i>%d</i>%s</button>' % (" on" if n == 0 else "", k, n + 1, T.t("origen", "tab%d" % (n + 1)))
+                      for n, k in enumerate(("mp", "ll", "va", "cal")))
+    return ('<section class="s-origen" id="origen" data-nav="light" data-fit><div class="fit-in">'
             '<div class="or-top rv"><span class="s-tag">%s</span><h2 class="s-title">%s</h2></div>'
-            '<div class="or-tabs" role="tablist"><button class="or-tab on" type="button" data-tab="mp">%s</button>'
-            '<button class="or-tab" type="button" data-tab="sk">%s</button></div>'
+            '<div class="or-tabs" role="tablist">%s</div>'
             '<div class="or-pane on" data-pane="mp"><div class="or-wrap"><ol class="or-pasos" id="orPasos">%s</ol>'
             '<div class="or-map">%s<div class="or-leyenda"><span><i class="l-rio"></i>Ríos</span><span><i class="l-infra"></i>Infraestructura (año de inauguración)</span>'
             '<span><i class="l-dr"></i>Distritos de riego</span></div></div></div></div>'
-            '<div class="or-pane" data-pane="sk"><p class="or-baj">%s</p>%s%s<p class="or-nota">%s</p></div>'
+            '<div class="or-pane" data-pane="ll"><p class="or-baj">%s</p>%s</div>'
+            '<div class="or-pane" data-pane="va"><p class="or-baj">%s</p>%s<div class="or-chips">%s</div></div>'
+            '<div class="or-pane" data-pane="cal"><p class="or-baj">%s</p>%s%s<p class="or-nota">%s</p></div>'
             '<div class="or-pie"><p class="or-cierre">%s</p><a class="or-btn" href="historia.html">%s</a></div>'
-            '</section>'
-            % (T.t("origen", "etiqueta"), T.t("origen", "titulo"), T.t("origen", "tab1"), T.t("origen", "tab2"), pasos,
-               rd("tools/fragmentos/origen_mapa.html"), T.t("origen", "bajada"), sankey.svg(), sankey.leyenda(), T.t("origen", "nota"),
+            '</div></section>'
+            % (T.t("origen", "etiqueta"), T.t("origen", "titulo"), botones, pasos, rd("tools/fragmentos/origen_mapa.html"),
+               T.t("origen", "llega"), pastel,
+               T.t("origen", "va"), sankey.svg("mode-va"), chips,
+               T.t("origen", "calidad"), sankey.svg("mode-cal"), sankey.leyenda(), T.t("origen", "nota"),
                T.t("origen", "cierre"), T.t("origen", "boton")))
 
 def avance():
@@ -469,7 +478,7 @@ def avance():
         hechos += ('<div class="av-h"><span class="av-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" '
                    'stroke-linecap="round" stroke-linejoin="round">%s</svg></span><b class="cnt">%s</b><span class="av-t">%s</span></div>' % (AV_ICONOS[i - 1], n, txt))
     hechos += '<a class="av-h av-cta" href="#proyecto"><span>%s</span></a>' % T.t("avance", "siguiente")
-    return ('<section class="s-avance" id="avance" data-nav="light"><div class="av-in"><div class="rv"><span class="s-tag"><i class="av-live"></i>%s</span>'
+    return ('<section class="s-avance" id="avance" data-nav="light" data-fit><div class="av-in fit-in"><div class="rv"><span class="s-tag"><i class="av-live"></i>%s</span>'
             '<h2 class="s-title">%s</h2></div><div class="av-grid">%s</div></div></section>'
             % (T.t("avance", "etiqueta"), T.t("avance", "titulo"), hechos))
 
@@ -511,9 +520,9 @@ PLANTILLA = '''<!DOCTYPE html>
   <title>%(titulo)s</title>
   <meta name="description" content="%(descripcion)s" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/temas.css?v=10" />
-  <link rel="stylesheet" href="css/historia.css?v=10" />
-  <link rel="stylesheet" href="css/capitulos.css?v=10" />
+  <link rel="stylesheet" href="css/temas.css?v=11" />
+  <link rel="stylesheet" href="css/historia.css?v=11" />
+  <link rel="stylesheet" href="css/capitulos.css?v=11" />
   <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
@@ -539,7 +548,7 @@ PLANTILLA = '''<!DOCTYPE html>
 
 %(contenido)s
 
-<script src="js/sitio.js?v=10"></script>
+<script src="js/sitio.js?v=11"></script>
 </body>
 </html>
 '''

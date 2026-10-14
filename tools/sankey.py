@@ -15,7 +15,7 @@ NODOS = {
     "tec":     ("TEC y TEO", 0, 70),
     "portal":  ("Portal de Salida", 1, 60),
     "ptar":    ("PTAR Atotonilco", 2, 190),
-    "dr3":     ("Distrito de riego 003", 3, 232),
+    "dr3":     ("Agricultura · distrito de riego 003", 3, 232),
     "rio":     ("Río Tula", 3, 30),
     "requena": ("Presa Requena", 3, 104),
     "tlautla": ("Río Tlautla", 3, 128),
@@ -53,7 +53,7 @@ def color(dbo):
 def _fmt(v):
     return ("%.1f" % v)
 
-def svg():
+def svg(modo=""):
     val = {k: 0.0 for k in NODOS}
     for o, d, q, _ in FLUJOS:
         val[o] = max(val[o], sum(f[2] for f in FLUJOS if f[0] == o))
@@ -75,8 +75,8 @@ def svg():
         o, d, q, _ = FLUJOS[i]
         yt[i] = ent[d]; ent[d] += max(q * K, 1.6)
 
-    out = ['<svg class="sankey" id="sankey" viewBox="0 0 %d %d" role="img" '
-           'aria-label="Caudales del río Tula, coloreados por calidad del agua">' % (W, H)]
+    out = ['<svg class="sankey %s" viewBox="0 0 %d %d" role="img" '
+           'aria-label="Caudales del río Tula, coloreados por calidad del agua">' % (modo, W, H)]
     for i, (o, d, q, dbo) in enumerate(FLUJOS):
         t = max(q * K, 1.6)
         x0, x1 = x[o] + NW, x[d]
@@ -84,7 +84,7 @@ def svg():
         p = ("M%.1f,%.1f C%.1f,%.1f %.1f,%.1f %.1f,%.1f L%.1f,%.1f C%.1f,%.1f %.1f,%.1f %.1f,%.1f Z"
              % (x0, ys[i], xm, ys[i], xm, yt[i], x1, yt[i], x1, yt[i] + t, xm, yt[i] + t, xm, ys[i] + t, x0, ys[i] + t))
         tip = "%s → %s|%s m³/s|%s" % (NODOS[o][0], NODOS[d][0], _fmt(q), ("DBO %d mg/L" % dbo) if dbo else "Sin dato de DBO")
-        out.append('<path class="sk-l" d="%s" fill="%s" data-tip="%s"/>' % (p, color(dbo), tip))
+        out.append('<path class="sk-l" d="%s" fill="%s" data-tip="%s" data-o="%s" data-d="%s"/>' % (p, color(dbo), tip, o, d))
     for k, (nombre, col, y0) in NODOS.items():
         out.append('<rect class="sk-n" x="%d" y="%.1f" width="%d" height="%.1f"/>' % (x[k], y0, NW, alto[k]))
         v = _fmt(val[k]) + " m³/s"
