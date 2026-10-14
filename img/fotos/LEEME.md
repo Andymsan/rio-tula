@@ -17,7 +17,6 @@ se muestra un marcador con la ruta esperada.
 | `img/fotos/inundaciones-1/1_<pie de foto>.jpg` |
 | `img/fotos/inundaciones-2/1_<pie de foto>.jpg` |
 | `img/fotos/inundaciones-3/1_<pie de foto>.jpg` |
-| `img/fotos/inundaciones-4/1_<pie de foto>.jpg` |
 | `img/fotos/ecosistemas-1/1_<pie de foto>.jpg` |
 | `img/fotos/ecosistemas-2/1_<pie de foto>.jpg` |
 | `img/fotos/ecosistemas-3/1_<pie de foto>.jpg` |

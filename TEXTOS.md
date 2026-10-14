@@ -107,7 +107,7 @@ linea: 1449
 ## historia-2  (época 3)
 epoca: 1607–1789
 titulo: El Tajo de Nochistongo
-texto: Por órdenes de un Virrey, empezó la construcción de un canal que duró 172 años. El objetivo fue abrir la cuenca y permitir que el agua del río Cuautitlán y Tepozotlán fluya hacia el río Tula reduciendo riesgos de inundación en la ciudad de México. A partir de su finalización en **1789**, ==las dos cuencas se interconectaron, permitiendo que una parte del agua de lluvia y drenaje del Valle de México fluyera hacia el río Tula.== 
+texto: Por órdenes de un Virrey, empezó la construcción de un canal que duró 182 años. El objetivo fue abrir la cuenca y permitir que el agua del río Cuautitlán y Tepozotlán fluya hacia el río Tula reduciendo riesgos de inundación en la ciudad de México. A partir de su finalización en **1789**, ==las dos cuencas se interconectaron, permitiendo que una parte del agua de lluvia y drenaje del Valle de México fluyera hacia el río Tula.== 
 banner: 1607–1789 · Nochistongo
 linea: 1789
 
@@ -160,9 +160,6 @@ etiqueta: Compromiso presidencial 92
 titulo: Limpiar y sanear *los tres ríos más contaminados* del país
 titulo2: El río Tula, Atoyac y Lerma Santiago.
 texto: Inicia uno de los proyectos ambientales más ambiciosos del país.
-cifra1: 191 km | de río Tula
-cifra2: 2 estados | Estado de México e Hidalgo
-cifra3: 13 municipios | directamente beneficiados
 fotos: Presidenta Claudia Sheinbaum Pardo en la toma de protesta - 1 de octubre de 2024
 
 ## promesa-2  (Compromiso 92, la inversión)
@@ -273,13 +270,6 @@ cifra: 21 | estaciones automáticas de caudal
 chips: Terminado en 2025 
 fotos: Estación de monitoreo de caudal
 
-## inundaciones-4  (Tres Culturas)
-etiqueta: 4 · Tres Culturas
-titulo: Darle espacio al río
-texto: Estamos estudiando ==devolverle al río parte de su llanura de inundación en Tres Culturas== junto con Banco Interamericano de Desarrollo (BID) y el gobierno de Países Bajos. Esta zona se convertirá en un parque que tenga humedales la mayor parte del año y se inunde solo cuando sucedan lluvias extremas reduciendo riesgos para la ciudad de Tula.
-cifra: BID + 5 | modelo hidráulico y asesores internacionales
-chips: Llanura de inundación: terreno junto al río donde el agua puede extenderse | Referencias de parques inundables →
-fotos: Referencia · Buffalo Bayou, Houston (65 ha, 2015) | Referencia · Rodney Cook Sr. Park, Atlanta (6.5 ha, 2021) | Referencia · parque inundable, Georgia
 
 ---
 
@@ -333,6 +323,26 @@ etiqueta: Resumen
 titulo: Acciones de saneamiento y restauración del río Tula 2024-2030
 subtitulo: El Gobierno de México está implementando una gran diversidad de acciones en el río Tula para cumplir con las siguientes metas principales:
 texto: ""
+
+## resumen-1  (meta 1 del mapa Resumen)
+titulo: Tratar todo el drenaje del río Tula
+texto: La optimización de la PTAR Atotonilco va a permitir que todo el drenaje del Valle de México sea tratado durante secas. El proyecto de colectores va a captar la mayor parte de las descargas de drenaje al río Tula.
+
+## resumen-2  (meta 2)
+titulo: Controlar la contaminación industrial
+texto: La Profepa y Conagua trabajan para inspeccionar y regularizar a todas las industrias que descargan al río Tula. Adicionalmente, estamos construyendo 5 estaciones de monitoreo automático de la calidad del agua para identificar descargas industriales oportunamente.
+
+## resumen-3  (meta 3)
+titulo: Prevenir inundaciones en la ciudad de Tula
+texto: La Conagua implementa obras para asegurar que el río Tula no se desborde: desazolve, estabilización de taludes y monitoreo automático.
+
+## resumen-4  (meta 4)
+titulo: Restaurar los ecosistemas que le dan vida al río
+texto: El sector ambiental federal trabaja para proteger y restaurar las riberas del río Tula, cuerpos de agua como la laguna de Bojay de 55 ha y más de 3,800 ha de suelo forestal.
+
+## resumen-5  (meta 5)
+titulo: Construir espacio público ribereño para toda la población de Tula
+texto: Para que la población de Tula pueda reconectar con el río, estamos construyendo 5 proyectos de espacio público ribereño que incluyen revegetación nativa, equipamiento público y agua limpia.
 
 ## participa
 etiqueta: Participa

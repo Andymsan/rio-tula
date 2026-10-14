@@ -224,7 +224,7 @@ li.idx-sub b { font-size: 16px; }
 .bu-track::-webkit-scrollbar { display: none; }
 .bu-track.drag { cursor: grabbing; scroll-snap-type: none; }
 .bu-slide { flex: 0 0 100%; height: 100%; scroll-snap-align: center; position: relative; margin: 0; }
-.bu-slide img { width: 100%; height: 100%; object-fit: cover; display: block; user-select: none; -webkit-user-drag: none; }
+.bu-slide img { cursor: zoom-in; width: 100%; height: 100%; object-fit: cover; display: block; user-select: none; -webkit-user-drag: none; }
 .bu-slide.contain img { object-fit: contain; background: #fff; padding: 10px; }
 .bu-slide figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 30px 16px 12px; color: #fff; font-size: 12.5px; line-height: 1.35; background: linear-gradient(transparent, rgba(0,0,0,.72)); }
 .ph {
@@ -242,7 +242,6 @@ li.idx-sub b { font-size: 16px; }
 .bu-dots { position: absolute; top: 10px; left: 0; right: 0; display: flex; justify-content: center; gap: 6px; z-index: 3; }
 .bu-dots i { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.55); box-shadow: 0 0 0 1px rgba(0,0,0,.18); transition: background .2s, transform .2s; }
 .bu-dots i.on { background: var(--tema-fill); transform: scale(1.25); }
-.bu-hint { position: absolute; left: 12px; top: 8px; z-index: 3; font: 600 10.5px 'Noto Sans', sans-serif; color: #fff; background: rgba(0,0,0,.45); padding: 3px 8px; border-radius: 10px; letter-spacing: .04em; }
 
 /* ─── Los tres frentes (hexágonos que se tocan en una esquina) ─── */
 .hexes { position: absolute; left: 61%; top: 53%; height: min(70cqh, 82cqw); aspect-ratio: 520 / 428; transform: translate(-50%, -50%); z-index: 3; opacity: 0; transition: opacity .8s; pointer-events: none; }
@@ -306,7 +305,6 @@ li.idx-sub b { font-size: 16px; }
 .lightbox-nav:hover { background: rgba(255,255,255,.26); }
 .lightbox-nav[hidden] { display: none; }
 .lightbox-prev { left: 16px; } .lightbox-next { right: 16px; }
-.bu-zoom { position: absolute; bottom: 10px; right: 10px; z-index: 3; width: 30px; height: 30px; border-radius: 50%; border: 0; background: rgba(255,255,255,.92); font-size: 13px; line-height: 1; cursor: pointer; box-shadow: 0 4px 14px rgba(0,0,0,.28); }
 
 /* ─── Pie ─── */
 footer { background: #eceae5; color: #6b6b6b; text-align: center; padding: 34px 24px 60px; font-size: 12.5px; line-height: 1.8; }

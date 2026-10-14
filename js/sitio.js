@@ -118,13 +118,15 @@
   }
 
 
-  /* ── Historia: mapa SVG (relieve real + capas GIS; sin zoom por época —
-     una sola cámara fija, viewBox 551.7×628.9) ──────────────────────────── */
+  /* ── Historia: mapa SVG (relieve real + capas GIS; cámara fija salvo las dos
+     primeras épocas, viewBox 551.7×628.9) ──────────────────────────── */
   const H_POS   = [0, 14, 28, 42, 56, 68, 78, 88, 100];
   const H_FULL  = [276, 314, 660];
-  const H_CAM   = [H_FULL, H_FULL, H_FULL, H_FULL, H_FULL, H_FULL, H_FULL, H_FULL, H_FULL];
+  const H_ALL   = [500, 442, 960];   // época 1: la cuenca del Valle de México completa
+  const H_TENOCH = [330, 560, 480];  // época 2: un poco más cerca de Tenochtitlan
+  const H_CAM   = [H_ALL, H_TENOCH, H_FULL, H_FULL, H_FULL, H_FULL, H_FULL, H_FULL, H_FULL];
   // marcador de énfasis (círculo que pulsa): a dónde se mueve en cada época; sin entrada = oculto
-  const H_ENF   = { 1: [373, 609], 6: [264, 228], 7: [211, 165], 8: [211, 165] };
+  const H_ENF   = { 1: [373, 609], 2: [319, 308], 4: [214, 107], 6: [264, 228], 7: [211, 165], 8: [211, 165] };
   let hView = null, hRaf = 0;
 
   function hDraw(st, v) {
@@ -155,11 +157,9 @@
     const q = sel => $(sel, svg);
     q('.lake').classList.toggle('drained', i >= 3);
     q('.riotula').classList.toggle('restored', i >= 8);
-    q('.tulacity').classList.toggle('restored', i >= 8);
     q('.distritos').classList.toggle('on', i >= 4);
     q('.dique').classList.toggle('on', i === 1);
     q('.manzanas').classList.toggle('on', i === 7);
-    q('.marker.zump').classList.toggle('on', i === 2);
     $$('.hito', svg).forEach(h => h.classList.toggle('on', i === 1));
     const enf = q('#hsEnfasis'), pos = H_ENF[i];
     enf.classList.toggle('on', !!pos);
@@ -209,7 +209,10 @@
     };
     track.addEventListener('scroll', setDot, { passive: true });
     setDot();
-    const go = dir => track.scrollBy({ left: dir * track.clientWidth, behavior: 'smooth' });
+    const go = dir => {
+      const w = Math.max(1, track.clientWidth), n = Math.round(track.scrollLeft / w) + dir;
+      track.scrollTo({ left: ((n + slides.length) % slides.length) * w, behavior: 'smooth' });
+    };
     $('.bu-prev', root).addEventListener('click', () => go(-1));
     $('.bu-next', root).addEventListener('click', () => go(1));
     // arrastrar con el mouse
@@ -217,6 +220,15 @@
     track.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse') return; down = true; sx = e.clientX; sl = track.scrollLeft; track.classList.add('drag'); });
     addEventListener('pointermove', e => { if (down) track.scrollLeft = sl - (e.clientX - sx); });
     addEventListener('pointerup', () => { if (!down) return; down = false; track.classList.remove('drag'); });
+    // clic en la foto (sin arrastrar) = ampliar
+    let px = 0, py = 0;
+    track.addEventListener('pointerdown', e => { px = e.clientX; py = e.clientY; });
+    track.addEventListener('click', e => {
+      if (Math.abs(e.clientX - px) > 6 || Math.abs(e.clientY - py) > 6) return;
+      const fig = e.target.closest('.bu-slide');
+      if (!fig || !$('img', fig)) return;
+      document.dispatchEvent(new CustomEvent('ampliar', { detail: { track, index: slides.indexOf(fig) } }));
+    });
     if (slides.length < 2) {
       $('.bu-prev', root).hidden = true; $('.bu-next', root).hidden = true; dots.hidden = true;
       const hint = $('.bu-hint', root); if (hint) hint.hidden = true;
@@ -266,7 +278,7 @@
     });
   }
 
-  /* ── Lightbox: ampliar fotos (botón con lupa en cada carrusel); sigue
+  /* ── Lightbox: ampliar fotos (clic en la foto); sigue
      funcionando como carrusel adentro, con las mismas fotos ──────────── */
   function initLightbox() {
     const box = $('#lightbox'); if (!box) return;
@@ -298,14 +310,7 @@
       if (e.key === 'ArrowLeft') step(-1);
       if (e.key === 'ArrowRight') step(1);
     });
-    document.addEventListener('click', e => {
-      const btn = e.target.closest('.bu-zoom');
-      if (!btn) return;
-      const track = $('.bu-track', btn.closest('.burbuja'));
-      const slides = $$('.bu-slide', track);
-      const n = Math.round(track.scrollLeft / Math.max(1, track.clientWidth));
-      open(track, n);
-    });
+    document.addEventListener('ampliar', e => open(e.detail.track, e.detail.index));
   }
 
   /* ── Arranque ─────────────────────────────────────────────────────── */

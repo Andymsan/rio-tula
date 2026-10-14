@@ -72,7 +72,7 @@ def build_hillshade():
     valid = ~np.isnan(dem)
     dem_f = np.where(valid, dem, np.nanmedian(dem))
     # margen (reflejando el borde) para que el fondo nunca se corte en pantallas muy anchas/angostas
-    pad = max(width, height) // 2
+    pad = max(width, height)
     dem_f = np.pad(dem_f, pad, mode="reflect")
     gy, gx = np.gradient(dem_f, 90.0)
     slope = np.pi / 2 - np.arctan(np.hypot(gx, gy))
@@ -243,7 +243,12 @@ d_cuenca = layer_path("gran cuenca del valle de mexico.geojson", simplify_m=15)
 d_delim = layer_path("delimitacion.geojson", simplify_m=15)
 d_lake = layer_path("lago de texcoco.geojson", simplify_m=20, clip=True)
 d_lake = smooth_path(d_lake, it=1)
-d_rivers = layer_path("tula.geojson", simplify_m=10)
+from shapely.ops import unary_union
+_cuenca_geom = unary_union([g for g, _ in feature_geoms(load("gran cuenca del valle de mexico.geojson"))])
+_rios_geom = unary_union([g.simplify(10, preserve_topology=True) for g, _ in feature_geoms(load("tula.geojson"))])
+_corte = _cuenca_geom.boundary.buffer(1800)
+d_rivers = path_d(_rios_geom.difference(_corte))
+d_rivers_enlace = path_d(_rios_geom.intersection(_corte))
 # el/los tramo(s) del río que cruzan Tula de Allende (para resaltar "río restaurado" en la época 8)
 _riotula_buf = tulacity_geom.buffer(2500) if tulacity_geom else None
 _riotula_parts = [path_d(g.simplify(10, preserve_topology=True))
@@ -303,9 +308,7 @@ d_tajo = path_d(_tajo_geom)
 tajo_mid = _tajo_geom.interpolate(0.5, normalized=True)
 tajo_mid = P(tajo_mid.x, tajo_mid.y)
 
-# conectar el tajo con Zumpango (marcador manual, ver ZUMPANGO_MARKER)
 zumpango_c = C("Zumpango")
-d_tajo = prepend_point(d_tajo, zumpango_c)
 
 # ─── puntos de referencia (lon/lat) ─────────────────────────────────────────
 zoc = LL(-99.1332, 19.4326)            # Zócalo, Ciudad de México (antes Tenochtitlan)
@@ -319,6 +322,8 @@ d_dique = "M%.1f,%.1f L%.1f,%.1f L%.1f,%.1f" % (
 #  ETIQUETAS
 # ══════════════════════════════════════════════════════════════════════════
 lab = []
+_rp = _cuenca_geom.representative_point()
+_cuenca_lab = P(_rp.x + 6000, _rp.y + 38000)
 def L(txt, xy, steps, size="m", cls=""):
     lab.append('<text class="lbl %s %s" data-show="%s" x="%.1f" y="%.1f">%s</text>' %
                (size, cls, " ".join(map(str, steps)), xy[0], xy[1], txt))
@@ -339,24 +344,19 @@ def tenochtitlan(xy, step):
 # estados (siempre, salvo en los pasos donde estorban)
 L("HIDALGO", (W_SVG * 0.62, H_SVG * 0.12), [i for i in range(9) if i not in (5, 6, 7)], "s", "estado")
 L("ESTADO DE MÉXICO", (W_SVG * 0.4, H_SVG * 0.72), [i for i in range(9) if i not in (4, 5, 6, 7)], "s", "estado")
-L("CIUDAD DE MÉXICO", (zoc[0] - 4, zoc[1] + 26), [i for i in range(9) if i not in (4, 5, 6, 7)], "s", "estado")
+L("CIUDAD DE MÉXICO", (zoc[0] - 4, zoc[1] + 26), [i for i in range(9) if i not in (0, 1, 4, 5, 6, 7)], "s", "estado")
 # cuenca / lagos
-L("Cuenca del Valle de México", (W_SVG * 0.1, H_SVG * 0.66), [0, 1, 2, 3], "s", "cuenca")
-L("Cuenca del río Tula", (endho_c[0] - 40, endho_c[1] - 18), [i for i in range(9) if i not in (0, 1, 2, 3)], "s", "delim")
+L("Cuenca del Valle de México", _cuenca_lab, [0, 1, 2], "m", "cuenca")
+L("Cuenca del río Tula", (endho_c[0] - 40, endho_c[1] - 18), [i for i in range(9) if i != 3], "s", "delim")
 L("Lago de Texcoco", (zoc[0] - 30, zoc[1] + 16), [0, 1], "m", "agua")
-L("Lago de Zumpango", C("Zumpango", -6, -22), [0, 2], "s", "agua")
 L("Tenochtitlan", (zoc[0] + 6, zoc[1] - 6), [1], "m", "hist")
 L("Ciudad de México", (zoc[0] + 8, zoc[1] - 8), [3], "m", "ciudad")
 L("Albarradón de Nezahualcóyotl", (zoc[0] + 22, zoc[1] + 66), [1], "s", "hist")
 # lugares clave
-L("Huehuetoca", C("Huehuetoca", -6, 12), [2], "m", "lm")
-L("Zumpango", C("Zumpango", 10, 14), [2, 3], "s", "lm")
-L("Tequixquiac", C("Tequixquiac", -22, 4), [2, 3], "s", "lm")
 L("Tula de Allende", C("Tula de Allende", -8, -14), [8], "m", "lm key")
 L("Atotonilco de Tula", C("Atotonilco de Tula", 34, 6), [8], "s", "lm key")
 L("Tezontepec de Aldama", C("Tezontepec de Aldama", 14, 12), [8], "s", "lm")
 L("Tlaxcoapan", C("Tlaxcoapan", 12, 6), [8], "s", "lm")
-L("Tepetitlán", C("Tepetitlán", -18, -8), [4], "s", "lm")
 L("Ecatepec", C("Ecatepec de Morelos", 30, -14), [3], "s", "lm")
 L("Valle del Mezquital", (endho_c[0] - 32, endho_c[1] + 46), [4], "m", "hist")
 for _clv, _d in DISTRITOS.items():
@@ -371,7 +371,7 @@ L("Tajo de Nochistongo", (tajo_mid[0] - 34, tajo_mid[1] - 20), [2], "s", "tajo")
 L("Túnel Emisor Poniente", (tep_mid[0] - 46, tep_mid[1] - 14), [5], "s", "tep")
 L("Emisor Central", (teo1_mid[0] - 10, teo1_mid[1] - 26), [5], "s", "teo")
 L("Túnel Emisor Oriente", (teo2_mid[0] + 10, teo2_mid[1] + 18), [5], "s", "teo")
-L("río Tula", (requena_c[0] - 55, requena_c[1] - 45), [i for i in range(9) if i not in (0, 1)], "s", "rio")
+L("río Tula", (requena_c[0] - 55, requena_c[1] - 45), list(range(9)), "s", "rio")
 L("Tula de Allende", C("Tula de Allende", -8, -14), [7], "l", "lm key")
 
 # ══════════════════════════════════════════════════════════════════════════
@@ -387,10 +387,11 @@ svg.append('<image class="hillshade" href="img/mapa/hillshade.webp" x="%.1f" y="
 svg.append(capa("delim", 0, d_delim))
 svg.append(capa("cuenca", 0, d_cuenca))
 svg.append(capa("estados", 0, d_edomex + " " + d_hidalgo + " " + d_cdmx))
-svg.append(capa("humedal", 0, d_humedales))
-svg.append(capa("waterbody", 0, d_presas))
-svg.append(capa("waterbody", 0, d_taxhimay))
+svg.append(capa("waterbody lagos", 3, d_humedales))
+svg.append(capa("waterbody", 4, d_presas))
+svg.append(capa("waterbody", 4, d_taxhimay))
 svg.append(capa("rivers", 0, d_rivers))
+svg.append(capa("rivers", 2, d_rivers_enlace))
 svg.append(capa("lake", 0, d_lake))
 svg.append(capa("endho", 4, d_endho))
 svg.append(capa("waterbody", 4, d_requena))
@@ -399,7 +400,6 @@ for _clv, _d in DISTRITOS.items():
     svg.append(capa("distritos", 4, _d["path"], ' style="fill:%s1a;stroke:%s"' % (DISTRITOS_COLOR[_clv], DISTRITOS_COLOR[_clv])))
     svg.append(capa("line canaldr", 4, _d["canal"], ' pathLength="1" style="stroke:%s"' % DISTRITOS_COLOR[_clv]))
 svg.append(capa("riotula", 0, d_riotula, ' pathLength="1"'))
-svg.append(capa("tulacity", 8, d_tulacity))  # ciudad restaurada; en 2021 (paso 7) solo resalta el punto que pulsa
 svg.append(capa("manzanas", 7, d_manzanas))  # manzanas de la ciudad; solo visibles en el acercamiento de la inundación
 
 svg.append(capa("dique", 1, d_dique, ' pathLength="1"'))
@@ -411,8 +411,6 @@ svg.append(capa("line tep", 5, d_tep, ' pathLength="1"'))
 svg.append(capa("line emisor", 5, d_teo1, ' pathLength="1"'))
 svg.append(capa("line teo", 5, d_teo2, ' pathLength="1"'))
 svg.append(tenochtitlan(zoc, 1))
-svg.append('<g class="marker zump" data-step="2"><circle class="ping" cx="%.1f" cy="%.1f" r="4"/>'
-           '<circle class="dot" cx="%.1f" cy="%.1f" r="3.6"/></g>' % (zumpango_c[0], zumpango_c[1], zumpango_c[0], zumpango_c[1]))
 svg.append('<g class="marker enfasis" id="hsEnfasis"><circle class="ping" cx="0" cy="0" r="4"/><circle class="dot" cx="0" cy="0" r="3.6"/></g>')
 svg.append('<g class="labels">' + "".join(lab) + "</g>")
 svg.append("</svg>")
