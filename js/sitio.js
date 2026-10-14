@@ -380,7 +380,7 @@
       let act = -1;
       lemas.forEach((l, i) => { if (l.getBoundingClientRect().top <= vh * 0.5) act = i; });
       items.forEach((it, i) => { it.classList.toggle('on', i === act); it.classList.toggle('past', i < act); });
-      if (act >= 0) { rail.style.setProperty('--lc', items[act].style.getPropertyValue('--c')); fill.style.height = Math.max(0, 5 + act * 0.2325 * rail.clientHeight) + 'px'; }
+      if (act >= 0) { rail.style.setProperty('--lc', getComputedStyle(items[act]).getPropertyValue('--c').trim()); fill.style.height = Math.max(0, 5 + act * 0.2325 * rail.clientHeight) + 'px'; }
       else fill.style.height = '0';
     }
     addEventListener('scroll', () => { if (!tick) { tick = true; requestAnimationFrame(upd); } }, { passive: true });
