@@ -23,10 +23,6 @@ se muestra un marcador con la ruta esperada.
 | `img/fotos/ecosistemas-4/1_<pie de foto>.jpg` |
 | `img/fotos/diagnostico/1_<pie de foto>.jpg` |
 | `img/fotos/promesa-1/1_<pie de foto>.jpg` |
-| `img/fotos/lema-limpio/1_<pie de foto>.jpg` |
-| `img/fotos/lema-seguro/1_<pie de foto>.jpg` |
-| `img/fotos/lema-vivo/1_<pie de foto>.jpg` |
-| `img/fotos/lema-todos/1_<pie de foto>.jpg` |
 | `img/fotos/participa/1_<pie de foto>.jpg` |
 
 Este archivo se genera automáticamente; no editar a mano.

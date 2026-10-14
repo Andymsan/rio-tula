@@ -599,18 +599,8 @@ a.nav-btn { text-decoration: none; display: inline-block; }
 @media (max-width: 900px) { .banner.dos { left: 4px; } .lr { left: 23px; } }
 @media (max-width: 900px) { .lr { height: 150px; } .lr.spread .lr-i { top: calc(10px + var(--t) * .8); } }
 
-/* ─── Lemas: banner a pantalla completa por unos segundos, sin detener el scroll ─── */
-.s-lema { position: relative; height: 2px; margin: 0; }
-.lema-in { position: fixed; inset: 0; z-index: 55; display: flex; align-items: center; justify-content: center; text-align: center; color: #fff;
-  background-color: #10181a; background-size: cover; background-position: center; opacity: 0; visibility: hidden; cursor: pointer;
-  transition: opacity .55s ease, visibility 0s linear .55s; }
-.lema-in::before { content: ""; position: absolute; inset: 0; background: linear-gradient(rgba(8,20,23,.5), rgba(8,20,23,.76)); }
-.s-lema.play .lema-in { opacity: 1; visibility: visible; transition: opacity .55s ease; }
-.lema-txt { position: relative; max-width: 960px; padding: 0 28px; transform: translateY(26px); transition: transform .9s cubic-bezier(.2,.8,.2,1); }
-.s-lema.play .lema-txt { transform: none; }
-.lema-tag { display: inline-block; font: 700 13px 'Noto Sans', sans-serif; letter-spacing: .24em; text-transform: uppercase; color: var(--lema); }
-.lema-h { font: 900 clamp(46px, 9vw, 120px)/1 'Noto Sans', sans-serif; margin: 16px 0 20px; text-shadow: 0 6px 40px rgba(0,0,0,.45); }
-.lema-p { font-size: clamp(17px, 2vw, 25px); font-weight: 300; line-height: 1.5; max-width: 660px; margin: 0 auto; opacity: .94; }
+/* Ancla invisible de cada frente */
+.s-lema { height: 0; margin: 0; }
 
 /* ═════ Accesibilidad: botón, modo noche y modo daltonismo ═════ */
 .a11y { position: relative; }

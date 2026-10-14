@@ -50,7 +50,6 @@ modo_noche: Modo noche
 modo_daltonismo: Modo daltonismo
 titulo_indice: Índice
 aviso: Borrador · las fotos son marcadores
-lema_segundos: 3
 pie1: Secretaría de Medio Ambiente y Recursos Naturales · Pproyecto de Saneamiento y Restauración del Río Tula 2024–2030
 pie2: Datos: base de proyectos 2025–2026 (Conagua, Semarnat, Conafor, Conanp, Profepa y Gobierno de Hidalgo)
 

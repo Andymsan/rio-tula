@@ -58,11 +58,9 @@ del repositorio (Settings → Secrets and variables → Actions):
 - `GDRIVE_SA_KEY`: el JSON de una cuenta de servicio de Google con acceso de lectura a esa carpeta.
 - `GDRIVE_FOLDER_ID`: el id de la carpeta de Drive (la parte de la URL después de `/folders/`).
 
-## Fotos de los lemas y del diagnóstico
+## Fotos del diagnóstico
 
-Nombres de archivo en Drive (`<sección>_<orden>_<pie de foto>`): `diagnostico_1_…` (carrusel de pantalla completa) y
-`lema-limpio_1_…`, `lema-seguro_1_…`, `lema-vivo_1_…`, `lema-todos_1_…` (la primera foto de cada una es el fondo del banner).
-Mientras no haya foto, el banner usa una imagen provisional.
+Nombre de archivo en Drive: `diagnostico_1_<pie de foto>` (carrusel de pantalla completa).
 
 ## Otros
 

@@ -498,13 +498,8 @@ def rail():
     return '<nav class="lr" id="lemaRail" aria-label="Los cuatro lemas del proyecto"><span class="lr-line"><b id="lrFill"></b></span>%s</nav>' % its
 
 def lema(k):
-    id_ = "lema-" + k
-    fb, color = LEMAS[k]
-    fotos = fotos_de(id_)
-    bg = fotos[0][0] if fotos else fb
-    return ('<section class="s-lema" id="%s" style="--lema:%s"><div class="lema-in" style="background-image:url(%s)" aria-hidden="true">'
-            '<div class="lema-txt"><span class="lema-tag">%s</span><h2 class="lema-h">%s</h2><p class="lema-p">%s</p></div></div></section>'
-            % (id_, color, attr(bg).replace(" ", "%20"), T.t(id_, "etiqueta"), T.t(id_, "titulo"), T.t(id_, "texto")))
+    """Ancla invisible al inicio de cada frente (la usan la guía lateral y sus enlaces)."""
+    return '<section class="s-lema" id="lema-%s" aria-hidden="true"></section>' % k
 
 def pie():
     return '<footer>%s<br>%s</footer>' % (T.t("sitio", "pie1"), T.t("sitio", "pie2"))
@@ -517,12 +512,12 @@ PLANTILLA = '''<!DOCTYPE html>
   <title>%(titulo)s</title>
   <meta name="description" content="%(descripcion)s" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/temas.css?v=13" />
-  <link rel="stylesheet" href="css/historia.css?v=13" />
-  <link rel="stylesheet" href="css/capitulos.css?v=13" />
+  <link rel="stylesheet" href="css/temas.css?v=14" />
+  <link rel="stylesheet" href="css/historia.css?v=14" />
+  <link rel="stylesheet" href="css/capitulos.css?v=14" />
   <script>(function(){var h=document.documentElement;h.classList.add('js');try{var s=localStorage;if(s.getItem('rt-noche')==='1')h.dataset.theme='dark';if(s.getItem('rt-cvd')==='1')h.dataset.cvd='1'}catch(e){}})()</script>
 </head>
-<body data-lema-seg="%(lema_seg)s">
+<body>
 %(filtros)s
 <div id="progress"></div>
 
@@ -555,7 +550,7 @@ PLANTILLA = '''<!DOCTYPE html>
 
 %(contenido)s
 
-<script src="js/sitio.js?v=13"></script>
+<script src="js/sitio.js?v=14"></script>
 </body>
 </html>
 '''
@@ -565,7 +560,7 @@ def comun(**extra):
         titulo=attr(T.raw("sitio", "titulo")), descripcion=attr(T.raw("sitio", "descripcion")),
         logo=T.t("sitio", "logo"), logo_sub=T.t("sitio", "logo_sub"), boton_indice=T.t("sitio", "boton_indice"),
         titulo_indice=T.t("sitio", "titulo_indice"), aviso=T.t("sitio", "aviso"), filtros=FILTROS,
-        lema_seg=attr(T.raw("sitio", "lema_segundos", requerido=False) or "3"),
+
         acc_titulo=T.t("sitio", "boton_acc"), acc_noche=T.t("sitio", "modo_noche"), acc_cvd=T.t("sitio", "modo_daltonismo"))
     d.update(extra)
     return d
