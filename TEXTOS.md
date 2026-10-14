@@ -115,7 +115,7 @@ va_rio: 8.1 m³/s | siguen por el río Tula hacia la presa Endhó · 24 %
 nota_va: Caudal en m³/s en temporada de secas (promedio 2021–2024).
 calidad: El agua entra al Portal de Salida con **150 mg/L** de DBO y, tras pasar por Atotonilco, llega a riego con **50 mg/L**.
 nota: Caudal en m³/s en temporada de secas (promedio 2021–2024). El color indica la contaminación del agua (DBO, en mg/L): entre menos, mejor.
-cierre: Esta infraestructura ha generado contaminación, riesgo de inundación y degradación ambiental. ==Eso es lo que estamos atendiendo.==
+cierre: El Proyecto de Saneamiento y Restauración del Río Tula ==atiende la calidad del agua, las inundaciones y la recuperación del río.==
 boton: Conocer la historia del río →
 
 ## diagnostico  (fotos de diagnóstico, pantalla completa; carpeta img/fotos/diagnostico/)
