@@ -502,9 +502,8 @@ def lema(k):
     fb, color = LEMAS[k]
     fotos = fotos_de(id_)
     bg = fotos[0][0] if fotos else fb
-    return ('<section class="s-lema" id="%s" data-nav="dark" style="--lema:%s"><div class="lema-in" style="background-image:url(%s)">'
-            '<div class="lema-txt rv"><span class="lema-tag">%s</span><h2 class="lema-h">%s</h2><p class="lema-p">%s</p></div>'
-            '<span class="lema-flecha">↓</span></div></section>'
+    return ('<section class="s-lema" id="%s" style="--lema:%s"><div class="lema-in" style="background-image:url(%s)" aria-hidden="true">'
+            '<div class="lema-txt"><span class="lema-tag">%s</span><h2 class="lema-h">%s</h2><p class="lema-p">%s</p></div></div></section>'
             % (id_, color, attr(bg).replace(" ", "%20"), T.t(id_, "etiqueta"), T.t(id_, "titulo"), T.t(id_, "texto")))
 
 def pie():
@@ -518,12 +517,12 @@ PLANTILLA = '''<!DOCTYPE html>
   <title>%(titulo)s</title>
   <meta name="description" content="%(descripcion)s" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/temas.css?v=11" />
-  <link rel="stylesheet" href="css/historia.css?v=11" />
-  <link rel="stylesheet" href="css/capitulos.css?v=11" />
+  <link rel="stylesheet" href="css/temas.css?v=12" />
+  <link rel="stylesheet" href="css/historia.css?v=12" />
+  <link rel="stylesheet" href="css/capitulos.css?v=12" />
   <script>document.documentElement.classList.add('js')</script>
 </head>
-<body>
+<body data-lema-seg="%(lema_seg)s">
 %(filtros)s
 <div id="progress"></div>
 
@@ -546,7 +545,7 @@ PLANTILLA = '''<!DOCTYPE html>
 
 %(contenido)s
 
-<script src="js/sitio.js?v=11"></script>
+<script src="js/sitio.js?v=12"></script>
 </body>
 </html>
 '''
@@ -555,7 +554,8 @@ def comun(**extra):
     d = dict(
         titulo=attr(T.raw("sitio", "titulo")), descripcion=attr(T.raw("sitio", "descripcion")),
         logo=T.t("sitio", "logo"), logo_sub=T.t("sitio", "logo_sub"), boton_indice=T.t("sitio", "boton_indice"),
-        titulo_indice=T.t("sitio", "titulo_indice"), aviso=T.t("sitio", "aviso"), filtros=FILTROS)
+        titulo_indice=T.t("sitio", "titulo_indice"), aviso=T.t("sitio", "aviso"), filtros=FILTROS,
+        lema_seg=attr(T.raw("sitio", "lema_segundos", requerido=False) or "3"))
     d.update(extra)
     return d
 

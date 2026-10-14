@@ -428,6 +428,19 @@
   addEventListener('load', fitAll);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitAll);
 
+  /* ── Lemas: banner a pantalla completa unos segundos al entrar a cada frente (no detiene el scroll) ── */
+  function initLemas() {
+    const secs = $$('.s-lema'); if (!secs.length) return;
+    const ms = (Number(document.body.dataset.lemaSeg) || 3) * 1000, jugados = new Set();
+    let lastY = scrollY, abajo = true;
+    addEventListener('scroll', () => { abajo = scrollY >= lastY; lastY = scrollY; }, { passive: true });
+    const play = s => { s.classList.add('play'); clearTimeout(s._t); s._t = setTimeout(() => s.classList.remove('play'), ms); };
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting && abajo && !jugados.has(e.target.id)) { jugados.add(e.target.id); play(e.target); }
+    }), { rootMargin: '0px 0px -35% 0px' });
+    secs.forEach(s => { io.observe(s); $('.lema-in', s).addEventListener('click', () => s.classList.remove('play')); });
+  }
+
   /* ── Arranque ─────────────────────────────────────────────────────── */
   function boot() {
     buildNavObs(); buildStepObs();
@@ -437,6 +450,7 @@
     initResumen();
     initOrigen();
     initRail();
+    initLemas();
     initContadores();
     fitAll();
     initLightbox();
