@@ -423,11 +423,11 @@ FILTROS = '''<svg width="0" height="0" style="position:absolute" aria-hidden="tr
 </defs></svg>'''
 
 def video_portada():
-    """Video de fondo de la portada: img/video/portada_*.mp4 si existe; si no, el primer video que haya."""
+    """Video de fondo de la portada: img/video/portada_*.mp4 si existe; si no, el primero de diagnostico_*."""
     d = os.path.join(ROOT, "img", "video")
     if not os.path.isdir(d):
         return ""
-    vids = sorted(f for f in os.listdir(d) if f.lower().endswith(".mp4"))
+    vids = sorted(f for f in os.listdir(d) if f.lower().endswith(".mp4") and f.startswith(("portada_", "diagnostico_")))
     vids.sort(key=lambda f: 0 if f.startswith("portada_") else 1)
     if not vids:
         return ""

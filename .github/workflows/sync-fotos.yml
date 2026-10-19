@@ -26,6 +26,9 @@ jobs:
       - name: Instalar dependencias
         run: pip install google-api-python-client google-auth pillow
 
+      - name: Instalar ffmpeg (para convertir videos)
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+
       - name: Traer fotos nuevas de Drive
         id: fotos
         env:
