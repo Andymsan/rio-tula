@@ -89,7 +89,7 @@
     if (ban.dataset.v === v) return;
     const [n, a, b] = v.split('|'), apply = () => {
       $('.bn', ban).textContent = n; $('.bn', ban).hidden = !n; $('strong', ban).textContent = a; $('small', ban).textContent = b;
-      ban.classList.toggle('solo', !n && !a); ban.classList.remove('sw');
+      ban.classList.toggle('solo', !n && !a); ban.classList.remove('sw'); document.dispatchEvent(new CustomEvent('frente', { detail: Number(n) || 0 }));
     };
     const primera = !ban.dataset.v; ban.dataset.v = v;
     if (primera) { apply(); return; }
@@ -427,6 +427,8 @@
     const ks = ['limpio', 'seguro', 'vivo', 'todos'], lemas = ks.map(k => $('#lema-' + k)), fin = $('#resumen');
     const items = $$('.lr-i', rail), fill = $('#lrFill');
     let tick = false, timer = 0;
+    let act = -1;
+    document.addEventListener('frente', e => { act = e.detail - 1; upd(); });
     function upd() {
       tick = false;
       const vh = innerHeight, first = lemas[0].getBoundingClientRect().top, end = fin ? fin.getBoundingClientRect().top : Infinity;
@@ -436,8 +438,6 @@
       const ban = $$('.cap-stage .banner.dos').map(b => b.getBoundingClientRect()).find(r => r.top > 40 && r.top < vh * 0.45);
       rail.style.top = (ban ? ban.bottom + 14 : 176) + 'px';
       rail.classList.toggle('con', !!ban);
-      let act = -1;
-      lemas.forEach((l, i) => { if (l.getBoundingClientRect().top <= vh * 0.5) act = i; });
       items.forEach((it, i) => { it.classList.toggle('on', i === act); it.classList.toggle('past', i < act); });
       if (act >= 0) { rail.style.setProperty('--lc', getComputedStyle(items[act]).getPropertyValue('--c').trim()); fill.style.height = Math.max(0, 5 + act * 0.2325 * rail.clientHeight) + 'px'; }
       else fill.style.height = '0';

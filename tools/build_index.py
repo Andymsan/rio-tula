@@ -393,6 +393,9 @@ IDX_IMG = {"origen": ("img/mapa/base.webp", "72% 62%"), "historia": ("img/mapa/h
            "proyecto": ("img/mapa/int.webp", "58% 30%"), "limpio": ("img/mapa/col.webp", "62% 78%"), "seguro": ("img/mapa/int.webp", "46% 85%"),
            "vivo": ("img/mapa/base.webp", "36% 25%"), "todos": ("img/mapa/acc.webp", "54% 55%"), "resumen": ("img/mapa/col.webp", "50% 40%")}
 
+# secciones con foto en el índice (primera foto de la carpeta); las demás usan el mapa
+IDX_FOTO = {"limpio": "calidad-1", "seguro": "inundaciones-1", "vivo": "ecosistemas-1", "todos": "ecosistemas-4", "participa": "participa"}
+
 def indice(desde_historia=False):
     """(tarjetas del hero, columnas del panel). En la subpágina los enlaces a la portada llevan index.html."""
     items = lista = ""
@@ -403,9 +406,11 @@ def indice(desde_historia=False):
             h = "index.html" + h
         key = "indice-" + k
         img, pos = IDX_IMG.get(k, ("img/mapa/base.webp", "50% 50%"))
-        if k == "participa":
-            fp = fotos_de("participa")
-            img, pos = (fp[0][0] if fp else "img/mapa/base.webp"), "50% 40%"
+        carpeta = IDX_FOTO.get(k)
+        if carpeta:
+            fp = fotos_de(carpeta)
+            if fp:
+                img, pos = fp[0][0], "50% 50%"
         items += '<a class="idx-item" href="%s" style="--c:%s"><b>%02d</b><span>%s</span></a>' % (h, c, n, T.t(key, "titulo"))
         lista += ('<li class="%s"><a href="%s" style="--c:%s;--bp:%s" data-img="%s"><span class="ic-n">%02d</span><span class="ic-img"></span>'
                   '<span class="ic-t">%s</span><small>%s</small></a></li>'

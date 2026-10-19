@@ -21,7 +21,15 @@ se muestra un marcador con la ruta esperada.
 | `img/fotos/ecosistemas-2/1_<pie de foto>.jpg` |
 | `img/fotos/ecosistemas-3/1_<pie de foto>.jpg` |
 | `img/fotos/ecosistemas-4/1_<pie de foto>.jpg` |
+| `img/fotos/calidad-1/1_<pie de foto>.jpg` |
+| `img/fotos/inundaciones-1/1_<pie de foto>.jpg` |
+| `img/fotos/ecosistemas-1/1_<pie de foto>.jpg` |
+| `img/fotos/ecosistemas-4/1_<pie de foto>.jpg` |
 | `img/fotos/participa/1_<pie de foto>.jpg` |
+| `img/fotos/calidad-1/1_<pie de foto>.jpg` |
+| `img/fotos/inundaciones-1/1_<pie de foto>.jpg` |
+| `img/fotos/ecosistemas-1/1_<pie de foto>.jpg` |
+| `img/fotos/ecosistemas-4/1_<pie de foto>.jpg` |
 | `img/fotos/participa/1_<pie de foto>.jpg` |
 | `img/fotos/diagnostico/1_<pie de foto>.jpg` |
 | `img/fotos/promesa-1/1_<pie de foto>.jpg` |
