@@ -24,7 +24,7 @@ jobs:
           python-version: '3.12'
 
       - name: Instalar dependencias
-        run: pip install google-api-python-client google-auth
+        run: pip install google-api-python-client google-auth pillow
 
       - name: Traer fotos nuevas de Drive
         id: fotos

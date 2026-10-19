@@ -12,7 +12,7 @@ sección, se muestra un marcador con la ruta esperada.
 Si TEXTOS.md tiene un error, el script se detiene con un mensaje y NO toca
 index.html.
 """
-import os, re, sys
+import json, os, re, sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from textos import Textos, TextosError, fmt, attr
@@ -32,7 +32,9 @@ def _mensaje_amable(tipo, valor, tb):
 sys.excepthook = _mensaje_amable
 
 try:
-    T = Textos(os.path.join(ROOT, "TEXTOS.md"))
+    _datos_insp = os.path.join(ROOT, "data", "inspecciones.json")
+    _insp = json.load(open(_datos_insp, encoding="utf-8"))["total"] if os.path.exists(_datos_insp) else 92
+    T = Textos(os.path.join(ROOT, "TEXTOS.md"), {"inspecciones": _insp})
 except FileNotFoundError:
     sys.exit("ERROR: no se encuentra TEXTOS.md")
 
@@ -182,7 +184,7 @@ def hexes_svg():
         x, y = cen[k]
         t = '<g class="h h-%s"><polygon points="%s"/>' % (k, poly(cen[k]))
         t += '<g transform="translate(%.1f,%.1f)">%s</g>' % (x, y - 44, ico[k])
-        for j, linea in enumerate(partes[:2]):
+        for j, linea in enumerate(partes[:3]):
             t += '<text class="lab" x="%.1f" y="%.1f">%s</text>' % (x, y + 14 + 17 * j, fmt(linea))
         return t + "</g>"
 
@@ -205,7 +207,8 @@ hub = cap("proyecto", "rosa", T.t("proyecto", "banner"), frame("int"), hub_steps
 #  CALIDAD DEL AGUA  (rosa) — marco "col"
 # ═══════════════════════════════════════════════════════════════════════════
 calidad_canvas = (frame("col")
-    + pin("atot", *COL["atot"], label="Centro de Vigilancia del Agua", sub="", side="")
+    + pin("atot", *COL["atot"], label="PTAR Atotonilco", sub="", side="")
+    + pin("cvig", *COL["atot"], label="Centro de Vigilancia del Agua", sub="", side="")
     + pin("colec", *COL["colec"], label="Colectores del río Tula", sub="", side="r")
     + pin("cfe", *COL["cfe"], label="PTAR de la CFE", sub="", side="l")
     + pin("boya", *COL["endho"], label="Boya · presa Endhó", sub="", side=""))
@@ -215,7 +218,7 @@ calidad_steps = [
     step(".615,.79,2.3", "col", card("calidad-1"), carousel("calidad-1"), pins="atot"),
     step(".64,.47,1.35", "col", card("calidad-3"), carousel("calidad-3"), pins="colec cfe"),
     step(".55,.47,1.25", "col", card("calidad-2"), carousel("calidad-2"), pins=""),
-    step(".55,.46,1.05", "col", card("calidad-4"), carousel("calidad-4"), pins="boya atot"),
+    step(".55,.46,1.05", "col", card("calidad-4"), carousel("calidad-4"), pins="boya cvig"),
 ]
 calidad = cap("calidad", "rosa", T.raw("calidad", "banner"), calidad_canvas, calidad_steps, num=1)
 
@@ -296,7 +299,7 @@ def resumen_canvas():
     for name in sorted(ovs):
         html += ov(name, tint_por_ov.get(name, ""))
     html += sitio_pins()
-    html += pin("atot", *COL["atot"], label="Centro de Vigilancia del Agua", side="")
+    html += pin("atot", *COL["atot"], label="PTAR Atotonilco", side="")
     html += pin("colec", *COL["colec"], label="Colectores del río Tula", side="r")
     html += pin("cfe", *COL["cfe"], label="PTAR de la CFE", side="l")
     html += mlabel("anp", 0.34, 0.22, "Nueva Área Natural<br>Protegida")
@@ -305,19 +308,20 @@ def resumen_canvas():
 
 def resumen_meta(i, cam, frame_, ovlist, pins, labels):
     titulo, desc = T.t("resumen-%d" % (i + 1), "titulo"), T.t("resumen-%d" % (i + 1), "texto")
+    kp = [x.strip() for x in T.raw("resumen-%d" % (i + 1), "cifra").split("|", 1)]
     ov_sin_tint = " ".join(x for x in ovlist.split() if not x.startswith("tint-"))
     return ('<li class="meta" tabindex="0" role="button" aria-expanded="false" '
             'data-cam="%s" data-frame="%s" data-ov="%s" data-pins="%s" data-labels="%s">'
-            '<b>%d</b><div><strong>%s</strong><p class="meta-desc">%s</p></div></li>'
-            % (cam, frame_, ov_sin_tint, pins, labels, i + 1, titulo, desc))
+            '<b>%d</b><div><strong>%s</strong><p class="meta-desc">%s</p></div><span class="meta-kpi"><b>%s</b><small>%s</small></span><i class="meta-bar"></i></li>'
+            % (cam, frame_, ov_sin_tint, pins, labels, i + 1, titulo, desc, fmt(kp[0]), fmt(kp[1])))
 
 def resumen():
     metas_html = "".join(resumen_meta(i, *m) for i, m in enumerate(METAS))
-    return ('<section class="s-resumen tema-azul" id="resumen" data-nav="light">'
+    return ('<section class="s-resumen tema-azul" id="resumen" data-nav="light" data-fit><div class="fit-in">'
             '<div class="section-inner"><span class="s-tag">%s</span><h2 class="s-title">%s</h2>'
             '<p class="s-subtitle">%s</p>%s</div>'
             '<div class="resumen-wrap"><div class="resumen-stage" id="resumenStage"><div class="canvas">%s</div><div class="wash"></div></div>'
-            '<ul class="resumen-metas" id="resumenMetas">%s</ul></div></section>'
+            '<ul class="resumen-metas" id="resumenMetas">%s</ul></div></div></section>'
             % (T.t("resumen", "etiqueta"), T.t("resumen", "titulo"), T.t("resumen", "subtitulo"),
                ('<p class="s-body">%s</p>' % T.t("resumen", "texto")) if T.raw("resumen", "texto", requerido=False) not in (None, '""') else "",
                resumen_canvas(), metas_html))
@@ -399,10 +403,10 @@ idx_items, idx_list = indice()
 _, idx_list_hist = indice(True)
 
 FILTROS = '''<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
-<filter id="f-rosa"    color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.882  0 0 0 0 0.612  0 0 0 0 0.580  0 0 0 1 0"/></filter>
-<filter id="f-naranja" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.918  0 0 0 0 0.486  0 0 0 0 0.188  0 0 0 1 0"/></filter>
-<filter id="f-naranja-x2" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.918  0 0 0 0 0.486  0 0 0 0 0.188  0 0 0 2.6 0"/></filter>
-<filter id="f-verde"   color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.549  0 0 0 0 0.529  0 0 0 0 0.114  0 0 0 1 0"/></filter>
+<filter id="f-rosa"    color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.753  0 0 0 0 0.478  0 0 0 0 0.447  0 0 0 1 0"/></filter>
+<filter id="f-naranja" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.788  0 0 0 0 0.400  0 0 0 0 0.122  0 0 0 1 0"/></filter>
+<filter id="f-naranja-x2" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.788  0 0 0 0 0.400  0 0 0 0 0.122  0 0 0 2.6 0"/></filter>
+<filter id="f-verde"   color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.435  0 0 0 0 0.420  0 0 0 0 0.100  0 0 0 1 0"/></filter>
 <filter id="f-slate"   color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.396  0 0 0 0 0.455  0 0 0 0 0.545  0 0 0 1 0"/></filter>
 </defs></svg>'''
 
@@ -428,9 +432,9 @@ def promesa():
             '<div class="pm-scrim"></div><div class="pm-fade"></div>'
             '<div class="pm-grid fit-in"><div class="pm-text rv">'
             '<p class="pm-kicker">%s</p>'
-            '<div class="pm-92-row"><div class="pm-92">92</div><div><h2 class="pm-h">%s</h2><p class="pm-h-sub">%s</p></div></div>'
+            '<div class="pm-92-row"><div class="pm-92 cnt">92</div><div><h2 class="pm-h">%s</h2><p class="pm-h-sub">%s</p></div></div>'
             '<p class="pm-kicker pm-k2">%s</p>'
-            '<div class="nums"><div class="n"><b class="cnt">%s</b><span>%s</span></div><div class="n"><b class="cnt">%s</b><span>%s</span></div></div>'
+            '<div class="nums"><div class="n rv" style="--i:0"><b class="cnt">%s</b><span>%s</span></div><div class="n rv" style="--i:1"><b class="cnt">%s</b><span>%s</span></div></div>'
             '<p class="pm-puente">%s<span>↓</span></p><p class="pm-fuentes">%s</p>'
             '</div><div class="pm-photo">%s</div></div></section>'
             % (T.t("promesa-1", "etiqueta"), T.t("promesa-1", "titulo"), T.t("promesa-1", "titulo2"), T.t("promesa-2", "etiqueta"),
@@ -447,48 +451,60 @@ AV_ICONOS = [
 ]
 
 def origen():
-    pasos = "".join("<li>%s</li>" % fmt(x) for x in T.lista("origen", "pasos"))
-    pastel = donut.pastel(T.t("origen", "llega_secas"), "", T.t("origen", "llega_lluvias"), "")
-    chips = "".join('<div class="or-chip"><b class="cnt">%s</b><span>%s</span></div>' % kfpair("origen", k) for k in ("va_agri", "va_rio"))
-    botones = "".join('<button class="or-tab%s" type="button" data-tab="%s"><i>%d</i>%s</button>' % (" on" if n == 0 else "", k, n + 1, T.t("origen", "tab%d" % (n + 1)))
-                      for n, k in enumerate(("mp", "ll", "va", "cal")))
+    fig, ley = donut.unica()
+    ag = [x.strip() for x in T.raw("origen", "va_agri").split("|")]
+    rio = [x.strip() for x in T.raw("origen", "va_rio").split("|")]
+    if len(ag) != 4 or len(rio) != 4:
+        raise TextosError('En "## origen", "va_agri:" y "va_rio:" deben ser "cifra | título | detalle | porcentaje".')
+    ico_ag = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21v-9"/><path d="M12 12c0-4-3-6-7-6 0 4 3 6 7 6z"/><path d="M12 14c0-3 2.5-5 6-5 0 3-2.5 5-6 5z"/></svg>'
+    ico_rio = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9q3-4 6 0t6 0t6 0M3 15q3-4 6 0t6 0t6 0"/></svg>'
+    def seg(cls, v, ico):
+        return ('<div class="va-seg %s" style="--w:%s%%"><span class="va-ico">%s</span><span class="va-t"><b>%s</b> %s</span></div>' % (cls, v[3], ico, v[3] + " %", fmt(v[1])))
+    def card(cls, v, ico):
+        return ('<div class="va-card %s"><span class="va-ico">%s</span><div><b class="cnt">%s</b><strong>%s</strong><span>%s</span></div></div>'
+                % (cls, ico, fmt(v[0]), fmt(v[1]), fmt(v[2])))
+    sol = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>'
+    nube = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15a4 4 0 0 1 .5-7.9A5.5 5.5 0 0 1 18 9a3.5 3.5 0 0 1-.5 7H7z"/><path d="M9 19l-1 2M13 19l-1 2M17 19l-1 2"/></svg>'
     return ('<section class="s-origen" id="origen" data-nav="light" data-fit><div class="fit-in">'
             '<div class="or-top rv"><span class="s-tag">%s</span><h2 class="s-title">%s</h2></div>'
-            '<div class="or-tabs" role="tablist">%s</div>'
-            '<div class="or-pane on" data-pane="mp"><div class="or-wrap"><ol class="or-pasos" id="orPasos">%s</ol>'
-            '<div class="or-map">%s<div class="or-leyenda"><span><i class="l-rio"></i>Ríos</span><span><i class="l-infra"></i>Infraestructura (año de inauguración)</span>'
-            '<span><i class="l-dr"></i>Distritos de riego</span></div></div></div></div>'
-            '<div class="or-pane" data-pane="ll">%s<p class="or-nota">%s</p></div>'
-            '<div class="or-pane" data-pane="va"><p class="or-baj">%s</p>%s<div class="or-chips">%s</div><p class="or-nota">%s</p></div>'
-            '<div class="or-pane" data-pane="cal"><p class="or-baj">%s</p>%s%s<p class="or-nota">%s</p></div>'
+            '<div class="or-tabs" role="tablist"><button class="or-tab on" type="button" data-tab="vi"><i>1</i>%s</button>'
+            '<button class="or-tab" type="button" data-tab="va"><i>2</i>%s</button></div>'
+            '<div class="or-pane on" data-pane="vi"><div class="vi-grid">'
+            '<div class="or-map">%s</div>'
+            '<div class="vi-panel"><p class="vi-t">%s</p>'
+            '<div class="vi-sw" role="group"><button type="button" class="on" data-m="s">%s%s</button><button type="button" data-m="l">%s%s</button></div>'
+            '<div class="vi-dn">%s</div>%s<p class="vi-pista">%s</p></div></div></div>'
+            '<div class="or-pane" data-pane="va"><p class="or-baj">%s</p>'
+            '<div class="va-bar">%s%s</div><div class="va-cards">%s%s</div><p class="or-nota">%s</p></div>'
             '<div class="or-pie"><p class="or-cierre">%s</p><a class="or-btn" href="historia.html">%s</a></div>'
             '</div></section>'
-            % (T.t("origen", "etiqueta"), T.t("origen", "titulo"), botones, pasos, rd("tools/fragmentos/origen_mapa.html"),
-               pastel, T.t("origen", "llega_nota"),
-               T.t("origen", "va"), sankey.svg("mode-va"), chips, T.t("origen", "nota_va"),
-               T.t("origen", "calidad"), sankey.svg("mode-cal"), sankey.leyenda(), T.t("origen", "nota"),
+            % (T.t("origen", "etiqueta"), T.t("origen", "titulo"), T.t("origen", "tab1"), T.t("origen", "tab2"),
+               rd("tools/fragmentos/origen_mapa.html"), T.t("origen", "viene_titulo"),
+               sol, T.t("origen", "secas"), nube, T.t("origen", "lluvias"), fig, ley, T.t("origen", "viene_pista"),
+               T.t("origen", "va_titulo"), seg("ag", ag, ico_ag), seg("rio", rio, ico_rio),
+               card("ag", ag, ico_ag), card("rio", rio, ico_rio), T.t("origen", "va_nota"),
                T.t("origen", "cierre"), T.t("origen", "boton")))
 
 def avance():
     hechos = ""
     for i in range(1, 8):
         n, txt = kfpair("avance", "hecho%d" % i)
-        hechos += ('<div class="av-h"><span class="av-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" '
-                   'stroke-linecap="round" stroke-linejoin="round">%s</svg></span><b class="cnt">%s</b><span class="av-t">%s</span></div>' % (AV_ICONOS[i - 1], n, txt))
-    hechos += '<a class="av-h av-cta" href="#proyecto"><span>%s</span></a>' % T.t("avance", "siguiente")
+        hechos += ('<div class="av-h rv" style="--i:%d"><span class="av-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" '
+                   'stroke-linecap="round" stroke-linejoin="round">%s</svg></span><b class="cnt">%s</b><span class="av-t">%s</span></div>' % (i - 1, AV_ICONOS[i - 1], n, txt))
+    hechos += '<a class="av-h av-cta rv" style="--i:7" href="#proyecto"><span>%s</span></a>' % T.t("avance", "siguiente")
     return ('<section class="s-avance" id="avance" data-nav="light" data-fit><div class="av-in fit-in"><div class="rv"><span class="s-tag"><i class="av-live"></i>%s</span>'
             '<h2 class="s-title">%s</h2></div><div class="av-grid">%s</div></div></section>'
             % (T.t("avance", "etiqueta"), T.t("avance", "titulo"), hechos))
 
 def diagnostico():
     return ('<section class="s-diag" id="diagnostico" data-nav="dark">%s'
-            '<div class="diag-head"><span class="s-tag">%s</span><h2>%s</h2></div></section>'
+            '<div class="diag-head"><span class="s-tag">%s</span><h2>%s</h2></div><div class="diag-prog"><i></i></div></section>'
             % (carousel("diagnostico", etiqueta="Fotos de diagnóstico"), T.t("diagnostico", "etiqueta"), T.t("diagnostico", "titulo")))
 
 LEMAS = {"limpio": ("img/calidad.jpg", "#f0938c"), "seguro": ("img/inundaciones.jpg", "#f78b62"),
          "vivo": ("img/restauracion.jpg", "#cdd36a"), "todos": ("img/plan.jpg", "#d9b45c")}
 
-RAIL_COLORES = {"limpio": "#e19c94", "seguro": "#ea7c30", "vivo": "#8c871d", "todos": "#b8892a"}
+RAIL_COLORES = {"limpio": "#c07a72", "seguro": "#c9661f", "vivo": "#6f6b19", "todos": "#9a7421"}
 
 def rail():
     """Guía fija a la izquierda: los cuatro lemas como puntos numerados sobre una línea (aparecen juntos, se abren y resaltan el actual)."""
@@ -517,9 +533,9 @@ PLANTILLA = '''<!DOCTYPE html>
   <title>%(titulo)s</title>
   <meta name="description" content="%(descripcion)s" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/temas.css?v=15" />
-  <link rel="stylesheet" href="css/historia.css?v=15" />
-  <link rel="stylesheet" href="css/capitulos.css?v=15" />
+  <link rel="stylesheet" href="css/temas.css?v=16" />
+  <link rel="stylesheet" href="css/historia.css?v=16" />
+  <link rel="stylesheet" href="css/capitulos.css?v=16" />
   <script>(function(){var h=document.documentElement;h.classList.add('js');try{var s=localStorage;if(s.getItem('rt-noche')==='1')h.dataset.theme='dark';if(s.getItem('rt-cvd')==='1')h.dataset.cvd='1'}catch(e){}})()</script>
 </head>
 <body>
@@ -549,13 +565,11 @@ PLANTILLA = '''<!DOCTYPE html>
   <div class="idx-box"><h2>%(titulo_indice)s</h2><ul class="idx-list">%(idx_list)s</ul></div>
 </div>
 
-<div class="borrador">%(aviso)s <button id="borradorClose" type="button" aria-label="Cerrar aviso">×</button></div>
-
 <div class="lightbox" id="lightbox"><button class="lightbox-close" type="button" aria-label="Cerrar">×</button><button class="lightbox-nav lightbox-prev" type="button" aria-label="Anterior">‹</button><img id="lightboxImg" alt=""><button class="lightbox-nav lightbox-next" type="button" aria-label="Siguiente">›</button><div class="lightbox-cap" id="lightboxCap"></div></div>
 
 %(contenido)s
 
-<script src="js/sitio.js?v=15"></script>
+<script src="js/sitio.js?v=16"></script>
 </body>
 </html>
 '''
@@ -564,7 +578,7 @@ def comun(**extra):
     d = dict(
         titulo=attr(T.raw("sitio", "titulo")), descripcion=attr(T.raw("sitio", "descripcion")),
         logo=T.t("sitio", "logo"), logo_sub=T.t("sitio", "logo_sub"), boton_indice=T.t("sitio", "boton_indice"),
-        titulo_indice=T.t("sitio", "titulo_indice"), aviso=T.t("sitio", "aviso"), filtros=FILTROS,
+        titulo_indice=T.t("sitio", "titulo_indice"), filtros=FILTROS,
 
         acc_titulo=T.t("sitio", "boton_acc"), acc_noche=T.t("sitio", "modo_noche"), acc_cvd=T.t("sitio", "modo_daltonismo"))
     d.update(extra)

@@ -1,0 +1,42 @@
+name: Actualizar el número de inspecciones
+
+# Cada hora lee la hoja de Google de inspecciones (compartida como "cualquier persona con el enlace
+# puede ver"), cuenta las inspecciones realizadas y, si cambió el número, reconstruye el sitio.
+# Ver tools/sync_inspecciones.py.
+on:
+  schedule:
+    - cron: '7 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sincronizar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Preparar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Contar inspecciones
+        id: insp
+        run: python tools/sync_inspecciones.py
+
+      - name: Reconstruir el sitio si cambió el número
+        if: steps.insp.outputs.cambio == '1'
+        run: python tools/build_index.py
+
+      - name: Guardar el resultado
+        if: steps.insp.outputs.cambio == '1'
+        run: |
+          git config user.name "Sitio Río Tula (automático)"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/inspecciones.json index.html historia.html
+          git commit -m "Actualiza el número de inspecciones [automático]"
+          git pull --rebase origin main
+          git push

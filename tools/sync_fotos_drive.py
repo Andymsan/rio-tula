@@ -23,7 +23,7 @@ correr a mano:
 """
 import io
 import json
-import os
+import os, sys
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -100,6 +100,11 @@ def main():
                 while not done:
                     _, done = downloader.next_chunk()
                 open(destino, "wb").write(buf.getvalue())
+                try:
+                    from optimizar_fotos import optimizar
+                    optimizar(destino)
+                except Exception as e:
+                    print("  (no se pudo optimizar %s: %s)" % (archivo, e))
                 nuevos.append(os.path.join("img", "fotos", seccion, archivo))
             page_token = resp.get("nextPageToken")
             if not page_token:

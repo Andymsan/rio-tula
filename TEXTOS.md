@@ -49,7 +49,6 @@ boton_acc: Accesibilidad
 modo_noche: Modo noche
 modo_daltonismo: Modo daltonismo
 titulo_indice: Índice
-aviso: Borrador · las fotos son marcadores
 pie1: Secretaría de Medio Ambiente y Recursos Naturales · Proyecto de Saneamiento y Restauración del Río Tula 2024–2030
 pie2: Datos: base de proyectos 2025–2026 (Conagua, Semarnat, Conafor, Conanp, Profepa y Gobierno de Hidalgo)
 
@@ -98,23 +97,19 @@ descripcion: Cómo sumarte al proyecto
 
 ---
 
-## origen  (introducción dinámica: botones Mapa / De dónde llega / A dónde va / Qué tan limpia)
+## origen  (introducción corta: dos pestañas — De dónde viene / A dónde va)
 etiqueta: Introducción
-titulo: De dónde viene el agua del río Tula
-pasos: El río Tula recibe el drenaje y la lluvia del Valle de México por cuatro vías: el **Túnel Emisor Central**, el **Túnel Emisor Oriente**, el **río El Salto** (Tajo de Nochistongo) y el **Gran Canal**. | Toda esta agua se junta en el **Portal de Salida** y de ahí va a la **PTAR Atotonilco** o directo al río. La planta envía una parte del agua tratada a los **distritos de riego** del Valle del Mezquital y regresa el resto al río. | Río abajo, el Tula recibe a los ríos **Tepeji, Tlautla y Rosas** y el drenaje de la zona metropolitana de Tula, y termina en la **presa Endhó**, donde se almacena para riego.
-tab1: Mapa
-tab2: De dónde llega
-tab3: A dónde va
-tab4: Qué tan limpia
-llega_secas: Secas
-llega_lluvias: Lluvias
-llega_nota: Caudal promedio de cada temporada, 2021–2024, en m³/s. Fuente: base de caudales del proyecto.
-va: La mayor parte del agua tratada en Atotonilco se usa en el campo.
-va_agri: 26.3 m³/s | van a la agricultura (distrito de riego 003) · 76 %
-va_rio: 8.1 m³/s | siguen por el río Tula hacia la presa Endhó · 24 %
-nota_va: Caudal en m³/s en temporada de secas (promedio 2021–2024).
-calidad: El agua entra al Portal de Salida con **150 mg/L** de DBO y, tras pasar por Atotonilco, llega a riego con **50 mg/L**.
-nota: Caudal en m³/s en temporada de secas (promedio 2021–2024). El color indica la contaminación del agua (DBO, en mg/L): entre menos, mejor.
+titulo: El agua del río Tula
+tab1: De dónde viene
+tab2: A dónde va
+secas: Secas
+lluvias: Lluvias
+viene_titulo: Caudal que recibe el río Tula
+viene_pista: Pasa el cursor por cada fuente para verla en el mapa. Caudal en m³/s, promedio 2021–2024.
+va_titulo: Cada segundo, esto es lo que pasa con el agua que llega al Portal de Salida
+va_agri: 26.3 m³/s | Agricultura | Riego del distrito 003, en el Valle del Mezquital | 76
+va_rio: 8.1 m³/s | Río Tula | Sigue hacia la presa Endhó, donde se almacena para riego | 24
+va_nota: Caudal en m³/s en temporada de secas, promedio 2021–2024. Además, 1.0 m³/s se pierde en la planta.
 cierre: El Proyecto de Saneamiento y Restauración del Río Tula ==atiende la calidad del agua, las inundaciones y la recuperación del río.==
 boton: Conocer la historia del río →
 
@@ -234,7 +229,7 @@ fuentes: Fuentes: [Contralínea (16 jul 2026)](https://contralinea.com.mx/intern
 etiqueta: Ya está en marcha
 titulo: Lo que ya se hizo en 2025 y 2026
 hecho1: 38 m³/s | de agua tratada en Atotonilco (+7 m³/s)
-hecho2: 92 | inspecciones a industrias
+hecho2: {inspecciones} | inspecciones a industrias
 hecho3: 10 km | de colectores y el cárcamo ya construidos
 hecho4: 3.9 km | de río desazolvado
 hecho5: 21 | estaciones de caudal instaladas
@@ -247,8 +242,8 @@ banner: El proyecto
 
 ## hexagonos  (texto de cada hexágono, sin número — Ariel pidió quitarlo)
 rosa: 1. Mejorar | la calidad del agua
-naranja: 2. Prevenir inundaciones
-verde: 3. Restaurar ecosistemas y | construir espacio público
+naranja: 2. Prevenir | inundaciones
+verde: 3. Restaurar | ecosistemas y | espacio público
 centro: Río | Tula
 
 ## proyecto-0  (paso 1)
@@ -292,11 +287,11 @@ chips: Gobierno de Hidalgo · $570 MDP | Etapa 1 en ejecución (89 %) | Etapa 2 
 fotos: Colector del río Tula · etapa 1 | Línea de conducción a la planta de la CFE | Cárcamo de bombeo
 
 ## calidad-2  (Industria — ahora el punto 3: Ariel pidió invertir el orden con Drenaje de Tula)
-estado: curso | 92 inspecciones hechas · 29 industrias en certificación
+estado: curso | {inspecciones} inspecciones hechas · 29 industrias en certificación
 etiqueta: 3 · Industria
 titulo: Controlar la contaminación industrial
-texto: Durante este sexenio, la Conagua y Profepa van a ==inspeccionar al menos dos veces a **todas** las empresas que descargan al río Tula y sus tributarios== para asegurar que no contaminen el río. A la fecha, hemos hecho **92 inspecciones** y estamos capacitando y certificando a **29 industrias** para mejorar sus procesos.
-cifra: 92 | inspecciones · 29 industrias en certificación
+texto: Durante este sexenio, la Conagua y Profepa van a ==inspeccionar al menos dos veces a **todas** las empresas que descargan al río Tula y sus tributarios== para asegurar que no contaminen el río. A la fecha, hemos hecho **{inspecciones} inspecciones** y estamos capacitando y certificando a **29 industrias** para mejorar sus procesos.
+cifra: {inspecciones} | inspecciones · 29 industrias en certificación
 chips: Profepa | Conagua | Centro Regional de Prevención Ambiental (UTTT)
 fotos: Inspección a una industria | Centro Regional de Prevención Ambiental
 
@@ -407,29 +402,34 @@ fotos: Propuesta · Río Rosas | Propuesta · San Lorenzo | Propuesta · Bojay |
 
 ## resumen  (mapa con las 5 metas; clic en una meta muestra su descripción y resalta sus proyectos)
 etiqueta: Resumen
-titulo: Acciones de saneamiento y restauración del río Tula 2024-2030
-subtitulo: El Gobierno de México está implementando una gran diversidad de acciones en el río Tula para cumplir con las siguientes metas principales:
+titulo: Cinco metas para el río Tula, 2024–2030
+subtitulo: Elige una meta para ver dónde se trabaja.
 texto: ""
 
 ## resumen-1  (meta 1 del mapa Resumen)
 titulo: Tratar todo el drenaje del río Tula
 texto: La optimización de la PTAR Atotonilco va a permitir que todo el drenaje del Valle de México sea tratado durante secas. El proyecto de colectores va a captar la mayor parte de las descargas de drenaje al río Tula.
+cifra: 38 m³/s | de agua tratada en Atotonilco
 
 ## resumen-2  (meta 2)
 titulo: Controlar la contaminación industrial
 texto: La Profepa y Conagua trabajan para inspeccionar y regularizar a todas las industrias que descargan al río Tula. Adicionalmente, estamos construyendo 5 estaciones de monitoreo automático de la calidad del agua para identificar descargas industriales oportunamente.
+cifra: {inspecciones} | inspecciones a industrias
 
 ## resumen-3  (meta 3)
 titulo: Prevenir inundaciones en la ciudad de Tula
 texto: La Conagua implementa obras para asegurar que el río Tula no se desborde: desazolve, estabilización de taludes y monitoreo automático.
+cifra: 3.9 km | de río desazolvado
 
 ## resumen-4  (meta 4)
 titulo: Restaurar los ecosistemas que le dan vida al río
 texto: El sector ambiental federal trabaja para proteger y restaurar las riberas del río Tula, cuerpos de agua como la laguna de Bojay de 55 ha y más de 3,800 ha de suelo forestal.
+cifra: 1,900 | árboles saneados o plantados
 
 ## resumen-5  (meta 5)
 titulo: Construir espacio público ribereño para toda la población de Tula
 texto: Para que la población de Tula pueda reconectar con el río, estamos construyendo 5 proyectos de espacio público ribereño que incluyen revegetación nativa, equipamiento público y agua limpia.
+cifra: 5 | proyectos de espacio público
 
 ## fuentes  (fuentes y notas metodológicas — sustento técnico; Ariel: revisar y completar)
 titulo: Fuentes y notas metodológicas

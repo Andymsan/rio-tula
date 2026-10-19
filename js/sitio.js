@@ -200,7 +200,7 @@
     if (root.dataset.ready) return;
     root.dataset.ready = '1';
     const track = $('.bu-track', root), slides = $$('.bu-slide', track);
-    slides.forEach(loadSlide);
+    slides.forEach((s, k) => (k < 2 ? loadSlide(s) : setTimeout(() => loadSlide(s), 500 + k * 350)));
     const dots = $('.bu-dots', root);
     slides.forEach(() => dots.append(document.createElement('i')));
     const setDot = () => {
@@ -252,7 +252,9 @@
       canvas.style.setProperty('--ty', ty.toFixed(1) + 'px');
       canvas.style.setProperty('--z', z);
     }
+    let cur = 0, auto = null, parado = false;
     function show(li) {
+      cur = metas.indexOf(li);
       metas.forEach(m => {
         const on = m === li;
         m.classList.toggle('active', on);
@@ -265,6 +267,13 @@
       const lbls = list(d.labels); $$('.maplabel', canvas).forEach(p => p.classList.toggle('on', lbls.includes(p.dataset.id)));
       applyMetaCam(d.cam);
     }
+    const parar = () => { parado = true; clearInterval(auto); root.closest('section').classList.add('manual'); };
+    const sec = root.closest('section');
+    new IntersectionObserver(es => es.forEach(e => {
+      clearInterval(auto);
+      if (e.isIntersecting && !parado) auto = setInterval(() => show(metas[(cur + 1) % metas.length]), 5200);
+    }), { threshold: 0.45 }).observe(sec);
+    $('#resumenMetas').addEventListener('pointerdown', parar);
     metas.forEach(li => {
       li.addEventListener('click', () => show(li));
       li.addEventListener('keydown', e => {
@@ -313,7 +322,7 @@
     document.addEventListener('ampliar', e => open(e.detail.track, e.detail.index));
   }
 
-  /* ── Introducción: pestañas (mapa / caudales), resalte por paso, tooltip del Sankey y letra constante del mapa ── */
+  /* ── Introducción: dos pestañas; dona de secas/lluvias que se transforma; leyenda que resalta el mapa ── */
   function initOrigen() {
     const svg = $('#omap'); if (!svg) return;
     const vb = svg.viewBox.baseVal;
@@ -324,42 +333,46 @@
       $$('.or-pane').forEach(p => p.classList.toggle('on', p.dataset.pane === b.dataset.tab));
       fit(); fitSections();
     }));
-    const ks = [['tec', 'teo', 'salto', 'canal'], ['portal', 'ptar', 'dr'], ['rios', 'presa', 'tula', 'endho']];
-    const offMapa = () => { svg.classList.remove('hl'); $$('[data-k].is, #orPasos li.is').forEach(el => el.classList.remove('is')); };
-    $$('#orPasos li').forEach((li, i) => {
-      const on = () => { offMapa(); svg.classList.add('hl'); li.classList.add('is'); $$('[data-k]', svg).forEach(el => el.classList.toggle('is', (ks[i] || []).includes(el.dataset.k))); };
-      li.addEventListener('mouseenter', on); li.addEventListener('mouseleave', offMapa);
-      li.addEventListener('click', () => (li.classList.contains('is') ? offMapa() : on()));
-    });
-    const tip = document.createElement('div'); tip.className = 'sk-tip'; document.body.append(tip);
-    const off = () => { tip.classList.remove('on'); $$('.sankey.dim').forEach(x => x.classList.remove('dim')); $$('.sk-l.hv').forEach(p => p.classList.remove('hv')); };
-    $$('.dn').forEach(f => {
-      const v = $('.dn-v', f), u = $('.dn-u', f), v0 = v.textContent, u0 = u.textContent;
-      $$('.dn-seg', f).forEach(sg => {
-        sg.addEventListener('mouseenter', e => {
-          sg.classList.add('on'); f.classList.add('hv'); v.textContent = sg.dataset.p + ' %'; u.textContent = sg.dataset.v + ' m³/s';
-          tip.innerHTML = '<b>' + sg.dataset.n + '</b>'; tip.classList.add('on');
-        });
-        sg.addEventListener('mousemove', e => { tip.style.left = Math.min(e.clientX + 14, innerWidth - 260) + 'px'; tip.style.top = (e.clientY + 14) + 'px'; });
-        sg.addEventListener('mouseleave', () => { sg.classList.remove('on'); f.classList.remove('hv'); v.textContent = v0; u.textContent = u0; tip.classList.remove('on'); });
+    // dona: se anima de secas a lluvias
+    const fig = $('.dn'), segs = $$('.dn-seg', fig), vEl = $('.dn-v', fig), R = 78, C = 2 * Math.PI * R;
+    const ley = $$('.dn-ley1 li'), tot = { s: Number(fig.dataset.ts), l: Number(fig.dataset.tl) };
+    let modo = 's', shown = tot.s, raf = 0;
+    const dibujar = m => {
+      const sum = tot[m]; let acc = 0;
+      segs.forEach(sg => {
+        const v = Number(sg.dataset[m]), frac = v / sum, largo = Math.max(frac * C - 1.6, 0.4);
+        sg.style.strokeDasharray = largo + ' ' + (C - largo); sg.style.strokeDashoffset = (-acc * C);
+        sg.dataset.p = Math.round(frac * 100); sg.dataset.v = v.toFixed(1); acc += frac;
       });
+      ley.forEach(li => { $('.v', li).textContent = li.dataset[m]; });
+    };
+    const contar = (a, b) => {
+      cancelAnimationFrame(raf); const t0 = performance.now();
+      const tick = now => { const k = Math.min(1, (now - t0) / 800), e = 1 - Math.pow(1 - k, 3), v = a + (b - a) * e; vEl.textContent = v.toFixed(1); shown = v; if (k < 1) raf = requestAnimationFrame(tick); };
+      raf = requestAnimationFrame(tick);
+    };
+    $$('.vi-sw button').forEach(bt => bt.addEventListener('click', () => {
+      if (bt.dataset.m === modo) return;
+      modo = bt.dataset.m; $$('.vi-sw button').forEach(x => x.classList.toggle('on', x === bt));
+      dibujar(modo); contar(shown, tot[modo]);
+    }));
+    // leyenda: resalta la fuente en la dona y en el mapa
+    const MAPA = [['tec', 'teo'], ['salto'], ['presa'], ['rios'], ['rios']];
+    const tip = document.createElement('div'); tip.className = 'sk-tip'; document.body.append(tip);
+    const marcar = (i, on) => {
+      segs.forEach(sg => sg.classList.toggle('on', on && Number(sg.dataset.i) === i)); fig.classList.toggle('hv', on);
+      ley.forEach(li => li.classList.toggle('on', on && Number(li.dataset.i) === i));
+      svg.classList.toggle('hl', on);
+      $$('[data-k]', svg).forEach(el => el.classList.toggle('is', on && (MAPA[i] || []).includes(el.dataset.k)));
+      if (!on) tip.classList.remove('on');
+    };
+    ley.forEach(li => { const i = Number(li.dataset.i); li.addEventListener('mouseenter', () => marcar(i, true)); li.addEventListener('mouseleave', () => marcar(i, false)); li.addEventListener('click', () => marcar(i, !li.classList.contains('on'))); });
+    segs.forEach(sg => {
+      const i = Number(sg.dataset.i);
+      sg.addEventListener('mouseenter', () => { marcar(i, true); tip.innerHTML = '<b>' + sg.dataset.n + '</b><br>' + sg.dataset.v + ' m³/s · ' + sg.dataset.p + ' %'; tip.classList.add('on'); });
+      sg.addEventListener('mousemove', e => { tip.style.left = Math.min(e.clientX + 14, innerWidth - 260) + 'px'; tip.style.top = (e.clientY + 14) + 'px'; });
+      sg.addEventListener('mouseleave', () => marcar(i, false));
     });
-    $$('.dn-ley li[data-i]').forEach(li => {
-      const set = on => $$('.dn-seg[data-i="' + li.dataset.i + '"]').forEach(sg => { sg.classList.toggle('on', on); sg.closest('.dn').classList.toggle('hv', on); li.classList.toggle('on', on); });
-      li.addEventListener('mouseenter', () => set(true)); li.addEventListener('mouseleave', () => set(false));
-    });
-    $$('.sankey').forEach(sk => {
-    $$('.sk-l', sk).forEach(p => {
-      const show = e => {
-        const [a, q, d] = p.dataset.tip.split('|');
-        tip.innerHTML = '<b>' + a + '</b><br>' + q + (d ? ' · ' + d : '');
-        tip.style.left = Math.min(e.clientX + 14, innerWidth - 230) + 'px'; tip.style.top = (e.clientY + 14) + 'px';
-        tip.classList.add('on'); sk.classList.add('dim'); $$('.sk-l.hv', sk).forEach(x => x.classList.remove('hv')); p.classList.add('hv');
-      };
-      p.addEventListener('mousemove', show); p.addEventListener('click', show); p.addEventListener('mouseleave', off);
-    });
-    });
-    addEventListener('scroll', off, { passive: true });
   }
 
   /* ── Guía lateral de los cuatro lemas: aparece junta, se abre y resalta el lema actual ── */
@@ -386,6 +399,18 @@
     addEventListener('scroll', () => { if (!tick) { tick = true; requestAnimationFrame(upd); } }, { passive: true });
     addEventListener('resize', upd);
     upd();
+  }
+
+  /* ── Diagnóstico: las fotos avanzan solas (con barra de tiempo); se detienen al pasar el cursor ── */
+  function initDiag() {
+    const sec = $('.s-diag'); if (!sec) return;
+    const bub = $('.burbuja', sec), next = $('.bu-next', sec), slides = $$('.bu-slide', sec);
+    if (!bub || !next || slides.length < 2) { const p = $('.diag-prog', sec); if (p) p.hidden = true; return; }
+    let t = null, vis = false, over = false;
+    const ciclo = () => { clearInterval(t); sec.classList.toggle('play', vis && !over); if (vis && !over) t = setInterval(() => next.click(), 6000); };
+    new IntersectionObserver(es => es.forEach(e => { vis = e.isIntersecting; ciclo(); }), { threshold: 0.5 }).observe(sec);
+    sec.addEventListener('mouseenter', () => { over = true; ciclo(); });
+    sec.addEventListener('mouseleave', () => { over = false; ciclo(); });
   }
 
   /* ── Números que cuentan hacia arriba al entrar en pantalla ── */
@@ -481,6 +506,7 @@
     initOrigen();
     initRail();
     initA11y();
+    initDiag();
     initContadores();
     fitAll();
     initLightbox();
@@ -491,6 +517,7 @@
     rz = setTimeout(() => { buildNavObs(); buildStepObs(); stages.forEach(st => { if (!st.cur) return; if (st.hist) { if (hView) hDraw(st, hView); } else applyCam(st, st.cur); }); }, 160);
   });
   boot();
+  addEventListener('load', () => setTimeout(() => $$('img[loading="lazy"]').forEach(i => { i.loading = 'eager'; }), 600));
 
   /* Ayuda para pruebas: ?goto=calidad:2  (paso 2 del capítulo)  ó  ?goto=#promesa&off=900 */
   (function () {

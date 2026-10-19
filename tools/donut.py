@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """Dos gráficas de pastel (dona): de dónde llega el agua al río Tula en secas (estiaje) y en lluvias."""
-import math
+import math, re
 
 # nombre, color, secas = estiaje (m³/s), lluvias = temporada (m³/s); promedios 2021-2024, hoja "Resumen de caudales"
 # (Aprovechamientos y caudales.xlsx). Otros = Drenajes de Tula + Pemex + río Rosas.
@@ -27,8 +27,8 @@ def donut(idx, titulo, nota):
         frac = v / total
         largo = max(frac * CIRC - 1.6, 0.4)
         segs.append('<circle class="dn-seg" r="%d" cx="0" cy="0" fill="none" stroke="%s" stroke-width="%d" '
-                    'stroke-dasharray="%.2f %.2f" stroke-dashoffset="%.2f" data-n="%s" data-v="%s" data-p="%d" data-i="%d"/>'
-                    % (R, color, SW, largo, CIRC - largo, -acc * CIRC, nombre, _num(v, 1), round(frac * 100), i))
+                    'stroke-dasharray="%.2f %.2f" stroke-dashoffset="%.2f" data-n="%s" data-v="%s" data-p="%d" data-i="%d" data-s="%s" data-l="%s"/>'
+                    % (R, color, SW, largo, CIRC - largo, -acc * CIRC, nombre, _num(v, 1), round(frac * 100), i, vals[0], vals[1]))
         acc += frac
     return ('<figure class="dn"><svg viewBox="-110 -110 220 220" role="img" aria-label="%s"><g transform="rotate(-90)">%s</g>'
             '<g class="dn-c"><text class="dn-v" y="2">%s</text><text class="dn-u" y="22">m³/s</text></g></svg>'
@@ -44,3 +44,14 @@ def pastel(tit_secas, nota_secas, tit_lluvias, nota_lluvias):
     a, _ = donut(2, tit_secas, nota_secas)
     b, _ = donut(3, tit_lluvias, nota_lluvias)
     return '<div class="dn-wrap">%s%s%s</div>' % (a, leyenda(), b)
+
+
+def unica():
+    """Una dona (empieza en secas) + leyenda con los valores de la temporada elegida (los cambia el JS)."""
+    fig, _ = donut(2, "Caudal que recibe el río Tula", "")
+    totales = (sum(c[2] for c in CATS), sum(c[3] for c in CATS))
+    fig = fig.replace('<figure class="dn">', '<figure class="dn" data-ts="%s" data-tl="%s">' % (_num(totales[0], 1), _num(totales[1], 1)))
+    fig = re.sub(r"<figcaption>.*?</figcaption>", "", fig)
+    ley = "".join('<li data-i="%d" data-s="%s" data-l="%s"><i style="background:%s"></i><span>%s</span><b class="v">%s</b></li>'
+                  % (n, _num(c[2], 1), _num(c[3], 1), c[1], c[0], _num(c[2], 1)) for n, c in enumerate(CATS))
+    return fig, '<ul class="dn-ley dn-ley1">%s</ul>' % ley

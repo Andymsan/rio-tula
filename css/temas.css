@@ -11,29 +11,29 @@
 
 :root {
   /* Calidad del agua / saneamiento */
-  --rosa:        #e19c94;   /* color de mapa (ruta de colectores)          */
-  --rosa-fill:   #e19c94;   /* rellenos con texto blanco (banner, tarjeta) */
-  --rosa-dark:   #a4524a;   /* texto/títulos sobre fondo claro             */
-  --rosa-tint:   rgba(225, 156, 148, .26);
+  --rosa:        #c07a72;   /* color de mapa (ruta de colectores)          */
+  --rosa-fill:   #bd756d;   /* rellenos con texto blanco (banner, tarjeta) */
+  --rosa-dark:   #8a403a;   /* texto/títulos sobre fondo claro             */
+  --rosa-tint:   rgba(192, 122, 114, .24);
 
   /* Gestión de inundaciones */
-  --naranja:      #ea7c30;
-  --naranja-fill: #ea7c30;
-  --naranja-dark: #b05510;
-  --naranja-tint: rgba(234, 124, 48, .24);
+  --naranja:      #c9661f;
+  --naranja-fill: #c4621c;
+  --naranja-dark: #8a430f;
+  --naranja-tint: rgba(201, 102, 31, .22);
 
   /* Ecosistemas y espacio público (verde oliva del render) */
-  --verde:        #8c871d;
-  --verde-fill:   #7b7716;
-  --verde-dark:   #55520d;
-  --verde-tint:   rgba(140, 135, 29, .20);
+  --verde:        #6f6b19;
+  --verde-fill:   #656115;
+  --verde-dark:   #46440f;
+  --verde-tint:   rgba(111, 107, 25, .20);
 
   /* Interconexión (acento extra del video) */
   --slate:        #65748b;
 
   /* Historia: naranja y vino del mapa original */
   --azul:        #e67e22;
-  --azul-fill:   #c45e1a;
+  --azul-fill:   #a8501a;
   --azul-dark:   #611232;
   --azul-tint:   rgba(196, 94, 26, .16);
 

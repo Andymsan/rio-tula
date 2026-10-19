@@ -38,12 +38,16 @@ def attr(t):
 
 
 class Textos:
-    def __init__(self, ruta):
+    def __init__(self, ruta, reemplazos=None):
         self.ruta = ruta
+        reemplazos = reemplazos or {}
         self.s = {}
         actual = None
         with open(ruta, encoding="utf-8") as f:
-            for n, linea in enumerate(f.read().splitlines(), 1):
+            texto = f.read()
+            for k, v in reemplazos.items():
+                texto = texto.replace("{%s}" % k, str(v))
+            for n, linea in enumerate(texto.splitlines(), 1):
                 m = re.match(r'^##\s+([a-z0-9.-]+)', linea)
                 if m:
                     actual = m.group(1)
