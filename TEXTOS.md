@@ -408,26 +408,31 @@ texto: ""
 
 ## resumen-1  (meta 1 del mapa Resumen)
 titulo: Tratar todo el drenaje del río Tula
+corto: Tratar el drenaje
 texto: La optimización de la PTAR Atotonilco va a permitir que todo el drenaje del Valle de México sea tratado durante secas. El proyecto de colectores va a captar la mayor parte de las descargas de drenaje al río Tula.
 cifra: 38 m³/s | de agua tratada en Atotonilco
 
 ## resumen-2  (meta 2)
 titulo: Controlar la contaminación industrial
+corto: Controlar la industria
 texto: La Profepa y Conagua trabajan para inspeccionar y regularizar a todas las industrias que descargan al río Tula. Adicionalmente, estamos construyendo 5 estaciones de monitoreo automático de la calidad del agua para identificar descargas industriales oportunamente.
 cifra: {inspecciones} | inspecciones a industrias
 
 ## resumen-3  (meta 3)
 titulo: Prevenir inundaciones en la ciudad de Tula
+corto: Prevenir inundaciones
 texto: La Conagua implementa obras para asegurar que el río Tula no se desborde: desazolve, estabilización de taludes y monitoreo automático.
 cifra: 3.9 km | de río desazolvado
 
 ## resumen-4  (meta 4)
 titulo: Restaurar los ecosistemas que le dan vida al río
+corto: Restaurar ecosistemas
 texto: El sector ambiental federal trabaja para proteger y restaurar las riberas del río Tula, cuerpos de agua como la laguna de Bojay de 55 ha y más de 3,800 ha de suelo forestal.
 cifra: 1,900 | árboles saneados o plantados
 
 ## resumen-5  (meta 5)
 titulo: Construir espacio público ribereño para toda la población de Tula
+corto: Espacio público
 texto: Para que la población de Tula pueda reconectar con el río, estamos construyendo 5 proyectos de espacio público ribereño que incluyen revegetación nativa, equipamiento público y agua limpia.
 cifra: 5 | proyectos de espacio público
 

@@ -266,6 +266,8 @@
       const pins = list(d.pins);   $$('.pin', canvas).forEach(p => p.classList.toggle('on', pins.includes(p.dataset.id)));
       const lbls = list(d.labels); $$('.maplabel', canvas).forEach(p => p.classList.toggle('on', lbls.includes(p.dataset.id)));
       applyMetaCam(d.cam);
+      const pn = $('#metaPanel');
+      if (pn) { $('#mpN').textContent = d.n; $('#mpT').textContent = d.t; $('#mpP').textContent = d.d; pn.style.setProperty('--c', li.style.getPropertyValue('--c')); pn.classList.remove('in'); void pn.offsetWidth; pn.classList.add('in'); }
     }
     const parar = () => { parado = true; clearInterval(auto); root.closest('section').classList.add('manual'); };
     const sec = root.closest('section');
@@ -357,7 +359,7 @@
       dibujar(modo); contar(shown, tot[modo]);
     }));
     // leyenda: resalta la fuente en la dona y en el mapa
-    const MAPA = [['tec', 'teo'], ['salto'], ['presa'], ['rios'], ['rios']];
+    const MAPA = [['tec', 'teo', 'portal', 'ptar'], ['salto'], ['presa', 'requena'], ['rios', 'tlautla'], ['rios', 'rosas', 'tula']];
     const tip = document.createElement('div'); tip.className = 'sk-tip'; document.body.append(tip);
     const marcar = (i, on) => {
       segs.forEach(sg => sg.classList.toggle('on', on && Number(sg.dataset.i) === i)); fig.classList.toggle('hv', on);
@@ -366,6 +368,15 @@
       $$('[data-k]', svg).forEach(el => el.classList.toggle('is', on && (MAPA[i] || []).includes(el.dataset.k)));
       if (!on) tip.classList.remove('on');
     };
+    // al entrar a la sección, las fuentes se muestran una por una; al tocar cualquiera, el control pasa a la persona
+    let ciclo = null, i0 = -1, manual = false;
+    const siguiente = () => { i0 = (i0 + 1) % ley.length; marcar(i0, true); };
+    const sec = svg.closest('section'), detener = () => { manual = true; clearInterval(ciclo); };
+    new IntersectionObserver(es => es.forEach(e => {
+      clearInterval(ciclo);
+      if (e.isIntersecting && !manual) { siguiente(); ciclo = setInterval(siguiente, 3200); } else if (!manual) marcar(i0, false);
+    }), { threshold: 0.5 }).observe(sec);
+    $('.vi-panel').addEventListener('pointerenter', detener); $('.vi-panel').addEventListener('pointerdown', detener);
     ley.forEach(li => { const i = Number(li.dataset.i); li.addEventListener('mouseenter', () => marcar(i, true)); li.addEventListener('mouseleave', () => marcar(i, false)); li.addEventListener('click', () => marcar(i, !li.classList.contains('on'))); });
     segs.forEach(sg => {
       const i = Number(sg.dataset.i);

@@ -306,21 +306,33 @@ def resumen_canvas():
     html += mlabel("parque", 0.62, 0.465, "Parque Nacional y<br>Atlantes de Tula")
     return html
 
+META_ICONOS = [
+    '<path d="M12 3C16 9 19 12 19 15.5A7 7 0 0 1 5 15.5C5 12 8 9 12 3Z"/>',
+    '<circle cx="11" cy="11" r="6"/><path d="M16 16l5 5"/>',
+    '<path d="M3 9q3-4 6 0t6 0t6 0M3 15q3-4 6 0t6 0t6 0"/>',
+    '<path d="M12 21v-6M12 15c-4 0-6-3-5-6 0-2 2-4 5-4s5 2 5 4c1 3-1 6-5 6z"/>',
+    '<path d="M12 21s-6-5.2-6-10a6 6 0 0 1 12 0c0 4.8-6 10-6 10z"/><circle cx="12" cy="11" r="2.2"/>',
+]
+META_COLOR = ["rosa", "rosa", "naranja", "verde", "verde"]
+
 def resumen_meta(i, cam, frame_, ovlist, pins, labels):
-    titulo, desc = T.t("resumen-%d" % (i + 1), "titulo"), T.t("resumen-%d" % (i + 1), "texto")
-    kp = [x.strip() for x in T.raw("resumen-%d" % (i + 1), "cifra").split("|", 1)]
+    k = "resumen-%d" % (i + 1)
+    titulo, desc = T.t(k, "titulo"), T.t(k, "texto")
+    kp = [x.strip() for x in T.raw(k, "cifra").split("|", 1)]
     ov_sin_tint = " ".join(x for x in ovlist.split() if not x.startswith("tint-"))
-    return ('<li class="meta" tabindex="0" role="button" aria-expanded="false" '
-            'data-cam="%s" data-frame="%s" data-ov="%s" data-pins="%s" data-labels="%s">'
-            '<b>%d</b><div><strong>%s</strong><p class="meta-desc">%s</p></div><span class="meta-kpi"><b>%s</b><small>%s</small></span><i class="meta-bar"></i></li>'
-            % (cam, frame_, ov_sin_tint, pins, labels, i + 1, titulo, desc, fmt(kp[0]), fmt(kp[1])))
+    return ('<li class="meta" tabindex="0" role="button" aria-expanded="false" style="--c:var(--%s-fill);--cd:var(--%s-dark)" '
+            'data-cam="%s" data-frame="%s" data-ov="%s" data-pins="%s" data-labels="%s" data-n="%d" data-t="%s" data-d="%s">'
+            '<span class="meta-top"><span class="meta-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">%s</svg></span>'
+            '<em>%d</em></span><span class="meta-kpi"><b class="cnt">%s</b><small>%s</small></span><strong>%s</strong><i class="meta-bar"></i></li>'
+            % (META_COLOR[i], META_COLOR[i], cam, frame_, ov_sin_tint, pins, labels, i + 1, attr(titulo), attr(T.raw(k, "texto")),
+               META_ICONOS[i], i + 1, fmt(kp[0]), fmt(kp[1]), T.t(k, "corto")))
 
 def resumen():
     metas_html = "".join(resumen_meta(i, *m) for i, m in enumerate(METAS))
     return ('<section class="s-resumen tema-azul" id="resumen" data-nav="light" data-fit><div class="fit-in">'
             '<div class="section-inner"><span class="s-tag">%s</span><h2 class="s-title">%s</h2>'
             '<p class="s-subtitle">%s</p>%s</div>'
-            '<div class="resumen-wrap"><div class="resumen-stage" id="resumenStage"><div class="canvas">%s</div><div class="wash"></div></div>'
+            '<div class="resumen-wrap"><div class="resumen-stage" id="resumenStage"><div class="canvas">%s</div><div class="wash"></div><div class="meta-panel" id="metaPanel"><b id="mpN"></b><div><h3 id="mpT"></h3><p id="mpP"></p></div></div></div>'
             '<ul class="resumen-metas" id="resumenMetas">%s</ul></div></div></section>'
             % (T.t("resumen", "etiqueta"), T.t("resumen", "titulo"), T.t("resumen", "subtitulo"),
                ('<p class="s-body">%s</p>' % T.t("resumen", "texto")) if T.raw("resumen", "texto", requerido=False) not in (None, '""') else "",
@@ -533,9 +545,9 @@ PLANTILLA = '''<!DOCTYPE html>
   <title>%(titulo)s</title>
   <meta name="description" content="%(descripcion)s" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/temas.css?v=16" />
-  <link rel="stylesheet" href="css/historia.css?v=16" />
-  <link rel="stylesheet" href="css/capitulos.css?v=16" />
+  <link rel="stylesheet" href="css/temas.css?v=17" />
+  <link rel="stylesheet" href="css/historia.css?v=17" />
+  <link rel="stylesheet" href="css/capitulos.css?v=17" />
   <script>(function(){var h=document.documentElement;h.classList.add('js');try{var s=localStorage;if(s.getItem('rt-noche')==='1')h.dataset.theme='dark';if(s.getItem('rt-cvd')==='1')h.dataset.cvd='1'}catch(e){}})()</script>
 </head>
 <body>
@@ -569,7 +581,7 @@ PLANTILLA = '''<!DOCTYPE html>
 
 %(contenido)s
 
-<script src="js/sitio.js?v=16"></script>
+<script src="js/sitio.js?v=17"></script>
 </body>
 </html>
 '''

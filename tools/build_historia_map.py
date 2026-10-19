@@ -448,8 +448,8 @@ def _en_rio(nombre_mun, dx=0, dy=0):
     return (x + dx, y + dy)
 
 om = []
-def OL(txt, xy, cls, anchor="start"):
-    om.append('<text class="ol %s" x="%.1f" y="%.1f" text-anchor="%s">%s</text>' % (cls, xy[0], xy[1], anchor, txt))
+def OL(txt, xy, cls, anchor="start", k=""):
+    om.append('<text class="ol %s"%s x="%.1f" y="%.1f" text-anchor="%s">%s</text>' % (cls, (' data-k="%s"' % k) if k else "", xy[0], xy[1], anchor, txt))
 def OP(cls, k, d, extra=""):
     om.append('<path class="%s" data-k="%s"%s d="%s"/>' % (cls, k, extra, d))
 
@@ -472,21 +472,21 @@ OP("o-infra", "teo", d_teo2)
 for k, (x, y) in dict(portal=portal, tula=C("Tula de Allende"), ptar=atot_c, endho=endho_c).items():
     om.append('<circle class="o-pt %s" data-k="%s" cx="%.1f" cy="%.1f" r="3"/>' % (k, k, x, y))
 # etiquetas: ríos en azul, infraestructura en gris oscuro con su año de inauguración
-OL("Túnel Emisor Central (1975)", (teo1_mid[0] - 10, teo1_mid[1] - 6), "o-i", "end")
-OL("Túnel Emisor Oriente (2019)", (teo2_mid[0] + 10, teo2_mid[1] + 14), "o-i")
-OL("Gran Canal (1900)", (canal_mid[0] + 10, canal_mid[1]), "o-i")
-OL("El Salto · Tajo de Nochistongo (1789)", (tajo_mid[0] - 10, tajo_mid[1] - 8), "o-i", "end")
-OL("Portal de Salida", (portal[0] + 9, portal[1] + 11), "o-i b")
-OL("PTAR Atotonilco", (atot_c[0] + 9, atot_c[1] - 4), "o-i b")
-OL("Tula de Allende", (C("Tula de Allende")[0] - 8, C("Tula de Allende")[1] - 9), "o-c b", "end")
-OL("Presa Endhó", (endho_c[0] + 10, endho_c[1] - 8), "o-r b")
-OL("río Tula", (requena_c[0] - 28, requena_c[1] - 30), "o-r", "end")
-OL("río Tepeji", _en_rio("Tepeji del Río de Ocampo", 6, -5), "o-r", "end")
-OL("río Tlautla", _en_rio("Tlaxcoapan", -6, 12), "o-r", "end")
-OL("río Rosas", _en_rio("Tula de Allende", -5, 12), "o-r", "end")
+OL("Túnel Emisor Central (1975)", (teo1_mid[0] - 10, teo1_mid[1] - 6), "o-i", "end", "tec")
+OL("Túnel Emisor Oriente (2019)", (teo2_mid[0] + 10, teo2_mid[1] + 14), "o-i", "start", "teo")
+OL("Gran Canal (1900)", (canal_mid[0] + 10, canal_mid[1]), "o-i", "start", "canal")
+OL("El Salto · Tajo de Nochistongo (1789)", (tajo_mid[0] - 10, tajo_mid[1] - 8), "o-i", "end", "salto")
+OL("Portal de Salida", (portal[0] + 9, portal[1] + 11), "o-i b", "start", "portal")
+OL("PTAR Atotonilco", (atot_c[0] + 9, atot_c[1] - 4), "o-i b", "start", "ptar")
+OL("Tula de Allende", (C("Tula de Allende")[0] - 8, C("Tula de Allende")[1] - 9), "o-c b", "end", "tula")
+OL("Presa Endhó", (endho_c[0] + 10, endho_c[1] - 8), "o-r b fijo")
+OL("río Tula", (requena_c[0] - 28, requena_c[1] - 30), "o-r fijo", "end")
+OL("Presa Requena", (requena_c[0] - 6, requena_c[1] + 16), "o-r b", "end", "requena")
+OL("río Tlautla", _en_rio("Tlaxcoapan", -6, 12), "o-r", "end", "tlautla")
+OL("río Rosas", _en_rio("Tula de Allende", -5, 12), "o-r", "end", "rosas")
 for _clv, _d in DISTRITOS.items():
     nombres = {"003": "DR 003 Tula", "100": "DR 100 Alfajayucan", "112": "DR 112 Ajacuba"}
-    OL(nombres[_clv], (_d["centro"][0], max(_d["centro"][1], OV_Y0 + 16)), "o-dr-l", "middle")
+    OL(nombres[_clv], (_d["centro"][0], max(_d["centro"][1], OV_Y0 + 16)), "o-dr-l", "middle", "dr")
     om[-1] = om[-1].replace('class="ol o-dr-l"', 'class="ol o-dr-l" style="fill:%s"' % DISTRITOS_COLOR[_clv])
 om.append("</svg>")
 open(os.path.join(ROOT, "tools", "fragmentos", "origen_mapa.html"), "w", encoding="utf-8").write("".join(om))
