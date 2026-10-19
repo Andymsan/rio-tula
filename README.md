@@ -58,9 +58,19 @@ del repositorio (Settings → Secrets and variables → Actions):
 - `GDRIVE_SA_KEY`: el JSON de una cuenta de servicio de Google con acceso de lectura a esa carpeta.
 - `GDRIVE_FOLDER_ID`: el id de la carpeta de Drive (la parte de la URL después de `/folders/`).
 
-## Fotos del diagnóstico
+## Nombres de las fotos en Drive
 
-Nombre de archivo en Drive: `diagnostico_1_<pie de foto>` (carrusel de pantalla completa).
+`<sección>_<orden>_<pie de foto>` (el número de orden es opcional). Se puede dejar en cualquier subcarpeta de "Imágenes en carrusel".
+
+| Dónde sale | Prefijo del nombre |
+|---|---|
+| Diagnóstico (fotos grandes) | `diagnostico_1_…` |
+| Compromiso 92 | `promesa-1_…` |
+| Calidad del agua | `calidad-1_…` a `calidad-4_…` |
+| Inundaciones | `inundaciones-1_…` a `inundaciones-3_…` |
+| Ecosistemas | `ecosistemas-1_…` a `ecosistemas-3_…` |
+| Espacio público | `ecosistemas-4_…` |
+| Participa | `participa_…` |
 
 ## Otros
 

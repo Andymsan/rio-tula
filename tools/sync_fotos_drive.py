@@ -23,7 +23,7 @@ correr a mano:
 """
 import io
 import json
-import os, sys
+import os, re, sys
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -35,6 +35,7 @@ EXTS_CONOCIDAS = (".jpg", ".jpeg", ".png", ".webp")
 
 def parse_nombre(nombre_drive, mime_type):
     """'ecosistemas-4_41_ACTUAL - Zona inundable.jpg' -> ('ecosistemas-4', '41_ACTUAL - Zona inundable.jpg')
+    El número de orden es opcional: 'promesa-1_Presidenta en la toma de protesta.jpg' también vale.
 
     La extensión se toma del tipo real del archivo (mimeType), no del nombre:
     Drive a veces sube fotos sin que el nombre visible traiga extensión, y en
@@ -44,11 +45,13 @@ def parse_nombre(nombre_drive, mime_type):
     base = nombre_drive
     if nombre_drive.lower().endswith(EXTS_CONOCIDAS):
         base, _ = os.path.splitext(nombre_drive)
-    partes = base.split("_", 2)
-    if len(partes) != 3 or not partes[1].strip():
+    partes = base.split("_", 1)
+    if len(partes) != 2 or not partes[0].strip() or not partes[1].strip():
         return None
-    seccion, orden, pie = partes
-    return seccion, "%s_%s%s" % (orden, pie, IMAGENES[mime_type])
+    seccion, resto = partes[0].strip(), partes[1]
+    m = re.match(r"^(\d+)_(.+)$", resto)
+    orden, pie = (m.group(1), m.group(2)) if m else ("50", resto)  # sin número: se acomoda al final, en orden alfabético
+    return seccion, "%s_%s%s" % (orden, pie.strip(), IMAGENES[mime_type])
 
 
 def main():
