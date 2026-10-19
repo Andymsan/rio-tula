@@ -1007,3 +1007,4 @@ html[data-theme="dark"] .hero-video { filter: invert(1) hue-rotate(180deg); }
   .cap:not(.hist) .step { padding-top: 16px; padding-left: 12px; padding-right: 12px; }
   .cap.hist .step { padding-top: 16px; }
 }
+@media (max-width: 420px) { .nav-btn { padding: 7px 9px; font-size: 12px; } .nav-logo { font-size: 14px; white-space: nowrap; } #main-nav { gap: 6px; padding: 10px 12px; } .nav-right { gap: 6px; } }
