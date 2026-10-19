@@ -422,13 +422,27 @@ FILTROS = '''<svg width="0" height="0" style="position:absolute" aria-hidden="tr
 <filter id="f-slate"   color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.396  0 0 0 0 0.455  0 0 0 0 0.545  0 0 0 1 0"/></filter>
 </defs></svg>'''
 
+def video_portada():
+    """Video de fondo de la portada: img/video/portada_*.mp4 si existe; si no, el primer video que haya."""
+    d = os.path.join(ROOT, "img", "video")
+    if not os.path.isdir(d):
+        return ""
+    vids = sorted(f for f in os.listdir(d) if f.lower().endswith(".mp4"))
+    vids.sort(key=lambda f: 0 if f.startswith("portada_") else 1)
+    if not vids:
+        return ""
+    v = vids[0]; poster = v[:-4] + ".jpg"
+    tiene_poster = os.path.exists(os.path.join(d, poster))
+    return ('<video class="hero-video" muted loop playsinline preload="none" aria-hidden="true" data-src="img/video/%s"%s></video>'
+            % (v.replace(" ", "%20"), (' poster="img/video/%s"' % poster.replace(" ", "%20")) if tiene_poster else ""))
+
 def hero():
     return ('<header class="hero" id="top" data-nav="light">'
-            '<div class="hero-bg"></div><div class="hero-glow"></div>'
+            '<div class="hero-bg"></div><div class="hero-glow"></div>%s'
             '<p class="hs-eyebrow">%s</p><h1 class="hs-main-title">%s</h1><p class="hs-subtitle">%s</p>'
             '<div class="hero-cta"><a class="btn btn-dark" href="#origen">%s</a><a class="btn btn-claro" href="historia.html">%s</a></div>'
             '</header>'
-            % (T.t("portada", "eyebrow"), T.t("portada", "titulo"), T.t("portada", "subtitulo"), T.t("portada", "boton"), T.t("portada", "boton2")))
+            % (video_portada(), T.t("portada", "eyebrow"), T.t("portada", "titulo"), T.t("portada", "subtitulo"), T.t("portada", "boton"), T.t("portada", "boton2")))
 
 def kfpair(id_, campo):
     partes = [x.strip() for x in T.raw(id_, campo).split("|", 1)]

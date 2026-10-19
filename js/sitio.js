@@ -507,6 +507,16 @@
     if (cvd.checked) aplicarCvd(true);
   }
 
+  /* ── Video de fondo de la portada: solo si hay buena conexión y no se pidió menos movimiento; pausa al salir de pantalla ── */
+  function initVideo() {
+    const v = $('.hero-video'); if (!v) return;
+    const c = navigator.connection || {};
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches || c.saveData || /(^|-)2g$/.test(c.effectiveType || '')) { v.remove(); return; }
+    v.src = v.dataset.src;
+    v.addEventListener('canplay', () => { v.classList.add('on'); }, { once: true });
+    new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) v.play().catch(() => {}); else v.pause(); }), { threshold: 0.05 }).observe(v.closest('.hero'));
+  }
+
   /* ── Arranque ─────────────────────────────────────────────────────── */
   function boot() {
     buildNavObs(); buildStepObs();
@@ -518,6 +528,7 @@
     initRail();
     initA11y();
     initDiag();
+    initVideo();
     initContadores();
     fitAll();
     initLightbox();

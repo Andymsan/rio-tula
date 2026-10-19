@@ -31,6 +31,32 @@ FOTOS_DIR = os.path.join(ROOT, "img", "fotos")
 
 IMAGENES = {"image/jpeg": ".jpg", "image/png": ".png", "image/webp": ".webp"}
 EXTS_CONOCIDAS = (".jpg", ".jpeg", ".png", ".webp")
+VIDEOS = {"video/mp4", "video/quicktime", "video/webm", "video/x-matroska", "video/x-m4v"}
+EXTS_VIDEO = (".mp4", ".mov", ".m4v", ".webm", ".mkv")
+VIDEO_DIR = os.path.join(ROOT, "img", "video")
+
+
+def nombre_video(nombre_drive):
+    """'portada_1_Ribera.mov' -> 'portada_1' (el pie de foto no se usa en los videos)."""
+    base = nombre_drive
+    if nombre_drive.lower().endswith(EXTS_VIDEO):
+        base, _ = os.path.splitext(nombre_drive)
+    partes = base.split("_", 2)
+    if len(partes) < 2 or not partes[0].strip():
+        return None
+    orden = partes[1].strip() if partes[1].strip().isdigit() else "50"
+    return "%s_%s" % (partes[0].strip(), orden)
+
+
+def convertir_video(origen, destino_mp4):
+    """Convierte a MP4 liviano (H.264, <=1280 px, sin audio, <=20 s) y guarda un póster JPG. Necesita ffmpeg."""
+    import subprocess
+    poster = destino_mp4[:-4] + ".jpg"
+    subprocess.run(["ffmpeg", "-y", "-i", origen, "-t", "20", "-an", "-vf", "scale='min(1280,iw)':-2,fps=24",
+                    "-c:v", "libx264", "-crf", "29", "-preset", "medium", "-pix_fmt", "yuv420p", "-movflags", "+faststart", destino_mp4],
+                   check=True, capture_output=True)
+    subprocess.run(["ffmpeg", "-y", "-ss", "1", "-i", destino_mp4, "-frames:v", "1", "-q:v", "4", poster], check=True, capture_output=True)
+
 
 
 def parse_nombre(nombre_drive, mime_type):
@@ -85,6 +111,29 @@ def main():
             for f in resp.get("files", []):
                 if f["mimeType"] == CARPETA:
                     por_visitar.append(f["id"])  # subcarpeta (p. ej. "6_Ecosistemas"): también se revisa
+                    continue
+                if f["mimeType"] in VIDEOS or f["name"].lower().endswith(EXTS_VIDEO):
+                    nv = nombre_video(f["name"])
+                    if not nv:
+                        ignorados.append(f["name"]); continue
+                    destino_v = os.path.join(VIDEO_DIR, nv + ".mp4")
+                    if os.path.exists(destino_v):
+                        continue
+                    os.makedirs(VIDEO_DIR, exist_ok=True)
+                    tmp = os.path.join(VIDEO_DIR, "_descarga.tmp")
+                    with open(tmp, "wb") as fh:
+                        dl = MediaIoBaseDownload(fh, drive.files().get_media(fileId=f["id"]), chunksize=20 * 1024 * 1024)
+                        listo = False
+                        while not listo:
+                            _, listo = dl.next_chunk()
+                    try:
+                        convertir_video(tmp, destino_v)
+                        nuevos.append(os.path.join("img", "video", nv + ".mp4"))
+                    except Exception as e:
+                        print("  (no se pudo convertir el video %s: %s)" % (f["name"], e))
+                    finally:
+                        if os.path.exists(tmp):
+                            os.remove(tmp)
                     continue
                 if f["mimeType"] not in IMAGENES:
                     continue
