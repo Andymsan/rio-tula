@@ -428,7 +428,10 @@ FILTROS = '''<svg width="0" height="0" style="position:absolute" aria-hidden="tr
 <filter id="f-slate"   color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.396  0 0 0 0 0.455  0 0 0 0 0.545  0 0 0 1 0"/></filter>
 </defs></svg>'''
 
+PRECARGA = ""
+
 def video_portada():
+    global PRECARGA
     """Video de fondo de la portada: img/video/portada_*.mp4 si existe; si no, el primero de diagnostico_*."""
     d = os.path.join(ROOT, "img", "video")
     if not os.path.isdir(d):
@@ -439,9 +442,14 @@ def video_portada():
         return ""
     v = vids[0]; poster = v[:-4] + ".jpg"
     tiene_poster = os.path.exists(os.path.join(d, poster))
+    if tiene_poster:
+        PRECARGA = '<link rel="preload" as="image" href="img/video/%s" />' % poster.replace(" ", "%20")
     movil = v[:-4] + "_m.mp4"
     dm = (' data-src-m="img/video/%s"' % movil.replace(" ", "%20")) if os.path.exists(os.path.join(d, movil)) else ""
-    return ('<video class="hero-video" muted loop playsinline preload="none" aria-hidden="true" data-src="img/video/%s"%s%s></video>'
+    return ('<video class="hero-video" id="heroVideo" muted loop playsinline preload="auto" aria-hidden="true" data-src="img/video/%s"%s%s></video>'
+            '<script>(function(){var v=document.getElementById("heroVideo");if(!v)return;var c=navigator.connection||{};'
+            'if(matchMedia("(prefers-reduced-motion: reduce)").matches||c.saveData||/(^|-)2g$/.test(c.effectiveType||"")){v.remove();return}'
+            'var m=innerWidth<=900||(c.downlink&&c.downlink<3);v.src=(m&&v.getAttribute("data-src-m"))||v.getAttribute("data-src");v.load()})()</script>'
             % (v.replace(" ", "%20"), dm, (' poster="img/video/%s"' % poster.replace(" ", "%20")) if tiene_poster else ""))
 
 def hero():
@@ -567,6 +575,7 @@ PLANTILLA = '''<!DOCTYPE html>
   <link rel="stylesheet" href="css/temas.css?v=21" />
   <link rel="stylesheet" href="css/historia.css?v=21" />
   <link rel="stylesheet" href="css/capitulos.css?v=21" />
+%(precarga)s
   <script>(function(){var h=document.documentElement;h.classList.add('js');try{var s=localStorage;if(s.getItem('rt-noche')==='1')h.dataset.theme='dark';if(s.getItem('rt-cvd')==='1')h.dataset.cvd='1'}catch(e){}})()</script>
 </head>
 <body>
@@ -609,7 +618,7 @@ def comun(**extra):
     d = dict(
         titulo=attr(T.raw("sitio", "titulo")), descripcion=attr(T.raw("sitio", "descripcion")),
         logo=T.t("sitio", "logo"), logo_sub=T.t("sitio", "logo_sub"), boton_indice=T.t("sitio", "boton_indice"),
-        titulo_indice=T.t("sitio", "titulo_indice"), filtros=FILTROS,
+        titulo_indice=T.t("sitio", "titulo_indice"), filtros=FILTROS, precarga=PRECARGA,
 
         acc_titulo=T.t("sitio", "boton_acc"), acc_noche=T.t("sitio", "modo_noche"), acc_cvd=T.t("sitio", "modo_daltonismo"))
     d.update(extra)

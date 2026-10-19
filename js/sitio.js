@@ -545,13 +545,12 @@
   /* ── Video de fondo de la portada: solo si hay buena conexión y no se pidió menos movimiento; pausa al salir de pantalla ── */
   function initVideo() {
     const v = $('.hero-video'); if (!v) return;
-    const c = navigator.connection || {};
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches || c.saveData || /(^|-)2g$/.test(c.effectiveType || '')) { v.remove(); return; }
-    v.preload = 'auto';
-    v.src = (mobile.matches || (c.downlink && c.downlink < 3)) && v.dataset.srcM ? v.dataset.srcM : v.dataset.src;
-    // se muestra solo cuando ya hay suficiente video descargado, para que no se trabe al empezar
-    v.addEventListener('canplaythrough', () => { v.classList.add('on'); }, { once: true });
-    new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) v.play().catch(() => {}); else v.pause(); }), { threshold: 0.05 }).observe(v.closest('.hero'));
+    let listo = false, visible = true;
+    const intentar = () => { if (listo && visible) v.play().catch(() => {}); else v.pause(); };
+    // el póster se ve desde el primer instante; el video arranca solo cuando ya hay suficiente descargado
+    const ok = () => { listo = true; v.classList.add('on'); intentar(); };
+    if (v.readyState >= 4) ok(); else v.addEventListener('canplaythrough', ok, { once: true });
+    new IntersectionObserver(es => es.forEach(e => { visible = e.isIntersecting; intentar(); }), { threshold: 0.05 }).observe(v.closest('.hero'));
   }
 
   /* ── Arranque ─────────────────────────────────────────────────────── */

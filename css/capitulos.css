@@ -1150,3 +1150,5 @@ html[data-theme="dark"] .hero-video { filter: invert(1) hue-rotate(180deg); }
 @media (min-width: 901px) { .s-resumen .rc { left: 46px; bottom: 18px; } }
 
 .ic-img[style*='fotos'] { background-position: center; }
+
+.hero-video { opacity: 1; transition: none; }
