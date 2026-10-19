@@ -112,6 +112,7 @@ va_rio: 8.1 m³/s | Río Tula | Sigue hacia la presa Endhó, donde se almacena p
 va_nota: Caudal en m³/s en temporada de secas, promedio 2021–2024. Además, 1.0 m³/s se pierde en la planta.
 cierre: El Proyecto de Saneamiento y Restauración del Río Tula ==atiende la calidad del agua, las inundaciones y la recuperación del río.==
 boton: Conocer la historia del río →
+boton_corto: Historia →
 
 ## diagnostico  (fotos de diagnóstico, pantalla completa; carpeta img/fotos/diagnostico/)
 etiqueta: Diagnóstico

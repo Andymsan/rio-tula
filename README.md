@@ -75,7 +75,7 @@ del repositorio (Settings → Secrets and variables → Actions):
 ## Video de la portada
 
 Un video en cualquier subcarpeta de Drive con nombre `portada_1_<descripción>` (mov o mp4) se convierte solo a un MP4 liviano
-(1280 px, sin audio, máximo 20 s) y se usa de fondo de la portada, con la imagen fija como respaldo. Si no hay uno con ese
+(1280 px, sin audio, máximo 20 s; y una versión de 640 px para celular) y se usa de fondo de la portada, con la imagen fija como respaldo. Si no hay uno con ese
 prefijo, se usa el primer video `diagnostico_…`. No se reproduce con ahorro de datos, conexión lenta o "reducir movimiento".
 
 ## Otros

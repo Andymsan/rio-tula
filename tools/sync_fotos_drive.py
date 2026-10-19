@@ -49,14 +49,19 @@ def nombre_video(nombre_drive):
 
 
 def convertir_video(origen, destino_mp4):
-    """Convierte a MP4 liviano (H.264, <=1280 px, sin audio, <=20 s) y guarda un póster JPG. Necesita ffmpeg."""
+    """Convierte a dos MP4 livianos (H.264, sin audio): normal (<=1280 px, 20 s) y para celular (_m: 640 px, 12 s, ~1 MB),
+    y guarda un póster JPG. Necesita ffmpeg."""
     import subprocess
     poster = destino_mp4[:-4] + ".jpg"
-    subprocess.run(["ffmpeg", "-y", "-i", origen, "-t", "20", "-an", "-vf", "scale='min(1280,iw)':-2,fps=24",
-                    "-c:v", "libx264", "-crf", "29", "-preset", "medium", "-pix_fmt", "yuv420p", "-movflags", "+faststart", destino_mp4],
+    movil = destino_mp4[:-4] + "_m.mp4"
+    if not os.path.exists(destino_mp4):
+        subprocess.run(["ffmpeg", "-y", "-i", origen, "-t", "20", "-an", "-vf", "scale='min(1280,iw)':-2,fps=24",
+                        "-c:v", "libx264", "-crf", "29", "-preset", "medium", "-pix_fmt", "yuv420p", "-movflags", "+faststart", destino_mp4],
+                       check=True, capture_output=True)
+        subprocess.run(["ffmpeg", "-y", "-ss", "1", "-i", destino_mp4, "-frames:v", "1", "-q:v", "4", poster], check=True, capture_output=True)
+    subprocess.run(["ffmpeg", "-y", "-i", origen, "-t", "12", "-an", "-vf", "scale='min(640,iw)':-2,fps=20",
+                    "-c:v", "libx264", "-crf", "32", "-preset", "medium", "-profile:v", "main", "-pix_fmt", "yuv420p", "-movflags", "+faststart", movil],
                    check=True, capture_output=True)
-    subprocess.run(["ffmpeg", "-y", "-ss", "1", "-i", destino_mp4, "-frames:v", "1", "-q:v", "4", poster], check=True, capture_output=True)
-
 
 
 def parse_nombre(nombre_drive, mime_type):
@@ -117,7 +122,7 @@ def main():
                     if not nv:
                         ignorados.append(f["name"]); continue
                     destino_v = os.path.join(VIDEO_DIR, nv + ".mp4")
-                    if os.path.exists(destino_v):
+                    if os.path.exists(destino_v) and os.path.exists(destino_v[:-4] + "_m.mp4"):
                         continue
                     os.makedirs(VIDEO_DIR, exist_ok=True)
                     tmp = os.path.join(VIDEO_DIR, "_descarga.tmp")

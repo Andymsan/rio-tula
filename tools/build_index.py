@@ -321,10 +321,10 @@ def resumen_meta(i, cam, frame_, ovlist, pins, labels):
     kp = [x.strip() for x in T.raw(k, "cifra").split("|", 1)]
     ov_sin_tint = " ".join(x for x in ovlist.split() if not x.startswith("tint-"))
     return ('<li class="meta" tabindex="0" role="button" aria-expanded="false" style="--c:var(--%s-fill);--cd:var(--%s-dark)" '
-            'data-cam="%s" data-frame="%s" data-ov="%s" data-pins="%s" data-labels="%s" data-n="%d" data-t="%s" data-d="%s">'
+            'data-cam="%s" data-frame="%s" data-ov="%s" data-pins="%s" data-labels="%s" data-n="%d" data-t="%s" data-d="%s" data-kv="%s" data-ks="%s">'
             '<span class="meta-top"><span class="meta-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">%s</svg></span>'
             '<em>%d</em></span><span class="meta-kpi"><b class="cnt">%s</b><small>%s</small></span><strong>%s</strong><i class="meta-bar"></i></li>'
-            % (META_COLOR[i], META_COLOR[i], cam, frame_, ov_sin_tint, pins, labels, i + 1, attr(titulo), attr(T.raw(k, "texto")),
+            % (META_COLOR[i], META_COLOR[i], cam, frame_, ov_sin_tint, pins, labels, i + 1, attr(titulo), attr(T.raw(k, "texto")), attr(kp[0]), attr(kp[1]),
                META_ICONOS[i], i + 1, fmt(kp[0]), fmt(kp[1]), T.t(k, "corto")))
 
 def resumen():
@@ -332,11 +332,15 @@ def resumen():
     return ('<section class="s-resumen tema-azul" id="resumen" data-nav="light" data-fit><div class="fit-in">'
             '<div class="section-inner"><span class="s-tag">%s</span><h2 class="s-title">%s</h2>'
             '<p class="s-subtitle">%s</p>%s</div>'
-            '<div class="resumen-wrap"><div class="resumen-stage" id="resumenStage"><div class="canvas">%s</div><div class="wash"></div><div class="meta-panel" id="metaPanel"><b id="mpN"></b><div><h3 id="mpT"></h3><p id="mpP"></p></div></div></div>'
-            '<ul class="resumen-metas" id="resumenMetas">%s</ul></div></div></section>'
+            '<div class="resumen-wrap"><div class="resumen-stage" id="resumenStage"><div class="canvas">%s</div><div class="wash"></div></div>'
+            '<div class="rc" id="rc"><i class="rc-bar"><b></b></i><div class="rc-top"><span class="rc-n"></span><span class="rc-of">%s</span></div>'
+            '<div class="rc-kpi"><b id="rcK"></b><small id="rcS"></small></div><h3 id="rcT"></h3><p id="rcP"></p>'
+            '<div class="rc-nav"><button type="button" class="rc-prev" aria-label="Meta anterior">‹</button><span class="rc-dots">%s</span><button type="button" class="rc-next" aria-label="Meta siguiente">›</button></div></div>'
+            '<ul class="resumen-metas" id="resumenMetas" hidden>%s</ul></div></div></section>'
             % (T.t("resumen", "etiqueta"), T.t("resumen", "titulo"), T.t("resumen", "subtitulo"),
                ('<p class="s-body">%s</p>' % T.t("resumen", "texto")) if T.raw("resumen", "texto", requerido=False) not in (None, '""') else "",
-               resumen_canvas(), metas_html))
+               resumen_canvas(), "de 5 metas", "".join('<button type="button" aria-label="Meta %d"></button>' % (n + 1) for n in range(len(METAS))),
+               metas_html))
 
 # ═══════════════════════════════════════════════════════════════════════════
 #  PARTICIPA
@@ -427,14 +431,16 @@ def video_portada():
     d = os.path.join(ROOT, "img", "video")
     if not os.path.isdir(d):
         return ""
-    vids = sorted(f for f in os.listdir(d) if f.lower().endswith(".mp4") and f.startswith(("portada_", "diagnostico_")))
+    vids = sorted(f for f in os.listdir(d) if f.lower().endswith(".mp4") and not f.endswith("_m.mp4") and f.startswith(("portada_", "diagnostico_")))
     vids.sort(key=lambda f: 0 if f.startswith("portada_") else 1)
     if not vids:
         return ""
     v = vids[0]; poster = v[:-4] + ".jpg"
     tiene_poster = os.path.exists(os.path.join(d, poster))
-    return ('<video class="hero-video" muted loop playsinline preload="none" aria-hidden="true" data-src="img/video/%s"%s></video>'
-            % (v.replace(" ", "%20"), (' poster="img/video/%s"' % poster.replace(" ", "%20")) if tiene_poster else ""))
+    movil = v[:-4] + "_m.mp4"
+    dm = (' data-src-m="img/video/%s"' % movil.replace(" ", "%20")) if os.path.exists(os.path.join(d, movil)) else ""
+    return ('<video class="hero-video" muted loop playsinline preload="none" aria-hidden="true" data-src="img/video/%s"%s%s></video>'
+            % (v.replace(" ", "%20"), dm, (' poster="img/video/%s"' % poster.replace(" ", "%20")) if tiene_poster else ""))
 
 def hero():
     return ('<header class="hero" id="top" data-nav="light">'
@@ -502,14 +508,14 @@ def origen():
             '<div class="vi-dn">%s</div>%s<p class="vi-pista">%s</p></div></div></div>'
             '<div class="or-pane" data-pane="va"><p class="or-baj">%s</p>'
             '<div class="va-bar">%s%s</div><div class="va-cards">%s%s</div><p class="or-nota">%s</p></div>'
-            '<div class="or-pie"><p class="or-cierre">%s</p><a class="or-btn" href="historia.html">%s</a></div>'
+            '<div class="or-pie"><p class="or-cierre">%s</p><a class="or-btn" href="historia.html"><span class="l">%s</span><span class="s">%s</span></a></div>'
             '</div></section>'
             % (T.t("origen", "etiqueta"), T.t("origen", "titulo"), T.t("origen", "tab1"), T.t("origen", "tab2"),
                rd("tools/fragmentos/origen_mapa.html"), T.t("origen", "viene_titulo"),
                sol, T.t("origen", "secas"), nube, T.t("origen", "lluvias"), fig, ley, T.t("origen", "viene_pista"),
                T.t("origen", "va_titulo"), seg("ag", ag, ico_ag), seg("rio", rio, ico_rio),
                card("ag", ag, ico_ag), card("rio", rio, ico_rio), T.t("origen", "va_nota"),
-               T.t("origen", "cierre"), T.t("origen", "boton")))
+               T.t("origen", "cierre"), T.t("origen", "boton"), T.t("origen", "boton_corto")))
 
 def avance():
     hechos = ""
@@ -560,9 +566,9 @@ PLANTILLA = '''<!DOCTYPE html>
   <title>%(titulo)s</title>
   <meta name="description" content="%(descripcion)s" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/temas.css?v=18" />
-  <link rel="stylesheet" href="css/historia.css?v=18" />
-  <link rel="stylesheet" href="css/capitulos.css?v=18" />
+  <link rel="stylesheet" href="css/temas.css?v=19" />
+  <link rel="stylesheet" href="css/historia.css?v=19" />
+  <link rel="stylesheet" href="css/capitulos.css?v=19" />
   <script>(function(){var h=document.documentElement;h.classList.add('js');try{var s=localStorage;if(s.getItem('rt-noche')==='1')h.dataset.theme='dark';if(s.getItem('rt-cvd')==='1')h.dataset.cvd='1'}catch(e){}})()</script>
 </head>
 <body>
@@ -596,7 +602,7 @@ PLANTILLA = '''<!DOCTYPE html>
 
 %(contenido)s
 
-<script src="js/sitio.js?v=18"></script>
+<script src="js/sitio.js?v=19"></script>
 </body>
 </html>
 '''
