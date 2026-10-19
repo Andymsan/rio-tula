@@ -44,8 +44,8 @@ SECCIONES_FOTOS = []   # (id, carpeta esperada) para el LEEME
 def frame(name):
     return '<img class="frame" data-frame="%s" src="img/mapa/%s.webp" alt="" loading="lazy" decoding="async">' % (name, name)
 
-def ov(id_, tint=""):
-    return '<img class="ov %s" data-ov="%s" src="img/mapa/ov-%s.webp" alt="" loading="lazy" decoding="async">' % (tint, id_, id_)
+def ov(id_, tint="", src=None):
+    return '<img class="ov %s" data-ov="%s" src="img/mapa/ov-%s.webp" alt="" loading="lazy" decoding="async">' % (tint, id_, src or id_)
 
 def pin(id_, x, y, label, sub="", side=""):
     return ('<div class="pin %s" data-id="%s" style="--px:%s;--py:%s"><i></i><span class="lbl">%s<small>%s</small></span></div>'
@@ -198,80 +198,70 @@ def hexes_svg():
 
 HEXES = '<div class="hexes" data-focus="all">%s</div>' % hexes_svg()
 
-hub_steps = [
-    step(".5,.5,1", "int", card("proyecto-0"), wash=".93", hex="all", tema="rosa"),
-]
-hub = cap("proyecto", "rosa", T.t("proyecto", "banner"), frame("int"), hub_steps, extra_stage='<div class="wash"></div>' + HEXES)
+# ═══════════════════════════════════════════════════════════════════════════
+#  EL PROYECTO: UN SOLO ESCENARIO CONTINUO (hexágonos + los cuatro frentes)
+#  El mapa y el banner (número + lema) permanecen; solo cambian la imagen, el número
+#  y la tarjeta de abajo. Los ids de pines/capas de Inundaciones llevan prefijo "in-".
+# ═══════════════════════════════════════════════════════════════════════════
+def ancla(k, idv):
+    """Ancla invisible al inicio de cada frente (guía lateral e índice)."""
+    return '<div class="s-lema" id="lema-%s" aria-hidden="true"><i id="%s"></i></div>' % (k, idv)
 
-# ═══════════════════════════════════════════════════════════════════════════
-#  CALIDAD DEL AGUA  (rosa) — marco "col"
-# ═══════════════════════════════════════════════════════════════════════════
-calidad_canvas = (frame("col")
+def ban(num, clave):
+    a, b = [x.strip() for x in T.raw(clave, "banner").split("|", 1)]
+    return "%s|%s|%s" % (num, a, b)
+
+canvas_unico = (frame("int") + frame("col") + frame("base") + frame("acc")
+    # inundaciones
+    + ov("in-sanlorenzo", "tint-naranja", "sanlorenzo") + ov("in-chamizal", "tint-naranja", "chamizal")
+    + ov("in-trescult", "tint-naranja", "trescult") + ov("in-rosas", "tint-naranja", "rosas")
+    + '<img class="ov tint-naranja-x2" data-ov="tramo" src="img/mapa/ov-rio.webp" alt="" loading="lazy" decoding="async" style="clip-path: inset(30% 30% 24% 40%)">'
+    # ecosistemas y espacio público
+    + ov("rio") + ov("bojay", "tint-verde") + ov("trescult", "tint-verde") + ov("rosas", "tint-verde") + ov("sanlorenzo", "tint-verde") + ov("chamizal", "tint-verde")
+    # pines: calidad
     + pin("atot", *COL["atot"], label="PTAR Atotonilco", sub="", side="")
     + pin("cvig", *COL["atot"], label="Centro de Vigilancia del Agua", sub="", side="")
     + pin("colec", *COL["colec"], label="Colectores del río Tula", sub="", side="r")
     + pin("cfe", *COL["cfe"], label="PTAR de la CFE", sub="", side="l")
-    + pin("boya", *COL["endho"], label="Boya · presa Endhó", sub="", side=""))
-
-calidad_steps = [
-    step(".55,.5,1.05", "col", card("calidad-0"), pins=""),
-    step(".615,.79,2.3", "col", card("calidad-1"), carousel("calidad-1"), pins="atot"),
-    step(".64,.47,1.35", "col", card("calidad-3"), carousel("calidad-3"), pins="colec cfe"),
-    step(".55,.47,1.25", "col", card("calidad-2"), carousel("calidad-2"), pins=""),
-    step(".55,.46,1.05", "col", card("calidad-4"), carousel("calidad-4"), pins="boya cvig"),
-]
-calidad = cap("calidad", "rosa", T.raw("calidad", "banner"), calidad_canvas, calidad_steps, num=1)
-
-# ═══════════════════════════════════════════════════════════════════════════
-#  INUNDACIONES  (naranja) — marcos "int" y "col"
-# ═══════════════════════════════════════════════════════════════════════════
-inund_canvas = (frame("int") + frame("col")
-    + ov("sanlorenzo", "tint-naranja") + ov("chamizal", "tint-naranja") + ov("trescult", "tint-naranja") + ov("rosas", "tint-naranja")
-    + '<img class="ov tint-naranja-x2" data-ov="tramo" src="img/mapa/ov-rio.webp" alt="" loading="lazy" decoding="async" style="clip-path: inset(30% 30% 24% 40%)">'
-    + ov("rio")
-    + pin("sanlorenzo", *INT["sanlorenzo"], label="San Lorenzo", side="r")
-    + pin("chamizal", *INT["chamizal"], label="El Chamizal", side="r")
-    + pin("trescult", *INT["trescult"], label="Tres Culturas", side="r")
-    + pin("rosas", *INT["rosas"], label="Río Rosas", side="l"))
-
-inund_steps = [
-    step(".5,.55,1.05", "int", card("inundaciones-0")),
-    step(".46,.81,1.9", "int", card("inundaciones-1"), carousel("inundaciones-1"), ov="sanlorenzo chamizal", pins="sanlorenzo chamizal"),
-    step(".5,.44,1.6", "int", card("inundaciones-2"), carousel("inundaciones-2"), ov="tramo", pins="trescult rosas"),
-    step(".55,.5,1.0", "col", card("inundaciones-3"), carousel("inundaciones-3")),
-]
-inund = cap("inundaciones", "naranja", T.raw("inundaciones", "banner"), inund_canvas, inund_steps, num=2)
-
-# ═══════════════════════════════════════════════════════════════════════════
-#  ECOSISTEMAS Y ESPACIO PÚBLICO (verde) — marcos "int", "base", "acc"
-# ═══════════════════════════════════════════════════════════════════════════
-eco_canvas = (frame("int") + frame("base") + frame("acc")
-    + ov("rio") + ov("bojay", "tint-verde") + ov("trescult", "tint-verde") + ov("rosas", "tint-verde") + ov("sanlorenzo", "tint-verde") + ov("chamizal", "tint-verde")
-    + ov("conect", "tint-slate")
+    + pin("boya", *COL["endho"], label="Boya · presa Endhó", sub="", side="")
+    # pines: inundaciones
+    + pin("in-sanlorenzo", *INT["sanlorenzo"], label="San Lorenzo", side="r")
+    + pin("in-chamizal", *INT["chamizal"], label="El Chamizal", side="r")
+    + pin("in-trescult", *INT["trescult"], label="Tres Culturas", side="r")
+    + pin("in-rosas", *INT["rosas"], label="Río Rosas", side="l")
+    # pines y rótulos: ecosistemas y espacio público
     + sitio_pins()
     + mlabel("endho", 0.63, 0.115, "Presa Endhó")
     + mlabel("anp", 0.34, 0.22, "Nueva Área Natural<br>Protegida")
     + mlabel("parque", 0.62, 0.465, "Parque Nacional y<br>Atlantes de Tula"))
 
-eco_steps = [
-    step(".5,.55,1.05", "int", card("ecosistemas-0"), labels="endho parque"),
-    step(".5,.5,1.7", "int", card("ecosistemas-1"), carousel("ecosistemas-1")),
-    step(".585,.17,2.3", "int", card("ecosistemas-2"),
-         carousel("ecosistemas-2"), ov="bojay", pins="bojay", labels="endho"),
-    step(".36,.24,1.6", "base", card("ecosistemas-3"), carousel("ecosistemas-3"), ov="rio", labels="anp parque"),
-
+pasos = [
+    step(".5,.5,1", "int", card("proyecto-0"), wash=".93", hex="all", tema="rosa", ban="|" + T.raw("proyecto", "banner") + "|"),
+    ancla("limpio", "calidad"),
+    step(".55,.5,1.05", "col", card("calidad-0"), pins="", tema="rosa", ban=ban(1, "calidad")),
+    step(".615,.79,2.3", "col", card("calidad-1"), carousel("calidad-1"), pins="atot", tema="rosa", ban=ban(1, "calidad")),
+    step(".64,.47,1.35", "col", card("calidad-3"), carousel("calidad-3"), pins="colec cfe", tema="rosa", ban=ban(1, "calidad")),
+    step(".55,.47,1.25", "col", card("calidad-2"), carousel("calidad-2"), pins="", tema="rosa", ban=ban(1, "calidad")),
+    step(".55,.46,1.05", "col", card("calidad-4"), carousel("calidad-4"), pins="boya cvig", tema="rosa", ban=ban(1, "calidad")),
+    ancla("seguro", "inundaciones"),
+    step(".5,.55,1.05", "int", card("inundaciones-0"), tema="naranja", ban=ban(2, "inundaciones")),
+    step(".46,.81,1.9", "int", card("inundaciones-1"), carousel("inundaciones-1"), ov="in-sanlorenzo in-chamizal", pins="in-sanlorenzo in-chamizal", tema="naranja", ban=ban(2, "inundaciones")),
+    step(".5,.44,1.6", "int", card("inundaciones-2"), carousel("inundaciones-2"), ov="tramo", pins="in-trescult in-rosas", tema="naranja", ban=ban(2, "inundaciones")),
+    step(".55,.5,1.0", "col", card("inundaciones-3"), carousel("inundaciones-3"), tema="naranja", ban=ban(2, "inundaciones")),
+    ancla("vivo", "ecosistemas"),
+    step(".5,.55,1.05", "int", card("ecosistemas-0"), labels="endho parque", tema="verde", ban=ban(3, "ecosistemas")),
+    step(".5,.5,1.7", "int", card("ecosistemas-1"), carousel("ecosistemas-1"), tema="verde", ban=ban(3, "ecosistemas")),
+    step(".585,.17,2.3", "int", card("ecosistemas-2"), carousel("ecosistemas-2"), ov="bojay", pins="bojay", labels="endho", tema="verde", ban=ban(3, "ecosistemas")),
+    step(".36,.24,1.6", "base", card("ecosistemas-3"), carousel("ecosistemas-3"), ov="rio", labels="anp parque", tema="verde", ban=ban(3, "ecosistemas")),
+    ancla("todos", "espacio-publico"),
+    # Cámara desplazada hacia arriba para que Bojay (cerca del borde superior) no se corte; incluye las isócronas (marco "acc").
+    step(".5,.4,1.0", "acc", card("ecosistemas-4"), carousel("ecosistemas-4"),
+         ov="bojay trescult rosas sanlorenzo chamizal", pins="bojay trescult rosas sanlorenzo chamizal", tema="verde", ban=ban(4, "espacio-publico")),
 ]
-eco = cap("ecosistemas", "verde", T.raw("ecosistemas", "banner"), eco_canvas, eco_steps, num=3)
-
-# Espacio público: capítulo propio ("Un río para todas y todos"). Cámara desplazada
-# hacia arriba para que Bojay (cerca del borde superior de la imagen) no se corte;
-# incluye las isócronas (marco "acc").
-ep_steps = [
-    step(".5,.4,1.0", "acc", card("ecosistemas-4"),
-         carousel("ecosistemas-4"),
-         ov="bojay trescult rosas sanlorenzo chamizal", pins="bojay trescult rosas sanlorenzo chamizal"),
-]
-espacio = cap("espacio-publico", "verde", T.raw("espacio-publico", "banner"), eco_canvas, ep_steps, num=4)
+proyecto_cap = ('<section class="cap tema-rosa" id="proyecto" data-tema="rosa" data-nav="light">'
+                '<div class="cap-stage"><div class="canvas">%s</div><div class="wash"></div>%s'
+                '<div class="banner dos" id="capBanner"><b class="bn"></b><span class="bt"><strong></strong><small></small></span></div></div>'
+                '<div class="cap-steps">%s</div></section>' % (canvas_unico, HEXES, "".join(pasos)))
 
 # ═══════════════════════════════════════════════════════════════════════════
 #  RESUMEN (mapa con las 5 metas; se resalta la que está en foco)
@@ -351,8 +341,8 @@ def participa():
     for e in enlaces:
         texto, url = [x.strip() for x in e.split("->", 1)]
         li += '<a class="link-btn" href="%s" target="_blank" rel="noopener">%s</a>' % (attr(url), fmt(texto))
-    return ('<section class="s-participa" id="participa" data-nav="light">'
-            '<div class="participa-wrap">%s<div class="participa-texto">'
+    return ('<section class="s-participa" id="participa" data-nav="light" data-fit>'
+            '<div class="participa-wrap fit-in">%s<div class="participa-texto">'
             '<span class="s-tag">%s</span><h2 class="s-title">%s</h2><p class="s-body">%s</p>'
             '<div class="participa-links">%s</div></div></div></section>'
             % (carousel("participa"), T.t("participa", "etiqueta"), T.t("participa", "titulo"), T.t("participa", "texto"), li))
@@ -398,21 +388,28 @@ INDICE = [
     ("participa", "#participa", "#3fae7a", ""),
 ]
 
+# imagen de cada columna del índice (se carga al abrir el panel) y su encuadre
+IDX_IMG = {"origen": ("img/mapa/base.webp", "72% 62%"), "historia": ("img/mapa/historia-final.webp", "40% 50%"),
+           "proyecto": ("img/mapa/int.webp", "58% 30%"), "limpio": ("img/mapa/col.webp", "62% 78%"), "seguro": ("img/mapa/int.webp", "46% 85%"),
+           "vivo": ("img/mapa/base.webp", "36% 25%"), "todos": ("img/mapa/acc.webp", "54% 55%"), "resumen": ("img/mapa/col.webp", "50% 40%")}
+
 def indice(desde_historia=False):
-    """(tarjetas del hero, lista del panel). En la subpágina los enlaces a la portada llevan index.html."""
+    """(tarjetas del hero, columnas del panel). En la subpágina los enlaces a la portada llevan index.html."""
     items = lista = ""
-    n = sub_n = 0
+    n = 0
     for k, h, c, sub in INDICE:
-        if sub:
-            sub_n += 1; num = "%d.%d" % (n, sub_n)
-        else:
-            n += 1; sub_n = 0; num = str(n)
+        n += 1
         if desde_historia and h.startswith("#"):
             h = "index.html" + h
         key = "indice-" + k
-        cls = " idx-sub" if sub else ""
-        items += '<a class="idx-item%s" href="%s" style="--c:%s"><b>%s</b><span>%s</span></a>' % (cls, h, c, num, T.t(key, "titulo"))
-        lista += '<li class="%s"><a href="%s" style="--c:%s"><b>%s</b><span>%s<small>%s</small></span></a></li>' % (sub, h, c, num, T.t(key, "titulo"), T.t(key, "descripcion"))
+        img, pos = IDX_IMG.get(k, ("img/mapa/base.webp", "50% 50%"))
+        if k == "participa":
+            fp = fotos_de("participa")
+            img, pos = (fp[0][0] if fp else "img/mapa/base.webp"), "50% 40%"
+        items += '<a class="idx-item" href="%s" style="--c:%s"><b>%02d</b><span>%s</span></a>' % (h, c, n, T.t(key, "titulo"))
+        lista += ('<li class="%s"><a href="%s" style="--c:%s;--bp:%s" data-img="%s"><span class="ic-n">%02d</span><span class="ic-img"></span>'
+                  '<span class="ic-t">%s</span><small>%s</small></a></li>'
+                  % ("sub" if sub else "", h, c, pos, img.replace(" ", "%20"), n, T.t(key, "titulo"), T.t(key, "descripcion")))
     return items, lista
 
 idx_items, idx_list = indice()
@@ -546,10 +543,6 @@ def rail():
                   for n, k in enumerate(LEMAS))
     return '<nav class="lr" id="lemaRail" aria-label="Los cuatro lemas del proyecto"><span class="lr-line"><b id="lrFill"></b></span>%s</nav>' % its
 
-def lema(k):
-    """Ancla invisible al inicio de cada frente (la usan la guía lateral y sus enlaces)."""
-    return '<section class="s-lema" id="lema-%s" aria-hidden="true"></section>' % k
-
 def fuentes():
     items = "".join("<li>%s</li>" % fmt(x) for x in T.lista("fuentes", "items"))
     return ('<section class="s-fuentes" id="fuentes" data-nav="light"><div class="fu-in"><h2>%s</h2><ul>%s</ul><p class="fu-nota">%s</p></div></section>'
@@ -566,9 +559,9 @@ PLANTILLA = '''<!DOCTYPE html>
   <title>%(titulo)s</title>
   <meta name="description" content="%(descripcion)s" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/temas.css?v=19" />
-  <link rel="stylesheet" href="css/historia.css?v=19" />
-  <link rel="stylesheet" href="css/capitulos.css?v=19" />
+  <link rel="stylesheet" href="css/temas.css?v=21" />
+  <link rel="stylesheet" href="css/historia.css?v=21" />
+  <link rel="stylesheet" href="css/capitulos.css?v=21" />
   <script>(function(){var h=document.documentElement;h.classList.add('js');try{var s=localStorage;if(s.getItem('rt-noche')==='1')h.dataset.theme='dark';if(s.getItem('rt-cvd')==='1')h.dataset.cvd='1'}catch(e){}})()</script>
 </head>
 <body>
@@ -595,14 +588,14 @@ PLANTILLA = '''<!DOCTYPE html>
 
 <div class="idx-panel" id="idxPanel" role="dialog" aria-label="%(titulo_indice)s">
   <button class="idx-close" id="idxClose" type="button" aria-label="Cerrar">×</button>
-  <div class="idx-box"><h2>%(titulo_indice)s</h2><ul class="idx-list">%(idx_list)s</ul></div>
+  <div class="idx-box"><p class="idx-k">%(titulo_indice)s</p><ol class="idx-cols">%(idx_list)s</ol></div>
 </div>
 
 <div class="lightbox" id="lightbox"><button class="lightbox-close" type="button" aria-label="Cerrar">×</button><button class="lightbox-nav lightbox-prev" type="button" aria-label="Anterior">‹</button><img id="lightboxImg" alt=""><button class="lightbox-nav lightbox-next" type="button" aria-label="Siguiente">›</button><div class="lightbox-cap" id="lightboxCap"></div></div>
 
 %(contenido)s
 
-<script src="js/sitio.js?v=19"></script>
+<script src="js/sitio.js?v=21"></script>
 </body>
 </html>
 '''
@@ -619,8 +612,8 @@ def comun(**extra):
 
 def construir():
     contenido = "\n\n".join([
-        rail(), hero(), origen(), diagnostico(), promesa(), avance(), hub,
-        lema("limpio"), calidad, lema("seguro"), inund, lema("vivo"), eco, lema("todos"), espacio,
+        rail(), hero(), origen(), diagnostico(), promesa(), avance(),
+        proyecto_cap,
         resumen(), participa(), fuentes(), pie()])
     return PLANTILLA % comun(logo_href="#top", idx_list=idx_list, contenido=contenido,
                              nav_href="historia.html", nav_texto=T.t("sitio", "boton_historia"))

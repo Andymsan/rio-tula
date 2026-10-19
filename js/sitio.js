@@ -34,7 +34,11 @@
   }
 
   const idx = $('#idxPanel');
-  const setIdx = open => { idx.classList.toggle('open', open); document.body.style.overflow = open ? 'hidden' : ''; };
+  let idxImgs = false;
+  const setIdx = open => {
+    idx.classList.toggle('open', open); document.body.style.overflow = open ? 'hidden' : '';
+    if (open && !idxImgs) { idxImgs = true; $$('.idx-cols a[data-img]', idx).forEach(a => { $('.ic-img', a).style.backgroundImage = "url('" + a.dataset.img + "')"; }); }
+  };
   $('#idxBtn').addEventListener('click', () => setIdx(true));
   $('#idxClose').addEventListener('click', () => setIdx(false));
   idx.addEventListener('click', e => { if (e.target === idx || e.target.closest('a')) setIdx(false); });
@@ -80,6 +84,18 @@
 
   const list = v => (v || '').split(/\s+/).filter(Boolean);
 
+  // banner único del proyecto: se queda fijo; solo cambian el número y el texto (con un fundido corto)
+  function setBanner(ban, v) {
+    if (ban.dataset.v === v) return;
+    const [n, a, b] = v.split('|'), apply = () => {
+      $('.bn', ban).textContent = n; $('.bn', ban).hidden = !n; $('strong', ban).textContent = a; $('small', ban).textContent = b;
+      ban.classList.toggle('solo', !n && !a); ban.classList.remove('sw');
+    };
+    const primera = !ban.dataset.v; ban.dataset.v = v;
+    if (primera) { apply(); return; }
+    ban.classList.add('sw'); setTimeout(apply, 220);
+  }
+
   function activate(st, step, init) {
     if (st.cur === step && !init) return;
     st.cur = step;
@@ -95,9 +111,10 @@
     const v = $('.hexes', st.stage);
     if (v) { v.classList.toggle('on', !!d.hex); if (d.hex) v.dataset.focus = d.hex; }
     applyCam(st, step);
+    const ban = $('#capBanner'); if (ban && d.ban) setBanner(ban, d.ban);
     const t = d.tema || st.cap.dataset.tema;
     if (t) {
-      st.cap.classList.remove(...TEMAS); st.cap.classList.add('tema-' + t);
+      st.cap.classList.remove(...TEMAS); st.cap.classList.add('tema-' + t); st.cap.dataset.tema = t;
       if (!init) html.dataset.tema = t;
     }
     $$('[data-carousel]', step).forEach(initCarousel);
@@ -369,9 +386,10 @@
       modo = bt.dataset.m; $$('.vi-sw button').forEach(x => x.classList.toggle('on', x === bt));
       dibujar(modo); contar(shown, tot[modo]);
     }));
-    // leyenda: resalta la fuente en la dona y en el mapa
+    // leyenda y dona: pasar el cursor = vista previa; un clic deja la fuente fija en el mapa (otro clic la suelta)
     const MAPA = [['tec', 'teo', 'portal', 'ptar'], ['salto'], ['presa', 'requena'], ['rios', 'tlautla'], ['rios', 'rosas', 'tula']];
     const tip = document.createElement('div'); tip.className = 'sk-tip'; document.body.append(tip);
+    const panel = $('.vi-panel');
     const marcar = (i, on) => {
       segs.forEach(sg => sg.classList.toggle('on', on && Number(sg.dataset.i) === i)); fig.classList.toggle('hv', on);
       ley.forEach(li => li.classList.toggle('on', on && Number(li.dataset.i) === i));
@@ -379,21 +397,27 @@
       $$('[data-k]', svg).forEach(el => el.classList.toggle('is', on && (MAPA[i] || []).includes(el.dataset.k)));
       if (!on) tip.classList.remove('on');
     };
-    // al entrar a la sección, las fuentes se muestran una por una; al tocar cualquiera, el control pasa a la persona
-    let ciclo = null, i0 = -1, manual = false;
-    const siguiente = () => { i0 = (i0 + 1) % ley.length; marcar(i0, true); };
-    const sec = svg.closest('section'), detener = () => { manual = true; clearInterval(ciclo); };
+    let fijo = -1, ciclo = null, i0 = -1, manual = false;
+    const ver = i => marcar(i < 0 ? 0 : i, i >= 0);
+    const tocado = () => { if (!manual) { manual = true; clearInterval(ciclo); fijo = -1; ver(-1); } panel.classList.add('tocado'); };
+    const siguiente = () => { i0 = (i0 + 1) % ley.length; ver(i0); };
+    const sec = svg.closest('section');
     new IntersectionObserver(es => es.forEach(e => {
       clearInterval(ciclo);
-      if (e.isIntersecting && !manual) { siguiente(); ciclo = setInterval(siguiente, 3200); } else if (!manual) marcar(i0, false);
+      if (e.isIntersecting && !manual) { siguiente(); ciclo = setInterval(siguiente, 3200); } else if (!manual) ver(-1);
     }), { threshold: 0.5 }).observe(sec);
-    $('.vi-panel').addEventListener('pointerenter', detener); $('.vi-panel').addEventListener('pointerdown', detener);
-    ley.forEach(li => { const i = Number(li.dataset.i); li.addEventListener('mouseenter', () => marcar(i, true)); li.addEventListener('mouseleave', () => marcar(i, false)); li.addEventListener('click', () => marcar(i, !li.classList.contains('on'))); });
+    panel.addEventListener('pointerenter', tocado); panel.addEventListener('pointerdown', tocado);
+    const enlazar = (el, i) => {
+      el.addEventListener('mouseenter', () => ver(i));
+      el.addEventListener('mouseleave', () => ver(fijo));
+      el.addEventListener('click', () => { fijo = fijo === i ? -1 : i; ver(fijo); });
+    };
+    ley.forEach(li => enlazar(li, Number(li.dataset.i)));
     segs.forEach(sg => {
-      const i = Number(sg.dataset.i);
-      sg.addEventListener('mouseenter', () => { marcar(i, true); tip.innerHTML = '<b>' + sg.dataset.n + '</b><br>' + sg.dataset.v + ' m³/s · ' + sg.dataset.p + ' %'; tip.classList.add('on'); });
+      const i = Number(sg.dataset.i); enlazar(sg, i);
+      sg.addEventListener('mouseenter', () => { tip.innerHTML = '<b>' + sg.dataset.n + '</b><br>' + sg.dataset.v + ' m³/s · ' + sg.dataset.p + ' %'; tip.classList.add('on'); });
       sg.addEventListener('mousemove', e => { tip.style.left = Math.min(e.clientX + 14, innerWidth - 260) + 'px'; tip.style.top = (e.clientY + 14) + 'px'; });
-      sg.addEventListener('mouseleave', () => marcar(i, false));
+      sg.addEventListener('mouseleave', () => tip.classList.remove('on'));
     });
   }
 
@@ -561,7 +585,8 @@
     html.style.scrollBehavior = 'auto';
     setTimeout(() => {
       if (g[0] === '#') { const e = $(g); if (e) scrollTo(0, e.getBoundingClientRect().top + scrollY + Number(q.get('off') || 0)); return; }
-      const [id, i] = g.split(':'), st = $$('#' + id + ' .step')[Number(i) || 0];
+      const [id, i] = g.split(':'), NUM = { calidad: 1, inundaciones: 2, ecosistemas: 3, 'espacio-publico': 4 };
+      const st = NUM[id] ? $$('#proyecto .step').filter(x => (x.dataset.ban || '').startsWith(NUM[id] + '|'))[Number(i) || 0] : $$('#' + id + ' .step')[Number(i) || 0];
       if (!st) return;
       const r = st.getBoundingClientRect();
       scrollTo(0, mobile.matches ? scrollY + r.top - innerHeight * 0.44 - 20 : scrollY + r.top + r.height / 2 - innerHeight / 2 + 2);

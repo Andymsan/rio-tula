@@ -105,7 +105,7 @@ tab2: A dónde va
 secas: Secas
 lluvias: Lluvias
 viene_titulo: Caudal que recibe el río Tula
-viene_pista: Pasa el cursor por cada fuente para verla en el mapa. Caudal en m³/s, promedio 2021–2024.
+viene_pista: Toca cada fuente para verla en el mapa. Caudal en m³/s, promedio 2021–2024.
 va_titulo: Cada segundo, esto es lo que pasa con el agua que llega al Portal de Salida
 va_agri: 26.3 m³/s | Agricultura | Riego del distrito 003, en el Valle del Mezquital | 76
 va_rio: 8.1 m³/s | Río Tula | Sigue hacia la presa Endhó, donde se almacena para riego | 24
