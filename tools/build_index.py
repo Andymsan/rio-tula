@@ -503,15 +503,16 @@ def avance():
         n, txt = kfpair("avance", "hecho%d" % i)
         hechos += ('<div class="av-h rv" style="--i:%d"><span class="av-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" '
                    'stroke-linecap="round" stroke-linejoin="round">%s</svg></span><b class="cnt">%s</b><span class="av-t">%s</span></div>' % (i - 1, AV_ICONOS[i - 1], n, txt))
-    hechos += '<a class="av-h av-cta rv" style="--i:7" href="#proyecto"><span>%s</span></a>' % T.t("avance", "siguiente")
-    return ('<section class="s-avance" id="avance" data-nav="light" data-fit><div class="av-in fit-in"><div class="rv"><span class="s-tag"><i class="av-live"></i>%s</span>'
-            '<h2 class="s-title">%s</h2></div><div class="av-grid">%s</div></div></section>'
-            % (T.t("avance", "etiqueta"), T.t("avance", "titulo"), hechos))
+    return ('<section class="s-avance" id="avance" data-nav="light" data-fit><div class="av-in fit-in av-split">'
+            '<div class="av-left rv"><span class="s-tag"><i class="av-live"></i>%s</span><h2 class="s-title">%s</h2>'
+            '<a class="or-btn" href="#proyecto">%s</a></div>'
+            '<div class="av-grid">%s</div></div></section>'
+            % (T.t("avance", "etiqueta"), T.t("avance", "titulo"), T.t("avance", "siguiente"), hechos))
 
 def diagnostico():
-    return ('<section class="s-diag" id="diagnostico" data-nav="dark">%s'
-            '<div class="diag-head"><span class="s-tag">%s</span><h2>%s</h2></div><div class="diag-prog"><i></i></div></section>'
-            % (carousel("diagnostico", etiqueta="Fotos de diagnóstico"), T.t("diagnostico", "etiqueta"), T.t("diagnostico", "titulo")))
+    return ('<section class="s-diag" id="diagnostico" data-nav="light">'
+            '<div class="diag-head"><span class="s-tag">%s</span><h2>%s</h2></div>%s<div class="diag-prog"><i></i></div></section>'
+            % (T.t("diagnostico", "etiqueta"), T.t("diagnostico", "titulo"), carousel("diagnostico", etiqueta="Fotos de diagnóstico")))
 
 LEMAS = {"limpio": ("img/calidad.jpg", "#f0938c"), "seguro": ("img/inundaciones.jpg", "#f78b62"),
          "vivo": ("img/restauracion.jpg", "#cdd36a"), "todos": ("img/plan.jpg", "#d9b45c")}
@@ -545,9 +546,9 @@ PLANTILLA = '''<!DOCTYPE html>
   <title>%(titulo)s</title>
   <meta name="description" content="%(descripcion)s" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/temas.css?v=17" />
-  <link rel="stylesheet" href="css/historia.css?v=17" />
-  <link rel="stylesheet" href="css/capitulos.css?v=17" />
+  <link rel="stylesheet" href="css/temas.css?v=18" />
+  <link rel="stylesheet" href="css/historia.css?v=18" />
+  <link rel="stylesheet" href="css/capitulos.css?v=18" />
   <script>(function(){var h=document.documentElement;h.classList.add('js');try{var s=localStorage;if(s.getItem('rt-noche')==='1')h.dataset.theme='dark';if(s.getItem('rt-cvd')==='1')h.dataset.cvd='1'}catch(e){}})()</script>
 </head>
 <body>
@@ -581,7 +582,7 @@ PLANTILLA = '''<!DOCTYPE html>
 
 %(contenido)s
 
-<script src="js/sitio.js?v=17"></script>
+<script src="js/sitio.js?v=18"></script>
 </body>
 </html>
 '''
