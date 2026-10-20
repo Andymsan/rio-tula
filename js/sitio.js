@@ -114,6 +114,8 @@
     if (v) { v.classList.toggle('on', !!d.hex); if (d.hex) v.dataset.focus = d.hex; }
     applyCam(st, step);
     const ban = $('#capBanner'); if (ban && d.ban) setBanner(ban, d.ban);
+    const bp = $('#bPaso');
+    if (bp && st.cap.id === 'proyecto') { const n = st.steps.indexOf(step) + 1; bp.textContent = n + ' / ' + st.steps.length; bp.style.setProperty('--p', (n / st.steps.length * 100).toFixed(1) + '%'); }
     const t = d.tema || st.cap.dataset.tema;
     if (t) {
       st.cap.classList.remove(...TEMAS); st.cap.classList.add('tema-' + t); st.cap.dataset.tema = t;

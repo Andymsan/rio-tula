@@ -1155,3 +1155,14 @@ html[data-theme="dark"] .hero-video { filter: invert(1) hue-rotate(180deg); }
 
 /* vistas generales en pantallas muy anchas: los bordes laterales del mapa se funden con el fondo */
 @media (min-width: 901px) { .cap-stage .canvas { -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); } }
+
+/* ═════ Ritmo del scroll en computadora: pasos más cortos e indicador de avance ═════ */
+@media (min-width: 901px) {
+  .cap:not(.hist) .step { min-height: 66svh; }
+  .cap:not(.hist) .step:first-child, .cap:not(.hist) .step:last-child { min-height: 100svh; }
+}
+.bpaso { margin-left: 14px; padding-left: 14px; border-left: 1px solid #d9d4cc; font: 700 12px 'Noto Sans', sans-serif; letter-spacing: .08em; color: #7a746c; white-space: nowrap; align-self: center; position: relative; }
+.bpaso:empty { display: none; }
+.bpaso::after { content: ""; position: absolute; left: 14px; right: 0; bottom: -7px; height: 3px; border-radius: 2px; background: linear-gradient(90deg, var(--tema-fill) var(--p, 0%), #e4dfd6 var(--p, 0%)); }
+.banner.dos.solo .bpaso { display: none; }
+@media (max-width: 900px) { .bpaso { margin-left: 8px; padding-left: 8px; font-size: 10.5px; } .bpaso::after { left: 8px; } }
