@@ -1173,3 +1173,21 @@ html[data-theme="dark"] .hero-video { filter: invert(1) hue-rotate(180deg); }
 html.ios .cap:not(.hist) .cap-stage { position: absolute; left: 0; right: 0; top: 0; }
 html.ios .cap:not(.hist) .cap-stage.fix { position: fixed; top: 0; }
 html.ios .cap:not(.hist) .cap-stage.fin { top: auto; bottom: 0; }
+
+/* Títulos de cada frente un poco más chicos */
+.banner .bt strong { font-size: clamp(17px, 1.75vw, 24px); }
+.banner .bt small { font-size: 11px; }
+.banner .bn { width: 32px; height: 32px; line-height: 32px; font-size: 16px; }
+.banner.dos { padding: 8px 20px 8px 9px; gap: 10px; }
+.banner.dos.solo .bt strong { font-size: clamp(17px, 1.6vw, 22px); }
+@media (max-width: 900px) { .banner .bt strong { font-size: 16px; } .banner .bn { width: 26px; height: 26px; line-height: 26px; font-size: 13px; } .banner .bt small { font-size: 9.5px; } .banner.dos { padding: 5px 12px 5px 7px; } }
+
+/* Mapa de la historia en celular: menos rótulos y más chicos para que no se amontonen */
+@media (max-width: 900px) {
+  .hmap .lbl.estado, .hmap .lbl.delim, .hmap .lbl.cuenca, .hmap .lbl.rio, .hmap .lbl.distritodr, .hmap .lbl.lm:not(.key), .hmap .lbl.hist { display: none; }
+  .hmap .lbl.s { font-size: calc(var(--fs) * .78px); }
+  .hmap .lbl.m { font-size: calc(var(--fs) * .92px); }
+  .hmap .lbl.l { font-size: calc(var(--fs) * 1.1px); }
+  .hmap .lbl { paint-order: stroke; stroke: rgba(255,255,255,.9); stroke-width: calc(var(--fs) * .3px); stroke-linejoin: round; }
+}
+@media (max-width: 900px) { .hmap .lbl.mob-no { display: none; } }

@@ -573,9 +573,9 @@ PLANTILLA = '''<!DOCTYPE html>
   <title>%(titulo)s</title>
   <meta name="description" content="%(descripcion)s" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/temas.css?v=28" />
-  <link rel="stylesheet" href="css/historia.css?v=28" />
-  <link rel="stylesheet" href="css/capitulos.css?v=28" />
+  <link rel="stylesheet" href="css/temas.css?v=30" />
+  <link rel="stylesheet" href="css/historia.css?v=30" />
+  <link rel="stylesheet" href="css/capitulos.css?v=30" />
 %(precarga)s
   <script>(function(){var h=document.documentElement;h.classList.add('js');try{var s=localStorage;if(s.getItem('rt-noche')==='1')h.dataset.theme='dark';if(s.getItem('rt-cvd')==='1')h.dataset.cvd='1'}catch(e){}})()</script>
 </head>
@@ -611,7 +611,7 @@ PLANTILLA = '''<!DOCTYPE html>
 %(contenido)s
 
 <script data-goatcounter="https://riotula.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
-<script src="js/sitio.js?v=28"></script>
+<script src="js/sitio.js?v=30"></script>
 </body>
 </html>
 '''
