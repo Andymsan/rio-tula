@@ -1166,3 +1166,10 @@ html[data-theme="dark"] .hero-video { filter: invert(1) hue-rotate(180deg); }
 .bpaso::after { content: ""; position: absolute; left: 14px; right: 0; bottom: -7px; height: 3px; border-radius: 2px; background: linear-gradient(90deg, var(--tema-fill) var(--p, 0%), #e4dfd6 var(--p, 0%)); }
 .banner.dos.solo .bpaso { display: none; }
 @media (max-width: 900px) { .bpaso { margin-left: 8px; padding-left: 8px; font-size: 10.5px; } .bpaso::after { left: 8px; } }
+
+/* celular: el letrero de la época no tapa el mapa de la historia (el año ya está en la línea del tiempo) */
+@media (max-width: 900px) { .cap.hist .banner { display: none; } }
+/* iPhone/iPad: el mapa fijo lo maneja JS (el sticky de Safari se descuadra con el scroll con inercia) */
+html.ios .cap:not(.hist) .cap-stage { position: absolute; left: 0; right: 0; top: 0; }
+html.ios .cap:not(.hist) .cap-stage.fix { position: fixed; top: 0; }
+html.ios .cap:not(.hist) .cap-stage.fin { top: auto; bottom: 0; }

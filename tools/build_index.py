@@ -12,7 +12,7 @@ sección, se muestra un marcador con la ruta esperada.
 Si TEXTOS.md tiene un error, el script se detiene con un mensaje y NO toca
 index.html.
 """
-import json, os, re, sys
+import json, os, re, sys, urllib.parse
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from textos import Textos, TextosError, fmt, attr
@@ -69,6 +69,7 @@ def fotos_de(id_):
     return [(src, cap) for _, src, cap in out]
 
 def slide(src, cap, contain=False):
+    src = urllib.parse.quote(src, safe="/")
     a = ' data-src="%s" data-cap="%s"' % (src, attr(cap))
     if contain:
         a += " data-contain"
@@ -572,9 +573,9 @@ PLANTILLA = '''<!DOCTYPE html>
   <title>%(titulo)s</title>
   <meta name="description" content="%(descripcion)s" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/temas.css?v=26" />
-  <link rel="stylesheet" href="css/historia.css?v=26" />
-  <link rel="stylesheet" href="css/capitulos.css?v=26" />
+  <link rel="stylesheet" href="css/temas.css?v=28" />
+  <link rel="stylesheet" href="css/historia.css?v=28" />
+  <link rel="stylesheet" href="css/capitulos.css?v=28" />
 %(precarga)s
   <script>(function(){var h=document.documentElement;h.classList.add('js');try{var s=localStorage;if(s.getItem('rt-noche')==='1')h.dataset.theme='dark';if(s.getItem('rt-cvd')==='1')h.dataset.cvd='1'}catch(e){}})()</script>
 </head>
@@ -609,7 +610,8 @@ PLANTILLA = '''<!DOCTYPE html>
 
 %(contenido)s
 
-<script src="js/sitio.js?v=26"></script>
+<script data-goatcounter="https://riotula.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script src="js/sitio.js?v=28"></script>
 </body>
 </html>
 '''

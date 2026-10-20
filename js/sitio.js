@@ -154,7 +154,7 @@
     const svg = $('#hmap'), W = st.stage.clientWidth, H = st.stage.clientHeight;
     const scale = mobile.matches ? 1.1 : 1;
     const h = v.h * scale, w = h * (W / H), ax = mobile.matches ? 0.5 : 0.6;
-    svg.setAttribute('viewBox', (v.cx - w * ax).toFixed(2) + ' ' + (v.cy - h / 2).toFixed(2) + ' ' + w.toFixed(2) + ' ' + h.toFixed(2));
+    svg.setAttribute('viewBox', (v.cx - w * ax).toFixed(2) + ' ' + (v.cy - h / 2 - (mobile.matches ? h * 0.06 : 0)).toFixed(2) + ' ' + w.toFixed(2) + ' ' + h.toFixed(2));
     svg.style.setProperty('--fs', (12 * h / H).toFixed(3));
   }
   function hGo(st, to, instant) {
@@ -557,6 +557,26 @@
     new IntersectionObserver(es => es.forEach(e => { visible = e.isIntersecting; intentar(); }), { threshold: 0.05 }).observe(v.closest('.hero'));
   }
 
+  /* ── iPhone/iPad: mapa fijo manejado por JS ── */
+  function initIosStage() {
+    const ios = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    if (!ios) return;
+    html.classList.add('ios');
+    const caps = $$('.cap:not(.hist)');
+    let tick = false;
+    const upd = () => {
+      tick = false;
+      if (!mobile.matches) { caps.forEach(c => { const s = $('.cap-stage', c); s.classList.remove('fix', 'fin'); }); return; }
+      caps.forEach(c => {
+        const s = $('.cap-stage', c), r = c.getBoundingClientRect(), h = s.offsetHeight;
+        const fix = r.top <= 0 && r.bottom > h, fin = r.top <= 0 && r.bottom <= h;
+        s.classList.toggle('fix', fix); s.classList.toggle('fin', fin);
+      });
+    };
+    addEventListener('scroll', () => { if (!tick) { tick = true; requestAnimationFrame(upd); } }, { passive: true });
+    addEventListener('resize', upd); upd();
+  }
+
   /* ── Arranque ─────────────────────────────────────────────────────── */
   function boot() {
     buildNavObs(); buildStepObs();
@@ -569,6 +589,7 @@
     initA11y();
     initDiag();
     initVideo();
+    initIosStage();
     initContadores();
     fitAll();
     initLightbox();
