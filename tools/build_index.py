@@ -251,7 +251,7 @@ pasos = [
     ancla("vivo", "ecosistemas"),
     step(".5,.55,1.05", "int", card("ecosistemas-0"), labels="endho parque", tema="verde", ban=ban(3, "ecosistemas")),
     step(".5,.5,1.7", "int", card("ecosistemas-1"), carousel("ecosistemas-1"), tema="verde", ban=ban(3, "ecosistemas")),
-    step(".585,.17,2.3", "int", card("ecosistemas-2"), carousel("ecosistemas-2"), ov="bojay", pins="bojay", labels="endho", tema="verde", ban=ban(3, "ecosistemas")),
+    step(".585,.17,2.3", "int", card("ecosistemas-2"), carousel("ecosistemas-2"), ov="bojay", pins="bojay", tema="verde", ban=ban(3, "ecosistemas")),
     step(".36,.24,1.6", "base", card("ecosistemas-3"), carousel("ecosistemas-3"), ov="rio", labels="anp parque", tema="verde", ban=ban(3, "ecosistemas")),
     ancla("todos", "espacio-publico"),
     # Cámara desplazada hacia arriba para que Bojay (cerca del borde superior) no se corte; incluye las isócronas (marco "acc").
@@ -572,9 +572,9 @@ PLANTILLA = '''<!DOCTYPE html>
   <title>%(titulo)s</title>
   <meta name="description" content="%(descripcion)s" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/temas.css?v=22" />
-  <link rel="stylesheet" href="css/historia.css?v=22" />
-  <link rel="stylesheet" href="css/capitulos.css?v=22" />
+  <link rel="stylesheet" href="css/temas.css?v=23" />
+  <link rel="stylesheet" href="css/historia.css?v=23" />
+  <link rel="stylesheet" href="css/capitulos.css?v=23" />
 %(precarga)s
   <script>(function(){var h=document.documentElement;h.classList.add('js');try{var s=localStorage;if(s.getItem('rt-noche')==='1')h.dataset.theme='dark';if(s.getItem('rt-cvd')==='1')h.dataset.cvd='1'}catch(e){}})()</script>
 </head>
@@ -609,7 +609,7 @@ PLANTILLA = '''<!DOCTYPE html>
 
 %(contenido)s
 
-<script src="js/sitio.js?v=22"></script>
+<script src="js/sitio.js?v=23"></script>
 </body>
 </html>
 '''
