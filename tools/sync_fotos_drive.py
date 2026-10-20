@@ -64,6 +64,11 @@ def convertir_video(origen, destino_mp4):
                    check=True, capture_output=True)
 
 
+# erratas frecuentes en los nombres de archivo de Drive (se corrigen al traer la foto)
+CORRECCIONES = [("Cuautilán", "Cuautitlán"), ("ROsas", "Rosas"), ("deBojay", "de Bojay"), ("manatial", "manantial"),
+                ("Febrero", "febrero"), ("10km", "10 km")]
+
+
 def parse_nombre(nombre_drive, mime_type):
     """'ecosistemas-4_41_ACTUAL - Zona inundable.jpg' -> ('ecosistemas-4', '41_ACTUAL - Zona inundable.jpg')
     El número de orden es opcional: 'promesa-1_Presidenta en la toma de protesta.jpg' también vale.
@@ -82,7 +87,10 @@ def parse_nombre(nombre_drive, mime_type):
     seccion, resto = partes[0].strip(), partes[1]
     m = re.match(r"^(\d+)_(.+)$", resto)
     orden, pie = (m.group(1), m.group(2)) if m else ("50", resto)  # sin número: se acomoda al final, en orden alfabético
-    return seccion, "%s_%s%s" % (orden, pie.strip(), IMAGENES[mime_type])
+    pie = pie.strip()
+    for malo, bueno in CORRECCIONES:
+        pie = pie.replace(malo, bueno)
+    return seccion, "%s_%s%s" % (orden, pie, IMAGENES[mime_type])
 
 
 def main():

@@ -572,9 +572,9 @@ PLANTILLA = '''<!DOCTYPE html>
   <title>%(titulo)s</title>
   <meta name="description" content="%(descripcion)s" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/temas.css?v=23" />
-  <link rel="stylesheet" href="css/historia.css?v=23" />
-  <link rel="stylesheet" href="css/capitulos.css?v=23" />
+  <link rel="stylesheet" href="css/temas.css?v=25" />
+  <link rel="stylesheet" href="css/historia.css?v=25" />
+  <link rel="stylesheet" href="css/capitulos.css?v=25" />
 %(precarga)s
   <script>(function(){var h=document.documentElement;h.classList.add('js');try{var s=localStorage;if(s.getItem('rt-noche')==='1')h.dataset.theme='dark';if(s.getItem('rt-cvd')==='1')h.dataset.cvd='1'}catch(e){}})()</script>
 </head>
@@ -609,7 +609,7 @@ PLANTILLA = '''<!DOCTYPE html>
 
 %(contenido)s
 
-<script src="js/sitio.js?v=23"></script>
+<script src="js/sitio.js?v=25"></script>
 </body>
 </html>
 '''
@@ -635,7 +635,7 @@ def construir():
 def construir_historia():
     fin = ('<section class="hs-fin" data-nav="light"><a class="btn btn-dark" href="index.html#promesa">%s</a>'
            '<a class="hs-volver" href="index.html">%s</a></section>' % (T.t("historia-intro", "boton"), T.t("historia-intro", "volver")))
-    return PLANTILLA % comun(titulo=attr("Historia del río Tula — " + T.raw("sitio", "titulo")), logo_href="index.html",
+    return PLANTILLA % comun(titulo=attr("Historia del río Tula · " + T.raw("sitio", "titulo")), logo_href="index.html",
                              nav_href="index.html", nav_texto=T.t("sitio", "boton_proyecto"),
                              idx_list=idx_list_hist, contenido=historia_section() + fin + pie())
 

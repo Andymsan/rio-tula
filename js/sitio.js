@@ -68,6 +68,8 @@
     if (mobile.matches) z = Math.max(1, z * 0.8);   // en móvil se ve un pedazo más chico del mapa: menos zoom
     const W = st.stage.clientWidth, H = st.stage.clientHeight;
     const Wc = Math.max(W, H * 16 / 9), Hc = Wc * 9 / 16;
+    // pantallas más anchas que 16:9: en las vistas generales (sin acercamiento) se muestra la imagen completa en lugar de recortarla arriba y abajo
+    if (z <= 1.06 && !mobile.matches && W / H > 16 / 9 + 0.02) z = H / Hc;
     // punto de la pantalla donde queremos ver el objetivo (deja libre la tarjeta de texto)
     const hasBub = !!$('.burbuja', step);
     const ax = mobile.matches ? 0.5 : 0.6;

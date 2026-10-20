@@ -38,10 +38,10 @@ Los nombres de lugares en los mapas, los colores y el orden de las secciones.
 ---
 
 ## sitio  (datos generales de toda la página)
-titulo: Río Tula — Plan de Saneamiento y Restauración 2024–2030
+titulo: Río Tula: Plan de Saneamiento y Restauración 2024-2030
 descripcion: El proyecto para sanear y restaurar el río Tula: un río más limpio, más seguro, más vivo y para todas y todos.
 logo: Río Tula
-logo_sub: / Proyecto 2024–2030
+logo_sub: / Proyecto 2024-2030
 boton_indice: ☰ Índice
 boton_historia: La historia
 boton_proyecto: El proyecto
@@ -49,11 +49,11 @@ boton_acc: Accesibilidad
 modo_noche: Modo noche
 modo_daltonismo: Modo daltonismo
 titulo_indice: Índice
-pie1: Secretaría de Medio Ambiente y Recursos Naturales · Proyecto de Saneamiento y Restauración del Río Tula 2024–2030
-pie2: Datos: base de proyectos 2025–2026 (Conagua, Semarnat, Conafor, Conanp, Profepa y Gobierno de Hidalgo)
+pie1: Secretaría de Medio Ambiente y Recursos Naturales · Proyecto de Saneamiento y Restauración del Río Tula 2024-2030
+pie2: Datos: base de proyectos 2025-2026 (Conagua, Semarnat, Conafor, Conanp, Profepa y Gobierno de Hidalgo)
 
 ## portada  (primera pantalla)
-eyebrow: Proyecto de saneamiento y restauración · 2024–2030
+eyebrow: Proyecto de saneamiento y restauración · 2024-2030
 titulo: Río Tula
 subtitulo: Descubre **cómo** el río Tula se convirtió en uno de los más contaminados del país y **qué** estamos haciendo para transformarlo.
 boton: Comenzar el recorrido ↓
@@ -105,11 +105,11 @@ tab2: A dónde va
 secas: Secas
 lluvias: Lluvias
 viene_titulo: Caudal que recibe el río Tula
-viene_pista: Toca cada fuente para verla en el mapa. Caudal en m³/s, promedio 2021–2024.
+viene_pista: Toca cada fuente para verla en el mapa. Caudal en m³/s, promedio 2021-2024.
 va_titulo: Cada segundo, esto es lo que pasa con el agua que llega al Portal de Salida
 va_agri: 26.3 m³/s | Agricultura | Riego del distrito 003, en el Valle del Mezquital | 76
 va_rio: 8.1 m³/s | Río Tula | Sigue hacia la presa Endhó, donde se almacena para riego | 24
-va_nota: Caudal en m³/s en temporada de secas, promedio 2021–2024. Además, 1.0 m³/s se pierde en la planta.
+va_nota: Caudal en m³/s en temporada de secas, promedio 2021-2024. Además, 1.0 m³/s se pierde en la planta.
 cierre: El Proyecto de Saneamiento y Restauración del Río Tula ==atiende la calidad del agua, las inundaciones y la recuperación del río.==
 boton: Conocer la historia del río →
 boton_corto: Historia →
@@ -161,10 +161,10 @@ banner: 1449 · Texcoco
 linea: 1449
 
 ## historia-2  (época 3)
-epoca: 1607–1789
+epoca: 1607-1789
 titulo: El Tajo de Nochistongo
-texto: Por órdenes de un Virrey, empezó la construcción de un canal que duró 182 años. El objetivo fue abrir la cuenca y permitir que el agua del río Cuautitlán y Tepozotlán fluya hacia el río Tula reduciendo riesgos de inundación en la ciudad de México. A partir de su finalización en **1789**, ==las dos cuencas se interconectaron, permitiendo que una parte del agua de lluvia y drenaje del Valle de México fluyera hacia el río Tula.== 
-banner: 1607–1789 · Nochistongo
+texto: Por órdenes de un virrey, empezó la construcción de un canal que duró 182 años. El objetivo fue abrir la cuenca y permitir que el agua del río Cuautitlán y Tepotzotlán fluya hacia el río Tula reduciendo riesgos de inundación en la Ciudad de México. A partir de su finalización en **1789**, ==las dos cuencas se interconectaron, permitiendo que una parte del agua de lluvia y drenaje del Valle de México fluyera hacia el río Tula.== 
+banner: 1607-1789 · Nochistongo
 linea: 1789
 
 ## historia-3  (época 4)
@@ -177,21 +177,21 @@ linea: 1900
 ## historia-4  (época 5)
 epoca: 1951
 titulo: La presa Endhó
-texto: Se construyó la presa Endhó para almacenar agua del río Tula y usarla para riego. Un valle seco se volvió zona de cultivo conocida como el **Valle del Mezquital** que hoy alimenta una gran parte de la ciudad de México. Con los años, la presa recibió cada vez más aguas residuales almacenando contaminantes.
+texto: Se construyó la presa Endhó para almacenar agua del río Tula y usarla para riego. Un valle seco se volvió zona de cultivo conocida como el **Valle del Mezquital** que hoy alimenta una gran parte de la Ciudad de México. Con los años, la presa recibió cada vez más aguas residuales almacenando contaminantes.
 banner: 1951 · Presa Endhó
 linea: 1951
 
 ## historia-5  (época 6)
 epoca: 1962, 1975 y 2019
 titulo: Los grandes túneles de drenaje
-texto: Tres grandes obras de drenaje se construyeron para mandar la mayor parte de las aguas residuales y de lluvia de la ciudad hacia el río Tula: El Túnel Emisor Poniente (1962), el Túnel Emisor Central (1975) y el Túnel Emisor Oriente (2019). Estas obras completaron ==la infraestructura que interconecta las dos cuencas.==
+texto: Tres grandes obras de drenaje se construyeron para mandar la mayor parte de las aguas residuales y de lluvia de la ciudad hacia el río Tula: el Túnel Emisor Poniente (1962), el Túnel Emisor Central (1975) y el Túnel Emisor Oriente (2019). Estas obras completaron ==la infraestructura que interconecta las dos cuencas.==
 banner: 1975 y 2019 · Túneles
-linea: 1975–2019
+linea: 1975-2019
 
 ## historia-6  (época 7)
 epoca: 2018
 titulo: La planta de tratamiento de Atotonilco
-texto: Hasta este momento, todas las aguas residuales del río Tula, usadas en su mayoría para riego, no recibian ningún tratamiento. Para reducir riesgos asociados al riego con drenaje y para sanear el río Tula, ==se contruyó la planta de tratamiento de Atotonilco, la tercera más grande del mundo.==
+texto: Hasta este momento, todas las aguas residuales del río Tula, usadas en su mayoría para riego, no recibían ningún tratamiento. Para reducir riesgos asociados al riego con drenaje y para sanear el río Tula, ==se construyó la planta de tratamiento de Atotonilco, la tercera más grande del mundo.==
 banner: 2018 · PTAR Atotonilco
 linea: 2018
 
@@ -203,10 +203,10 @@ banner: 2021 · Inundación
 linea: 2021
 
 ## historia-8  (época 9)
-epoca: 2024–2030
+epoca: 2024-2030
 titulo: Comienza la restauración
-texto: La presidenta Claudia Sheinbaum anuncia que ==limpiar el río Tula, así como el Atoyac y el Lerma Santiago es uno de sus 100 compromisos==. La restauración del río Tula se vuelve una **prioridad nacional** dando inicio a una transformación histórica del río.
-banner: 2024–2030 - Proyecto de restauración y saneamiento
+texto: La presidenta Claudia Sheinbaum anuncia que ==limpiar el río Tula, así como el Atoyac y el Lerma-Santiago es uno de sus 100 compromisos==. La restauración del río Tula se vuelve una **prioridad nacional** dando inicio a una transformación histórica del río.
+banner: 2024-2030 · Proyecto de restauración y saneamiento
 linea: 2024
 
 ---
@@ -214,7 +214,7 @@ linea: 2024
 ## promesa-1  (Compromiso 92, primera pantalla)
 etiqueta: Compromiso presidencial 92
 titulo: Limpiar y sanear *los tres ríos más contaminados* del país
-titulo2: El río Tula, Atoyac y Lerma Santiago.
+titulo2: El río Tula, el Atoyac y el Lerma-Santiago.
 fotos: Presidenta Claudia Sheinbaum Pardo en la toma de protesta - 1 de octubre de 2024
 
 ## promesa-2  (Compromiso 92, la inversión)
@@ -222,7 +222,7 @@ etiqueta: La inversión
 tarjeta1: $1,478 MDP | invertidos en el río Tula en 2025 y 2026
 tarjeta2: +$20,000 MDP | en el sexenio para sanear los tres ríos
 puente: Esto es lo que ya está pasando
-fuentes: Fuentes: [Contralínea (16 jul 2026)](https://contralinea.com.mx/interno/semana/gobierno-invertira-mas-de-20-mil-mdp-para-sanear-los-rios-lerma-santiago-tula-y-atoyac/) · [Ámbito](https://www.ambito.com/mexico/informacion-general/claudia-sheinbaum-ordena-limpiar-los-tres-rios-mas-contaminados-mexico-cuales-son-y-como-se-hara-este-historico-saneamiento-n6300195) · base de proyectos 2025–2026.
+fuentes: Fuentes: [Contralínea (16 jul 2026)](https://contralinea.com.mx/interno/semana/gobierno-invertira-mas-de-20-mil-mdp-para-sanear-los-rios-lerma-santiago-tula-y-atoyac/) · [Ámbito](https://www.ambito.com/mexico/informacion-general/claudia-sheinbaum-ordena-limpiar-los-tres-rios-mas-contaminados-mexico-cuales-son-y-como-se-hara-este-historico-saneamiento-n6300195) · base de proyectos 2025-2026.
 
 ---
 
@@ -282,7 +282,7 @@ fotos: PTAR Atotonilco | Operación de la planta | Caudal tratado
 estado: obra | Etapa 1 al 89 % de avance
 etiqueta: 2 · Drenaje de Tula
 titulo: Tratar las aguas residuales de la ciudad de Tula
-texto: Todo el drenaje de la zona metropolitana de Tula se vierte al río sin tratamiento. El gobierno del estado de Hidalgo construye ==35 km colectores que van a captar 72 descargas y enviarlas a la PTAR de CFE== para su tratamiento. Los primeros 10 km de colectores y el cárcamo de bombeo ya están construidos.
+texto: Todo el drenaje de la zona metropolitana de Tula se vierte al río sin tratamiento. El gobierno del estado de Hidalgo construye ==35 km de colectores que van a captar 72 descargas y enviarlas a la PTAR de CFE== para su tratamiento. Los primeros 10 km de colectores y el cárcamo de bombeo ya están construidos.
 cifra: 35.8 km | de colectores en total (10.8 km en obra + 25 km en planeación)
 chips: Gobierno de Hidalgo · $570 MDP | Etapa 1 en ejecución (89 %) | Etapa 2 en planeación | Planta de la CFE en rehabilitación
 fotos: Colector del río Tula · etapa 1 | Línea de conducción a la planta de la CFE | Cárcamo de bombeo
@@ -300,9 +300,9 @@ fotos: Inspección a una industria | Centro Regional de Prevención Ambiental
 estado: obra | Estaciones y Centro de Vigilancia del Agua
 etiqueta: 4 · Monitoreo
 titulo: Medir cómo mejora el agua
-texto: Para conocer a detalle la calidad del río, estamos realizando 3 campañas de monitoreo manual cada año en **más de 95 sitios**. Adicionalmente, estamos instalando ==5 estaciones de monitoreo automático== para conocer la calidad del río en tiempo real. Todos estos datos se van visualizar en el Centro de Vigilancia del Agua que estamos construyendo en la PTAR Atotonilco y vas a poder visitar a partir de 2027.
+texto: Para conocer a detalle la calidad del río, estamos realizando 3 campañas de monitoreo manual cada año en **más de 95 sitios**. Adicionalmente, estamos instalando ==5 estaciones de monitoreo automático== para conocer la calidad del río en tiempo real. Todos estos datos se van a visualizar en el Centro de Vigilancia del Agua que estamos construyendo en la PTAR Atotonilco y vas a poder visitar a partir de 2027.
 cifra: 5 | estaciones automáticas de calidad
-chips: 3 en tierra: CFE, Pemex y Atotonilco | 2 boyas: presas Endhó y Requena | Centro de Vigilancia del Agua(en construcción)
+chips: 3 en tierra: CFE, Pemex y Atotonilco | 2 boyas: presas Endhó y Requena | Centro de Vigilancia del Agua (en construcción)
 fotos: Estación automática de calidad | Muestreo manual
 
 ---
@@ -323,7 +323,7 @@ estado: obra | 1 km terminado · El Chamizal 82 % · San Lorenzo 78 %
 avance: 1 | 1.7 | 1.8 | km
 etiqueta: 1 · Taludes
 titulo: Taludes más protegidos
-texto: Las zonas del río altamente erosionadas representan un riesgo para la población que vive cerca. Desde 2025, empezamos a ==estabilizar  los **4.5 km** de taludes críticos de las zonas urbanas==.
+texto: Las zonas del río altamente erosionadas representan un riesgo para la población que vive cerca. Desde 2025, empezamos a ==estabilizar los **4.5 km** de taludes críticos de las zonas urbanas==.
 cifra: 4.5 km | de taludes críticos en zonas urbanas
 chips: San Lorenzo | El Chamizal | San Marcos | Talud: el borde del río
 fotos: San Lorenzo · antes | San Lorenzo · después | El Chamizal · obra en proceso
@@ -332,9 +332,9 @@ fotos: San Lorenzo · antes | San Lorenzo · después | El Chamizal · obra en p
 estado: terminado | 3.9 km desazolvados en 2025
 etiqueta: 2 · Desazolve
 titulo: Más espacio para que el agua fluya
-texto: Cuando el río está azolvado —lleno de lodo y basura—, hay menos espacio para que el agua pueda fluir sin desbordarse. En 2025, ==desazolvamos 3.9 km de río==, removiendo más de 176,000 ton de sedimentos, basura y escombros.
+texto: Cuando el río está azolvado, lleno de lodo y basura, hay menos espacio para que el agua pueda fluir sin desbordarse. En 2025, ==desazolvamos 3.9 km de río==, removiendo más de 176,000 ton de sedimentos, basura y escombros.
 cifra: 3.9 km | de río desazolvado · terminado en 2025
-chips: Hasta 25% de la capacidad del río recuperada
+chips: Hasta 25 % de la capacidad del río recuperada
 fotos: Desazolve del cauce | Antes y después
 
 ## inundaciones-3  (Monitoreo de caudal)
@@ -365,7 +365,7 @@ cifra: 9 | proyectos de restauración y espacio público
 estado: curso | 1,600 árboles saneados · 300 plantados
 etiqueta: 1 · Riberas
 titulo: Árboles sanos en las orillas del río
-texto: A la fecha, hemos saneado **1,600 árboles ribereños** para quitarles heno motita —una planta que crece sobre las ramas— y ramas muertas. Adicionalmente, hemos plantado **300 árboles de 3 m** en la zona urbana de Tula. Junto con Conafor, estamos trabajando en ==limpiar, sanear o reforestar las riberas del río desde su nacimiento hasta la presa Endhó==.
+texto: A la fecha, hemos saneado **1,600 árboles ribereños** para quitarles heno motita, una planta que crece sobre las ramas, y ramas muertas. Adicionalmente, hemos plantado **300 árboles de 3 m** en la zona urbana de Tula. Junto con Conafor, estamos trabajando en ==limpiar, sanear o reforestar las riberas del río desde su nacimiento hasta la presa Endhó==.
 cifra: 27 km | de riberas en proceso de restauración
 chips: Subsecretaría de restauración · Conagua · Conafor | 1,600 árboles saneados en 2025 | 300 árboles plantados | 
 fotos: Saneamiento forestal de riberas | Revegetación de riberas
@@ -374,7 +374,7 @@ fotos: Saneamiento forestal de riberas | Revegetación de riberas
 estado: licitacion | Manantial restaurado en 2026 · bordo en 2027
 etiqueta: 2 · Laguna de Bojay
 titulo: Agua limpia cerca de Tula
-texto: La laguna de Bojay es un cuerpo de agua de 55 hectareas alimentado por manantiales que actualmente se contamina por agua del río Tula. Empezamos a trabajar en 2026 en la recuperación del manantial. En 2027, vamos a reabilitar el bordo para aislar la laguna del río Tula y ==contar con un cuerpo de agua limpia y con vida acuática a 2 km de la ciudad de Tula==. Adicionalmente, vamos a construir un sistema de humedales para tratar el drenaje de la comunidad que actualmente se vierte a la laguna.
+texto: La laguna de Bojay es un cuerpo de agua de 55 hectáreas alimentado por manantiales que actualmente se contamina por agua del río Tula. Empezamos a trabajar en 2026 en la recuperación del manantial. En 2027, vamos a rehabilitar el bordo para aislar la laguna del río Tula y ==contar con un cuerpo de agua limpia y con vida acuática a 2 km de la ciudad de Tula==. Adicionalmente, vamos a construir un sistema de humedales para tratar el drenaje de la comunidad que actualmente se vierte a la laguna.
 cifra: 55 ha | de cuerpo de agua limpia a partir de 2027
 chips: Semarnat · Conagua | Proyecto en licitación | Manantial restaurado en 2026
 fotos: Propuesta · humedal y sendero de Bojay | Propuesta · Bojay en planta | Ciénegas de Endhó (Bojay)
@@ -403,7 +403,7 @@ fotos: Propuesta · Río Rosas | Propuesta · San Lorenzo | Propuesta · Bojay |
 
 ## resumen  (mapa con las 5 metas; clic en una meta muestra su descripción y resalta sus proyectos)
 etiqueta: Resumen
-titulo: Cinco metas para el río Tula, 2024–2030
+titulo: Cinco metas para el río Tula, 2024-2030
 subtitulo: Elige una meta para ver dónde se trabaja.
 texto: ""
 
@@ -439,7 +439,7 @@ cifra: 5 | proyectos de espacio público
 
 ## fuentes  (fuentes y notas metodológicas — sustento técnico; Ariel: revisar y completar)
 titulo: Fuentes y notas metodológicas
-items: **Caudales:** base de caudales del proyecto; promedios 2021–2024 de la temporada de secas (estiaje) y de lluvias. | **Calidad del agua:** DBO en mg/L de la hoja de calidad del proyecto, temporada de secas. | **Inundaciones:** capacidad del río y caudal máximo registrado, Conagua. | **Inversión:** base de proyectos 2025–2026, Contralínea (16 jul 2026) y Ámbito. | **Accesibilidad a pie:** isócronas calculadas con OpenRouteService. | **Mapas:** capas SIG del proyecto; relieve sombreado calculado a partir del modelo digital de elevación SRTM.
+items: **Caudales:** base de caudales del proyecto; promedios 2021-2024 de la temporada de secas (estiaje) y de lluvias. | **Calidad del agua:** DBO en mg/L de la hoja de calidad del proyecto, temporada de secas. | **Inundaciones:** capacidad del río y caudal máximo registrado, Conagua. | **Inversión:** base de proyectos 2025-2026, Contralínea (16 jul 2026) y Ámbito. | **Accesibilidad a pie:** isócronas calculadas con OpenRouteService. | **Mapas:** capas SIG del proyecto; relieve sombreado calculado a partir del modelo digital de elevación SRTM.
 nota: Las cifras son promedios o valores máximos de los periodos indicados y pueden actualizarse conforme se publiquen nuevos datos.
 
 ## participa

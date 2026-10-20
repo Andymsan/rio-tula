@@ -1152,3 +1152,6 @@ html[data-theme="dark"] .hero-video { filter: invert(1) hue-rotate(180deg); }
 .ic-img[style*='fotos'] { background-position: center; }
 
 .hero-video { opacity: 1; transition: none; }
+
+/* vistas generales en pantallas muy anchas: los bordes laterales del mapa se funden con el fondo */
+@media (min-width: 901px) { .cap-stage .canvas { -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); } }

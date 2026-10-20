@@ -349,7 +349,7 @@ L("CIUDAD DE MÉXICO", (zoc[0] - 4, zoc[1] + 26), [i for i in range(9) if i not 
 L("Cuenca del Valle de México", _cuenca_lab, [0, 1, 2], "m", "cuenca")
 L("Cuenca del río Tula", (endho_c[0] - 40, endho_c[1] - 18), [i for i in range(9) if i != 3], "s", "delim")
 L("Lago de Texcoco", (zoc[0] - 30, zoc[1] + 16), [0, 1], "m", "agua")
-L("Tenochtitlan", (zoc[0] + 6, zoc[1] - 6), [1], "m", "hist")
+L("Tenochtitlán", (zoc[0] + 6, zoc[1] - 6), [1], "m", "hist")
 L("Ciudad de México", (zoc[0] + 8, zoc[1] - 8), [3], "m", "ciudad")
 L("Albarradón de Nezahualcóyotl", (zoc[0] + 22, zoc[1] + 66), [1], "s", "hist")
 # lugares clave
