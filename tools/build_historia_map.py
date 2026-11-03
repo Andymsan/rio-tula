@@ -519,3 +519,38 @@ _svg = ('<svg class="oloc" viewBox="%.0f %.0f %.0f %.0f" role="img" aria-label="
 open(os.path.join(ROOT, "tools", "fragmentos", "origen_loc.html"), "w", encoding="utf-8").write(
     '<div class="or-loc">%s<small>Zona de intervención</small></div>' % _svg)
 print("origen_loc.html: %d KB" % (len(_svg) // 1024))
+
+
+# ══════════════════════════════════════════════════════════════════════════
+#  MAPA DEL PROBLEMA (pantalla completa, tools/fragmentos/problema_mapa.html):
+#  los tres estados + la cuenca del Tula + las capas del mapa del agua.
+#  Cámara en JS: arranca en los estados y se acerca a la cuenca.
+# ══════════════════════════════════════════════════════════════════════════
+def _bbox(d):
+    n = [float(v) for v in re.findall(r'-?\d+\.?\d*', d)]
+    return min(n[0::2]), min(n[1::2]), max(n[0::2]), max(n[1::2])
+
+_pe = layer_path("edomex.geojson", simplify_m=500)
+_ph = layer_path("hidalgo.geojson", simplify_m=500)
+_pc_ = layer_path("cdmx.geojson", simplify_m=300)
+_bw = [_bbox(x) for x in (_pe, _ph, _pc_)]
+WIDE = (min(b[0] for b in _bw), min(b[1] for b in _bw), max(b[2] for b in _bw), max(b[3] for b in _bw))
+BASIN = _bbox(d_delim)
+_ib = [_bbox(x) for x in (d_canal, d_teo1, d_teo2, d_tajo)]
+MID = (min(BASIN[0], min(b[0] for b in _ib)) - 10, BASIN[1] - 10, max(BASIN[2], max(b[2] for b in _ib)) + 40, max(BASIN[3], max(b[3] for b in _ib)) + 10)
+_gc = [g for g, _ in feature_geoms(load("cdmx.geojson"))]
+_cc = _pc(_gc)
+_el = lambda t, x, y: '<text class="ol oe" x="%.0f" y="%.0f" text-anchor="middle">%s</text>' % (x, y, t)
+pm = ['<svg class="omap omap-all wide" id="pmap" viewBox="%.0f %.0f %.0f %.0f" preserveAspectRatio="xMidYMid slice" role="img" '
+      'aria-label="Mapa de Hidalgo, el Estado de México y la Ciudad de México con la cuenca del río Tula" '
+      'data-wide="%.0f %.0f %.0f %.0f" data-basin="%.0f %.0f %.0f %.0f" data-mid="%.0f %.0f %.0f %.0f">' % ((WIDE[0], WIDE[1], WIDE[2] - WIDE[0], WIDE[3] - WIDE[1]) + WIDE + BASIN + MID)]
+pm.append(om[1])
+pm.append('<path class="o-est" d="%s"/><path class="o-est" d="%s"/><path class="o-est cdmx" d="%s"/>' % (_pe, _ph, _pc_))
+pm.extend(om[2:-1])
+pm.append(_el("HIDALGO", _hc[0] + 30, _hc[1] - 70))
+pm.append(_el("ESTADO DE MÉXICO", _en[0] - 20, _en[1] + 160))
+pm.append(_el("CIUDAD DE MÉXICO", _cc[0] + 10, _cc[1] + 40))
+pm.append(_el("CUENCA DEL RÍO TULA", (BASIN[0] + BASIN[2]) / 2 - 40, BASIN[1] + 30))
+pm.append("</svg>")
+open(os.path.join(ROOT, "tools", "fragmentos", "problema_mapa.html"), "w", encoding="utf-8").write("".join(pm))
+print("problema_mapa.html: %d KB · wide %s · basin %s" % (sum(len(x) for x in pm) // 1024, [round(v) for v in WIDE], [round(v) for v in BASIN]))

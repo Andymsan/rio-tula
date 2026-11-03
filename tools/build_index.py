@@ -12,7 +12,7 @@ sección, se muestra un marcador con la ruta esperada.
 Si TEXTOS.md tiene un error, el script se detiene con un mensaje y NO toca
 index.html.
 """
-import json, os, re, sys, urllib.parse
+import json, math, os, re, sys, urllib.parse
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from textos import Textos, TextosError, fmt, attr
@@ -593,26 +593,26 @@ def solucion():
             '<div class="cap-steps">%s</div></section>' % (canvas_unico, "".join(pasos_sol)))
 
 def problema():
-    """El problema en cuatro líneas, ilustrado con el mapa (cada línea resalta su capa)."""
-    lineas = ""
+    """El problema: mapa a pantalla completa. Empieza en la vista de los estados, se acerca a la cuenca y, al bajar,
+    van apareciendo cuadros de texto pequeños (uno por línea de tiempo). Al terminar: enlaces a la historia y al agua."""
+    cajas = ('<article class="pb-step" data-i="0" data-k=""><div class="pb-caja pb-tit"><span class="s-tag">%s</span><h2>%s</h2><p>%s</p>'
+             '<span class="pb-baja">%s ↓</span></div></article>'
+             % (T.t("problema", "etiqueta"), T.t("problema", "titulo"), T.t("problema", "ubica"), T.t("problema", "baja")))
     for i in range(1, 5):
-        a, b, c = [x.strip() for x in T.raw("problema", "linea%d" % i).split("|")]
-        lineas += '<li data-k="%s"><b>%s</b><span>%s</span></li>' % (c, fmt(a), fmt(b))
-    mapa = rd("tools/fragmentos/origen_mapa.html").replace('id="omap"', 'id="pmap"').replace('class="omap"', 'class="omap omap-all"')
-    return ('<section class="s-prob" id="problema" data-nav="light" data-fit><div class="fit-in"><div class="pb-wrap">'
-            '<div class="pb-text"><span class="s-tag">%s</span><h2>%s</h2><ol class="pb-lin" id="pbLin">%s</ol><p class="pb-pista">%s</p>'
-            '<p class="pb-mas"><a href="historia.html">%s</a><a href="agua.html">%s</a></p></div>'
-            '<div class="or-map pb-map">%s%s</div></div></div></section>'
-            % (T.t("problema", "etiqueta"), T.t("problema", "titulo"), lineas, T.t("problema", "pista"),
-               T.t("problema", "mas_historia"), T.t("problema", "mas_agua"), mapa, rd("tools/fragmentos/origen_loc.html")))
+        a_, b_, c_ = [x.strip() for x in T.raw("problema", "linea%d" % i).split("|")]
+        cajas += ('<article class="pb-step" data-i="%d" data-k="%s"><div class="pb-caja"><b>%s</b><p>%s</p></div></article>' % (i, c_, fmt(a_), fmt(b_)))
+    cajas += ('<article class="pb-step" data-i="5" data-k=""><div class="pb-caja pb-fin"><p>%s</p>'
+              '<a class="pb-b" href="historia.html">%s</a><a class="pb-b" href="agua.html">%s</a></div></article>'
+              % (T.t("problema", "fin"), T.t("problema", "mas_historia"), T.t("problema", "mas_agua")))
+    return ('<section class="s-prob" id="problema" data-nav="light"><div class="pb-stage">%s</div><div class="pb-steps">%s</div></section>'
+            % (rd("tools/fragmentos/problema_mapa.html"), cajas))
 
 def hilo():
-    """Diagrama fijo: el problema y la solución están ligados, y participar es parte de ambos."""
-    return ('<nav class="hilo" id="hilo" aria-label="El problema y la solución están ligados; participar es parte de ambos">'
+    """Diagrama fijo: el problema y la solución están ligados (Participa vive en el menú de arriba)."""
+    return ('<nav class="hilo" id="hilo" aria-label="El problema y la solución están ligados">'
             '<a class="hl-n" href="#problema" data-s="problema"><i>1</i><span>%s</span></a>'
-            '<a class="hl-n" href="#solucion" data-s="solucion"><i>2</i><span>%s</span></a>'
-            '<button class="hl-n hl-pp" type="button" data-pp><i>+</i><span>%s</span></button></nav>'
-            % (T.t("hilo", "problema"), T.t("hilo", "solucion"), T.t("hilo", "participa")))
+            '<a class="hl-n" href="#solucion" data-s="solucion"><i>2</i><span>%s</span></a></nav>'
+            % (T.t("hilo", "problema"), T.t("hilo", "solucion")))
 
 def foto_de(carpeta, contiene=None):
     fp = fotos_de(carpeta)
@@ -635,28 +635,49 @@ def franja():
             '<button class="bu-btn bu-next" type="button" aria-label="Siguiente">›</button></div></section>'
             % (T.t("franja", "etiqueta"), T.t("franja", "titulo"), slides))
 
+ACT_CORTO = ["Semarnat", "Conagua", "Profepa", "Conafor", "Conanp", "Hidalgo", "CFE", "UTTT", "Comunidades"]
+ACT_CAT = [0, 0, 0, 0, 0, 1, 0, 1, 2]          # 0 federal · 1 estatal · 2 comunidades
+ACT_COLOR = ["#025d6e", "#b05510", "#6f6b19"]
+
 def actores_section():
-    tarjetas = ""
+    leyenda = [x.strip() for x in T.raw("actores", "leyenda").split("|")]
+    datos = []
     for i in range(1, 10):
         partes = [x.strip() for x in T.raw("actores", "actor%d" % i).split("|")]
         if len(partes) != 3:
             raise TextosError('En "## actores", "actor%d:" debe ser "Nombre | qué hace | dato".' % i)
-        tarjetas += ('<article class="ac-c"><h3>%s</h3><p>%s</p><span class="ac-k">%s</span></article>'
-                     % (fmt(partes[0]), fmt(partes[1]), fmt(partes[2])))
+        datos.append(partes)
+    # mapa: círculo central (el río) con los actores en elipse; cada uno unido por una línea punteada
+    cx, cy, rx, ry = 50.0, 47.0, 40.0, 37.0
+    lineas, nodos = "", ""
+    for i, (nombre, que, dato) in enumerate(datos):
+        ang = math.radians(-90 + i * 360.0 / len(datos))
+        x, y = cx + rx * math.cos(ang), cy + ry * math.sin(ang)
+        lineas += '<line x1="%.1f" y1="%.1f" x2="%.1f" y2="%.1f" style="--i:%d"/>' % (cx * 10, cy * 6.2, x * 10, y * 6.2, i)
+        nodos += ('<button class="am-n%s" type="button" style="--x:%.1f%%;--y:%.1f%%;--c:%s;--i:%d" data-i="%d" data-n="%s" data-q="%s" data-d="%s" data-cat="%s">'
+                  '<span>%s</span></button>'
+                  % (" on" if i == 0 else "", x, y, ACT_COLOR[ACT_CAT[i]], i, i, attr(nombre), attr(que), attr(dato), attr(leyenda[ACT_CAT[i]]), ACT_CORTO[i]))
+    leyenda_html = "".join('<span><i style="background:%s"></i>%s</span>' % (ACT_COLOR[k], leyenda[k]) for k in range(3))
+    mapa = ('<div class="am" id="am"><svg class="am-l" viewBox="0 0 1000 620" preserveAspectRatio="none" aria-hidden="true">%s</svg>'
+            '<div class="am-c" style="background-image:url(img/mapa/base.webp)"><b>Río Tula</b></div>%s</div>'
+            '<div class="am-det" id="amDet" aria-live="polite"><span class="ad-cat"></span><h3 class="ad-n"></h3><p class="ad-q"></p><b class="ad-d"></b></div>'
+            '<div class="am-ley">%s<small>%s</small></div>' % (lineas, nodos, leyenda_html, T.t("actores", "pista")))
+    tarjetas = ""
+    for nombre, que, dato in datos:
+        tarjetas += ('<article class="ac-c"><h3>%s</h3><p>%s</p><span class="ac-k">%s</span></article>' % (fmt(nombre), fmt(que), fmt(dato)))
     return ('<section class="s-actores" id="actores" data-nav="light"><div class="ac-in">'
-            '<div class="ac-head"><span class="s-tag">%s</span><h1>%s</h1><p>%s</p></div><div class="ac-grid">%s</div></div></section>'
-            % (T.t("actores", "etiqueta"), T.t("actores", "titulo"), T.t("actores", "texto"), tarjetas))
+            '<div class="ac-head"><span class="s-tag">%s</span><h1>%s</h1><p>%s</p></div>%s<div class="ac-grid">%s</div></div></section>'
+            % (T.t("actores", "etiqueta"), T.t("actores", "titulo"), T.t("actores", "texto"), mapa, tarjetas))
 
 def pp_panel():
-    """Panel de participación: disponible desde cualquier página (botón del menú, botón de la portada y barra en celular)."""
+    """Panel de participación: disponible desde cualquier página (botón del menú, botón de la portada y cierre de cada página)."""
     li = ""
     for e in T.lista("participa", "enlaces"):
         texto, url = [x.strip() for x in e.split("->", 1)]
         li += '<a class="pp-l" href="%s" target="_blank" rel="noopener">%s<i>→</i></a>' % (attr(url), fmt(texto))
     return ('<div class="pp" id="ppPanel" role="dialog" aria-label="%s"><div class="pp-box"><button class="pp-x" type="button" aria-label="Cerrar">×</button>'
             '<h2>%s</h2><p>%s</p><div class="pp-ls">%s</div></div></div>'
-            '<button class="pp-bar" id="ppBar" type="button" data-pp>%s</button>'
-            % (T.t("participa", "panel_titulo"), T.t("participa", "panel_titulo"), T.t("participa", "panel_texto"), li, T.t("participa", "boton")))
+            % (T.t("participa", "panel_titulo"), T.t("participa", "panel_titulo"), T.t("participa", "panel_texto"), li))
 
 def nav_links(pagina):
     out = ""
@@ -681,10 +702,10 @@ PLANTILLA = '''<!DOCTYPE html>
   <title>%(titulo)s</title>
   <meta name="description" content="%(descripcion)s" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/temas.css?v=35" />
-  <link rel="stylesheet" href="css/historia.css?v=35" />
-  <link rel="stylesheet" href="css/capitulos.css?v=35" />
-  <link rel="stylesheet" href="css/sistema.css?v=35" />
+  <link rel="stylesheet" href="css/temas.css?v=39" />
+  <link rel="stylesheet" href="css/historia.css?v=39" />
+  <link rel="stylesheet" href="css/capitulos.css?v=39" />
+  <link rel="stylesheet" href="css/sistema.css?v=39" />
 %(precarga)s
   <script>(function(){var h=document.documentElement;h.classList.add('js');try{var s=localStorage;if(s.getItem('rt-noche')==='1')h.dataset.theme='dark';if(s.getItem('rt-cvd')==='1')h.dataset.cvd='1'}catch(e){}})()</script>
 </head>
@@ -723,7 +744,7 @@ PLANTILLA = '''<!DOCTYPE html>
 %(contenido)s
 
 <script data-goatcounter="https://riotula.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
-<script src="js/sitio.js?v=35"></script>
+<script src="js/sitio.js?v=39"></script>
 </body>
 </html>
 '''

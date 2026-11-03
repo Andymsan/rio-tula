@@ -168,7 +168,9 @@ linea1: 1789 | Se abre el Tajo de Nochistongo y el agua de lluvia y drenaje del 
 linea2: 1900 | El Gran Canal manda más drenaje hacia el río Tula. | canal
 linea3: 1975 y 2019 | Los túneles Emisor Central y Oriente completan la conexión entre las dos cuencas. | tec teo
 linea4: Hoy | Esa agua cruza el río Tula y llega a la presa Endhó. | rios presa
-pista: Toca una línea para verla en el mapa.
+ubica: Estamos en la cuenca del río Tula, entre Hidalgo, el Estado de México y la Ciudad de México.
+baja: Sigue bajando
+fin: Para entenderlo mejor
 mas_historia: Ver la historia completa →
 mas_agua: De dónde viene y a dónde va el agua →
 
@@ -489,6 +491,8 @@ titulo: Así se ve hoy
 etiqueta: Actores
 titulo: Quiénes hacen posible el proyecto
 texto: Instituciones, gobiernos y comunidades que trabajan juntos por el río Tula.
+pista: Toca un actor para ver qué hace.
+leyenda: Gobierno federal | Gobierno estatal | Comunidades
 actor1: Semarnat | Coordina el proyecto y, junto con Conagua, recupera la laguna de Bojay. | 37 proyectos
 actor2: Conagua | Trata más agua en la PTAR Atotonilco, desazolva el río, estabiliza taludes y mide el caudal. | $112 mdp/año en Atotonilco
 actor3: Profepa | Inspecciona a las industrias que descargan al río, junto con Conagua. | {inspecciones} inspecciones

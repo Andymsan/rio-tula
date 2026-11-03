@@ -73,7 +73,7 @@
     // punto de la pantalla donde queremos ver el objetivo (deja libre la tarjeta de texto)
     const hasBub = !!$('.burbuja', step);
     const ax = mobile.matches ? 0.5 : 0.6;
-    const ay = mobile.matches ? 0.5 : (hasBub ? 0.42 : 0.5);
+    const ay = mobile.matches ? 0.34 : (hasBub ? 0.42 : 0.5);
     let tx = (ax - 0.5) * W - z * (x - 0.5) * Wc;
     let ty = (ay - 0.5) * H - z * (y - 0.5) * Hc;
     const mx = Math.max(0, (z * Wc - W) / 2), my = Math.max(0, (z * Hc - H) / 2);
@@ -128,10 +128,7 @@
   function buildStepObs() {
     if (stepObs) stepObs.disconnect();
     let rm = '-49% 0px -49% 0px';
-    if (mobile.matches) {
-      const stageH = Math.round(innerHeight * 0.52);
-      rm = '-' + (stageH + 30) + 'px 0px -' + Math.max(0, innerHeight - stageH - 130) + 'px 0px';
-    }
+    if (mobile.matches) rm = '-30% 0px -40% 0px';
     stepObs = new IntersectionObserver(es => es.forEach(e => {
       if (e.isIntersecting) activate(stages.get(e.target.closest('.cap')), e.target);
     }), { rootMargin: rm, threshold: 0 });
@@ -622,28 +619,50 @@
     });
   }
 
-  /* ── El problema: cuatro líneas que resaltan su capa en el mapa (recorren solas; el control pasa a la persona al tocar) ── */
+  /* ── El problema: mapa a pantalla completa. Arranca en los estados, se acerca a la cuenca y,
+     al bajar, aparecen cuadros de texto pequeños; cada uno resalta su capa ── */
   function initProblema() {
-    const svg = $('#pmap'), lis = $$('#pbLin li'); if (!svg || !lis.length) return;
-    const vb = svg.viewBox.baseVal;
-    const fit = () => { const k = Math.min(svg.clientWidth / vb.width, svg.clientHeight / vb.height) || 1; svg.style.setProperty('--fs', ((mobile.matches ? 8 : 11) / k).toFixed(3)); };
-    fit(); addEventListener('resize', fit);
-    const ver = i => {
-      lis.forEach((li, k) => li.classList.toggle('is', k === i));
-      const ks = i < 0 ? [] : (lis[i].dataset.k || '').split(' ');
-      svg.classList.toggle('hl', i >= 0);
+    const sec = $('#problema'), svg = $('#pmap'); if (!sec || !svg) return;
+    const stage = $('.pb-stage', sec), steps = $$('.pb-step', sec);
+    const bb = s => s.split(' ').map(Number), WIDE = bb(svg.dataset.wide), BASIN = bb(svg.dataset.basin), MID = bb(svg.dataset.mid);
+    let target = null, view = null, raf = 0;
+    function cam(b) {
+      const W = stage.clientWidth || innerWidth, H = stage.clientHeight || innerHeight, asp = W / H, m = mobile.matches;
+      const ax = m ? 0.5 : 0.62, ay = m ? 0.34 : 0.5, uw = m ? 0.94 : 0.72, uh = m ? 0.56 : 0.86;
+      const bw = b[2] - b[0], bh = b[3] - b[1];
+      return { cx: (b[0] + b[2]) / 2, cy: (b[1] + b[3]) / 2, h: Math.max(bh / uh, bw / (uw * asp)), asp, ax, ay };
+    }
+    function draw(v) {
+      const w = v.h * v.asp, H = stage.clientHeight || innerHeight;
+      svg.setAttribute('viewBox', (v.cx - w * v.ax).toFixed(1) + ' ' + (v.cy - v.h * v.ay).toFixed(1) + ' ' + w.toFixed(1) + ' ' + v.h.toFixed(1));
+      svg.style.setProperty('--fs', ((mobile.matches ? 9.5 : 12) * v.h / H).toFixed(3));
+    }
+    function go(b, dur) {
+      cancelAnimationFrame(raf); target = b; const to = cam(b);
+      if (!view || !dur) { view = to; draw(view); return; }
+      const from = Object.assign({}, view), t0 = performance.now();
+      const ease = t => (t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+      const tick = now => {
+        const t = Math.min(1, (now - t0) / dur), e = ease(t);
+        view = { cx: from.cx + (to.cx - from.cx) * e, cy: from.cy + (to.cy - from.cy) * e, h: from.h * Math.pow(to.h / from.h, e), asp: to.asp, ax: to.ax, ay: to.ay };
+        draw(view); if (t < 1) raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+    }
+    let act = -1;
+    function ver(i) {
+      if (i === act) return; act = i;
+      steps.forEach((s, k) => s.classList.toggle('on', k === i));
+      svg.classList.toggle('wide', i === 0);
+      const ks = (steps[i].dataset.k || '').split(' ').filter(Boolean);
+      svg.classList.toggle('hl', ks.length > 0);
       $$('[data-k]', svg).forEach(el => el.classList.toggle('is', ks.includes(el.dataset.k)));
-    };
-    let cur = -1, t = null, manual = false;
-    const sig = () => { cur = (cur + 1) % lis.length; ver(cur); };
-    new IntersectionObserver(es => es.forEach(e => {
-      clearInterval(t);
-      if (e.isIntersecting && !manual) { sig(); t = setInterval(sig, 3600); }
-    }), { threshold: 0.5 }).observe(svg.closest('section'));
-    lis.forEach((li, k) => {
-      li.addEventListener('click', () => { manual = true; clearInterval(t); cur = k; ver(k); });
-      li.addEventListener('mouseenter', () => { manual = true; clearInterval(t); cur = k; ver(k); });
-    });
+      go(i === 0 ? WIDE : (i <= 3 ? MID : BASIN), 1900);
+    }
+    go(WIDE, 0); ver(0);
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) ver(Number(e.target.dataset.i)); }), { rootMargin: '-42% 0px -42% 0px', threshold: 0 });
+    steps.forEach(s => io.observe(s));
+    addEventListener('resize', () => { if (target) { view = cam(target); draw(view); } });
   }
 
   /* ── Hilo: diagrama fijo (problema y solución ligados; participar es parte de ambos) ── */
@@ -655,12 +674,27 @@
       const mid = innerHeight * 0.5; let act = '';
       Object.entries(grupo).forEach(([k, ids]) => ids.forEach(id => { const e = $('#' + id); if (!e) return; const r = e.getBoundingClientRect(); if (r.top <= mid && r.bottom > mid) act = k; }));
       const p = $('#participa'); const pr = p && p.getBoundingClientRect(); if (pr && pr.top <= mid) act = 'participa';
-      $$('.hl-n', hilo).forEach(n => n.classList.toggle('on', n.dataset.s === act || (act === 'participa' && n.classList.contains('hl-pp'))));
+      $$('.hl-n', hilo).forEach(n => n.classList.toggle('on', n.dataset.s === act || false));
       hilo.dataset.act = act;
     };
     let tick = false;
     addEventListener('scroll', () => { if (!tick) { tick = true; requestAnimationFrame(() => { tick = false; upd(); }); } }, { passive: true });
     addEventListener('resize', upd); upd();
+  }
+
+  /* ── Mapa de actores: aparecen uno a uno al entrar; tocar un actor muestra qué hace ── */
+  function initActores() {
+    const am = $('#am'); if (!am) return;
+    const ns = $$('.am-n', am), det = $('#amDet');
+    const show = n => {
+      ns.forEach(x => x.classList.toggle('on', x === n));
+      $('.ad-cat', det).textContent = n.dataset.cat; $('.ad-n', det).textContent = n.dataset.n;
+      $('.ad-q', det).textContent = n.dataset.q; $('.ad-d', det).textContent = n.dataset.d;
+      det.style.setProperty('--c', n.style.getPropertyValue('--c'));
+    };
+    ns.forEach(n => { n.addEventListener('click', () => show(n)); n.addEventListener('mouseenter', () => { if (matchMedia('(hover: hover)').matches) show(n); }); });
+    show(ns[0]);
+    new IntersectionObserver((es, o) => es.forEach(e => { if (e.isIntersecting) { am.classList.add('in'); o.disconnect(); } }), { threshold: 0.3 }).observe(am);
   }
 
   /* ── Arranque ─────────────────────────────────────────────────────── */
@@ -673,6 +707,7 @@
     initOrigen();
     initRail();
     initA11y();
+    initActores();
     initProblema();
     initHilo();
     initParticipa();
@@ -703,7 +738,7 @@
       const st = NUM[id] ? $$('#proyecto .step').filter(x => (x.dataset.ban || '').startsWith(NUM[id] + '|'))[Number(i) || 0] : $$('#' + id + ' .step')[Number(i) || 0];
       if (!st) return;
       const r = st.getBoundingClientRect();
-      scrollTo(0, mobile.matches ? scrollY + r.top - innerHeight * 0.44 - 20 : scrollY + r.top + r.height / 2 - innerHeight / 2 + 2);
+      scrollTo(0, mobile.matches ? (st.closest('.hist') ? scrollY + r.top - innerHeight * 0.44 - 20 : scrollY + r.bottom - innerHeight + 24) : scrollY + r.top + r.height / 2 - innerHeight / 2 + 2);
     }, 400);
   })();
 })();
