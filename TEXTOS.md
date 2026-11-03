@@ -44,7 +44,8 @@ logo: Río Tula
 logo_sub: / Proyecto 2024-2030
 boton_indice: ☰ Índice
 boton_historia: La historia
-boton_proyecto: Por proyecto
+boton_proyecto: Cifras y proyectos
+boton_agua: El agua del río
 boton_acc: Accesibilidad
 modo_noche: Modo noche
 modo_daltonismo: Modo daltonismo
@@ -59,31 +60,39 @@ subtitulo: Descubre **cómo** el río Tula se convirtió en uno de los más cont
 boton: Comenzar el recorrido ↓
 boton2: Participa
 
-## indice-origen  (1: el problema)
-titulo: De dónde viene el agua
-descripcion: El problema: los afluentes del río Tula
+## indice-problema  (1)
+titulo: El problema
+descripcion: Cómo se volvió uno de los ríos más contaminados
 
-## indice-avance  (2)
-titulo: Ya está en marcha
-descripcion: Lo que se hizo en 2025 y 2026
+## indice-promesa  (2)
+titulo: El compromiso
+descripcion: Limpiar y sanear los tres ríos más contaminados
 
 ## indice-solucion  (3)
 titulo: La solución
-descripcion: Cuatro mensajes, un mismo río
+descripcion: Un mapa, cuatro mensajes
 
-## indice-proyecto  (4: la página proyecto.html)
-titulo: Por proyecto
-descripcion: Cada proyecto con su mapa, fotos y avance
+## indice-franja  (4)
+titulo: Así se ve hoy
+descripcion: Fotos de obra
 
-## indice-historia  (5)
+## indice-proyecto  (5: detalle, página proyecto.html)
+titulo: Cifras y proyectos
+descripcion: Cuántos proyectos, kilómetros e inversión
+
+## indice-agua  (6: detalle, página agua.html)
+titulo: El agua del río
+descripcion: De dónde viene y a dónde va
+
+## indice-historia  (7: detalle)
 titulo: Historia del río
 descripcion: Cómo llegó a esta condición
 
-## indice-actores  (6: la página actores.html)
+## indice-actores  (8: detalle)
 titulo: Quiénes participan
 descripcion: Instituciones y comunidades
 
-## indice-participa  (7)
+## indice-participa  (9)
 titulo: Participa
 descripcion: Cómo sumarte al proyecto
 
@@ -106,33 +115,62 @@ cierre: El Proyecto de Saneamiento y Restauración del Río Tula ==atiende la ca
 boton: Conocer la historia del río →
 boton_corto: Historia →
 
-## diagnostico  (fotos de diagnóstico, pantalla completa; carpeta img/fotos/diagnostico/)
+## diagnostico  (fotos de diagnóstico; carpeta img/fotos/diagnostico/)
 etiqueta: Diagnóstico
 titulo: Así encontramos el río
+cta: ¿Conoces una industria que contamina el río?
+cta_boton: Repórtala
 
 ## lema-limpio  (banner de pantalla completa; foto opcional en img/fotos/lema-limpio/)
 etiqueta: Frente 1 · Calidad del agua
 titulo: Un río más limpio
 texto: Tratamos más agua, captamos el drenaje de Tula y vigilamos a la industria.
 cifra: 38 m³/s | de agua tratada en Atotonilco
+cifra1: 38 m³/s | de agua tratada en Atotonilco
+cifra2: {inspecciones} | inspecciones a industrias
+cifra3: 10 km | de colectores y el cárcamo ya construidos
 
 ## lema-seguro  (banner; foto opcional en img/fotos/lema-seguro/)
 etiqueta: Frente 2 · Inundaciones
 titulo: Un río más seguro
 texto: Protegemos a las familias de Tula cuando el río crece.
 cifra: 3.9 km | de río desazolvado
+cifra1: 4.5 km | de taludes críticos: 1 km terminado, 1.7 en obra
+cifra2: 3.9 km | de río desazolvado
+cifra3: 21 | estaciones de caudal instaladas
 
 ## lema-vivo  (banner; foto opcional en img/fotos/lema-vivo/)
 etiqueta: Frente 3 · Ecosistemas
 titulo: Un río más vivo
 texto: Recuperamos riberas, bosques y cuerpos de agua para que el río vuelva a tener vida.
 cifra: 1,700 ha | certificadas para conservación
+cifra1: 1,900 | árboles saneados o plantados en las riberas
+cifra2: 55 ha | de laguna de Bojay limpia desde 2027
+cifra3: 1,700 ha | certificadas para conservación
 
 ## lema-todos  (banner; foto opcional en img/fotos/lema-todos/)
 etiqueta: Frente 4 · Espacio público
 titulo: Un río para todas y todos
 texto: Construimos lugares para que la gente de Tula se reconecte con su río.
 cifra: 5 | proyectos de espacio público
+cifra1: 5 | proyectos de espacio público junto al río
+cifra2: 52 % | de la población de Tula a 15 min a pie de alguno
+
+## hilo  (diagrama fijo de la landing: el problema y la solución están ligados, y participar es parte de ambos)
+problema: El problema
+solucion: La solución
+participa: Participa
+
+## problema  (landing, 1.ª pantalla: textos ultra simples. Ariel: revisar. Cada línea: año | texto | capa del mapa que se resalta)
+etiqueta: El problema
+titulo: Cómo se volvió uno de los ríos más contaminados del país
+linea1: 1789 | Se abre el Tajo de Nochistongo y el agua de lluvia y drenaje del Valle de México empieza a llegar al río Tula. | salto
+linea2: 1900 | El Gran Canal manda más drenaje hacia el río Tula. | canal
+linea3: 1975 y 2019 | Los túneles Emisor Central y Oriente completan la conexión entre las dos cuencas. | tec teo
+linea4: Hoy | Esa agua cruza el río Tula y llega a la presa Endhó. | rios presa
+pista: Toca una línea para verla en el mapa.
+mas_historia: Ver la historia completa →
+mas_agua: De dónde viene y a dónde va el agua →
 
 ## historia-intro  (texto antes del mapa de la historia — ahora es la subpágina historia.html)
 etiqueta: 1 · El río y su historia
@@ -438,13 +476,12 @@ titulo: Fuentes y notas metodológicas
 items: **Caudales:** base de caudales del proyecto; promedios 2021-2024 de la temporada de secas (estiaje) y de lluvias. | **Inundaciones:** capacidad del río y caudal máximo registrado, Conagua. | **Inversión:** base de proyectos 2025-2026, Contralínea (16 jul 2026) y Ámbito. | **Accesibilidad a pie:** isócronas calculadas con OpenRouteService. | **Mapas:** capas SIG del proyecto; relieve sombreado calculado a partir del modelo digital de elevación SRTM.
 nota: Las cifras son promedios o valores máximos de los periodos indicados y pueden actualizarse conforme se publiquen nuevos datos.
 
-## solucion  (La solución: cuatro tarjetas con foto; cada una lleva a sus proyectos)
+## solucion  (landing: un solo mapa; cada mensaje enciende todas sus capas)
 etiqueta: La solución
-titulo: Cuatro mensajes para un mismo río
-subtitulo: Toca uno para ver sus proyectos.
-boton: Ver proyectos →
+titulo: Un mapa, cuatro mensajes
+boton: Ver los proyectos →
 
-## franja  (tira de fotos de obra; toma una foto de cada carpeta del sitio)
+## franja  (tira de fotos de obra al final de la landing; toma una foto de cada carpeta del sitio)
 etiqueta: En obra
 titulo: Así se ve hoy
 

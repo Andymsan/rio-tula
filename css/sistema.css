@@ -234,3 +234,85 @@ html[data-theme="dark"] .sol-c, html[data-theme="dark"] .ic-img { filter: invert
 
 /* índice de 7 entradas */
 @media (min-width: 1101px) { .idx-cols { grid-template-columns: repeat(7, minmax(0, 1fr)); } .ic-img { height: clamp(170px, 44svh, 460px); } }
+
+
+/* ═════ Nueva landing: el problema, el hilo, la solución en un mapa ═════ */
+
+/* El problema: cuatro líneas + mapa */
+.s-prob { background: #fbfbfa; padding: 70px 0 26px; min-height: 100svh; min-height: 100vh; display: flex; align-items: center; }
+.s-prob > .fit-in { width: 100%; }
+.pb-wrap { max-width: 1240px; margin: 0 auto; padding: 0 28px; display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 44px; align-items: center; }
+.pb-text h2 { font: 800 var(--t-xl)/1.1 'Noto Sans', sans-serif; margin: 4px 0 22px; letter-spacing: -.01em; }
+.pb-lin { list-style: none; margin: 0; padding: 0; border-top: 2px solid var(--ink); }
+.pb-lin li { display: grid; grid-template-columns: 112px 1fr; gap: 16px; align-items: baseline; padding: 14px 8px; border-bottom: 1px solid #e5e0d6; cursor: pointer; transition: background .2s; }
+.pb-lin li b { font: 800 17px/1.2 'Noto Sans', sans-serif; color: var(--acc); }
+.pb-lin li span { font-size: 16px; line-height: 1.45; color: #3d3d3d; }
+.pb-lin li.is { background: rgba(2, 93, 110, .08); }
+.pb-pista { font-size: 13px; color: var(--gris); margin: 10px 0 0; }
+.pb-mas { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 14px 0 0; font-size: 14px; }
+.pb-mas a { color: var(--acc); font-weight: 700; text-decoration: none; border-bottom: 1.5px solid currentColor; }
+.pb-map { height: min(66svh, 600px); min-height: 380px; border-radius: 6px; overflow: hidden; background: #f3f3f3; box-shadow: 0 1px 2px rgba(0,0,0,.08), 0 14px 34px -22px rgba(0,0,0,.4); }
+.pb-map .omap { width: 100%; height: 100%; display: block; }
+.omap-all .ol, .omap-all .o-infra { opacity: .9; }
+.omap-all .o-infra { stroke-width: calc(var(--fs) * .3px); }
+.omap-all .o-dr, .omap-all .o-drcanal { opacity: 0 !important; }
+.omap-all .ol:not(.is):not(.fijo) { opacity: .75 !important; font-size: calc(var(--fs) * .82px); }
+.omap-all.hl .ol:not(.is):not(.fijo), .omap-all.hl .o-infra:not(.is) { opacity: .16 !important; }
+.omap-all .ol.is, .omap-all .o-infra.is { opacity: 1 !important; }
+
+/* Diagnóstico: invitación a reportar industrias */
+.diag-cta { width: min(1240px, 92vw, calc(64svh * 1.72)); display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; padding: 12px 16px; background: #fff; border: 1px solid #e0dbd4; border-left: 4px solid var(--pp); border-radius: 6px; font: 600 15px 'Noto Sans', sans-serif; }
+.diag-cta .btn-pp { display: inline-block; padding: 9px 18px; border-radius: 6px; font-size: 14px; font-weight: 700; text-decoration: none; }
+
+/* Hilo: diagrama fijo a la izquierda */
+.hilo { position: fixed; left: 14px; top: 50%; transform: translateY(-50%); z-index: 60; display: flex; flex-direction: column; align-items: stretch; gap: 0; opacity: 0; pointer-events: none; transition: opacity .4s; }
+.hilo.show { opacity: 1; pointer-events: auto; }
+.hl-n { position: relative; display: flex; align-items: center; gap: 10px; padding: 8px 12px 8px 8px; background: rgba(255,255,255,.94); border: 1px solid #e0dbd4; border-radius: 22px; color: var(--ink); text-decoration: none; font: 700 13px 'Noto Sans', sans-serif; cursor: pointer; width: max-content; box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+.hl-n i { flex: none; width: 24px; height: 24px; border-radius: 50%; background: #e1eef1; color: var(--acc); font: 800 13px/24px 'Noto Sans', sans-serif; text-align: center; font-style: normal; }
+.hl-n span { max-width: 0; overflow: hidden; white-space: nowrap; opacity: 0; transition: max-width .25s, opacity .2s; }
+.hilo:hover .hl-n span, .hl-n.on span { max-width: 140px; opacity: 1; }
+.hl-n.on { border-color: var(--acc); }
+.hl-n.on i { background: var(--acc); color: #fff; }
+.hl-n + .hl-n { margin-top: 18px; }
+.hl-n:not(.hl-pp)::after { content: ""; position: absolute; left: 19px; top: 100%; width: 2px; height: 18px; background: #bdb7ad; }
+.hl-pp { border-color: var(--pp); background: var(--pp); color: #fff; }
+.hl-pp i { background: #fff; color: var(--pp); }
+.hl-pp.on { box-shadow: 0 0 0 3px rgba(176, 85, 16, .28); }
+.hl-pp span { max-width: 140px; opacity: 1; }
+
+/* La solución (mapa): tarjeta con cifras */
+.sol-card .tag { color: var(--gris); }
+.cifras { list-style: none; margin: 14px 0 0; padding: 0; border-top: 1px solid #e5e0d6; }
+.cifras li { display: grid; grid-template-columns: minmax(96px, auto) 1fr; gap: 14px; align-items: baseline; padding: 9px 0; border-bottom: 1px solid #ece8e0; }
+.cifras b { font: 800 22px/1.1 'Noto Sans', sans-serif; color: var(--ink); }
+.cifras span { font-size: 14px; line-height: 1.35; color: var(--gris); }
+.rep-link { display: block; margin-top: 12px; padding: 10px 12px; background: #fdf1e6; border-left: 3px solid var(--pp); border-radius: 4px; color: #6c3308; font: 600 14px/1.35 'Noto Sans', sans-serif; text-decoration: none; }
+.vermas { display: inline-block; margin-top: 12px; color: var(--acc); font: 700 15px 'Noto Sans', sans-serif; text-decoration: none; border-bottom: 2px solid currentColor; padding-bottom: 1px; }
+
+/* Cifras y proyectos: cabecera de la página */
+.s-avance { padding-top: 96px; }
+
+/* Índice de 9 entradas */
+@media (min-width: 1101px) { .idx-cols { grid-template-columns: repeat(9, minmax(0, 1fr)); } .ic-img { height: clamp(150px, 40svh, 420px); } .ic-t { font-size: 11.5px; } }
+@media (min-width: 641px) and (max-width: 1100px) { .idx-cols { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+@media (max-width: 900px) {
+  .hilo { display: none; }
+  .s-prob { display: block; min-height: 0; padding: 64px 0 20px; }
+  .pb-wrap { grid-template-columns: 1fr; gap: 16px; padding: 0 16px; }
+  .pb-text h2 { margin-bottom: 14px; }
+  .pb-lin li { grid-template-columns: 78px 1fr; gap: 10px; padding: 10px 4px; }
+  .pb-lin li b { font-size: 14px; } .pb-lin li span { font-size: 14px; }
+  .pb-pista { display: none; }
+  .pb-map { height: 300px; min-height: 0; }
+  .diag-cta { width: 94vw; font-size: 14px; padding: 10px 12px; }
+  .cifras b { font-size: 19px; } .cifras span { font-size: 13px; }
+  .cifras li { grid-template-columns: 82px 1fr; gap: 10px; padding: 7px 0; }
+  .sol-card .rep-link { font-size: 13px; }
+  .s-avance { padding-top: 76px; }
+}
+
+/* el hilo va a la derecha para no tapar las tarjetas del mapa */
+.hilo { left: auto; right: 14px; align-items: flex-end; }
+.hl-n { flex-direction: row-reverse; padding: 8px 8px 8px 12px; }
+.hl-n:not(.hl-pp)::after { left: auto; right: 19px; }

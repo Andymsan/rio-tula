@@ -115,7 +115,7 @@
     applyCam(st, step);
     const ban = $('#capBanner'); if (ban && d.ban) setBanner(ban, d.ban);
     const bp = $('#bPaso');
-    if (bp && st.cap.id === 'proyecto') { const n = st.steps.indexOf(step) + 1; bp.textContent = n + ' / ' + st.steps.length; bp.style.setProperty('--p', (n / st.steps.length * 100).toFixed(1) + '%'); }
+    if (bp && (st.cap.id === 'proyecto' || st.cap.id === 'solucion')) { const n = st.steps.indexOf(step) + 1; bp.textContent = n + ' / ' + st.steps.length; bp.style.setProperty('--p', (n / st.steps.length * 100).toFixed(1) + '%'); }
     const t = d.tema || st.cap.dataset.tema;
     if (t) {
       st.cap.classList.remove(...TEMAS); st.cap.classList.add('tema-' + t); st.cap.dataset.tema = t;
@@ -360,7 +360,7 @@
 
   /* ── Introducción: dos pestañas; dona de secas/lluvias que se transforma; leyenda que resalta el mapa ── */
   function initOrigen() {
-    const svg = $('#omap'); if (!svg) return;
+    const svg = $('#omap'); if (!svg || !$('.dn')) return;
     const vb = svg.viewBox.baseVal;
     const fit = () => { const k = Math.min(svg.clientWidth / vb.width, svg.clientHeight / vb.height) || 1; svg.style.setProperty('--fs', ((mobile.matches ? 8 : 11.5) / k).toFixed(3)); };
     fit(); addEventListener('resize', fit);
@@ -622,6 +622,47 @@
     });
   }
 
+  /* ── El problema: cuatro líneas que resaltan su capa en el mapa (recorren solas; el control pasa a la persona al tocar) ── */
+  function initProblema() {
+    const svg = $('#pmap'), lis = $$('#pbLin li'); if (!svg || !lis.length) return;
+    const vb = svg.viewBox.baseVal;
+    const fit = () => { const k = Math.min(svg.clientWidth / vb.width, svg.clientHeight / vb.height) || 1; svg.style.setProperty('--fs', ((mobile.matches ? 8 : 11) / k).toFixed(3)); };
+    fit(); addEventListener('resize', fit);
+    const ver = i => {
+      lis.forEach((li, k) => li.classList.toggle('is', k === i));
+      const ks = i < 0 ? [] : (lis[i].dataset.k || '').split(' ');
+      svg.classList.toggle('hl', i >= 0);
+      $$('[data-k]', svg).forEach(el => el.classList.toggle('is', ks.includes(el.dataset.k)));
+    };
+    let cur = -1, t = null, manual = false;
+    const sig = () => { cur = (cur + 1) % lis.length; ver(cur); };
+    new IntersectionObserver(es => es.forEach(e => {
+      clearInterval(t);
+      if (e.isIntersecting && !manual) { sig(); t = setInterval(sig, 3600); }
+    }), { threshold: 0.5 }).observe(svg.closest('section'));
+    lis.forEach((li, k) => {
+      li.addEventListener('click', () => { manual = true; clearInterval(t); cur = k; ver(k); });
+      li.addEventListener('mouseenter', () => { manual = true; clearInterval(t); cur = k; ver(k); });
+    });
+  }
+
+  /* ── Hilo: diagrama fijo (problema y solución ligados; participar es parte de ambos) ── */
+  function initHilo() {
+    const hilo = $('#hilo'); if (!hilo) return;
+    const grupo = { problema: ['problema', 'diagnostico'], solucion: ['promesa', 'solucion', 'franja'] };
+    const upd = () => {
+      hilo.classList.toggle('show', scrollY > innerHeight * 0.6);
+      const mid = innerHeight * 0.5; let act = '';
+      Object.entries(grupo).forEach(([k, ids]) => ids.forEach(id => { const e = $('#' + id); if (!e) return; const r = e.getBoundingClientRect(); if (r.top <= mid && r.bottom > mid) act = k; }));
+      const p = $('#participa'); const pr = p && p.getBoundingClientRect(); if (pr && pr.top <= mid) act = 'participa';
+      $$('.hl-n', hilo).forEach(n => n.classList.toggle('on', n.dataset.s === act || (act === 'participa' && n.classList.contains('hl-pp'))));
+      hilo.dataset.act = act;
+    };
+    let tick = false;
+    addEventListener('scroll', () => { if (!tick) { tick = true; requestAnimationFrame(() => { tick = false; upd(); }); } }, { passive: true });
+    addEventListener('resize', upd); upd();
+  }
+
   /* ── Arranque ─────────────────────────────────────────────────────── */
   function boot() {
     buildNavObs(); buildStepObs();
@@ -632,6 +673,8 @@
     initOrigen();
     initRail();
     initA11y();
+    initProblema();
+    initHilo();
     initParticipa();
     initGlosario();
     initPlegable();

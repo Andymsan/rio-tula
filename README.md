@@ -4,8 +4,9 @@ Sitio del Plan de Saneamiento y Restauración del Río Tula (2024–2030).
 
 | Página | Qué es |
 |---|---|
-| `index.html` | **Portada corta (landing, ~8 pantallas):** portada con video y Participa → de dónde viene el agua (con mapa de ubicación) → fotos de diagnóstico → compromiso 92 → ya está en marcha → tira de fotos de obra → la solución (cuatro mensajes con foto) → participa → fuentes |
-| `proyecto.html` | **Por proyecto:** los cuatro mensajes proyecto por proyecto, con mapa fijo, fotos y avance, y el resumen de cinco metas |
+| `index.html` | **Landing (~9 pantallas):** portada con video → el problema (4 líneas con el mapa) → diagnóstico en fotos (con "reporta una industria") → compromiso 92 → la solución: un mapa con las capas de cada mensaje → "así se ve hoy" → participa. Un hilo fijo liga problema, solución y Participa |
+| `proyecto.html` | **Cifras y proyectos (detalle):** cuánto se ha hecho, cada proyecto con mapa, fotos y avance, y el resumen de cinco metas |
+| `agua.html` | **El agua del río (detalle):** de dónde viene (dona de secas y lluvias, mapa) y a dónde va |
 | `historia.html` | **Historia del río** (mapa por épocas) |
 | `actores.html` | **Quiénes participan:** instituciones y comunidades (datos de `## actores` en TEXTOS.md; Ariel: revisar) |
 | `mapa.html` | Visor interactivo (Leaflet). No se enlaza desde el sitio; se conserva por si se necesita. |
@@ -18,7 +19,7 @@ Sitio del Plan de Saneamiento y Restauración del Río Tula (2024–2030).
 ## Estructura
 
 ```
-index.html, proyecto.html, historia.html, actores.html ← GENERADOS (no editar a mano): TEXTOS.md + tools/build_index.py
+index.html, proyecto.html, agua.html, historia.html, actores.html ← GENERADOS (no editar a mano): TEXTOS.md + tools/build_index.py
 TEXTOS.md             ← TODOS LOS TEXTOS de la página (se editan aquí, en GitHub)
 COMENTARIOS.md        ← comentarios de revisión sobre el sitio (se reemplaza en cada ronda)
 DATOS.md              ← cifras de referencia, fuentes y datos pendientes de confirmar

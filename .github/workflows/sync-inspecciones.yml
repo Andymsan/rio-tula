@@ -36,7 +36,7 @@ jobs:
         run: |
           git config user.name "Sitio Río Tula (automático)"
           git config user.email "actions@users.noreply.github.com"
-          git add data/inspecciones.json index.html historia.html proyecto.html actores.html
+          git add data/inspecciones.json index.html historia.html proyecto.html actores.html agua.html
           git commit -m "Actualiza el número de inspecciones [automático]"
           git pull --rebase origin main
           git push
