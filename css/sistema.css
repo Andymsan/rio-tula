@@ -1,0 +1,236 @@
+/* ============================================================================
+   sistema.css — capa final de diseño (se carga después de capitulos.css)
+   Objetivo: un sistema corto (5 estilos de texto, 2 grises, 1 acento, 1 color de acción),
+   menos adornos y animaciones, Participa visible en todas las páginas, y el celular
+   como diseño propio (detalle en segundo plano).
+   Tipografía (Noto Sans) y colores de cada eje: sin cambios.
+   ============================================================================ */
+:root {
+  --ink: #1b2428; --gris: #5a5550; --acc: #025d6e; --pp: #b05510;
+  --t-xl: clamp(28px, 3.4vw, 46px);     /* título de sección */
+  --t-l: clamp(19px, 1.9vw, 25px);      /* título de tarjeta */
+  --t-m: 16px;                          /* texto */
+  --t-s: 13px;                          /* texto chico y etiquetas */
+  --t-n: clamp(28px, 3.1vw, 42px);      /* cifra destacada */
+}
+
+/* ─── Etiquetas: texto normal, sin mayúsculas ni espaciado de adorno ─── */
+.s-tag, .pm-kicker, .card .tag, .hs-eyebrow, .vi-t, .rc-n, .av-left .s-tag, .sol-head .s-tag, .fr-head .s-tag, .ac-head .s-tag, .diag-head .s-tag {
+  font: 600 var(--t-s)/1.3 'Noto Sans', sans-serif !important; letter-spacing: 0 !important; text-transform: none !important; color: var(--gris) !important; margin-bottom: 6px;
+}
+.hs-eyebrow { color: #3d4a50 !important; }
+
+/* ─── Títulos de sección: un solo tamaño ─── */
+.s-title, .sol-head h2, .fr-head h2, .ac-head h1, .diag-head h2, .pm-h, .or-top .s-title, .s-resumen .s-title, .s-participa .s-title, .hs-intro-plain .s-title {
+  font: 800 var(--t-xl)/1.1 'Noto Sans', sans-serif !important; color: var(--ink); letter-spacing: -.01em;
+}
+.card h3 { font: 800 var(--t-l)/1.2 'Noto Sans', sans-serif; letter-spacing: 0; }
+.card p, .or-baj, .pm-sub, .rc p, .s-body, .sol-head p, .ac-head p, .ac-c p { font-size: var(--t-m); line-height: 1.6; }
+.kf b, .nums .n b, .va-card b, .rc-kpi b, .av-h b, .or-chip b, .sc-k b { font-size: var(--t-n) !important; font-weight: 800 !important; }
+.kf span, .nums .n span, .av-h .av-t { font-size: 14px; }
+
+/* ─── Menos decoración y menos efectos ─── */
+.av-ico, .va-ico, .meta-ico, .lr::before { display: none !important; }
+.hero-glow { display: none; }
+mark.fluor, .or-baj .fluor, .or-cierre .fluor { background: none !important; box-shadow: none !important; font-weight: 700; color: inherit; }
+.card { border-top: 0 !important; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,.08), 0 12px 28px -20px rgba(0,0,0,.35); }
+.estado { background: none !important; padding: 0 !important; border-radius: 0; font-size: var(--t-s); color: var(--gris) !important; margin-bottom: 6px; }
+.estado b { color: var(--ink); }
+.facts { display: block; margin-top: 10px; }
+.facts li { display: inline; background: none; border: 0; padding: 0; font-size: var(--t-s); color: var(--gris); font-weight: 400; }
+.facts li + li::before { content: " · "; }
+.js .reveal, .js .rv, .js .card, .js .burbuja { opacity: 1 !important; transform: none !important; }
+.av-h, .av-h:hover { transform: none; background: none; }
+.av-h { border-bottom: 1px solid #e5e0d6; }
+.sk-tip { display: none; }
+
+/* ─── Glosario: términos con definición ─── */
+.gl { border-bottom: 1px dotted currentColor; cursor: help; position: relative; text-decoration: none; }
+.gl::after {
+  content: attr(data-def); position: absolute; left: 50%; bottom: calc(100% + 8px); transform: translate(-50%, 4px); width: max-content; max-width: min(250px, 72vw);
+  background: var(--ink); color: #fff; font: 500 12.5px/1.4 'Noto Sans', sans-serif; padding: 8px 11px; border-radius: 6px; opacity: 0; pointer-events: none;
+  transition: opacity .15s, transform .15s; z-index: 80; white-space: normal; text-align: left; font-style: normal; font-weight: 500;
+}
+.gl:hover::after, .gl:focus::after, .gl.on::after { opacity: 1; transform: translate(-50%, 0); }
+
+/* ─── Participa: botón de menú, portada, panel y barra (celular) ─── */
+.nav-pp { background: var(--pp) !important; border-color: var(--pp) !important; color: #fff !important; font-weight: 700; }
+.nav-pp:hover { background: #8f4208 !important; }
+.btn-pp { background: var(--pp); color: #fff; border: 0; cursor: pointer; font-family: inherit; }
+.btn-pp:hover { background: #8f4208; }
+.pp { position: fixed; inset: 0; z-index: 300; background: rgba(12, 22, 26, .58); display: none; align-items: center; justify-content: center; padding: 16px; }
+.pp.open { display: flex; }
+.pp-box { position: relative; width: min(500px, 100%); background: #f6f4ef; border-radius: 10px; padding: 30px 28px 24px; max-height: 92svh; overflow: auto; }
+.pp-box h2 { font: 800 var(--t-l)/1.2 'Noto Sans', sans-serif; margin: 0 28px 6px 0; }
+.pp-box p { font-size: 15px; color: var(--gris); margin-bottom: 14px; }
+.pp-x { position: absolute; top: 10px; right: 14px; border: 0; background: none; font-size: 30px; line-height: 1; cursor: pointer; color: var(--ink); }
+.pp-l { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 15px 16px; margin-top: 8px; background: #fff; border: 1px solid #e0dbd4; border-radius: 6px; font: 600 15px 'Noto Sans', sans-serif; color: var(--ink); text-decoration: none; }
+.pp-l:hover { border-color: var(--pp); }
+.pp-l i { font-style: normal; color: var(--pp); font-weight: 800; }
+.pp-bar { display: none; }
+
+/* ─── Portada ─── */
+.hero-cta { gap: 12px; }
+.hero-cta .btn { border-radius: 6px; }
+
+/* ─── Mapa de ubicación (introducción) ─── */
+.or-loc { position: absolute; right: 12px; top: 12px; width: 150px; background: #fff; border: 1px solid #e0dbd4; border-radius: 6px; padding: 6px 6px 4px; z-index: 3; }
+.or-loc svg { display: block; width: 100%; height: auto; }
+.or-loc small { display: block; font-size: 11px; line-height: 1.2; color: var(--gris); text-align: center; margin-top: 3px; }
+
+/* ─── La solución: cuatro tarjetas con foto ─── */
+.s-sol { background: #f6f4ef; padding: 70px 0 26px; min-height: 100svh; min-height: 100vh; display: flex; align-items: center; }
+.s-sol > .fit-in { width: 100%; }
+.sol-head { max-width: 1240px; margin: 0 auto 20px; padding: 0 28px; }
+.sol-head h2 { margin: 0 0 6px; }
+.sol-head p { color: var(--gris); margin: 0; }
+.sol-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; max-width: 1240px; margin: 0 auto; padding: 0 28px; }
+.sol-c { position: relative; display: flex; align-items: flex-end; min-height: clamp(360px, 60svh, 560px); color: #fff; text-decoration: none; border-radius: 8px; overflow: hidden; background-color: #2b3a40; background-size: cover; background-position: center; transition: transform .25s; }
+.sol-c::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,20,24,.05) 30%, rgba(10,20,24,.86)); }
+.sol-c:hover { transform: translateY(-4px); }
+.sc-n { position: absolute; top: 14px; left: 14px; width: 34px; height: 34px; border-radius: 50%; background: var(--c); color: #fff; font: 800 16px/34px 'Noto Sans', sans-serif; text-align: center; }
+.sc-b { position: relative; display: block; padding: 18px 18px 20px; }
+.sc-b strong { display: block; font: 800 clamp(20px, 1.8vw, 26px)/1.15 'Noto Sans', sans-serif; }
+.sc-p { display: block; font-size: 14px; line-height: 1.45; margin-top: 8px; opacity: .94; }
+.sc-k { display: block; margin-top: 12px; font-size: 13px; opacity: .95; }
+.sc-k b { display: block; line-height: 1.05; }
+.sc-go { display: inline-block; margin-top: 12px; font: 700 14px 'Noto Sans', sans-serif; border-bottom: 2px solid #fff; padding-bottom: 1px; }
+
+/* ─── Tira de fotos ─── */
+.s-franja { background: #fbfbfa; padding: 44px 0 40px; }
+.fr-head { max-width: 1240px; margin: 0 auto 14px; padding: 0 28px; }
+.fr-head h2 { margin: 0; }
+.burbuja.franja { grid-column: auto; align-self: auto; justify-self: auto; position: relative; width: min(1240px, 100%); aspect-ratio: auto; height: auto; margin: 0 auto; padding: 0 28px; background: none; border: 0; border-radius: 0; box-shadow: none; overflow: visible; }
+.franja .bu-track { display: grid; grid-auto-flow: column; grid-auto-columns: calc((100% - 36px) / 4); gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; touch-action: pan-x pan-y; height: auto; }
+.franja .bu-slide { flex: none; height: clamp(190px, 34svh, 300px); border-radius: 6px; overflow: hidden; scroll-snap-align: start; background: #e8e5df; }
+.franja .bu-slide img { cursor: zoom-in; }
+.franja .bu-slide figcaption { font-size: 12.5px; padding: 26px 12px 9px; }
+.franja .bu-dots, .franja .bu-btn { display: none; }
+
+/* ─── Actores ─── */
+.s-actores { background: #f6f4ef; padding: 96px 0 36px; }
+.ac-in { max-width: 1180px; margin: 0 auto; padding: 0 28px; }
+.ac-head h1 { margin: 0 0 8px; }
+.ac-head p { color: var(--gris); max-width: 60ch; margin: 0; }
+.ac-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 28px; }
+.ac-c { background: #fff; border: 1px solid #e0dbd4; border-radius: 8px; padding: 20px; display: flex; flex-direction: column; gap: 8px; }
+.ac-c h3 { font: 800 18px/1.25 'Noto Sans', sans-serif; margin: 0; }
+.ac-c p { color: var(--gris); margin: 0; flex: 1; font-size: 15px; }
+.ac-k { font: 800 15px 'Noto Sans', sans-serif; color: var(--acc); border-top: 1px solid #ece8e0; padding-top: 10px; }
+
+/* ─── Primera tarjeta de "Por proyecto": los cuatro mensajes ─── */
+.p0-lemas { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; }
+.p0-l { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: #fff; border: 1px solid #e0dbd4; border-radius: 6px; color: var(--ink); text-decoration: none; font: 700 14px/1.2 'Noto Sans', sans-serif; }
+.p0-l:hover { border-color: var(--c); }
+.p0-l b { flex: none; width: 26px; height: 26px; border-radius: 50%; background: var(--c); color: #fff; display: grid; place-items: center; font-size: 13px; }
+
+/* ─── Cierre de las páginas de detalle ─── */
+.hs-fin { gap: 14px; }
+.hs-fin .btn-dark { background: var(--pp); border: 0; cursor: pointer; font-family: inherit; }
+
+/* ─── Texto plegable (solo celular) ─── */
+.mas { display: none; }
+
+/* ============================================================================
+   CELULAR: diseño propio. Una columna, fotos grandes, texto mínimo; el detalle
+   queda en segundo plano ("Leer más").
+   ============================================================================ */
+@media (max-width: 900px) {
+  body { padding-bottom: 66px; }
+  a.nav-btn.nav-link { display: none; }
+  .nav-pp { padding: 7px 12px; font-size: 13px; }
+  #main-nav { gap: 6px; }
+  .pp { align-items: flex-end; padding: 0; }
+  .pp-box { width: 100%; border-radius: 14px 14px 0 0; padding: 24px 18px 22px; }
+  .pp-bar { display: block; position: fixed; left: 12px; right: 12px; bottom: 12px; z-index: 90; height: 48px; border: 0; border-radius: 8px; background: var(--pp); color: #fff; font: 700 15px 'Noto Sans', sans-serif; box-shadow: 0 8px 22px -8px rgba(0,0,0,.5); transform: translateY(140%); transition: transform .3s ease; }
+  .pp-bar.show { transform: none; }
+
+  /* portada */
+  .hero-cta { flex-direction: column; width: min(320px, 100%); margin-top: 22px; }
+  .hero-cta .btn { width: 100%; justify-content: center; padding: 14px 20px; }
+
+  /* títulos y textos más chicos */
+  :root { --t-xl: 25px; --t-l: 19px; --t-m: 15px; --t-n: 28px; }
+  .or-pie .or-cierre { font-size: 13px; }
+
+  /* la solución: cuatro tarjetas apiladas con foto */
+  .s-sol { display: block; min-height: 0; padding: 64px 0 18px; }
+  .sol-head { padding: 0 16px; margin-bottom: 12px; }
+  .sol-head p { font-size: 14px; }
+  .sol-grid { grid-template-columns: 1fr; gap: 10px; padding: 0 12px; }
+  .sol-c { min-height: 220px; }
+  .sc-p { display: none; }
+  .sc-b { padding: 14px 14px 16px; }
+  .sc-b strong { font-size: 21px; }
+  .sc-k b { display: inline; font-size: 24px !important; margin-right: 6px; }
+  .sc-go { margin-top: 10px; }
+
+  /* tira de fotos: se desliza de lado */
+  .s-franja { padding: 28px 0 24px; }
+  .fr-head { padding: 0 16px; margin-bottom: 10px; }
+  .burbuja.franja { padding: 0 12px; }
+  .franja .bu-track { grid-auto-columns: 78%; }
+  .franja .bu-slide { height: 210px; }
+
+  /* actores */
+  .s-actores { padding: 76px 0 24px; }
+  .ac-in { padding: 0 16px; }
+  .ac-grid { grid-template-columns: 1fr; gap: 10px; margin-top: 18px; }
+  .ac-c { padding: 16px; }
+
+  /* Por proyecto: tarjeta corta; el detalle se abre con "Leer más" */
+  #proyecto .card.plegable p { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  #proyecto .card.plegable p + p, #proyecto .card.plegable .facts, #proyecto .card.plegable .fuente { display: none; }
+  #proyecto .card.plegable.abierto p { display: block; }
+  #proyecto .card.plegable.abierto p + p, #proyecto .card.plegable.abierto .fuente { display: block; }
+  #proyecto .card.plegable.abierto .facts { display: block; }
+  .card.plegable .mas { display: inline-block; margin: 6px 0 0; padding: 6px 0; border: 0; background: none; color: var(--acc); font: 700 14px 'Noto Sans', sans-serif; cursor: pointer; }
+  .p0-lemas { grid-template-columns: 1fr 1fr; }
+  .p0-l { font-size: 13px; padding: 9px 10px; }
+  .estado { font-size: 12px; margin-bottom: 4px; }
+
+  /* Participa y fuentes */
+  .s-participa .participa-texto { text-align: left; }
+  .s-fuentes { padding: 28px 0 24px; }
+  .fu-in { padding: 0 16px; }
+  .fu-in ul { grid-template-columns: 1fr; gap: 6px; }
+  .or-loc { width: 84px; right: auto; left: 8px; top: auto; bottom: 8px; padding: 4px 4px 2px; }
+  .or-loc small { display: none; }
+  .gl::after { left: 0; transform: translate(0, 4px); }
+  .gl:hover::after, .gl:focus::after, .gl.on::after { transform: translate(0, 0); }
+}
+
+/* pantallas muy altas y angostas (tablet vertical) */
+@media (min-width: 640px) and (max-width: 900px) {
+  .sol-grid { grid-template-columns: 1fr 1fr; }
+  .sol-c { min-height: 300px; }
+  .ac-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (min-width: 901px) and (max-width: 1180px) {
+  .sol-grid { grid-template-columns: 1fr 1fr; }
+  .sol-c { min-height: clamp(220px, 34svh, 360px); }
+  .ac-grid { grid-template-columns: 1fr 1fr; }
+  .franja .bu-track { grid-auto-columns: calc((100% - 12px) / 2); }
+}
+
+.oloc .lo-e { fill: #ece8df; stroke: #b8b2a6; stroke-width: 2; }
+.oloc .lo-h { fill: #e2dccf; stroke: #9a948a; stroke-width: 2; }
+.oloc .lo-c { fill: #cfc8ba; stroke: #8a847a; stroke-width: 1.5; }
+.oloc .lo-d { fill: rgba(2, 93, 110, .38); stroke: #025d6e; stroke-width: 2.5; }
+.oloc .lo-t { fill: var(--pp); stroke: #fff; stroke-width: 3; }
+.oloc .ll { font: 700 58px 'Noto Sans', sans-serif; fill: #3d3a36; paint-order: stroke; stroke: rgba(255,255,255,.8); stroke-width: 6px; }
+.pp-bar.oculta { transform: translateY(140%) !important; }
+
+/* ─── Escala de tamaños: se consolidan los valores sueltos ─── */
+figcaption, .vi-pista, .fu-nota, .or-nota, .fr-head small { font-size: 13px; }
+.pm-h-sub, .va-t, .av-t { font-size: 15px; }
+.or-cierre, .pm-sub { font-size: 16px; }
+.pm-puente { font-size: var(--t-l); }
+.hs-subtitle { font-size: 18px; }
+.hero-cta .btn, .or-btn { font-size: 15px; }
+
+/* modo noche: las fotos de las tarjetas y del índice conservan sus colores */
+html[data-theme="dark"] .sol-c, html[data-theme="dark"] .ic-img { filter: invert(1) hue-rotate(180deg); }
+
+/* índice de 7 entradas */
+@media (min-width: 1101px) { .idx-cols { grid-template-columns: repeat(7, minmax(0, 1fr)); } .ic-img { height: clamp(170px, 44svh, 460px); } }

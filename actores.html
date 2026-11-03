@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Actores · Río Tula: Plan de Saneamiento y Restauración 2024-2030</title>
+  <meta name="description" content="El proyecto para sanear y restaurar el río Tula: un río más limpio, más seguro, más vivo y para todas y todos." />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/temas.css?v=34" />
+  <link rel="stylesheet" href="css/historia.css?v=34" />
+  <link rel="stylesheet" href="css/capitulos.css?v=34" />
+  <link rel="stylesheet" href="css/sistema.css?v=34" />
+<link rel="preload" as="image" href="img/video/diagnostico_7.jpg" />
+  <script>(function(){var h=document.documentElement;h.classList.add('js');try{var s=localStorage;if(s.getItem('rt-noche')==='1')h.dataset.theme='dark';if(s.getItem('rt-cvd')==='1')h.dataset.cvd='1'}catch(e){}})()</script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<filter id="f-rosa"    color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.753  0 0 0 0 0.478  0 0 0 0 0.447  0 0 0 1 0"/></filter>
+<filter id="f-naranja" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.788  0 0 0 0 0.400  0 0 0 0 0.122  0 0 0 1 0"/></filter>
+<filter id="f-naranja-x2" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.788  0 0 0 0 0.400  0 0 0 0 0.122  0 0 0 2.6 0"/></filter>
+<filter id="f-verde"   color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.435  0 0 0 0 0.420  0 0 0 0 0.100  0 0 0 1 0"/></filter>
+<filter id="f-slate"   color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 0.396  0 0 0 0 0.455  0 0 0 0 0.545  0 0 0 1 0"/></filter>
+</defs></svg>
+<div id="progress"></div>
+
+<nav id="main-nav">
+  <a class="nav-logo" href="index.html">Río Tula <span>/ Proyecto 2024-2030</span></a>
+  <div class="nav-right">
+    <a class="nav-btn nav-link" href="proyecto.html">Por proyecto</a><a class="nav-btn nav-link" href="historia.html">La historia</a>
+    <button class="nav-btn nav-pp" id="ppBtn" type="button" data-pp>Participa</button>
+    <div class="a11y">
+      <button class="nav-btn a11y-btn" id="a11yBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="a11yMenu" aria-label="Accesibilidad" title="Accesibilidad">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v18" /><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg>
+      </button>
+      <div class="a11y-menu" id="a11yMenu" role="group" aria-label="Accesibilidad">
+        <p class="a11y-t">Accesibilidad</p>
+        <label class="a11y-sw"><input type="checkbox" id="swNoche"><span class="sw"></span><span>Modo noche</span></label>
+        <label class="a11y-sw"><input type="checkbox" id="swCvd"><span class="sw"></span><span>Modo daltonismo</span></label>
+      </div>
+    </div>
+    <button class="nav-btn" id="idxBtn" type="button">☰ Índice</button>
+  </div>
+</nav>
+
+<div class="idx-panel" id="idxPanel" role="dialog" aria-label="Índice">
+  <button class="idx-close" id="idxClose" type="button" aria-label="Cerrar">×</button>
+  <div class="idx-box"><p class="idx-k">Índice</p><ol class="idx-cols"><li><a href="index.html#origen" style="--c:#025d6e;--bp:50% 50%" data-img="img/fotos/diagnostico/1_Descargas%20residuales%20directas%20al%20r%C3%ADo.jpg"><span class="ic-n">01</span><span class="ic-img"></span><span class="ic-t">De dónde viene el agua</span><small>El problema: los afluentes del río Tula</small></a></li><li><a href="index.html#avance" style="--c:#025d6e;--bp:50% 50%" data-img="img/fotos/inundaciones-1/10_Gaviones%20en%20El%20Chamizal%20-%202026.jpg"><span class="ic-n">02</span><span class="ic-img"></span><span class="ic-t">Ya está en marcha</span><small>Lo que se hizo en 2025 y 2026</small></a></li><li><a href="index.html#solucion" style="--c:#025d6e;--bp:50% 50%" data-img="img/fotos/calidad-1/1_PTAR%20Atotonilco.jpg"><span class="ic-n">03</span><span class="ic-img"></span><span class="ic-t">La solución</span><small>Cuatro mensajes, un mismo río</small></a></li><li><a href="proyecto.html" style="--c:#025d6e;--bp:50% 50%" data-img="img/fotos/ecosistemas-4/11_OBJETIVO%202026%20-%20El%20Chamizal.jpg"><span class="ic-n">04</span><span class="ic-img"></span><span class="ic-t">Por proyecto</span><small>Cada proyecto con su mapa, fotos y avance</small></a></li><li><a href="historia.html" style="--c:#025d6e;--bp:40% 50%" data-img="img/mapa/historia-final.webp"><span class="ic-n">05</span><span class="ic-img"></span><span class="ic-t">Historia del río</span><small>Cómo llegó a esta condición</small></a></li><li><a href="actores.html" style="--c:#025d6e;--bp:50% 50%" data-img="img/fotos/ecosistemas-3/1_Puma%20encontrado%20en%20una%20ADVC%20a%203%20km%20del%20r%C3%ADo%20-%202026.png"><span class="ic-n">06</span><span class="ic-img"></span><span class="ic-t">Quiénes participan</span><small>Instituciones y comunidades</small></a></li><li><a href="index.html#participa" style="--c:#b05510;--bp:50% 50%" data-img="img/fotos/participa/1_Jornada%20de%20limpieza%20en%20Chapultepec%20-%202025.jpg"><span class="ic-n">07</span><span class="ic-img"></span><span class="ic-t">Participa</span><small>Cómo sumarte al proyecto</small></a></li></ol></div>
+</div>
+
+<div class="lightbox" id="lightbox"><button class="lightbox-close" type="button" aria-label="Cerrar">×</button><button class="lightbox-nav lightbox-prev" type="button" aria-label="Anterior">‹</button><img id="lightboxImg" alt=""><button class="lightbox-nav lightbox-next" type="button" aria-label="Siguiente">›</button><div class="lightbox-cap" id="lightboxCap"></div></div>
+
+<div class="pp" id="ppPanel" role="dialog" aria-label="Súmate a recuperar el río"><div class="pp-box"><button class="pp-x" type="button" aria-label="Cerrar">×</button><h2>Súmate a recuperar el río</h2><p>Elige cómo quieres participar.</p><div class="pp-ls"><a class="pp-l" href="https://forms.gle/ywk73PzvLo6HkGVFA" target="_blank" rel="noopener">Participa en eventos<i>→</i></a><a class="pp-l" href="https://forms.gle/ywk73PzvLo6HkGVFA" target="_blank" rel="noopener">Recibe información<i>→</i></a><a class="pp-l" href="https://forms.gle/ywk73PzvLo6HkGVFA" target="_blank" rel="noopener">Sugerencias o propuestas de colaboración<i>→</i></a><a class="pp-l" href="https://www.profepa.gob.mx/innovaportal/v/1156/1/mx/haz_tu_denuncia.html" target="_blank" rel="noopener">Denuncia a una industria que contamina el río<i>→</i></a></div></div></div><button class="pp-bar" id="ppBar" type="button" data-pp>Participa</button>
+
+<section class="s-actores" id="actores" data-nav="light"><div class="ac-in"><div class="ac-head"><span class="s-tag">Actores</span><h1>Quiénes hacen posible el proyecto</h1><p>Instituciones, gobiernos y comunidades que trabajan juntos por el río Tula.</p></div><div class="ac-grid"><article class="ac-c"><h3>Semarnat</h3><p>Coordina el proyecto y, junto con Conagua, recupera la laguna de Bojay.</p><span class="ac-k">37 proyectos</span></article><article class="ac-c"><h3>Conagua</h3><p>Trata más agua en la PTAR Atotonilco, desazolva el río, estabiliza taludes y mide el caudal.</p><span class="ac-k">$112 mdp/año en Atotonilco</span></article><article class="ac-c"><h3>Profepa</h3><p>Inspecciona a las industrias que descargan al río, junto con Conagua.</p><span class="ac-k">111 inspecciones</span></article><article class="ac-c"><h3>Conafor</h3><p>Sanea y planta árboles en las riberas y restaura suelo forestal con ejidos.</p><span class="ac-k">2,152 ha en restauración</span></article><article class="ac-c"><h3>Conanp</h3><p>Certifica áreas que sus dueños deciden conservar.</p><span class="ac-k">1,700 ha certificadas</span></article><article class="ac-c"><h3>Gobierno de Hidalgo</h3><p>Construye los colectores que llevan el drenaje de Tula a una planta de tratamiento.</p><span class="ac-k">35.8 km de colectores</span></article><article class="ac-c"><h3>CFE</h3><p>Rehabilita su planta de tratamiento, que recibirá el drenaje de Tula.</p><span class="ac-k">Planta en rehabilitación</span></article><article class="ac-c"><h3>Centro Regional de Prevención Ambiental (UTTT)</h3><p>Capacita y certifica a las industrias para mejorar sus procesos.</p><span class="ac-k">29 industrias en certificación</span></article><article class="ac-c"><h3>Comunidades y ejidos</h3><p>Restauran bosques junto con Conafor y usarán los nuevos espacios públicos junto al río.</p><span class="ac-k">5 espacios públicos</span></article></div></div></section><section class="hs-fin" data-nav="light"><button class="btn btn-dark" type="button" data-pp>Participa</button><a class="hs-volver" href="index.html">← Volver al inicio</a></section><footer>Secretaría de Medio Ambiente y Recursos Naturales · Proyecto de Saneamiento y Restauración del Río Tula 2024-2030<br>Datos: base de proyectos 2025-2026 (Conagua, Semarnat, Conafor, Conanp, Profepa y Gobierno de Hidalgo)</footer>
+
+<script data-goatcounter="https://riotula.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script src="js/sitio.js?v=34"></script>
+</body>
+</html>

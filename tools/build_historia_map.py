@@ -491,3 +491,31 @@ for _clv, _d in DISTRITOS.items():
 om.append("</svg>")
 open(os.path.join(ROOT, "tools", "fragmentos", "origen_mapa.html"), "w", encoding="utf-8").write("".join(om))
 print("origen_mapa.html: %d KB · portal %.0f,%.0f" % (sum(len(x) for x in om) // 1024, portal[0], portal[1]))
+
+# ══════════════════════════════════════════════════════════════════════════
+#  MAPA DE UBICACIÓN (pequeño, esquina del mapa de la introducción):
+#  Hidalgo, Estado de México y CDMX con la cuenca del río Tula resaltada
+#  (tools/fragmentos/origen_loc.html)
+# ══════════════════════════════════════════════════════════════════════════
+_d_h = layer_path("hidalgo.geojson", simplify_m=900)
+_d_e = layer_path("edomex.geojson", simplify_m=900)
+_d_c = layer_path("cdmx.geojson", simplify_m=500)
+_d_dl = layer_path("delimitacion.geojson", simplify_m=500)
+_nums = [float(v) for v in re.findall(r'-?\d+\.?\d*', _d_h + " " + _d_e + " " + _d_c)]
+_xs, _ys = _nums[0::2], _nums[1::2]
+_x0, _x1, _y0, _y1 = min(_xs) - 6, max(_xs) + 6, min(_ys) - 6, max(_ys) + 6
+_lab = lambda t, x, y: '<text x="%.0f" y="%.0f" text-anchor="middle" class="ll">%s</text>' % (x, y, t)
+_hc = _en = None
+_gh = [g for g, _ in feature_geoms(load("hidalgo.geojson"))]
+_ge = [g for g, _ in feature_geoms(load("edomex.geojson"))]
+_pc = lambda geoms: P(*unary_union(geoms).representative_point().coords[0])
+_hc, _en = _pc(_gh), _pc(_ge)
+_tula = C("Tula de Allende")
+_svg = ('<svg class="oloc" viewBox="%.0f %.0f %.0f %.0f" role="img" aria-label="Ubicación del río Tula en Hidalgo y el Estado de México">'
+        '<path class="lo-e" d="%s"/><path class="lo-h" d="%s"/><path class="lo-c" d="%s"/><path class="lo-d" d="%s"/>'
+        '<circle class="lo-t" cx="%.0f" cy="%.0f" r="9"/>%s%s</svg>'
+        % (_x0, _y0, _x1 - _x0, _y1 - _y0, _d_e, _d_h, _d_c, _d_dl, _tula[0], _tula[1],
+           _lab("HIDALGO", _hc[0] + 40, _hc[1] - 60), _lab("EDO. MÉX.", _en[0] - 30, _en[1] + 130)))
+open(os.path.join(ROOT, "tools", "fragmentos", "origen_loc.html"), "w", encoding="utf-8").write(
+    '<div class="or-loc">%s<small>Zona de intervención</small></div>' % _svg)
+print("origen_loc.html: %d KB" % (len(_svg) // 1024))

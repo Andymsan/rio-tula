@@ -231,6 +231,7 @@
     track.addEventListener('scroll', setDot, { passive: true });
     setDot();
     const go = dir => {
+      if (root.classList.contains('franja')) return;
       const w = Math.max(1, track.clientWidth), n = Math.round(track.scrollLeft / w) + dir;
       track.scrollTo({ left: ((n + slides.length) % slides.length) * w, behavior: 'smooth' });
     };
@@ -245,6 +246,7 @@
     let tx = 0, ty = 0;
     track.addEventListener('touchstart', e => { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
     track.addEventListener('touchend', e => {
+      if (root.classList.contains('franja')) return;
       const t = e.changedTouches[0], dx = t.clientX - tx, dy = t.clientY - ty;
       if (Math.abs(dx) > 36 && Math.abs(dx) > Math.abs(dy) * 1.4) go(dx < 0 ? 1 : -1);
     }, { passive: true });
@@ -257,7 +259,7 @@
       if (!fig || !$('img', fig)) return;
       document.dispatchEvent(new CustomEvent('ampliar', { detail: { track, index: slides.indexOf(fig) } }));
     });
-    if (slides.length < 2) {
+    if (slides.length < 2 || root.classList.contains('franja')) {
       $('.bu-prev', root).hidden = true; $('.bu-next', root).hidden = true; dots.hidden = true;
       const hint = $('.bu-hint', root); if (hint) hint.hidden = true;
     }
@@ -577,6 +579,49 @@
     addEventListener('resize', upd); upd();
   }
 
+  /* ── Participa: panel disponible en todas las páginas ── */
+  function initParticipa() {
+    const panel = $('#ppPanel'); if (!panel) return;
+    const abrir = on => { panel.classList.toggle('open', on); document.body.style.overflow = on ? 'hidden' : ''; };
+    $$('[data-pp]').forEach(b => b.addEventListener('click', e => { e.preventDefault(); abrir(true); }));
+    $('.pp-x', panel).addEventListener('click', () => abrir(false));
+    panel.addEventListener('click', e => { if (e.target === panel) abrir(false); });
+    addEventListener('keydown', e => { if (e.key === 'Escape') abrir(false); });
+    const bar = $('#ppBar');
+    if (bar) {
+      const upd = () => bar.classList.toggle('show', scrollY > innerHeight * 0.55);
+      addEventListener('scroll', upd, { passive: true }); upd();
+      // la barra se esconde cuando ya se ve la sección de Participa
+      const sec = $('.s-participa');
+      if (sec) new IntersectionObserver(es => es.forEach(e => bar.classList.toggle('oculta', e.isIntersecting)), { threshold: 0.25 }).observe(sec);
+    }
+  }
+
+  /* ── Glosario: tocar un término subrayado muestra su definición ── */
+  function initGlosario() {
+    document.addEventListener('click', e => {
+      const g = e.target.closest('.gl');
+      $$('.gl.on').forEach(x => { if (x !== g) x.classList.remove('on'); });
+      if (g) g.classList.toggle('on');
+    });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') $$('.gl.on').forEach(x => x.classList.remove('on')); });
+  }
+
+  /* ── Celular: el detalle queda en segundo plano (texto plegado con "Leer más") ── */
+  function initPlegable() {
+    $$('#proyecto .card').forEach(card => {
+      const ps = $$('p', card); if (!ps.length) return;
+      const largo = ps.reduce((n, p) => n + p.textContent.length, 0);
+      if (largo < 150) return;
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'mas'; b.textContent = 'Leer más';
+      b.addEventListener('click', () => { const on = card.classList.toggle('abierto'); b.textContent = on ? 'Leer menos' : 'Leer más'; fitCards(); });
+      card.classList.add('plegable');
+      const kf = $('.kf', card);
+      if (kf) card.insertBefore(b, kf); else card.append(b);
+    });
+  }
+
   /* ── Arranque ─────────────────────────────────────────────────────── */
   function boot() {
     buildNavObs(); buildStepObs();
@@ -587,10 +632,12 @@
     initOrigen();
     initRail();
     initA11y();
+    initParticipa();
+    initGlosario();
+    initPlegable();
     initDiag();
     initVideo();
     initIosStage();
-    initContadores();
     fitAll();
     initLightbox();
   }

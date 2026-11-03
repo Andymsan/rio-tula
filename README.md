@@ -4,8 +4,10 @@ Sitio del Plan de Saneamiento y Restauración del Río Tula (2024–2030).
 
 | Página | Qué es |
 |---|---|
-| `index.html` | **Sitio de scroll (borrador):** portada con índice → de dónde viene el agua del río Tula (mapa de afluentes) → fotos de diagnóstico → compromiso 92 → el proyecto → cuatro lemas a pantalla completa (un río más limpio / seguro / vivo / para todas y todos), cada uno seguido de sus proyectos → resumen (mapa con las 5 metas) → participa |
-| `historia.html` | **Subpágina de la historia del río** (mapa por épocas); se llega desde la portada y la introducción |
+| `index.html` | **Portada corta (landing, ~8 pantallas):** portada con video y Participa → de dónde viene el agua (con mapa de ubicación) → fotos de diagnóstico → compromiso 92 → ya está en marcha → tira de fotos de obra → la solución (cuatro mensajes con foto) → participa → fuentes |
+| `proyecto.html` | **Por proyecto:** los cuatro mensajes proyecto por proyecto, con mapa fijo, fotos y avance, y el resumen de cinco metas |
+| `historia.html` | **Historia del río** (mapa por épocas) |
+| `actores.html` | **Quiénes participan:** instituciones y comunidades (datos de `## actores` en TEXTOS.md; Ariel: revisar) |
 | `mapa.html` | Visor interactivo (Leaflet). No se enlaza desde el sitio; se conserva por si se necesita. |
 
 ## Cómo verlo
@@ -16,7 +18,7 @@ Sitio del Plan de Saneamiento y Restauración del Río Tula (2024–2030).
 ## Estructura
 
 ```
-index.html, historia.html ← GENERADOS (no editar a mano): TEXTOS.md + tools/build_index.py
+index.html, proyecto.html, historia.html, actores.html ← GENERADOS (no editar a mano): TEXTOS.md + tools/build_index.py
 TEXTOS.md             ← TODOS LOS TEXTOS de la página (se editan aquí, en GitHub)
 COMENTARIOS.md        ← comentarios de revisión sobre el sitio (se reemplaza en cada ronda)
 DATOS.md              ← cifras de referencia, fuentes y datos pendientes de confirmar
@@ -83,3 +85,11 @@ prefijo, se usa el primer video `diagnostico_…`. No se reproduce con ahorro de
 - `datos-proyectos.xlsx`: fuente de datos de proyectos 2025–2026.
 - Capas geográficas que aún no se pueden agregar con precisión (industrias, estaciones de
   monitoreo, cárcamo de bombeo, vía del tren, topografía) están listadas en `DATOS.md`.
+
+
+## Estructura de la página (nov 2026)
+
+- **Participa** aparece en el menú de todas las páginas (abre un panel con los 4 enlaces), en la portada, en el cierre de cada página y, en celular, como barra inferior.
+- **Glosario:** en `TEXTOS.md`, `[[término::definición]]` muestra la definición al tocar el término.
+- **Estilo:** `css/sistema.css` se carga al final y concentra el sistema de diseño (5 estilos de texto, un acento, un color de acción) y el diseño propio de celular (texto plegado con "Leer más", barra Participa, tarjetas apiladas).
+- **Fotos de la tira "Así se ve hoy" y de las tarjetas de "La solución":** salen solas de las carpetas de `img/fotos/` (la primera foto de cada una).

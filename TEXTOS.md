@@ -44,7 +44,7 @@ logo: Río Tula
 logo_sub: / Proyecto 2024-2030
 boton_indice: ☰ Índice
 boton_historia: La historia
-boton_proyecto: El proyecto
+boton_proyecto: Por proyecto
 boton_acc: Accesibilidad
 modo_noche: Modo noche
 modo_daltonismo: Modo daltonismo
@@ -57,41 +57,33 @@ eyebrow: Proyecto de saneamiento y restauración · 2024-2030
 titulo: Río Tula
 subtitulo: Descubre **cómo** el río Tula se convirtió en uno de los más contaminados del país y **qué** estamos haciendo para transformarlo.
 boton: Comenzar el recorrido ↓
-boton2: Conoce la historia del río →
+boton2: Participa
 
-## indice-origen  (recuadro 1 del índice: lleva a "De dónde viene el agua")
+## indice-origen  (1: el problema)
 titulo: De dónde viene el agua
-descripcion: Los afluentes del río Tula
+descripcion: El problema: los afluentes del río Tula
 
-## indice-historia  (lleva a la subpágina de la Historia)
+## indice-avance  (2)
+titulo: Ya está en marcha
+descripcion: Lo que se hizo en 2025 y 2026
+
+## indice-solucion  (3)
+titulo: La solución
+descripcion: Cuatro mensajes, un mismo río
+
+## indice-proyecto  (4: la página proyecto.html)
+titulo: Por proyecto
+descripcion: Cada proyecto con su mapa, fotos y avance
+
+## indice-historia  (5)
 titulo: Historia del río
 descripcion: Cómo llegó a esta condición
 
-## indice-proyecto  (lleva a El proyecto)
-titulo: El proyecto
-descripcion: Cuatro mensajes, un mismo río
+## indice-actores  (6: la página actores.html)
+titulo: Quiénes participan
+descripcion: Instituciones y comunidades
 
-## indice-limpio  (subíndice: Un río más limpio)
-titulo: Un río más limpio
-descripcion: Atotonilco, drenaje de Tula, industria y monitoreo
-
-## indice-seguro  (subíndice: Un río más seguro)
-titulo: Un río más seguro
-descripcion: Taludes, desazolve y monitoreo del caudal
-
-## indice-vivo  (subíndice: Un río más vivo)
-titulo: Un río más vivo
-descripcion: Riberas, laguna de Bojay y bosques
-
-## indice-todos  (subíndice: Un río para todas y todos)
-titulo: Un río para todas y todos
-descripcion: Espacio público: cinco lugares para reconectar con el río
-
-## indice-resumen  (subíndice: Resumen)
-titulo: Resumen
-descripcion: El mapa completo y las cinco metas del proyecto
-
-## indice-participa  (lleva a Participa)
+## indice-participa  (7)
 titulo: Participa
 descripcion: Cómo sumarte al proyecto
 
@@ -105,8 +97,8 @@ tab2: A dónde va
 secas: Secas
 lluvias: Lluvias
 viene_titulo: Caudal que recibe el río Tula
-viene_pista: Toca cada fuente para verla en el mapa. Caudal en m³/s, promedio 2021-2024.
-va_titulo: Cada segundo, esto es lo que pasa con el agua que llega al Portal de Salida
+viene_pista: Toca cada fuente para verla en el mapa. [[Caudal::cantidad de agua que pasa por segundo]] en m³/s, promedio 2021-2024.
+va_titulo: Cada segundo, esto es lo que pasa con el agua que llega al [[Portal de Salida::punto donde se juntan las aguas del Valle de México antes de ir a la planta o al río]]
 va_agri: 26.3 m³/s | Agricultura | Riego del distrito 003, en el Valle del Mezquital | 76
 va_rio: 8.1 m³/s | Río Tula | Sigue hacia la presa Endhó, donde se almacena para riego | 24
 va_nota: Caudal en m³/s en temporada de secas, promedio 2021-2024. Además, 1.0 m³/s se pierde en la planta.
@@ -122,21 +114,25 @@ titulo: Así encontramos el río
 etiqueta: Frente 1 · Calidad del agua
 titulo: Un río más limpio
 texto: Tratamos más agua, captamos el drenaje de Tula y vigilamos a la industria.
+cifra: 38 m³/s | de agua tratada en Atotonilco
 
 ## lema-seguro  (banner; foto opcional en img/fotos/lema-seguro/)
 etiqueta: Frente 2 · Inundaciones
 titulo: Un río más seguro
 texto: Protegemos a las familias de Tula cuando el río crece.
+cifra: 3.9 km | de río desazolvado
 
 ## lema-vivo  (banner; foto opcional en img/fotos/lema-vivo/)
 etiqueta: Frente 3 · Ecosistemas
 titulo: Un río más vivo
 texto: Recuperamos riberas, bosques y cuerpos de agua para que el río vuelva a tener vida.
+cifra: 1,700 ha | certificadas para conservación
 
 ## lema-todos  (banner; foto opcional en img/fotos/lema-todos/)
 etiqueta: Frente 4 · Espacio público
 titulo: Un río para todas y todos
 texto: Construimos lugares para que la gente de Tula se reconecte con su río.
+cifra: 5 | proyectos de espacio público
 
 ## historia-intro  (texto antes del mapa de la historia — ahora es la subpágina historia.html)
 etiqueta: 1 · El río y su historia
@@ -236,10 +232,10 @@ hecho4: 3.9 km | de río desazolvado
 hecho5: 21 | estaciones de caudal instaladas
 hecho6: 1,900 | árboles saneados o plantados en las riberas
 hecho7: 1,700 ha | certificadas para conservación
-siguiente: Conoce cada proyecto ↓
+siguiente: Ver cada proyecto →
 
-## proyecto  (El proyecto: los tres hexágonos)
-banner: El proyecto
+## proyecto  (página proyecto.html: la parte larga, proyecto por proyecto)
+banner: Por proyecto
 
 ## hexagonos  (texto de cada hexágono, sin número — Ariel pidió quitarlo)
 rosa: 1. Mejorar | la calidad del agua
@@ -247,10 +243,10 @@ naranja: 2. Prevenir | inundaciones
 verde: 3. Restaurar | ecosistemas y | espacio público
 centro: Río | Tula
 
-## proyecto-0  (paso 1)
-etiqueta: El proyecto
-titulo: Un río, tres objetivos, 37 proyectos
-texto: Descubre todo lo que estamos haciendo por el río Tula y la población que vive cerca.
+## proyecto-0  (paso 1 de proyecto.html)
+etiqueta: Por proyecto
+titulo: Cuatro mensajes, 37 proyectos
+texto: Aquí está cada proyecto con su mapa, sus fotos y su avance. Elige un mensaje o sigue bajando.
 
 
 cifra: $1,478 MDP | invertidos en 2025 y 2026
@@ -273,7 +269,7 @@ chips: 1 · Atotonilco | 2 · Colector | 3 · Industria
 estado: curso | Operando con más caudal desde 2026
 etiqueta: 1 · Atotonilco
 titulo: Tratar más agua en la planta de Atotonilco
-texto: Históricamente la PTAR Atotonilco trataba **31 m³/s** en promedio. En 2026, incrementamos el caudal tratado a **38 m³/s** y, a partir de 2027, ==la PTAR Atotonilco va a tratar todo el drenaje del río en temporada de secas.==
+texto: Históricamente la [[PTAR::planta de tratamiento de aguas residuales]] Atotonilco trataba **31 m³/s** en promedio. En 2026, incrementamos el caudal tratado a **38 m³/s** y, a partir de 2027, ==la PTAR Atotonilco va a tratar todo el drenaje del río en temporada de secas.==
 cifra: +7 m³/s | adicionales de agua del río tratada desde 2026
 chips: PTAR: planta de tratamiento de aguas residuales | Conagua · $112 mdp/año
 fotos: PTAR Atotonilco | Operación de la planta | Caudal tratado
@@ -282,7 +278,7 @@ fotos: PTAR Atotonilco | Operación de la planta | Caudal tratado
 estado: obra | Etapa 1 al 89 % de avance
 etiqueta: 2 · Drenaje de Tula
 titulo: Tratar las aguas residuales de la ciudad de Tula
-texto: Todo el drenaje de la zona metropolitana de Tula se vierte al río sin tratamiento. El gobierno del estado de Hidalgo construye ==35 km de colectores que van a captar 72 descargas y enviarlas a la PTAR de CFE== para su tratamiento. Los primeros 10 km de colectores y el cárcamo de bombeo ya están construidos.
+texto: Todo el drenaje de la zona metropolitana de Tula se vierte al río sin tratamiento. El gobierno del estado de Hidalgo construye ==35 km de [[colectores::tuberías que recogen el drenaje y lo llevan a una planta de tratamiento]] que van a captar 72 descargas y enviarlas a la PTAR de CFE== para su tratamiento. Los primeros 10 km de colectores y el [[cárcamo de bombeo::estructura que bombea el agua residual hacia la tubería]] ya están construidos.
 cifra: 35.8 km | de colectores en total (10.8 km en obra + 25 km en planeación)
 chips: Gobierno de Hidalgo · $570 MDP | Etapa 1 en ejecución (89 %) | Etapa 2 en planeación | Planta de la CFE en rehabilitación
 fotos: Colector del río Tula · etapa 1 | Línea de conducción a la planta de la CFE | Cárcamo de bombeo
@@ -439,10 +435,38 @@ cifra: 5 | proyectos de espacio público
 
 ## fuentes  (fuentes y notas metodológicas — sustento técnico; Ariel: revisar y completar)
 titulo: Fuentes y notas metodológicas
-items: **Caudales:** base de caudales del proyecto; promedios 2021-2024 de la temporada de secas (estiaje) y de lluvias. | **Calidad del agua:** DBO en mg/L de la hoja de calidad del proyecto, temporada de secas. | **Inundaciones:** capacidad del río y caudal máximo registrado, Conagua. | **Inversión:** base de proyectos 2025-2026, Contralínea (16 jul 2026) y Ámbito. | **Accesibilidad a pie:** isócronas calculadas con OpenRouteService. | **Mapas:** capas SIG del proyecto; relieve sombreado calculado a partir del modelo digital de elevación SRTM.
+items: **Caudales:** base de caudales del proyecto; promedios 2021-2024 de la temporada de secas (estiaje) y de lluvias. | **Inundaciones:** capacidad del río y caudal máximo registrado, Conagua. | **Inversión:** base de proyectos 2025-2026, Contralínea (16 jul 2026) y Ámbito. | **Accesibilidad a pie:** isócronas calculadas con OpenRouteService. | **Mapas:** capas SIG del proyecto; relieve sombreado calculado a partir del modelo digital de elevación SRTM.
 nota: Las cifras son promedios o valores máximos de los periodos indicados y pueden actualizarse conforme se publiquen nuevos datos.
 
+## solucion  (La solución: cuatro tarjetas con foto; cada una lleva a sus proyectos)
+etiqueta: La solución
+titulo: Cuatro mensajes para un mismo río
+subtitulo: Toca uno para ver sus proyectos.
+boton: Ver proyectos →
+
+## franja  (tira de fotos de obra; toma una foto de cada carpeta del sitio)
+etiqueta: En obra
+titulo: Así se ve hoy
+
+## actores  (página actores.html. Datos tomados de las secciones del proyecto; Ariel: revisar y completar. Formato: Nombre | qué hace | dato)
+etiqueta: Actores
+titulo: Quiénes hacen posible el proyecto
+texto: Instituciones, gobiernos y comunidades que trabajan juntos por el río Tula.
+actor1: Semarnat | Coordina el proyecto y, junto con Conagua, recupera la laguna de Bojay. | 37 proyectos
+actor2: Conagua | Trata más agua en la PTAR Atotonilco, desazolva el río, estabiliza taludes y mide el caudal. | $112 mdp/año en Atotonilco
+actor3: Profepa | Inspecciona a las industrias que descargan al río, junto con Conagua. | {inspecciones} inspecciones
+actor4: Conafor | Sanea y planta árboles en las riberas y restaura suelo forestal con ejidos. | 2,152 ha en restauración
+actor5: Conanp | Certifica áreas que sus dueños deciden conservar. | 1,700 ha certificadas
+actor6: Gobierno de Hidalgo | Construye los colectores que llevan el drenaje de Tula a una planta de tratamiento. | 35.8 km de colectores
+actor7: CFE | Rehabilita su planta de tratamiento, que recibirá el drenaje de Tula. | Planta en rehabilitación
+actor8: Centro Regional de Prevención Ambiental (UTTT) | Capacita y certifica a las industrias para mejorar sus procesos. | 29 industrias en certificación
+actor9: Comunidades y ejidos | Restauran bosques junto con Conafor y usarán los nuevos espacios públicos junto al río. | 5 espacios públicos
+volver: ← Volver al inicio
+
 ## participa
+boton: Participa
+panel_titulo: Súmate a recuperar el río
+panel_texto: Elige cómo quieres participar.
 etiqueta: Participa
 titulo: Súmate a recuperar el río Tula
 texto: Restaurar el río Tula es un proyecto extremadamente ambicioso que solo se puede lograr con la participación de mucha gente. ¿Te interesa sumarte?

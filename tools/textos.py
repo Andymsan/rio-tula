@@ -11,6 +11,7 @@ Marcas dentro de un texto
   ==resaltado==    →  <mark class="fluor"> (color del tema)
   *cursiva*        →  <em>
   [texto](https://enlace)  →  enlace
+  [[término::definición]]  →  término con definición (se muestra al tocarlo)
 
 Si algo falta o está mal escrito, se detiene con un mensaje en español que dice qué y dónde.
 """
@@ -25,6 +26,7 @@ class TextosError(Exception):
 def fmt(t):
     """Convierte las marcas de TEXTOS.md a HTML (escapando lo demás)."""
     t = html.escape(t, quote=False)
+    t = re.sub(r'\[\[([^\]:]+)::([^\]]+)\]\]', r'<abbr class="gl" tabindex="0" data-def="\2">\1</abbr>', t)
     t = re.sub(r'\[([^\]]+)\]\((https?://[^)\s]+)\)', r'<a href="\2" target="_blank" rel="noopener">\1</a>', t)
     t = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', t)
     t = re.sub(r'==(.+?)==', r'<mark class="fluor">\1</mark>', t)
