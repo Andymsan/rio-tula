@@ -62,10 +62,18 @@ def fotos_de(id_):
         return []
     out = []
     for fn in os.listdir(d):
-        m = re.match(r'^(\d+)_(.+)\.(jpe?g|png|webp)$', fn, re.I)
-        if m:
-            out.append((int(m.group(1)), "img/fotos/%s/%s" % (id_, fn), m.group(2)))
-    out.sort(key=lambda r: r[0])
+        m = re.match(r'^(\d+(?:\.\d+)?)_\s*(.+)\.(jpe?g|png|webp)$', fn, re.I)
+        if not m:
+            continue
+        orden, cap = float(m.group(1)), m.group(2)
+        # nombres con doble numeración ("50_1.3_Texto"): vale el segundo número y el pie no lleva ninguno
+        while True:
+            inner = re.match(r'^(\d+(?:\.\d+)?)_\s*(.+)$', cap)
+            if not inner:
+                break
+            orden, cap = float(inner.group(1)), inner.group(2)
+        out.append((orden, "img/fotos/%s/%s" % (id_, fn), cap.strip()))
+    out.sort(key=lambda r: (r[0], r[2]))
     return [(src, cap) for _, src, cap in out]
 
 def slide(src, cap, contain=False):
@@ -347,15 +355,18 @@ def resumen():
 # ═══════════════════════════════════════════════════════════════════════════
 def participa():
     enlaces = T.lista("participa", "enlaces")
-    li = ""
-    for e in enlaces:
-        texto, url = [x.strip() for x in e.split("->", 1)]
-        li += '<a class="link-btn" href="%s" target="_blank" rel="noopener">%s</a>' % (attr(url), fmt(texto))
-    return ('<section class="s-participa" id="participa" data-nav="light" data-fit>'
-            '<div class="participa-wrap fit-in">%s<div class="participa-texto">'
-            '<span class="s-tag">%s</span><h2 class="s-title">%s</h2><p class="s-body">%s</p>'
-            '<div class="participa-links">%s</div></div></div></section>'
-            % (carousel("participa"), T.t("participa", "etiqueta"), T.t("participa", "titulo"), T.t("participa", "texto"), li))
+    desc = [x.strip() for x in T.raw("participa", "descripciones").split("|")]
+    filas = ""
+    for n, e_ in enumerate(enlaces):
+        texto, url = [x.strip() for x in e_.split("->", 1)]
+        filas += ('<a class="pt-a" href="%s" target="_blank" rel="noopener"><b>%d</b><span><strong>%s</strong><em>%s</em></span><i>→</i></a>'
+                  % (attr(url), n + 1, fmt(texto), fmt(desc[n]) if n < len(desc) else ""))
+    fotos = "".join('<figure><img src="%s" alt="%s" loading="lazy"><figcaption>%s</figcaption></figure>' % (urllib.parse.quote(src, safe="/"), attr(cap), attr(cap))
+                    for src, cap in fotos_de("participa")[:5])
+    return ('<section class="s-participa" id="participa" data-nav="light"><div class="pt-fotos">%s</div>'
+            '<div class="pt-in"><div class="pt-t"><span class="s-tag">%s</span><h2 class="s-title">%s</h2><p class="s-body">%s</p></div>'
+            '<div class="pt-as">%s</div></div></section>'
+            % (fotos, T.t("participa", "etiqueta"), T.t("participa", "titulo"), T.t("participa", "texto"), filas))
 
 # ═══════════════════════════════════════════════════════════════════════════
 #  HISTORIA (mapa SVG + textos por época)
@@ -390,12 +401,15 @@ INDICE = [
     ("promesa", "index.html#promesa", "#025d6e"),
     ("solucion", "index.html#solucion", "#025d6e"),
     ("franja", "index.html#franja", "#025d6e"),
-    ("proyecto", "proyecto.html", "#025d6e"),
-    ("agua", "agua.html", "#025d6e"),
-    ("historia", "historia.html", "#025d6e"),
-    ("actores", "actores.html", "#025d6e"),
     ("participa", "index.html#participa", "#b05510"),
+    # detalle (no interrumpe el recorrido): se leen en este orden
+    ("historia", "historia.html", "#6b6b6b"),
+    ("agua", "agua.html", "#6b6b6b"),
+    ("proyecto", "proyecto.html", "#6b6b6b"),
+    ("actores", "actores.html", "#6b6b6b"),
 ]
+# orden de lectura de las páginas de detalle
+SABER = [("historia", "historia.html"), ("agua", "agua.html"), ("proyecto", "proyecto.html"), ("actores", "actores.html")]
 
 # imagen de cada columna del índice (se carga al abrir el panel); si hay fotos en la carpeta, se usa la primera
 IDX_IMG = {"agua": ("img/mapa/base.webp", "72% 62%"), "historia": ("img/mapa/historia-final.webp", "40% 50%")}
@@ -543,8 +557,10 @@ def avance():
             % (T.t("avance", "etiqueta"), T.t("avance", "titulo"), T.t("avance", "siguiente"), hechos))
 
 def diagnostico():
-    cta = ('<div class="diag-cta"><span>%s</span><a class="btn-pp" href="%s" target="_blank" rel="noopener">%s →</a></div>'
-           % (T.t("diagnostico", "cta"), attr(url_denuncia()), T.t("diagnostico", "cta_boton")))
+    cta = ('<div class="diag-cta"><span>%s</span><span class="dc-b"><a class="btn-pp" href="%s" target="_blank" rel="noopener">%s</a>'
+           '<a class="btn-pp btn-pp2" href="%s" target="_blank" rel="noopener">%s</a></span></div>'
+           % (T.t("diagnostico", "cta"), attr(enlace_pp("Sugerencias")), T.t("diagnostico", "cta_boton"),
+              attr(url_denuncia()), T.t("diagnostico", "cta2_boton")))
     return ('<section class="s-diag" id="diagnostico" data-nav="light">'
             '<div class="diag-head"><span class="s-tag">%s</span><h2>%s</h2></div>%s<div class="diag-prog"><i></i></div>%s</section>'
             % (T.t("diagnostico", "etiqueta"), T.t("diagnostico", "titulo"), carousel("diagnostico", etiqueta="Fotos de diagnóstico"), cta))
@@ -560,6 +576,13 @@ def rail():
                   % (k, k, attr(T.raw("lema-" + k, "titulo")), attr(T.raw("lema-" + k, "titulo")), RAIL_COLORES[k], n * 25, n + 1)
                   for n, k in enumerate(LEMAS))
     return '<nav class="lr" id="lemaRail" aria-label="Los cuatro lemas del proyecto"><span class="lr-line"><b id="lrFill"></b></span>%s</nav>' % its
+
+def enlace_pp(clave):
+    for e in T.lista("participa", "enlaces"):
+        texto, url = [x.strip() for x in e.split("->", 1)]
+        if texto.lower().startswith(clave.lower()):
+            return url
+    raise TextosError('En "## participa", falta el enlace "%s ->".' % clave)
 
 def url_denuncia():
     enlaces = T.lista("participa", "enlaces")
@@ -578,7 +601,7 @@ def sol_card(k, num, extra=""):
 
 def solucion():
     """La solución: un solo mapa. Cada mensaje enciende todas sus capas a la vez; el detalle proyecto por proyecto está en proyecto.html."""
-    rep_link = '<a class="rep-link" href="%s" target="_blank" rel="noopener">%s %s →</a>' % (attr(url_denuncia()), T.t("diagnostico", "cta"), T.t("diagnostico", "cta_boton"))
+    rep_link = '<a class="rep-link" href="%s" target="_blank" rel="noopener">%s →</a>' % (attr(url_denuncia()), T.t("diagnostico", "rep_texto"))
     pasos_sol = [
         step(".55,.5,1.05", "col", sol_card("limpio", 1, rep_link), pins="atot colec cfe boya", tema="rosa", ban=ban(1, "calidad")),
         step(".5,.55,1.05", "int", sol_card("seguro", 2), ov="in-sanlorenzo in-chamizal in-trescult in-rosas tramo",
@@ -595,9 +618,9 @@ def solucion():
 def problema():
     """El problema: mapa a pantalla completa. Empieza en la vista de los estados, se acerca a la cuenca y, al bajar,
     van apareciendo cuadros de texto pequeños (uno por línea de tiempo). Al terminar: enlaces a la historia y al agua."""
-    cajas = ('<article class="pb-step" data-i="0" data-k=""><div class="pb-caja pb-tit"><span class="s-tag">%s</span><h2>%s</h2><p>%s</p>'
+    cajas = ('<article class="pb-step" data-i="0" data-k=""><div class="pb-caja pb-tit"><h2>%s</h2><p>%s</p>'
              '<span class="pb-baja">%s ↓</span></div></article>'
-             % (T.t("problema", "etiqueta"), T.t("problema", "titulo"), T.t("problema", "ubica"), T.t("problema", "baja")))
+             % (T.t("problema", "titulo"), T.t("problema", "ubica"), T.t("problema", "baja")))
     for i in range(1, 5):
         a_, b_, c_ = [x.strip() for x in T.raw("problema", "linea%d" % i).split("|")]
         cajas += ('<article class="pb-step" data-i="%d" data-k="%s"><div class="pb-caja"><b>%s</b><p>%s</p></div></article>' % (i, c_, fmt(a_), fmt(b_)))
@@ -608,11 +631,11 @@ def problema():
             % (rd("tools/fragmentos/problema_mapa.html"), cajas))
 
 def hilo():
-    """Diagrama fijo: el problema y la solución están ligados (Participa vive en el menú de arriba)."""
-    return ('<nav class="hilo" id="hilo" aria-label="El problema y la solución están ligados">'
-            '<a class="hl-n" href="#problema" data-s="problema"><i>1</i><span>%s</span></a>'
-            '<a class="hl-n" href="#solucion" data-s="solucion"><i>2</i><span>%s</span></a></nav>'
-            % (T.t("hilo", "problema"), T.t("hilo", "solucion")))
+    """Tres puntos fijos a la derecha: el problema, la solución y participa. Sin etiquetas visibles (solo al pasar el cursor)."""
+    pts = [("problema", "#problema", T.t("hilo", "problema")), ("solucion", "#solucion", T.t("hilo", "solucion")),
+           ("participa", "#participa", T.t("hilo", "participa"))]
+    return ('<nav class="hilo" id="hilo" aria-label="Las tres partes: el problema, la solución y participa">%s</nav>'
+            % "".join('<a class="hl-n" href="%s" data-s="%s" title="%s" aria-label="%s"><span>%s</span><i></i></a>' % (h, k, t, t, t) for k, h, t in pts))
 
 def foto_de(carpeta, contiene=None):
     fp = fotos_de(carpeta)
@@ -635,7 +658,7 @@ def franja():
             '<button class="bu-btn bu-next" type="button" aria-label="Siguiente">›</button></div></section>'
             % (T.t("franja", "etiqueta"), T.t("franja", "titulo"), slides))
 
-ACT_CORTO = ["Semarnat", "Conagua", "Profepa", "Conafor", "Conanp", "Hidalgo", "CFE", "UTTT", "Comunidades"]
+ACT_LOGO = ["semarnat.png", "conagua.png", "profepa.png", "conafor.png", "conanp.png", "hidalgo.svg", "cfe.png", "", ""]
 ACT_CAT = [0, 0, 0, 0, 0, 1, 0, 1, 2]          # 0 federal · 1 estatal · 2 comunidades
 ACT_COLOR = ["#025d6e", "#b05510", "#6f6b19"]
 
@@ -646,45 +669,114 @@ def actores_section():
         partes = [x.strip() for x in T.raw("actores", "actor%d" % i).split("|")]
         if len(partes) != 3:
             raise TextosError('En "## actores", "actor%d:" debe ser "Nombre | qué hace | dato".' % i)
-        datos.append(partes)
-    # mapa: círculo central (el río) con los actores en elipse; cada uno unido por una línea punteada
-    cx, cy, rx, ry = 50.0, 47.0, 40.0, 37.0
-    lineas, nodos = "", ""
-    for i, (nombre, que, dato) in enumerate(datos):
-        ang = math.radians(-90 + i * 360.0 / len(datos))
-        x, y = cx + rx * math.cos(ang), cy + ry * math.sin(ang)
-        lineas += '<line x1="%.1f" y1="%.1f" x2="%.1f" y2="%.1f" style="--i:%d"/>' % (cx * 10, cy * 6.2, x * 10, y * 6.2, i)
-        nodos += ('<button class="am-n%s" type="button" style="--x:%.1f%%;--y:%.1f%%;--c:%s;--i:%d" data-i="%d" data-n="%s" data-q="%s" data-d="%s" data-cat="%s">'
-                  '<span>%s</span></button>'
-                  % (" on" if i == 0 else "", x, y, ACT_COLOR[ACT_CAT[i]], i, i, attr(nombre), attr(que), attr(dato), attr(leyenda[ACT_CAT[i]]), ACT_CORTO[i]))
+        acc = [x.strip() for x in T.raw("actores", "acc%d" % i).split("|")]
+        datos.append((partes, acc))
+    rel = [tuple(int(v) - 1 for v in x.strip().split("-")) for x in T.raw("actores", "relaciones").split("|")]
+    def curva(x1, y1, x2, y2, k=.18):
+        mx, my = (x1 + x2) / 2, (y1 + y2) / 2
+        dx, dy = x2 - x1, y2 - y1
+        return "M%.1f,%.1f Q%.1f,%.1f %.1f,%.1f" % (x1, y1, mx - dy * k, my + dx * k, x2, y2)
+
+    def red(m):
+        """Misma red para escritorio (ancha) y celular (alta, con puntos sin texto; las acciones van en la tarjeta)."""
+        if m:
+            VB, CX, CY, RX, RY, R, LW, LH, SAT, SD = "0 0 420 780", 210.0, 372.0, 136.0, 292.0, 32, 50, 38, 50, 4.2
+        else:
+            VB, CX, CY, RX, RY, R, LW, LH, SAT, SD = "0 0 1000 690", 500.0, 330.0, 345.0, 232.0, 52, 76, 58, 108, 6.5
+        pos = []
+        for i in range(9):
+            ang = math.radians(-90 + i * 40.0)
+            pos.append((CX + RX * math.cos(ang), CY + RY * math.sin(ang), ang))
+        svg = ['<svg class="an-svg %s" viewBox="%s" role="img" aria-label="Mapa de actores del proyecto del río Tula"%s>' % ("an-m" if m else "an-d", VB, ' aria-hidden="true"' if m else "")]
+        for i, (x, y, ang) in enumerate(pos):
+            svg.append('<path class="an-l an-r" data-a="%d" d="%s" style="--i:%d"/>' % (i, curva(CX, CY, x, y, .10), i))
+        for k, (i, j) in enumerate(rel):
+            svg.append('<path class="an-l an-rel" data-a="%d %d" d="%s" style="--i:%d;--c:%s"/>' % (i, j, curva(pos[i][0], pos[i][1], pos[j][0], pos[j][1], .22), k, ACT_COLOR[ACT_CAT[i]]))
+        for i, ((partes, acc), (x, y, ang)) in enumerate(zip(datos, pos)):
+            n = len(acc)
+            for k, txt in enumerate(acc):
+                giro = (-45 if math.cos(ang) > 0 else 45) if math.sin(ang) > 0.3 else 0
+                a2 = ang + math.radians(giro + (k - (n - 1) / 2.0) * (40 if m else 34))
+                sx, sy = x + SAT * math.cos(a2), y + (SAT if m else 100) * math.sin(a2)
+                right = math.cos(a2) >= -0.15
+                lab = "" if m else '<text x="%.1f" y="%.1f" text-anchor="%s">%s</text>' % (sx + (12 if right else -12), sy + 4, "start" if right else "end", txt)
+                svg.append('<g class="an-s" data-a="%d" style="--i:%d;--c:%s"><path class="an-ls" d="M%.1f,%.1f L%.1f,%.1f"/><circle cx="%.1f" cy="%.1f" r="%s"/>%s</g>'
+                           % (i, i, ACT_COLOR[ACT_CAT[i]], x + (R + 4) * math.cos(a2), y + (R + 4) * math.sin(a2), sx, sy, sx, sy, SD, lab))
+        rc = 50 if m else 58
+        svg.append('<g class="an-c"><circle r="%d" cx="%d" cy="%d" fill="#025d6e"/><circle r="%d" cx="%d" cy="%d" fill="none" stroke="#025d6e" stroke-opacity=".35"/>'
+                   '<path d="M%d,%d q9,-11 18,0 t18,0 t18,0 M%d,%d q9,-11 18,0 t18,0 t18,0" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>'
+                   '<text x="%d" y="%d" text-anchor="middle">Río Tula</text></g>' % (rc, CX, CY, rc + 8, CX, CY, CX - 27, CY - 8, CX - 27, CY + 10, CX, CY + 36))
+        fs = 11.5 if m else 12.5
+        for i, ((partes, acc), (x, y, ang)) in enumerate(zip(datos, pos)):
+            c = ACT_COLOR[ACT_CAT[i]]
+            nombre = partes[0].replace("Centro Regional de Prevención Ambiental (UTTT)", "UTTT").replace("Comunidades y ejidos", "Comunidades")
+            ancho = len(nombre) * (6.9 if m else 7.4) + 18
+            by = y + R + 10
+            logo = ACT_LOGO[i]
+            if logo:
+                img = '<image href="img/logos/%s" x="%.1f" y="%.1f" width="%d" height="%d" preserveAspectRatio="xMidYMid meet"/>' % (logo, x - LW / 2, y - LH / 2, LW, LH)
+            elif i == 7:
+                img = '<text class="an-tx" x="%.1f" y="%.1f" text-anchor="middle"%s>UTTT</text>' % (x, y + (5 if m else 6), ' style="font-size:15px"' if m else "")
+            else:
+                s = .62 if m else 1
+                img = ('<g fill="%s" transform="translate(%.1f %.1f) scale(%s)"><circle cx="-18" cy="-8" r="7"/><circle cx="0" cy="-14" r="7"/><circle cx="18" cy="-8" r="7"/>'
+                       '<path d="M-26,14 q8,-16 16,0z M-8,20 q8,-16 16,0z M10,14 q8,-16 16,0z"/></g>' % (c, x, y, s))
+            svg.append('<g class="an-n%s" tabindex="%s" role="button" data-i="%d" style="--i:%d;--c:%s"%s>'
+                       '<circle class="an-h" cx="%.1f" cy="%.1f" r="%d"/><circle class="an-o" cx="%.1f" cy="%.1f" r="%d"/>%s'
+                       '<g class="an-b"><rect x="%.1f" y="%.1f" width="%.1f" height="%d" rx="2"/><text x="%.1f" y="%.1f" text-anchor="middle" style="font-size:%spx">%s</text></g></g>'
+                       % (" on" if i == 0 else "", "-1" if m else "0", i, i, c, ' aria-label="%s"' % attr(nombre) if m else "", x, y, R + 18, x, y, R, img,
+                          x - ancho / 2, by, ancho, 22 if m else 24, x, by + (15 if m else 16), fs, attr(nombre)))
+        svg.append("</svg>")
+        return "".join(svg)
+    svg = [red(False), red(True)]
     leyenda_html = "".join('<span><i style="background:%s"></i>%s</span>' % (ACT_COLOR[k], leyenda[k]) for k in range(3))
-    mapa = ('<div class="am" id="am"><svg class="am-l" viewBox="0 0 1000 620" preserveAspectRatio="none" aria-hidden="true">%s</svg>'
-            '<div class="am-c" style="background-image:url(img/mapa/base.webp)"><b>Río Tula</b></div>%s</div>'
-            '<div class="am-det" id="amDet" aria-live="polite"><span class="ad-cat"></span><h3 class="ad-n"></h3><p class="ad-q"></p><b class="ad-d"></b></div>'
-            '<div class="am-ley">%s<small>%s</small></div>' % (lineas, nodos, leyenda_html, T.t("actores", "pista")))
-    tarjetas = ""
-    for nombre, que, dato in datos:
-        tarjetas += ('<article class="ac-c"><h3>%s</h3><p>%s</p><span class="ac-k">%s</span></article>' % (fmt(nombre), fmt(que), fmt(dato)))
+    detalle = ''.join('<div class="ad-i" data-i="%d"><span class="ad-cat">%s</span><h3>%s</h3><p>%s</p><ul class="ad-ac">%s</ul><b>%s</b></div>'
+                      % (i, attr(leyenda[ACT_CAT[i]]), fmt(p[0]), fmt(p[1]), "".join("<li>%s</li>" % fmt(x) for x in ac), fmt(p[2])) for i, (p, ac) in enumerate(datos))
+    movil = "".join('<button class="am-m%s" type="button" data-i="%d" style="--c:%s">%s<span>%s</span></button>'
+                    % (" on" if i == 0 else "", i, ACT_COLOR[ACT_CAT[i]],
+                       ('<img src="img/logos/%s" alt="">' % ACT_LOGO[i]) if ACT_LOGO[i] else ('<i>UTTT</i>' if i == 7 else '<i>•••</i>'),
+                       attr(datos[i][0][0].replace("Centro Regional de Prevención Ambiental (UTTT)", "Centro Regional UTTT"))) for i in range(9))
     return ('<section class="s-actores" id="actores" data-nav="light"><div class="ac-in">'
-            '<div class="ac-head"><span class="s-tag">%s</span><h1>%s</h1><p>%s</p></div>%s<div class="ac-grid">%s</div></div></section>'
-            % (T.t("actores", "etiqueta"), T.t("actores", "titulo"), T.t("actores", "texto"), mapa, tarjetas))
+            '<div class="ac-head"><span class="s-tag">%s</span><h1>%s</h1><p>%s</p></div>'
+            '<div class="an" id="an">%s</div>'
+            '<div class="an-det" id="anDet">%s</div><div class="am-ley">%s<small>%s</small></div></div></section>'
+            % (T.t("actores", "etiqueta"), T.t("actores", "titulo"), T.t("actores", "texto"), "".join(svg), detalle, leyenda_html, T.t("actores", "pista")))
 
 def pp_panel():
     """Panel de participación: disponible desde cualquier página (botón del menú, botón de la portada y cierre de cada página)."""
     li = ""
     for e in T.lista("participa", "enlaces"):
         texto, url = [x.strip() for x in e.split("->", 1)]
-        li += '<a class="pp-l" href="%s" target="_blank" rel="noopener">%s<i>→</i></a>' % (attr(url), fmt(texto))
+        li += '<a class="pp-l" href="%s" target="_blank" rel="noopener"><span>%s</span><i>→</i></a>' % (attr(url), fmt(texto))
     return ('<div class="pp" id="ppPanel" role="dialog" aria-label="%s"><div class="pp-box"><button class="pp-x" type="button" aria-label="Cerrar">×</button>'
             '<h2>%s</h2><p>%s</p><div class="pp-ls">%s</div></div></div>'
             % (T.t("participa", "panel_titulo"), T.t("participa", "panel_titulo"), T.t("participa", "panel_texto"), li))
 
 def nav_links(pagina):
+    if pagina == "index":
+        return '<a class="nav-btn nav-link" href="#profundiza">%s</a>' % T.t("sitio", "boton_saber")
+    return '<a class="nav-btn nav-link" href="index.html">%s</a>' % T.t("sitio", "boton_inicio")
+
+def saber_cards(actual=None):
+    """Las cuatro páginas de detalle en orden de lectura; la actual se marca y la siguiente se destaca."""
+    claves = [k for k, _ in SABER]
+    sig = claves[(claves.index(actual) + 1) % len(claves)] if actual in claves else None
     out = ""
-    for dest, key, pag in (("proyecto.html", "boton_proyecto", "proyecto"), ("historia.html", "boton_historia", "historia")):
-        if pag != pagina:
-            out += '<a class="nav-btn nav-link" href="%s">%s</a>' % (dest, T.t("sitio", key))
+    for n, (k, h) in enumerate(SABER, 1):
+        key = "indice-" + k
+        if k == actual:
+            out += ('<div class="sn-c on"><span class="sn-n">%d</span><b>%s</b><small>%s</small></div>'
+                    % (n, T.t(key, "titulo"), T.t("profundiza", "estas_aqui")))
+        else:
+            out += ('<a class="sn-c%s" href="%s"><span class="sn-n">%d</span><b>%s</b><small>%s</small>%s</a>'
+                    % (" next" if k == sig else "", h, n, T.t(key, "titulo"), T.t(key, "descripcion"),
+                       ('<i>%s →</i>' % T.t("profundiza", "siguiente")) if k == sig else ""))
     return out
+
+def profundiza():
+    return ('<section class="s-prof" id="profundiza" data-nav="light"><div class="sp-in"><span class="s-tag">%s</span><h2>%s</h2><p>%s</p>'
+            '<div class="sn-row">%s</div></div></section>'
+            % (T.t("profundiza", "etiqueta"), T.t("profundiza", "titulo"), T.t("profundiza", "texto"), saber_cards()))
 
 def fuentes():
     items = "".join("<li>%s</li>" % fmt(x) for x in T.lista("fuentes", "items"))
@@ -702,10 +794,10 @@ PLANTILLA = '''<!DOCTYPE html>
   <title>%(titulo)s</title>
   <meta name="description" content="%(descripcion)s" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/temas.css?v=39" />
-  <link rel="stylesheet" href="css/historia.css?v=39" />
-  <link rel="stylesheet" href="css/capitulos.css?v=39" />
-  <link rel="stylesheet" href="css/sistema.css?v=39" />
+  <link rel="stylesheet" href="css/temas.css?v=47" />
+  <link rel="stylesheet" href="css/historia.css?v=47" />
+  <link rel="stylesheet" href="css/capitulos.css?v=47" />
+  <link rel="stylesheet" href="css/sistema.css?v=47" />
 %(precarga)s
   <script>(function(){var h=document.documentElement;h.classList.add('js');try{var s=localStorage;if(s.getItem('rt-noche')==='1')h.dataset.theme='dark';if(s.getItem('rt-cvd')==='1')h.dataset.cvd='1'}catch(e){}})()</script>
 </head>
@@ -744,7 +836,7 @@ PLANTILLA = '''<!DOCTYPE html>
 %(contenido)s
 
 <script data-goatcounter="https://riotula.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
-<script src="js/sitio.js?v=39"></script>
+<script src="js/sitio.js?v=47"></script>
 </body>
 </html>
 '''
@@ -760,31 +852,34 @@ def comun(**extra):
     d.update(extra)
     return d
 
-def fin_pagina(volver_texto):
-    return ('<section class="hs-fin" data-nav="light"><button class="btn btn-dark" type="button" data-pp>%s</button>'
-            '<a class="hs-volver" href="index.html">%s</a></section>' % (T.t("participa", "boton"), volver_texto))
+def fin_pagina(volver_texto, pagina=None):
+    ruta = ""
+    if pagina:
+        ruta = ('<div class="sn-fin"><p class="sn-k">%s</p><div class="sn-row">%s</div></div>' % (T.t("profundiza", "sigue"), saber_cards(pagina)))
+    return ('<section class="hs-fin" data-nav="light">%s<button class="btn btn-dark" type="button" data-pp>%s</button>'
+            '<a class="hs-volver" href="index.html">%s</a></section>' % (ruta, T.t("participa", "boton"), volver_texto))
 
 def construir():
-    contenido = "\n\n".join([hilo(), hero(), problema(), diagnostico(), promesa(), solucion(), franja(), participa(), fuentes(), pie()])
+    contenido = "\n\n".join([hilo(), hero(), problema(), diagnostico(), promesa(), solucion(), franja(), participa(), profundiza(), fuentes(), pie()])
     return PLANTILLA % comun(logo_href="#top", idx_list=idx_list, contenido=contenido, nav_links=nav_links("index"))
 
 def construir_proyecto():
-    contenido = avance() + rail() + proyecto_cap + resumen() + fin_pagina(T.t("historia-intro", "volver")) + fuentes() + pie()
-    return PLANTILLA % comun(titulo=attr("Cifras y proyectos · " + T.raw("sitio", "titulo")), logo_href="index.html",
+    contenido = avance() + rail() + proyecto_cap + resumen() + fin_pagina(T.t("historia-intro", "volver"), "proyecto") + fuentes() + pie()
+    return PLANTILLA % comun(titulo=attr("Los proyectos · " + T.raw("sitio", "titulo")), logo_href="index.html",
                              idx_list=idx_list_otro, contenido=contenido, nav_links=nav_links("proyecto"))
 
 def construir_agua():
-    contenido = origen() + fin_pagina(T.t("actores", "volver")) + pie()
+    contenido = origen() + fin_pagina(T.t("actores", "volver"), "agua") + pie()
     return PLANTILLA % comun(titulo=attr("El agua del río · " + T.raw("sitio", "titulo")), logo_href="index.html",
                              idx_list=idx_list_otro, contenido=contenido, nav_links=nav_links("agua"))
 
 def construir_actores():
-    contenido = actores_section() + fin_pagina(T.t("actores", "volver")) + pie()
+    contenido = actores_section() + fin_pagina(T.t("actores", "volver"), "actores") + pie()
     return PLANTILLA % comun(titulo=attr("Actores · " + T.raw("sitio", "titulo")), logo_href="index.html",
                              idx_list=idx_list_otro, contenido=contenido, nav_links=nav_links("actores"))
 
 def construir_historia():
-    contenido = historia_section() + fin_pagina(T.t("historia-intro", "volver")) + pie()
+    contenido = historia_section() + fin_pagina(T.t("historia-intro", "volver"), "historia") + pie()
     return PLANTILLA % comun(titulo=attr("Historia del río Tula · " + T.raw("sitio", "titulo")), logo_href="index.html",
                              idx_list=idx_list_otro, contenido=contenido, nav_links=nav_links("historia"))
 
@@ -824,3 +919,4 @@ Este archivo se genera automáticamente; no editar a mano.
 os.makedirs(FOTOS_DIR, exist_ok=True)
 open(os.path.join(FOTOS_DIR, "LEEME.md"), "w", encoding="utf-8").write(leeme)
 print("index.html:", len(page) // 1024, "KB ·", len(SECCIONES_FOTOS), "secciones con carrusel")
+

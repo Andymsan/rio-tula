@@ -657,7 +657,8 @@
       const ks = (steps[i].dataset.k || '').split(' ').filter(Boolean);
       svg.classList.toggle('hl', ks.length > 0);
       $$('[data-k]', svg).forEach(el => el.classList.toggle('is', ks.includes(el.dataset.k)));
-      go(i === 0 ? WIDE : (i <= 3 ? MID : BASIN), 1900);
+      svg.classList.toggle('fin', i === 5);
+      go(i === 0 ? WIDE : (i >= 2 && i <= 4 ? BASIN : MID), 1900);
     }
     go(WIDE, 0); ver(0);
     const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) ver(Number(e.target.dataset.i)); }), { rootMargin: '-42% 0px -42% 0px', threshold: 0 });
@@ -670,7 +671,7 @@
     const hilo = $('#hilo'); if (!hilo) return;
     const grupo = { problema: ['problema', 'diagnostico'], solucion: ['promesa', 'solucion', 'franja'] };
     const upd = () => {
-      hilo.classList.toggle('show', scrollY > innerHeight * 0.6);
+      hilo.classList.toggle('show', true);
       const mid = innerHeight * 0.5; let act = '';
       Object.entries(grupo).forEach(([k, ids]) => ids.forEach(id => { const e = $('#' + id); if (!e) return; const r = e.getBoundingClientRect(); if (r.top <= mid && r.bottom > mid) act = k; }));
       const p = $('#participa'); const pr = p && p.getBoundingClientRect(); if (pr && pr.top <= mid) act = 'participa';
@@ -682,19 +683,65 @@
     addEventListener('resize', upd); upd();
   }
 
-  /* ── Mapa de actores: aparecen uno a uno al entrar; tocar un actor muestra qué hace ── */
+  /* ── Red de actores: aparece al entrar; tocar un actor resalta sus conexiones y muestra qué hace ── */
   function initActores() {
-    const am = $('#am'); if (!am) return;
-    const ns = $$('.am-n', am), det = $('#amDet');
-    const show = n => {
-      ns.forEach(x => x.classList.toggle('on', x === n));
-      $('.ad-cat', det).textContent = n.dataset.cat; $('.ad-n', det).textContent = n.dataset.n;
-      $('.ad-q', det).textContent = n.dataset.q; $('.ad-d', det).textContent = n.dataset.d;
-      det.style.setProperty('--c', n.style.getPropertyValue('--c'));
+    const an = $('#an'); if (!an) return;
+    const svgs = $$('.an-svg', an), det = $('#anDet');
+    const ns = $$('.an-n', an), items = $$('.ad-i', det);
+    const show = i => {
+      ns.forEach(n => n.classList.toggle('on', Number(n.dataset.i) === i));
+      items.forEach(x => x.classList.toggle('on', Number(x.dataset.i) === i));
+      svgs.forEach(svg => { svg.classList.add('foco'); $$('[data-a]', svg).forEach(el => el.classList.toggle('rel', el.dataset.a.split(' ').includes(String(i)))); });
+      const n = ns.find(x => Number(x.dataset.i) === i);
+      det.style.setProperty('--c', n ? n.style.getPropertyValue('--c') : '#025d6e');
     };
-    ns.forEach(n => { n.addEventListener('click', () => show(n)); n.addEventListener('mouseenter', () => { if (matchMedia('(hover: hover)').matches) show(n); }); });
-    show(ns[0]);
-    new IntersectionObserver((es, o) => es.forEach(e => { if (e.isIntersecting) { am.classList.add('in'); o.disconnect(); } }), { threshold: 0.3 }).observe(am);
+    ns.forEach(n => {
+      const i = Number(n.dataset.i);
+      n.addEventListener('click', () => show(i)); n.addEventListener('focus', () => show(i));
+      n.addEventListener('mouseenter', () => { if (matchMedia('(hover: hover)').matches) show(i); });
+      n.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); show(i); } });
+    });
+    show(0);
+    new IntersectionObserver((es, o) => es.forEach(e => { if (e.isIntersecting) { an.classList.add('in'); setTimeout(() => an.classList.add('ready'), 2800); o.disconnect(); } }), { threshold: 0.12 }).observe(an);
+  }
+
+  /* ── Celular, "Los proyectos": el mapa ocupa 3/4 y abajo queda una tira con lo esencial;
+     "Detalle +" abre una hoja con el texto completo y las fotos ── */
+  function initSheet() {
+    const sec = $('#proyecto'); if (!sec) return;
+    const sheet = document.createElement('div'); sheet.className = 'sheet'; sheet.id = 'sheet'; sheet.setAttribute('role', 'dialog');
+    sheet.innerHTML = '<div class="sh-box"><button class="sh-x" type="button" aria-label="Cerrar">×</button><div class="sh-body"></div></div>';
+    document.body.appendChild(sheet);
+    const body = $('.sh-body', sheet);
+    const close = () => { sheet.classList.remove('open'); document.documentElement.classList.remove('sh-lock'); };
+    $('.sh-x', sheet).addEventListener('click', close);
+    sheet.addEventListener('click', e => { if (e.target === sheet) close(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+    $$('.step', sec).forEach(st => {
+      const card = $('.card', st); if (!card || !$('p', card)) return;
+      const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'sh-btn'; btn.textContent = 'Detalle +';
+      card.appendChild(btn);
+      btn.addEventListener('click', () => {
+        const c = card.cloneNode(true);
+        $$('.sh-btn, .vermas, .mas, .p0-lemas', c).forEach(x => x.remove());
+        body.innerHTML = ''; body.appendChild(c);
+        const track = $('.bu-track', st);
+        if (track) {
+          const fotos = $$('.bu-slide', track).map(s => { const im = $('img', s); return { src: im ? (im.currentSrc || im.src) : s.dataset.src, cap: s.dataset.cap || (im ? im.alt : '') }; }).filter(f => f.src);
+          if (fotos.length) {
+            const ph = document.createElement('div'); ph.className = 'sh-fotos';
+            fotos.forEach((f, k) => {
+              const fg = document.createElement('figure'); const im = new Image(); im.src = f.src; im.alt = f.cap; im.loading = 'lazy';
+              fg.appendChild(im); const fc = document.createElement('figcaption'); fc.textContent = f.cap; fg.appendChild(fc);
+              fg.addEventListener('click', () => document.dispatchEvent(new CustomEvent('ampliar', { detail: { track, index: k } })));
+              ph.appendChild(fg);
+            });
+            body.appendChild(ph);
+          }
+        }
+        sheet.classList.add('open'); document.documentElement.classList.add('sh-lock'); $('.sh-box', sheet).scrollTop = 0;
+      });
+    });
   }
 
   /* ── Arranque ─────────────────────────────────────────────────────── */
@@ -709,6 +756,7 @@
     initA11y();
     initActores();
     initProblema();
+    initSheet();
     initHilo();
     initParticipa();
     initGlosario();

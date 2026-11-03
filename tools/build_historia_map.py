@@ -554,3 +554,12 @@ pm.append(_el("CUENCA DEL RÍO TULA", (BASIN[0] + BASIN[2]) / 2 - 40, BASIN[1] +
 pm.append("</svg>")
 open(os.path.join(ROOT, "tools", "fragmentos", "problema_mapa.html"), "w", encoding="utf-8").write("".join(pm))
 print("problema_mapa.html: %d KB · wide %s · basin %s" % (sum(len(x) for x in pm) // 1024, [round(v) for v in WIDE], [round(v) for v in BASIN]))
+
+
+# silueta de Hidalgo para el mapa de actores (img/logos/hidalgo.svg)
+_sh = layer_path("hidalgo.geojson", simplify_m=700)
+_bx = _bbox(_sh)
+open(os.path.join(ROOT, "img", "logos", "hidalgo.svg"), "w", encoding="utf-8").write(
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="%.0f %.0f %.0f %.0f"><path d="%s" fill="#b05510" fill-opacity=".85" stroke="#b05510" stroke-width="3" stroke-linejoin="round"/></svg>'
+    % (_bx[0] - 6, _bx[1] - 6, _bx[2] - _bx[0] + 12, _bx[3] - _bx[1] + 12, _sh))
+print("hidalgo.svg ok")

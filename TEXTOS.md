@@ -44,7 +44,9 @@ logo: Río Tula
 logo_sub: / Proyecto 2024-2030
 boton_indice: ☰ Índice
 boton_historia: La historia
-boton_proyecto: Cifras y proyectos
+boton_proyecto: Los proyectos
+boton_saber: Saber más
+boton_inicio: Inicio
 boton_agua: El agua del río
 boton_acc: Accesibilidad
 modo_noche: Modo noche
@@ -61,8 +63,8 @@ boton: Comenzar el recorrido ↓
 boton2: Participa
 
 ## indice-problema  (1)
-titulo: El problema
-descripcion: Cómo se volvió uno de los ríos más contaminados
+titulo: ¿Qué pasó con el río?
+descripcion: Cómo se volvió uno de los más contaminados
 
 ## indice-promesa  (2)
 titulo: El compromiso
@@ -76,23 +78,23 @@ descripcion: Un mapa, cuatro mensajes
 titulo: Así se ve hoy
 descripcion: Fotos de obra
 
-## indice-proyecto  (5: detalle, página proyecto.html)
-titulo: Cifras y proyectos
-descripcion: Cuántos proyectos, kilómetros e inversión
+## indice-proyecto  (detalle, página proyecto.html)
+titulo: Los proyectos
+descripcion: Qué se hace en cada eje: metas, kilómetros e inversión
 
-## indice-agua  (6: detalle, página agua.html)
+## indice-agua  (detalle, página agua.html)
 titulo: El agua del río
 descripcion: De dónde viene y a dónde va
 
-## indice-historia  (7: detalle)
-titulo: Historia del río
+## indice-historia  (detalle)
+titulo: La historia
 descripcion: Cómo llegó a esta condición
 
-## indice-actores  (8: detalle)
+## indice-actores  (detalle)
 titulo: Quiénes participan
 descripcion: Instituciones y comunidades
 
-## indice-participa  (9)
+## indice-participa  (5)
 titulo: Participa
 descripcion: Cómo sumarte al proyecto
 
@@ -118,8 +120,10 @@ boton_corto: Historia →
 ## diagnostico  (fotos de diagnóstico; carpeta img/fotos/diagnostico/)
 etiqueta: Diagnóstico
 titulo: Así encontramos el río
-cta: ¿Conoces una industria que contamina el río?
-cta_boton: Repórtala
+cta: Cuéntanos algo que nos haga falta saber
+cta_boton: Cuéntanos
+cta2_boton: Reportar una industria
+rep_texto: ¿Conoces una industria que contamina el río? Repórtala
 
 ## lema-limpio  (banner de pantalla completa; foto opcional en img/fotos/lema-limpio/)
 etiqueta: Frente 1 · Calidad del agua
@@ -157,17 +161,17 @@ cifra1: 5 | proyectos de espacio público junto al río
 cifra2: 52 % | de la población de Tula a 15 min a pie de alguno
 
 ## hilo  (diagrama fijo de la landing: el problema y la solución están ligados, y participar es parte de ambos)
-problema: El problema
+problema: ¿Qué pasó?
 solucion: La solución
 participa: Participa
 
 ## problema  (landing, 1.ª pantalla: textos ultra simples. Ariel: revisar. Cada línea: año | texto | capa del mapa que se resalta)
 etiqueta: El problema
-titulo: Cómo se volvió uno de los ríos más contaminados del país
-linea1: 1789 | Se abre el Tajo de Nochistongo y el agua de lluvia y drenaje del Valle de México empieza a llegar al río Tula. | salto
-linea2: 1900 | El Gran Canal manda más drenaje hacia el río Tula. | canal
-linea3: 1975 y 2019 | Los túneles Emisor Central y Oriente completan la conexión entre las dos cuencas. | tec teo
-linea4: Hoy | Esa agua cruza el río Tula y llega a la presa Endhó. | rios presa
+titulo: ¿Cómo se volvió uno de los ríos más contaminados del país?
+linea1: Drenaje de otra cuenca | Desde 1789, el Tajo, el Gran Canal y los túneles llevan al río Tula el agua de lluvia y el drenaje del Valle de México. | salto canal tec teo
+linea2: Descargas sin tratar | Aguas residuales de las ciudades y de la industria llegan al río sin el tratamiento suficiente. | rios ptar portal
+linea3: Un cauce descuidado | Azolve, basura y riberas sin vegetación reducen la capacidad del río y elevan el riesgo de inundación, como en 2021. | rosas tula
+linea4: Sin espacio para la gente | Casi no hay lugares de encuentro a la orilla del río para las comunidades. | tula
 ubica: Estamos en la cuenca del río Tula, entre Hidalgo, el Estado de México y la Ciudad de México.
 baja: Sigue bajando
 fin: Para entenderlo mejor
@@ -473,6 +477,15 @@ corto: Espacio público
 texto: Para que la población de Tula pueda reconectar con el río, estamos construyendo 5 proyectos de espacio público ribereño que incluyen revegetación nativa, equipamiento público y agua limpia.
 cifra: 5 | proyectos de espacio público
 
+## profundiza  (landing, después de Participa: el detalle para quien quiera saber más; el orden de lectura es el de esta lista)
+etiqueta: Saber más
+titulo: Para quien quiere ver el detalle
+texto: Cuatro páginas, en este orden, para entender el río a fondo. No hace falta leerlas para participar.
+sigue: Para seguir explorando
+de: de
+siguiente: Siguiente
+estas_aqui: Estás aquí
+
 ## fuentes  (fuentes y notas metodológicas — sustento técnico; Ariel: revisar y completar)
 titulo: Fuentes y notas metodológicas
 items: **Caudales:** base de caudales del proyecto; promedios 2021-2024 de la temporada de secas (estiaje) y de lluvias. | **Inundaciones:** capacidad del río y caudal máximo registrado, Conagua. | **Inversión:** base de proyectos 2025-2026, Contralínea (16 jul 2026) y Ámbito. | **Accesibilidad a pie:** isócronas calculadas con OpenRouteService. | **Mapas:** capas SIG del proyecto; relieve sombreado calculado a partir del modelo digital de elevación SRTM.
@@ -492,6 +505,16 @@ etiqueta: Actores
 titulo: Quiénes hacen posible el proyecto
 texto: Instituciones, gobiernos y comunidades que trabajan juntos por el río Tula.
 pista: Toca un actor para ver qué hace.
+acc1: Laguna de Bojay | Coordinación del proyecto
+acc2: PTAR Atotonilco | Desazolve | Taludes | Caudal en tiempo real
+acc3: Inspecciones industriales
+acc4: Riberas | Restauración forestal
+acc5: Áreas de conservación
+acc6: Colectores de Tula
+acc7: Planta de tratamiento
+acc8: Certificación de industrias
+acc9: Ejidos | Espacios públicos
+relaciones: 1-2 | 1-3 | 1-4 | 1-5 | 2-3 | 2-8 | 3-8 | 4-9 | 5-9 | 6-7
 leyenda: Gobierno federal | Gobierno estatal | Comunidades
 actor1: Semarnat | Coordina el proyecto y, junto con Conagua, recupera la laguna de Bojay. | 37 proyectos
 actor2: Conagua | Trata más agua en la PTAR Atotonilco, desazolva el río, estabiliza taludes y mide el caudal. | $112 mdp/año en Atotonilco
@@ -511,4 +534,5 @@ panel_texto: Elige cómo quieres participar.
 etiqueta: Participa
 titulo: Súmate a recuperar el río Tula
 texto: Restaurar el río Tula es un proyecto extremadamente ambicioso que solo se puede lograr con la participación de mucha gente. ¿Te interesa sumarte?
+descripciones: Jornadas de limpieza, talleres y reforestaciones junto al río. | Entérate de los avances y de las próximas actividades. | Cuéntanos algo que nos haga falta saber o cómo te gustaría colaborar. | Reporta una descarga industrial a la Profepa.
 enlaces: Participa en eventos -> https://forms.gle/ywk73PzvLo6HkGVFA | Recibe información -> https://forms.gle/ywk73PzvLo6HkGVFA | Sugerencias o propuestas de colaboración -> https://forms.gle/ywk73PzvLo6HkGVFA | Denuncia a una industria que contamina el río -> https://www.profepa.gob.mx/innovaportal/v/1156/1/mx/haz_tu_denuncia.html

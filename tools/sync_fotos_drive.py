@@ -85,7 +85,7 @@ def parse_nombre(nombre_drive, mime_type):
     if len(partes) != 2 or not partes[0].strip() or not partes[1].strip():
         return None
     seccion, resto = partes[0].strip(), partes[1]
-    m = re.match(r"^(\d+)_(.+)$", resto)
+    m = re.match(r"^(\d+(?:\.\d+)?)_\s*(.+)$", resto)
     orden, pie = (m.group(1), m.group(2)) if m else ("50", resto)  # sin número: se acomoda al final, en orden alfabético
     pie = pie.strip()
     for malo, bueno in CORRECCIONES:
