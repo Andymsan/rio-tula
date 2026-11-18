@@ -12,6 +12,7 @@ on:
       - 'tools/textos.py'
       - 'tools/fragmentos/historia_mapa.html'
       - 'tools/fragmentos/origen_mapa.html'
+      - 'img/fotos/**'          # al quitar o renombrar fotos a mano, los carruseles se actualizan
   workflow_dispatch:
 
 permissions:
